@@ -1,37 +1,65 @@
-import FormatPage from "@/components/FormatPage"
-import { Bodoni_Moda } from "next/font/google"
+import FormatPage from "@/components/Cover/Cover"
+import { typography } from "@/styles/typography"
+import { Roboto } from "next/font/google"
 import Image from "next/image"
 
-const bodoni = Bodoni_Moda({
+const roboto = Roboto({
   subsets: ["latin"],
+  weight: ["300", "400", "700"],
 })
-
 
 export default function Home() {
   return (
-    <div className="relative w-full min-h-screen flex items-center justify-center">
+    <FormatPage>
 
-      {/* BACKGROUND BLUR */}
-      {/* <div className="absolute inset-0 bg-gray-300 blur-3xl opacity-50 scale-110" /> */}
+      {/* TOP */}
+      <div className="text-center pt-10 space-y-4 ">
+        <h1 className={`${roboto.className} ${typography.title}`}>
+          WEAVE
+        </h1>
 
-      <FormatPage >
+        <p className={`${typography.subtitle} ml-32 md:ml-40 lg:ml-48`}>
+          TRENDBOOK
+        </p>
+      </div>
 
-        {/* BACKGROUND IMAGE */}
-          <Image
-            src="/globe.svg"
-            alt="cover background"
-            // fill
-            width={300}
-            height={400}
-            className="object-cover"
-          />
+      {/* CENTER BLOCK */}
+      <div className="flex-1 flex flex-col items-center justify-center relative left-5 bg-red-200">
 
-        {/* TITLE COVER*/}
-          <h1 className={`relative z-10 p-10 text-2xl tracking-[0.6em] 
-            uppercase font-light ${bodoni.className} text-black`}>
-            THE MOOD ARCHIVE
-          </h1>
-      </FormatPage>
-    </div>
+        {/* IMAGE + RIGHT SIDE */}
+        <div className="flex items-center justify-center gap-8 bg-blue-200">
+
+          {/* IMAGE */}
+          <div className="relative w-[260px] md:w-[320px] lg:w-[480px] aspect-square">
+            <Image
+              src="/cover.png"
+              alt=""
+              fill
+              className="object-contain"
+            />
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="flex flex-col items-center h-[500px] bg-green-200">
+
+            {/* LINE */}
+            <div className="w-px flex-1 bg-black/20" />
+
+            {/* DATE */}
+            <p className={`${roboto.className} text-xs rotate-270 bg-black`}>
+              26–27
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* CAPTION (EN DEHORS) */}
+        <p className={`${typography.texte} mt-4 bg-blue-200 text-center`}>
+          A COLLECTIVE VISUAL MOOD SYSTEM
+        </p>
+
+      </div>
+    </FormatPage>
   )
 }
