@@ -1,4 +1,4 @@
-import FormatCover from "../FormatCover"
+import Format from "../Format/Format"
 import { typography } from "@/styles/typography"
 import { Roboto } from "next/font/google"
 import Image from "next/image"
@@ -12,7 +12,7 @@ const roboto = Roboto({
 /* CONTENU DE LA COUVERTURE SUR LA FEUILLE BLANCHE*/
 export default function Cover() {
   return (
-      <FormatCover>
+      <Format>
         {/* TOP */}
         <div className="text-center pt-10 space-y-4">
           <h1 className={`${roboto.className} ${typography.title}`}>
@@ -61,6 +61,6 @@ export default function Cover() {
           </p>
 
         </div>
-      </FormatCover>
+      </Format>
   )
 }

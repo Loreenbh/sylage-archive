@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
               flex
               items-center
               justify-center
-              translate-x-20
+              p-1
               "
       >
         {children}
