@@ -13,7 +13,13 @@ const roboto = Roboto({
 export default function Authentification() {
   return (
       <Format>
-        <></>
+          {/* TOP */}
+          <div className="text-center pt-10 space-y-4">
+            <p className={`${typography.subtitle} ml-32 md:ml-40 lg:ml-48`}>
+              TSESTTTTT
+            </p>
+          </div>
+
       </Format>
   )
 }
