@@ -7,7 +7,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <body className="
-              min-h-screen
+              -h-screen
+              py-5
               flex
               items-center
               justify-center

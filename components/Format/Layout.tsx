@@ -17,19 +17,19 @@ export default function BookLayout({
     <Format>
 
       {header && (
-        <div className="mb-6">
+        <div className="mb-5 bg-red-200 h-[180px]">
           {header}
         </div>
       )}
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 gap-0">
 
-        <div className="flex-1">
+        <div className="flex-1 bg-pink-200">
           {children}
         </div>
 
         {sidebar && (
-          <div className="gap-6">
+          <div className="bg-green-200">
             {sidebar}
           </div>
         )}
@@ -37,7 +37,7 @@ export default function BookLayout({
       </div>
 
       {footer && (
-        <div className="mt-6">
+        <div className="mt-1 mb-5 bg-yellow-200 w-full py-7">
           {footer}
         </div>
       )}

@@ -3,7 +3,7 @@ import { useState } from "react"
 import PageFlip from "./PageFlip"
 import Cover from "@/components/Cover/Cover"
 import Authentification from "@/components/Authentification/Authentification"
-import Feed from "@/components/Feed/Feed"
+import Feed from "@/components/Discover/Discover"
 
 export default function Book() {
   const pages = [
@@ -40,7 +40,7 @@ export default function Book() {
 
   return (
     <div
-      className="relative w-[650px] h-[900px]"
+      className="relative w-[800px] h-[1200px]"
       style={{ perspective: "2000px" }}
     >
       <PageFlip
