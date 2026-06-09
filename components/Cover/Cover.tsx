@@ -23,10 +23,10 @@ export default function Cover() {
         </div>
       }
       sidebar={
-        <div className="flex flex-col items-center h-[480px] gap-6 w-[60px] bg-green-500">
-          <div className="w-px h-[180px] md:h-[120px] lg:h-[250px] bg-black" />
-          <p className={`${roboto.className} text-4xl -rotate-90 w-[160px]`}>
-            26–27
+        <div className="flex flex-col items-center h-[450px] gap-25 w-[60px]">
+          <div className="w-px h-[180px] md:h-[120px] lg:h-[350px] bg-black/20" />
+          <p className={`${roboto.className} text-4xl font-light -rotate-90 w-[90px] tracking-[0.2em] text-black/60`}>
+          26/27 
           </p>
         </div>
       }
