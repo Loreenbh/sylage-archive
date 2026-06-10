@@ -43,7 +43,7 @@ function ScrollBar({ scrollRef }) {
   )
 }
 
-export default function Feed() {
+export default function Discover( {onNavigate }) {
   const [activeFilter, setActiveFilter] = useState("NEW")
   const scrollRef = useRef(null)
 
@@ -111,7 +111,7 @@ export default function Feed() {
           </div>
         </div>
 
-        {/* FILTRES */}
+      {/* FILTRES */}
       <div className="flex items-center justify-center px-2 pt-4 pb-2 mt-2 relative">
           {/* centre = filtres */}
           <div className="flex items-center gap-7">
@@ -142,7 +142,14 @@ export default function Feed() {
           </div>
 
           {/* droite = bouton profil */}
-          <div className="absolute right-2">
+          <div 
+            onClick={() =>
+              onNavigate({
+                to: "profile",
+                direction: "next",
+              })
+            }
+          className="absolute right-2">
             <div className="mt-3 w-15 h-15 rounded-full bg-zinc-400/60 hover:bg-zinc-600 transition-colors duration-300" />
           </div>
 

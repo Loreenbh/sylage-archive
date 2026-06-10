@@ -1,5 +1,5 @@
 /* CONTENT PAGE */
-import BookLayout from "../../components/Format/Layout"
+import BookLayout from "../Format/Layout"
 import { typography } from "@/styles/typography"
 import { Roboto } from "next/font/google"
 import Image from "next/image"
@@ -9,7 +9,7 @@ const roboto = Roboto({
   weight: ["300", "400", "700"],
 })
 
-export default function Cover() {
+export default function Cover( {onNavigate}) {
   return (
     <BookLayout
       header={
@@ -23,17 +23,20 @@ export default function Cover() {
         </div>
       }
       sidebar={
-        <div className="flex flex-col items-center h-[630px] gap-25 w-[60px]">
+         <div
+            onClick={() =>
+              onNavigate({
+                to: "auth",
+                direction: "next",
+              })
+            }
+            className="flex flex-col items-center h-[630px] gap-25 w-[60px] cursor-pointer"
+          >
           <div className="w-px h-[180px] md:h-[120px] lg:h-[350px] bg-black/20" />
           <p className={`${roboto.className} text-4xl font-light -rotate-90 w-[90px] tracking-[0.2em] text-black/60`}>
           26/27 
           </p>
         </div>
-      }
-      footer={
-        <p>
-          FOOTER
-        </p>
       }
     >
 

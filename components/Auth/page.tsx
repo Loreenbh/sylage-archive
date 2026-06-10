@@ -31,7 +31,7 @@ function MagazineInput({ placeholder, type = "text", index }) {
   )
 }
 
-export default function Authentification() {
+export default function Authentification( {onNavigate }) {
   return (
     <BookLayout
       header={
@@ -61,6 +61,12 @@ export default function Authentification() {
               <MagazineInput placeholder="Confirm password" type="password" index={4} />
             </div>
             <button
+              onClick={() =>
+                  onNavigate({
+                    to: "discover",
+                    direction: "next",
+                  })
+              }
               className={`
                 ${roboto.className}
                 self-start text-xl tracking-[0.50em] font-light uppercase
