@@ -1,5 +1,5 @@
 /* CONTENT PAGE */
-import BookLayout from "../Format/Layout"
+import BookLayout from "../../components/Format/Layout"
 import { typography } from "@/styles/typography"
 import { Roboto } from "next/font/google"
 import Image from "next/image"

@@ -62,16 +62,6 @@ export default function Feed() {
           </p>
         </div>
       }
-      footer={
-        <div className="flex w-full items-center justify-end pr-8">
-          <button
-            className="w-15 h-15 rounded-full overflow-hidden border border-black/10 hover:border-black/30 transition-all duration-300 group"
-            title="Mon profil"
-          >
-            <div className="w-full h-full bg-gradient-to-br from-zinc-300 to-zinc-400 group-hover:from-zinc-200 group-hover:to-zinc-300 transition-all duration-300" />
-          </button>
-        </div>
-      }
     >
       <div className="flex flex-col w-full max-w-[900px] mt-28">
 

@@ -9,21 +9,17 @@ export default function PageFlip({
   onDone,
   nextClick,
   prevClick,
-  isFirst,
-  isLast,
+  // "cover" | "auth" | "editorial"
+  mode = "editorial",
 }) {
   const flippingRef = useRef(null)
 
   useEffect(() => {
     if (!animating || !flippingRef.current) return
-
     const el = flippingRef.current
-
-    // Force reflow avant d'appliquer la transition
     const p = "perspective(1200px) "
 
     if (direction === "next") {
-      // La page courante part vers la gauche (se referme)
       el.style.transition = "none"
       el.style.transform = `${p}rotateY(0deg)`
       el.style.opacity = "1"
@@ -32,7 +28,6 @@ export default function PageFlip({
       el.style.transform = `${p}rotateY(-180deg)`
       el.style.opacity = "0"
     } else {
-      // La page destination arrive depuis derrière à gauche et s'ouvre vers la droite
       el.style.transition = "none"
       el.style.transform = `${p}rotateY(-180deg)`
       el.style.opacity = "0"
@@ -42,10 +37,7 @@ export default function PageFlip({
       el.style.opacity = "1"
     }
 
-    const t = setTimeout(() => {
-      onDone()
-    }, 650)
-
+    const t = setTimeout(() => onDone(), 650)
     return () => clearTimeout(t)
   }, [animating])
 
@@ -54,12 +46,10 @@ export default function PageFlip({
 
       {/* PAGE DE FOND */}
       <div className="absolute inset-0">
-        {animating
-          ? (direction === "prev" ? current : next)
-          : current}
+        {animating ? (direction === "prev" ? current : next) : current}
       </div>
 
-      {/* PAGE QUI TOURNE — source (next) ou destination (prev) */}
+      {/* PAGE QUI TOURNE */}
       {animating && (
         <div
           ref={flippingRef}
@@ -74,26 +64,24 @@ export default function PageFlip({
         </div>
       )}
 
-      {/* PAGE STATIQUE (pas d'animation) */}
+      {/* PAGE STATIQUE */}
       {!animating && (
-        <div className="absolute inset-0">
-          {current}
-        </div>
+        <div className="absolute inset-0">{current}</div>
       )}
 
-      {/* ZONES DE CLIC */}
-      {!isLast && (
+      {/* ── ZONES DE CLIC selon le mode ── */}
+
+      {/* COVER : uniquement bord droit */}
+      {mode === "cover" && (
         <div
           onClick={nextClick}
           className="absolute right-0 top-0 w-16 h-full z-50 cursor-pointer"
         />
       )}
-      {!isFirst && (
-        <div
-          onClick={prevClick}
-          className="absolute left-0 top-0 w-16 h-full z-50 cursor-pointer"
-        />
-      )}
+
+      {/* AUTH : aucune zone de clic — navigation auto uniquement */}
+
+      {/* EDITORIAL : aucune zone de clic globale — géré par les composants internes */}
     </div>
   )
 }

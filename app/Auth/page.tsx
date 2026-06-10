@@ -38,25 +38,19 @@ export default function Authentification() {
         <p>test</p>
       }
       sidebar={
-        <div className="flex flex-col items-center h-[450px] gap-35 w-[60px] mt-18">
+        <div className="flex flex-col items-center h-[630px] gap-25 w-[60px]">
           <div className="w-px h-[180px] md:h-[120px] lg:h-[350px] bg-black/20" />
           <p className={`${roboto.className} text-4xl font-light -rotate-90 w-[90px] tracking-[0.2em] text-black/60`}>
-            ACCESS
+          access 
           </p>
         </div>
       }
-      footer={
-        <p>
-        </p>
-      }
     >
-
-
 
       <div className="flex flex-col">
 
         {/* GRID FORMULAIRES */}
-        <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[530px] lg:h-[620px]">
+        <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[530px] lg:h-[700px]">
 
           {/* LEFT — JOIN */}
           <div className="flex flex-col justify-between px-8 pb-7 h-full bg-pink-300 m">
