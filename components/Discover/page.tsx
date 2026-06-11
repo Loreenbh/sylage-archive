@@ -4,6 +4,8 @@ import BookLayout from "@/components/Format/Layout"
 import { typography } from "@/styles/typography"
 import Header from "@/components/Book/Header"
 import { useRef, useState, useEffect } from "react"
+import Sidebar from "../Book/SideBar"
+import ScrollableGrid from "../Book/Grid/ScrollableGrid"
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400"] })
 
@@ -52,64 +54,45 @@ export default function Discover( {onNavigate }) {
   for (let i = 0; i < moodboards.length; i += 2) {
     rows.push([moodboards[i], moodboards[i + 1]])
   }
-
+  const [showFilters, setShowFilters] = useState(false)
   return (
     <BookLayout
-      header={<Header active="HOME" />}
-      sidebar={
-        <div className="flex flex-col items-center h-[630px] gap-25 w-[60px]">
-          <div className="w-px h-[180px] md:h-[120px] lg:h-[350px] bg-black/20" />
-          <p className={`${roboto.className} text-4xl font-light -rotate-90 w-[90px] tracking-[0.2em] text-black/60`}>
-          discover 
+      header={
+        <Header
+          showFilters={showFilters}
+          items={[
+            {
+              label: "HOME",
+              active: true,
+            },
+            {
+              label: "FILTER",
+              clickable: true,
+              onClick: () => setShowFilters((prev) => !prev),
+            },
+            {
+              label: "CREATE",
+              clickable: true,
+              onClick: () => console.log("create"),
+            },
+          ]}
+      />}
+      sidebar={<Sidebar text="DISCOVER" clickable={false} />}
+    >
+
+    <ScrollableGrid
+      data={moodboards}
+      renderItem={(board) => (
+        <div
+          className="aspect-square w-[350px] h-[350px] relative bg-zinc-100 cursor-pointer"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300" />
+          <p className="absolute bottom-3 left-3 text-[9px] tracking-[0.2em] text-black/30">
+            {board.user}
           </p>
         </div>
-      }
-    >
-      <div className="flex flex-col w-full h-full max-w-[900px]">
-
-        {/* CONTENEUR PRINCIPAL — même structure que auth */}
-        <div className="flex gap-2 bg-blue-200">
-
-          {/* SCROLLBAR à gauche */}
-          <div className="flex flex-col items-center" style={{ height: 420 }}>
-            <ScrollBar scrollRef={scrollRef} />
-          </div>
-
-          {/* GRILLE scrollable — même gap-1 que auth */}
-          <div
-            ref={scrollRef}
-            className="flex-1 overflow-y-auto"
-            style={{ height: 704, scrollbarWidth: "none" }}
-          >
-            <style>{`div::-webkit-scrollbar{display:none}`}</style>
-
-            {/* Rangées de carrés */}
-            <div className="flex flex-col gap-1 bg-green-600">
-              {rows.map((row, rowIdx) => (
-                <div key={rowIdx} className="grid grid-cols-2 gap-4">
-                  {row.map((board) => (
-                    <div
-                      key={board.id}
-                      className="
-                        aspect-square
-                        w-[350px] h-[350px]
-                        flex items-end p-3
-                        cursor-pointer group relative overflow-hidden
-                        bg-zinc-100
-                      "
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300 group-hover:from-zinc-100 group-hover:to-zinc-200 transition-all duration-500" />
-                      <p className={`${roboto.className} absolute text-[9px] tracking-[0.2em] text-black/30 group-hover:text-black/50 transition-colors`}>
-                        {board.user}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </div>
+      )}
+    />
 
       {/* FILTRES */}
       <div className="flex items-center justify-center px-2 pt-4 pb-2 mt-2 relative">
@@ -154,7 +137,6 @@ export default function Discover( {onNavigate }) {
           </div>
 
         </div>
-      </div>
     </BookLayout>
   )
 }

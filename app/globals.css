@@ -21,12 +21,10 @@
 
 body {
   background: var(--background);
-  background-image: url("/vercel.jpg");
-  /* background-size: cover; */
-  /* background-position: center;
-  background-repeat: no-repeat; */
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-image: url("/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .backface-hidden {

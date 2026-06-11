@@ -1,8 +1,9 @@
 "use client"
 import { Roboto } from "next/font/google"
 import BookLayout from "@/components/Format/Layout"
-import { typography } from "@/styles/typography"
-import Header from "@/components/Book/Header"
+import Sidebar from "../Book/SideBar"
+import TwoColGrid from "../Book/Grid/TwoColGrid"
+import Header from "../Book/Header"
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400"] })
 
@@ -34,86 +35,136 @@ function MagazineInput({ placeholder, type = "text", index }) {
 export default function Authentification( {onNavigate }) {
   return (
     <BookLayout
-      header={
-        <p>test</p>
-      }
-      sidebar={
-        <div className="flex flex-col items-center h-[630px] gap-25 w-[60px]">
-          <div className="w-px h-[180px] md:h-[120px] lg:h-[350px] bg-black/20" />
-          <p className={`${roboto.className} text-4xl font-light -rotate-90 w-[90px] tracking-[0.2em] text-black/60`}>
-          access 
-          </p>
-        </div>
-      }
+        header={
+      <Header
+        items={[
+          { label: "HOME" },
+          { label: "FILTER" },
+          { label: "CREATE" },
+        ]}
+      />}
+      sidebar={<Sidebar text="ACCESS" clickable={false} />}
     >
-
-      <div className="flex flex-col">
-
-        {/* GRID FORMULAIRES */}
-        <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[530px] lg:h-[700px]">
-
-          {/* LEFT — JOIN */}
-          <div className="flex flex-col justify-between px-8 pb-7 h-full bg-pink-300 m">
-            <div className="space-y-4 mt-30">
-              <MagazineInput placeholder="Pseudo" index={1} />
-              <MagazineInput placeholder="Email" type="email" index={2} />
-              <MagazineInput placeholder="Password" type="password" index={3} />
-              <MagazineInput placeholder="Confirm password" type="password" index={4} />
-            </div>
-            <button
-              onClick={() =>
-                  onNavigate({
-                    to: "discover",
-                    direction: "next",
-                  })
-              }
-              className={`
-                ${roboto.className}
-                self-start text-xl tracking-[0.50em] font-light uppercase
-                text-black/50 hover:text-black
-                transition-colors duration-300
-              `}
-            >
-              Join →
-            </button>
+    <TwoColGrid
+      left={
+        <div className="flex flex-col justify-between px-8 pb-7 h-full bg-pink-300">
+          <div className="space-y-4 mt-30">
+            <MagazineInput placeholder="Pseudo" index={1} />
+            <MagazineInput placeholder="Email" index={2} />
+            <MagazineInput placeholder="Password" index={3} />
+            <MagazineInput placeholder="Confirm password" index={4} />
           </div>
 
-          {/* RIGHT — CONNECT */}
-          <div className="flex flex-col justify-between px-8 pt-25 pb-7 bg-pink-400 h-full">
-            <div className="space-y-4 mt-30">
-              <MagazineInput placeholder="Email or username" index={1} />
-              <MagazineInput placeholder="Password" type="password" index={2} />
-            </div>
-            <button
-              className={`
-                ${roboto.className}
-                self-start text-xl tracking-[0.35em] font-light uppercase
-                text-black/50 hover:text-black
-                transition-colors duration-300
-              `}
-            >
-              Enter →
-            </button>
-          </div>
-
-        </div>
-
-        {/* FORGOT PASSWORD */}
-        <div className="px-20 pt-5">
-          <p
-            className={`
-              ${typography.texte}
-              cursor-pointer
-              text-black/30 hover:text-black/60
-              transition-colors duration-300
-              group relative w-fit
-            `}
+          <button
+            onClick={() =>
+              onNavigate({ to: "discover", direction: "next" })
+            }
+            className="text-xl tracking-[0.50em] uppercase text-black/50"
           >
-            Forgot password →
-          </p>
+            Join →
+          </button>
         </div>
+      }
+      
+      right={
+        <div className="flex flex-col justify-between px-8 pt-25 pb-7 bg-pink-400 h-full">
+          <div className="space-y-4 mt-30">
+            <MagazineInput placeholder="Email or username" index={1} />
+            <MagazineInput placeholder="Password" index={2} />
+          </div>
 
-      </div>
+          <button className="text-xl tracking-[0.35em] uppercase text-black/50">
+            Enter →
+          </button>
+        </div>
+      }
+      
+      footer={
+        <p className="text-black/30 hover:text-black/60 cursor-pointer">
+          Forgot password →
+        </p>
+      }
+    />
     </BookLayout>
   )
 }
+
+
+
+
+
+
+
+
+
+
+//     <div className="flex flex-col">
+
+//       {/* GRID FORMULAIRES */}
+//       <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[530px] lg:h-[700px]">
+
+//         {/* LEFT — JOIN */}
+//         <div className="flex flex-col justify-between px-8 pb-7 h-full bg-pink-300 m">
+//           <div className="space-y-4 mt-30">
+//             <MagazineInput placeholder="Pseudo" index={1} />
+//             <MagazineInput placeholder="Email" type="email" index={2} />
+//             <MagazineInput placeholder="Password" type="password" index={3} />
+//             <MagazineInput placeholder="Confirm password" type="password" index={4} />
+//           </div>
+//           <button
+//             onClick={() =>
+//                 onNavigate({
+//                   to: "discover",
+//                   direction: "next",
+//                 })
+//             }
+//             className={`
+//               ${roboto.className}
+//               self-start text-xl tracking-[0.50em] font-light uppercase
+//               text-black/50 hover:text-black
+//               transition-colors duration-300
+//             `}
+//           >
+//             Join →
+//           </button>
+//         </div>
+
+//         {/* RIGHT — CONNECT */}
+//         <div className="flex flex-col justify-between px-8 pt-25 pb-7 bg-pink-400 h-full">
+//           <div className="space-y-4 mt-30">
+//             <MagazineInput placeholder="Email or username" index={1} />
+//             <MagazineInput placeholder="Password" type="password" index={2} />
+//           </div>
+//           <button
+//             className={`
+//               ${roboto.className}
+//               self-start text-xl tracking-[0.35em] font-light uppercase
+//               text-black/50 hover:text-black
+//               transition-colors duration-300
+//             `}
+//           >
+//             Enter →
+//           </button>
+//         </div>
+
+//       </div>
+
+//       {/* FORGOT PASSWORD */}
+//       <div className="px-20 pt-5">
+//         <p
+//           className={`
+//             ${typography.texte}
+//             cursor-pointer
+//             text-black/30 hover:text-black/60
+//             transition-colors duration-300
+//             group relative w-fit
+//           `}
+//         >
+//           Forgot password →
+//         </p>
+//       </div>
+
+//     </div>
+//     </BookLayout>
+//   )
+// }
