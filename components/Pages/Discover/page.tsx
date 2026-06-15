@@ -1,11 +1,11 @@
 "use client"
 import { Roboto } from "next/font/google"
-import BookLayout from "@/components/Format/Layout"
+import BookLayout from "@/components/layout/Layout"
 import { typography } from "@/styles/typography"
-import Header from "@/components/Book/Header"
+import Header from "@/components/layout/Header"
 import { useRef, useState, useEffect } from "react"
-import Sidebar from "../Book/SideBar"
-import ScrollableGrid from "../Book/Grid/ScrollableGrid"
+import Sidebar from "@/components/layout/SideBar"
+import ScrollableGrid from "@/components/ui/Grid/ScrollableGrid"
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400"] })
 

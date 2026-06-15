@@ -30,10 +30,10 @@ export default function Header({
   showFilters = false,
 }: HeaderProps) {
   return (
-    <div className="w-full">
+    <div className="w-full h-[80px] sm:h-[100px] md:h-[120px]">
 
-      {/* NAVIGATION */}
-      <div className="flex justify-between mt-10 px-10">
+      {/* NAVIGATION — responsive padding and margin-top */}
+      <div className="flex justify-between mt-2 sm:mt-4 md:mt-6 lg:mt-10 px-2 sm:px-4 md:px-6 lg:px-10">
         {items.map((item) => (
           <button
             key={item.label}
@@ -43,6 +43,7 @@ export default function Header({
               ${typography.subtitle}
               relative group
               transition-colors duration-300
+              text-[10px] sm:text-xs md:text-sm
 
               ${
                 item.active
@@ -73,23 +74,23 @@ export default function Header({
         ))}
       </div>
 
-      {/* FILTER BAR */}
+      {/* FILTER BAR — responsive */}
       <div
         className={`
           overflow-hidden
           transition-all duration-500
-          ${showFilters ? "max-h-20 opacity-100 mt-6" : "max-h-0 opacity-0"}
+          ${showFilters ? "max-h-20 opacity-100 mt-3 sm:mt-4 md:mt-6" : "max-h-0 opacity-0"}
         `}
       >
-        <div className="border-y border-black/10 py-3">
+        <div className="border-y border-black/10 py-2 sm:py-3">
 
           <div
             className="
               flex
-              gap-5
+              gap-3 sm:gap-4 md:gap-5
               overflow-x-auto
               whitespace-nowrap
-              px-10
+              px-2 sm:px-4 md:px-6 lg:px-10
               scrollbar-none
             "
           >
@@ -97,7 +98,7 @@ export default function Header({
               <button
                 key={filter}
                 className="
-                  text-[10px]
+                  text-[8px] sm:text-[9px] md:text-[10px]
                   tracking-[0.35em]
                   uppercase
                   text-black/30

@@ -1,9 +1,9 @@
 "use client"
 import { Roboto } from "next/font/google"
-import BookLayout from "@/components/Format/Layout"
-import Header from "@/components/Book/Header"
-import Sidebar from "../Book/SideBar"
-import CustomGrid from "../Book/Grid/CustomGrid"
+import BookLayout from "@/components/layout/Layout"
+import Header from "@/components/layout/Header"
+import Sidebar from "@/components/layout/SideBar"
+import CustomGrid from "@/components/ui/Grid/CustomGrid"
 import { useRef, useState, useEffect } from "react"
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400"] })
@@ -14,26 +14,26 @@ export default function ProfilePage({ onNavigate }) {
 
   return (
     <BookLayout
-      header={
-        <Header
-          showFilters={showFilters}
-          items={[
-            {
-              label: "HOME",
-              active: true,
-            },
-            {
-              label: "FILTER",
-              clickable: false,
-            },
-            {
-              label: "CREATE",
-              clickable: true,
-              onClick: () => console.log("create"),
-            },
-          ]}
-      />}
-      sidebar={<Sidebar text="PROFILE" clickable={false} />}
+      // header={
+      //   <Header
+      //     showFilters={showFilters}
+      //     items={[
+      //       {
+      //         label: "HOME",
+      //         active: true,
+      //       },
+      //       {
+      //         label: "FILTER",
+      //         clickable: false,
+      //       },
+      //       {
+      //         label: "CREATE",
+      //         clickable: true,
+      //         onClick: () => console.log("create"),
+      //       },
+      //     ]}
+      // />}
+      // sidebar={<Sidebar text="PROFILE" clickable={false} />}
     >
 
     <div className="flex flex-col h-full">

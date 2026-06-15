@@ -1,4 +1,4 @@
-import Book from "@/components/Book/Book"
+import Book from "@/components/Book/Logic"
 
 export default function Home() {
   return (
