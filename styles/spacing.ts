@@ -3,10 +3,11 @@
 export const spacing = {
   // ============ COVER PAGE ============
   cover: {
-    header: "text-center pt-2 sm:pt-4 md:pt-6 lg:pt-10 space-y-2 sm:space-y-3 md:space-y-4",
-    subtitle: "ml-25 sm:ml-20 md:ml-32 lg:ml-48",
-    image: "mt-7 sm:mt-15 md:mt-20 lg:mt-30",
-    label: "mt-5",
+    header: "text-center sm:space-y-3 md:space-y-4",
+    title: "mt-2",
+    subtitle: "pt-2 ml-25 sm:ml-20 md:ml-32 lg:ml-48",
+    image: "bg-blue-200 mt-6 sm:mt-15 md:mt-20 lg:mt-30",
+    label: "pt-6",
   },
 
   // ============ AUTH PAGE ============
@@ -14,6 +15,7 @@ export const spacing = {
     formColumn: "flex flex-col justify-between px-2 sm:px-4 md:px-8 pb-2 sm:pb-4",
     inputSpacing: "space-y-2 sm:space-y-3 md:space-y-4 mt-3 sm:mt-4",
     button: "text-sm sm:text-base md:text-xl tracking-[0.50em] uppercase",
+    label:"pt-2 pl-6"
   },
 
   // ============ DISCOVER PAGE ============

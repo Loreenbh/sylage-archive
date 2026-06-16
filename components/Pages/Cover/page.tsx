@@ -15,7 +15,7 @@ export default function Cover({ onNavigate }) {
     <BookLayout
       header={
         <div className={`${roboto.className} ${spacing.cover.header}`}>
-          <h1 className={`${roboto.className} ${typography.cover.title}`}>
+          <h1 className={`${roboto.className} ${spacing.cover.title} ${typography.cover.title}`}>
             WEAVE
           </h1>
           <p className={`${roboto.className} ${typography.cover.subtitle} ${spacing.cover.subtitle}`}>
@@ -23,7 +23,7 @@ export default function Cover({ onNavigate }) {
           </p>
         </div>
       }
-      sidebar={<Sidebar text="26-27" clickable={true} onNavigate={onNavigate} />}
+      sidebar={<Sidebar text="26-27" gap="gap-8" clickable={true} onNavigate={onNavigate} />}
     >
       {/* CENTRE = children */}
       <div className="flex flex-1 flex-col items-center justify-center min-h-0 px-2">

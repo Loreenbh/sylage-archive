@@ -30,10 +30,10 @@ export default function Header({
   showFilters = false,
 }: HeaderProps) {
   return (
-    <div className="w-full h-[62px] sm:h-[100px] md:h-[120px]">
+    <div className="w-full h-[72px] sm:h-[100px] md:h-[120px]">
 
       {/* NAVIGATION — responsive padding and margin-top */}
-      <div className="flex justify-between mt-0 sm:mt-4 md:mt-6 lg:mt-10 px-2 sm:px-4 md:px-6 lg:px-10">
+      <div className="flex justify-between px-4 sm:px-4 md:px-6 lg:px-10 pt-6">
         {items.map((item) => (
           <button
             key={item.label}

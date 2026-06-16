@@ -4,7 +4,7 @@ export const layout = {
     header: "text-center pt-2 sm:pt-4 md:pt-6 lg:pt-10 space-y-2 sm:space-y-3 md:space-y-4",
     sidebar: "w-[40px] md:w-[70px]",
     subtitle: "ml-16 sm:ml-20 md:ml-32 lg:ml-48",
-    image: "relative w-[220px] sm:w-[300px] md:w-[450px] lg:w-[400px] aspect-square",
+    image: "relative w-[230px] sm:w-[300px] md:w-[450px] lg:w-[400px] aspect-square",
     label: "ml-16 sm:ml-20 md:ml-32 lg:ml-48",
   },
 

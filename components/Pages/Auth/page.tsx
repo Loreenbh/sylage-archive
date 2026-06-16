@@ -5,19 +5,23 @@ import Sidebar from "@/components/layout/SideBar"
 import TwoColGrid from "@/components/ui/Grid/TwoColGrid"
 import Header from "@/components/layout/Header"
 
+/* STYLE */
+import { typography } from "@/styles/typography"
+import { spacing } from "@/styles/spacing"
+
 const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400"] })
 
 function MagazineInput({ placeholder, type = "text", index }) {
   return (
-    <div className="bg-red-300 w-full px-2 sm:px-4">
+    <div className="w-full px-2 sm:px-4">
       <div className="flex">
         <input
           type={type}
           placeholder={placeholder}
           className={`
             ${roboto.className}
-            w-[90%] border-0 border-b border-black/20 bg-transparent
-            text-xs sm:text-sm md:text-base font-light outline-none
+            w-[100%] border-0 border-b border-black/20 bg-transparent
+            text-[10px] sm:text-sm md:text-base font-light outline-none
             placeholder:text-black/30
             focus:border-black/60
             transition-colors duration-200
@@ -25,8 +29,8 @@ function MagazineInput({ placeholder, type = "text", index }) {
         />
         <span
           className={`${roboto.className} 
-            text-xs sm:text-2xl md:text-3xl font-light 
-            text-black/20 shrink-0 leading-none`}
+            text-[20px] sm:text-2xl md:text-3xl font-light 
+            text-black/40 shrink-0 leading-none`}
         >
           {String(index).padStart(2, "0")}
         </span>
@@ -47,12 +51,12 @@ export default function Authentification({ onNavigate }) {
           ]}
         />
       }
-      sidebar={<Sidebar text="ACCESS" clickable={false} />}
+      sidebar={<Sidebar text="ACCESS" gap="gap-14" clickable={false} />}
     >
       <TwoColGrid
         left={
           <div className="bg-pink-200 flex flex-col justify-between px-2 sm:px-4 md:px-6 pb-2 sm:pb-3 md:pb-4 h-full">
-            <div className="space-y-2 sm:space-y-3 md:space-y-4 mt-3 sm:mt-4 md:mt-6">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4 pt-18 sm:mt-4 md:mt-6">
               <MagazineInput placeholder="Pseudo" index={1} />
               <MagazineInput placeholder="Email" index={2} />
               <MagazineInput placeholder="Password" index={3} />
@@ -68,9 +72,9 @@ export default function Authentification({ onNavigate }) {
           </div>
         }
         right={
-          <div className="bg-pink-300 flex flex-col justify-between px-2 sm:px-4 md:px-6 pb-2 sm:pb-3 md:pb-4 h-full">
-            <div className="space-y-2 sm:space-y-3 md:space-y-4 mt-3 sm:mt-4 md:mt-6">
-              <MagazineInput placeholder="Email or username" index={1} />
+          <div className="bg-pink-300 flex flex-col justify-between px-2 sm:px-4 md:px-6 pb-18 sm:pb-3 md:pb-4 h-full">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4 pt-10 sm:mt-4 md:mt-6">
+              <MagazineInput placeholder="Email/username" index={1} />
               <MagazineInput placeholder="Password" index={2} />
             </div>
 
@@ -82,8 +86,8 @@ export default function Authentification({ onNavigate }) {
           </div>
         }
         footer={
-          <p className="text-[10px] sm:text-xs md:text-sm text-black/30 hover:text-black/60 cursor-pointer transition-colors">
-            Forgot password →
+          <p className={`${typography.auth.label} ${spacing.auth.label} shrink-0 py-6 sm:py-10 px-4`}>
+            FORGOT PASSWORD →
           </p>
         }
       />

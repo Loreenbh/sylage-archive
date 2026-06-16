@@ -30,7 +30,6 @@ export default function BookLayout({
             {sidebar}
           </div>
         )}
-        
       </div>
     </Format>
   )

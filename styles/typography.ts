@@ -37,7 +37,7 @@ export const typography = {
     sm:tracking-[0.4em] md:tracking-[0.5em] text-black/60`,
 
     // Label text: small labels
-    label: `text-[9px] sm:text-[9px] md:text-xs 
+    label: `text-[8px] sm:text-[9px] md:text-xs 
     tracking-[0.20em]  sm:tracking-[0.50em]
     uppercase text-black/50`,
     }
