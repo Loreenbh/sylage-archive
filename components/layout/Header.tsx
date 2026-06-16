@@ -30,17 +30,17 @@ export default function Header({
   showFilters = false,
 }: HeaderProps) {
   return (
-    <div className="w-full h-[80px] sm:h-[100px] md:h-[120px]">
+    <div className="w-full h-[62px] sm:h-[100px] md:h-[120px]">
 
       {/* NAVIGATION — responsive padding and margin-top */}
-      <div className="flex justify-between mt-2 sm:mt-4 md:mt-6 lg:mt-10 px-2 sm:px-4 md:px-6 lg:px-10">
+      <div className="flex justify-between mt-0 sm:mt-4 md:mt-6 lg:mt-10 px-2 sm:px-4 md:px-6 lg:px-10">
         {items.map((item) => (
           <button
             key={item.label}
             onClick={item.clickable ? item.onClick : undefined}
             disabled={!item.clickable}
             className={`
-              ${typography.subtitle}
+              ${typography.auth.header}
               relative group
               transition-colors duration-300
               text-[10px] sm:text-xs md:text-sm
