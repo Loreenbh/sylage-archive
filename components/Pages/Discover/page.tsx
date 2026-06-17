@@ -1,20 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { Roboto } from "next/font/google"
 
 /* COMPONENTS */
 import BookLayout from "@/components/layout/Layout"
 import Sidebar from "@/components/layout/SideBar"
 import Header from "@/components/layout/Header"
 import ScrollableGrid from "@/components/ui/Grid/ScrollableGrid"
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400"],
-})
-
-const FILTERS = ["NEW", "FEATURED", "FOLLOWING"]
+import { typography } from "@/styles/typography"
+import ProfileButton from "@/components/ui/Button/ProfileButton"
+import FooterLayout from "@/components/layout/Footer"
 
 const moodboards = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
@@ -48,9 +43,7 @@ export default function Discover({ onNavigate }) {
         />
       }
       sidebar={
-        <Sidebar
-          text="DISCOVER" gap="gap-22"
-        />
+        <Sidebar text="DISCOVER" gap="gap-22"/>
       }
     >
       <div className="flex flex-col h-full min-h-0">
@@ -69,53 +62,22 @@ export default function Discover({ onNavigate }) {
           )}
         />
 
-        {/* FOOTER */}
-        <div className="relative flex items-center justify-center shrink-0 py-6 sm:py-8">
-          
-          <div className="flex items-center gap-6 pb-">
-            {FILTERS.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`
-                  ${roboto.className}
-                  text-[7px]
-                  tracking-[0.30em]
-                  uppercase
-                  transition-colors duration-300
-                  ${
-                    activeFilter === filter
-                      ? "text-black"
-                      : "text-black/30 hover:text-black/60"
-                  }
-                `}
-              >
-                {filter}
-              </button>
-            ))}
+        <FooterLayout>
+          <div className="flex items-center gap-2">
+            <button className={typography.buttonBody}>new</button>
+
+            <span className={typography.bullet}>•</span>
+
+            <button className={typography.buttonBody}>featured</button>
+
+            <span className={typography.bullet}>•</span>
+
+            <button className={typography.buttonBody}>following</button>
           </div>
 
-          <div className="absolute right-2">
-            <div
-              onClick={() =>
-                onNavigate({
-                  to: "profile",
-                  direction: "next",
-                })
-              }
-              className="
-                w-8
-                h-8
-                rounded-full
-                bg-zinc-400/60
-                hover:bg-zinc-600/60
-                transition-colors
-                cursor-pointer
-              "
-            />
-          </div>
+          <ProfileButton onNavigate={onNavigate} />
+        </FooterLayout>
 
-        </div>
       </div>
     </BookLayout>
   )

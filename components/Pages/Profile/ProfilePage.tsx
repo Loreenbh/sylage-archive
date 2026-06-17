@@ -1,12 +1,17 @@
 "use client"
-import { Roboto } from "next/font/google"
+import { useRef, useState, useEffect } from "react"
+
+/* COMPONENTS */
 import BookLayout from "@/components/layout/Layout"
 import Header from "@/components/layout/Header"
 import Sidebar from "@/components/layout/SideBar"
 import CustomGrid from "@/components/ui/Grid/CustomGrid"
-import { useRef, useState, useEffect } from "react"
+import ProfileButton from "@/components/ui/Button/ProfileButton"
+import FooterLayout from "@/components/layout/Footer"
 
-const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400"] })
+/* STYLE */
+import { typography } from "@/styles/typography"
+
 
 export default function ProfilePage({ onNavigate }) {
   const isSelf = true
@@ -14,74 +19,63 @@ export default function ProfilePage({ onNavigate }) {
 
   return (
     <BookLayout
-      // header={
-      //   <Header
-      //     showFilters={showFilters}
-      //     items={[
-      //       {
-      //         label: "HOME",
-      //         active: true,
-      //       },
-      //       {
-      //         label: "FILTER",
-      //         clickable: false,
-      //       },
-      //       {
-      //         label: "CREATE",
-      //         clickable: true,
-      //         onClick: () => console.log("create"),
-      //       },
-      //     ]}
-      // />}
-      // sidebar={<Sidebar text="PROFILE" clickable={false} />}
+      header={
+        <Header
+          showFilters={showFilters}
+          items={[
+            {
+              label: "HOME",
+              active: false,
+            },
+            {
+              label: "FILTER",
+              clickable: false,
+            },
+            {
+              label: "CREATE",
+              clickable: true,
+              onClick: () => console.log("create"),
+            },
+          ]}
+      />}
+      sidebar={<Sidebar text="PROFILE" gap="gap-16" clickable={false} />}
     >
 
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       <CustomGrid
         left={
-          <div className="bg-zinc-200 flex items-end p-4 h-full">
-            <p className="text-xs tracking-[0.2em] text-black/50">
-              MY MOODBOARD
-            </p>
-          </div>
+          <button className="bg-zinc-200 flex items-end p-4 h-full w-full text-left">
+            <p className={typography.body}>silhouettes</p>
+          </button>
         }
 
         topRight={
-          <div className="bg-zinc-300 flex items-end p-4 h-full">
-            <p className="text-xs tracking-[0.2em] text-black/50">
-              SAVED
-            </p>
-          </div>
+          <button className="bg-zinc-300 flex items-end p-4 h-full w-full text-left">
+            <p className={typography.body}>saved</p>
+          </button>
         }
 
         bottomRight={
-          <div className="bg-zinc-400 flex items-end p-4 h-full">
-            <p className="text-xs tracking-[0.2em] text-black/50">
-              LIKED
-            </p>
-          </div>
+          <button className="bg-zinc-400 flex items-end p-4 h-full w-full text-left">
+            <p className={typography.body}>moodboard</p>
+          </button>
         }
       />
-      <div className="flex items-center justify-between px-2 pt-4 pb-2">
 
-      {/* LEFT */}
-      <div className="flex items-center gap-6">
-        <button className="text-[10px] tracking-[0.35em] uppercase text-black/60">
-          Settings
-        </button>
+        {/* FOOTER */}
+      <FooterLayout>
+        <div className="flex items-center gap-2">
+          <button className={typography.buttonBody}>Settings</button>
+          <span className={typography.bullet}>•</span>
+          <button className={typography.buttonBody}>Loves</button>
+        </div>
+        <ProfileButton onNavigate={onNavigate} />
+      </FooterLayout>
 
-        <span className="text-black/20 text-[10px]">•</span>
 
-        <button className="text-[10px] tracking-[0.35em] uppercase text-black/60">
-          Loves
-        </button>
-      </div>
-      {/* RIGHT */}
-      <div className="w-12 h-12 rounded-full bg-zinc-300" />
-      </div>
     </div>
-
-    
     </BookLayout>
   )
 }
+
+

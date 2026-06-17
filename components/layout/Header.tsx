@@ -40,7 +40,7 @@ export default function Header({
             onClick={item.clickable ? item.onClick : undefined}
             disabled={!item.clickable}
             className={`
-              ${typography.auth.header}
+              ${typography.header}
               relative group
               transition-colors duration-300
               text-[10px] sm:text-xs md:text-sm

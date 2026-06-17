@@ -10,7 +10,7 @@ export default function CustomGrid({
   bottomRight,
 }: Props) {
   return (
-    <div className="grid grid-cols-2 gap-2 flex-1">
+    <div className="grid grid-cols-2 gap-0.5 flex-1 bg-red-300 h-full">
 
       {/* LEFT BIG */}
       <div className="h-full w-full">
@@ -18,7 +18,7 @@ export default function CustomGrid({
       </div>
 
       {/* RIGHT STACK */}
-      <div className="grid grid-rows-2 gap-2">
+      <div className="grid grid-rows-2 gap-0.5">
 
         <div className="h-full w-full">
           {topRight}

@@ -15,13 +15,19 @@ const PAGES = {
   profile: ProfilePage,
 }
 
-export default function Book() {
-  const [current, setCurrent] = useState("cover")
-  const [next, setNext] = useState(null)
-  const [animating, setAnimating] = useState(false)
-  const [direction, setDirection] = useState("next")
+type NavigationParams = {
+  to: string
+  direction?: "next" | "prev"
+}
 
-  function navigate({ to, direction = "next" }) {
+
+export default function Book() {
+  const [current, setCurrent] = useState<string>("cover")
+  const [next, setNext] = useState<string | null>(null)
+  const [animating, setAnimating] = useState<boolean>(false)
+  const [direction, setDirection] = useState<"next" | "prev">("next")
+  
+  function navigate({ to, direction = "next" }: NavigationParams) {
     if (animating) return
 
     setNext(to)

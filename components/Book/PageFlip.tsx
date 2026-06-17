@@ -65,7 +65,7 @@ export default function PageFlip({
       {animating && (
         <div
           ref={ref}
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
           style={{
             backfaceVisibility: "hidden",
           }}
