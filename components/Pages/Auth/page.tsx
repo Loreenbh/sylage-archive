@@ -1,13 +1,17 @@
 "use client"
+import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/layout/Layout"
 import Sidebar from "@/components/layout/SideBar"
 import TwoColGrid from "@/components/ui/Grid/TwoColGrid"
 import Header from "@/components/layout/Header"
 import FooterLayout from "@/components/layout/Footer"
-
 /* STYLE */
 import { typography } from "@/styles/typography"
+
+type Props = {
+  onNavigate: OnNavigate
+}
 
 function MagazineInput({ placeholder, type = "text", index }) {
   return (
@@ -34,7 +38,7 @@ function MagazineInput({ placeholder, type = "text", index }) {
   )
 }
 
-export default function Authentification({ onNavigate }) {
+export default function Authentification({ onNavigate }: Props) {
   return (
     <BookLayout
       header={
@@ -51,7 +55,7 @@ export default function Authentification({ onNavigate }) {
       <TwoColGrid
         left={
           <div className="bg-pink-200 flex flex-col justify-between h-full">
-            <div className="pt-20">
+            <div className="pt-16">
               <MagazineInput placeholder="Pseudo" index={1} />
               <MagazineInput placeholder="Email" index={2} />
               <MagazineInput placeholder="Password" index={3} />
@@ -60,27 +64,27 @@ export default function Authentification({ onNavigate }) {
 
             <button
               onClick={() => onNavigate({ to: "discover", direction: "next" })}
-              className={`${typography.buttonAuth}`}>
+              className={`${typography.buttonAuth} pb-6`}>
               Join →
             </button>
           </div>
         }
         right={
           <div className="bg-pink-300 flex flex-col justify-between h-full">
-            <div className="pt-20">
+            <div className="pt-16">
               <MagazineInput placeholder="Email/username" index={1} />
               <MagazineInput placeholder="Password" index={2} />
             </div>
 
             <button
-              className={`${typography.buttonAuth}`}>
+              className={`${typography.buttonAuth} pb-6`}>
               Enter →
             </button>
           </div>
         }
         footer={
           <FooterLayout>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center">
               <button className={typography.buttonBody}>Forget password →</button>
             </div>
           </FooterLayout>

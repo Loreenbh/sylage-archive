@@ -1,44 +1,34 @@
 "use client"
-
 import { useState } from "react"
-
+import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/layout/Layout"
 import Sidebar from "@/components/layout/SideBar"
 import Header from "@/components/layout/Header"
 import ScrollableGrid from "@/components/ui/Grid/ScrollableGrid"
-import { typography } from "@/styles/typography"
 import ProfileButton from "@/components/ui/Button/ProfileButton"
 import FooterLayout from "@/components/layout/Footer"
+/*STYLE*/
+import { typography } from "@/styles/typography"
+
+type Props = {
+  onNavigate: OnNavigate
+}
 
 const moodboards = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
   user: `user_${String(i + 1).padStart(2, "0")}`,
 }))
 
-export default function Discover({ onNavigate }) {
-  const [activeFilter, setActiveFilter] = useState("NEW")
-  const [showFilters, setShowFilters] = useState(false)
-
+export default function Discover({ onNavigate }: Props) {
   return (
     <BookLayout
       header={
         <Header
-          showFilters={showFilters}
           items={[
-            {
-              label: "HOME",
-              active: true,
-            },
-            {
-              label: "FILTER",
-              clickable: true,
-              onClick: () => setShowFilters((prev) => !prev),
-            },
-            {
-              label: "CREATE",
-              clickable: true,
-            },
+            { label: "HOME" },
+            { label: "FILTER" },
+            { label: "CREATE" },
           ]}
         />
       }

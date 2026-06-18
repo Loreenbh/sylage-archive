@@ -1,29 +1,28 @@
 "use client"
-
 import { useState } from "react"
+import type { PageName } from "@/types/pages"
+import type { NavigationParams } from "@/types/navigation"
+/*COMPONENTS*/
 import PageFlip from "@/components/Book/PageFlip"
-
+/*PAGES*/
 import Cover from "../Pages/Cover/page"
 import Authentification from "../Pages/Auth/page"
 import Discover from "../Pages/Discover/page"
 import ProfilePage from "../Pages/Profile/ProfilePage"
 
+
+// Pages map
 const PAGES = {
   cover: Cover,
   auth: Authentification,
   discover: Discover,
   profile: ProfilePage,
-}
-
-type NavigationParams = {
-  to: string
-  direction?: "next" | "prev"
-}
+} as const
 
 
 export default function Book() {
-  const [current, setCurrent] = useState<string>("cover")
-  const [next, setNext] = useState<string | null>(null)
+  const [current, setCurrent] = useState<PageName>("cover")
+  const [next, setNext] = useState<PageName | null>(null)
   const [animating, setAnimating] = useState<boolean>(false)
   const [direction, setDirection] = useState<"next" | "prev">("next")
   
@@ -36,6 +35,7 @@ export default function Book() {
   }
 
   function onDone() {
+    if (!next) return
     setCurrent(next)
     setNext(null)
     setAnimating(false)

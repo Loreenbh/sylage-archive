@@ -1,8 +1,7 @@
+import type { OnNavigate } from "@/types/navigation"
+
 type Props = {
-  onNavigate: (params: {
-    to: string
-    direction?: "next" | "prev"
-  }) => void
+  onNavigate: OnNavigate
 }
 
 export default function ProfileButton({ onNavigate }: Props) {

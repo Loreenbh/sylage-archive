@@ -1,14 +1,18 @@
 import Image from "next/image"
-
+import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/layout/Layout"
 import Sidebar from "@/components/layout/SideBar"
-
 /* STYLE */
 import { spacing } from "@/styles/spacing"
 import { typography } from "@/styles/typography"
 
-export default function Cover({ onNavigate }) {
+
+type Props = {
+  onNavigate: OnNavigate
+}
+
+export default function Cover({ onNavigate }: Props) {
   return (
     <BookLayout
       header={
@@ -21,7 +25,7 @@ export default function Cover({ onNavigate }) {
           </p>
         </div>
       }
-      sidebar={<Sidebar text="26-27" gap="gap-6" clickable={true} onNavigate={onNavigate} />}
+      sidebar={<Sidebar text="↓26-27" gap="gap-12" clickable={true} onNavigate={onNavigate} />}
     >
       {/* CENTRE = children */}
       <div className="flex flex-1 flex-col items-center justify-center min-h-0 px-2">
@@ -35,7 +39,7 @@ export default function Cover({ onNavigate }) {
             />
         </div>
         <p className={`${typography.body} ${spacing.body}`}> 
-          A COLLECTIVE VISUAL MOOD SYSTEM
+          a collective visual mood system
         </p>
       </div>
     </BookLayout>
