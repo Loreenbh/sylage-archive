@@ -1,14 +1,15 @@
 "use client"
 import { useState } from "react"
 import { roboto } from "@/styles/fonts"
-
+import type { OnNavigate } from "@/types/navigation"
+/* TYPES */
 type Props = {
   text: string
   gap?: string
-  onNavigate?: (params: { to: string; direction?: "next" | "prev" }) => void
+  onNavigate?: OnNavigate
   clickable?: boolean
 }
-
+/*-------------------------------------------- */
 export default function Sidebar({
   text,
   gap = "gap-4 sm:gap-6 md:gap-8 lg:gap-10",
@@ -41,10 +42,10 @@ export default function Sidebar({
       `}
     >
       {/* LINE */}
-      <div className="w-[1px] h-[150px] sm:h-[250px] md:h-[300px] bg-black/30" />
+      <div className="w-[1px] h-[150px] sm:h-[250px] md:h-[300px] lg:h-[400px] bg-black/30" />
       
       {/* TEXT */}
-      <p className={`${roboto.className} text-xl sm:text-2xl md:text-3xl font-light -rotate-90 w-[70px] sm:w-[80px] md:w-[90px] tracking-[0.2em] text-black/60 whitespace-nowrap`}>
+      <p className={`${roboto.className} text-[20px] sm:text-4xl md:text-4xl lg:text-[50px] font-light -rotate-90 w-[70px] sm:w-[80px] md:w-[90px] tracking-[0.2em] text-black/60 whitespace-nowrap`}>
         {text}
       </p>
     </button>

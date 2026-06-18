@@ -5,11 +5,14 @@ position
 alignment*/
 
 export const spacing = {
-    header: "text-center sm:space-y-3 md:space-y-4",
+    header: "text-center pt-2",
 
-    title: "mt-2",
+    title: "",
 
-    subtitle: "pt-2 ml-30 sm:ml-20 md:ml-32 lg:ml-48",
+    subtitle: "pt-3 ml-40 sm:ml-60 md:ml-60 lg:ml-80",
 
-    body: "pt-4",
+    body: "pt-4 sm:pt-6",
+
+    sidebar: "gap-12 sm:gap-40 md:gap-30 lg:gap-45"
+
 }

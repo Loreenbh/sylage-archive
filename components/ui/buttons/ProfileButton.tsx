@@ -1,9 +1,9 @@
 import type { OnNavigate } from "@/types/navigation"
-
+/* TYPES */
 type Props = {
   onNavigate: OnNavigate
 }
-
+/*------------------------------------------ */
 export default function ProfileButton({ onNavigate }: Props) {
   return (
     <button

@@ -1,6 +1,12 @@
 "use client"
+import { ReactNode } from "react"
+/* TYPES */
+type Props = {
+  children: ReactNode
+}
+/*---------------------------------------*/
 
-export default function Format({ children }) {
+export default function Format({ children } : Props) {
   const layers = [
     { x: 24, y: 0, z: 0, opacity: 0.7, fromColor: "from-zinc-100", toColor: "to-zinc-200" },
     { x: 20, y: 1, z: 1, opacity: 0.8, fromColor: "from-zinc-50", toColor: "to-zinc-150" },

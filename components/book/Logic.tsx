@@ -3,15 +3,14 @@ import { useState } from "react"
 import type { PageName } from "@/types/pages"
 import type { NavigationParams } from "@/types/navigation"
 /*COMPONENTS*/
-import PageFlip from "@/components/Book/PageFlip"
+import PageFlip from "./PageFlip"
 /*PAGES*/
-import Cover from "../Pages/Cover/page"
-import Authentification from "../Pages/Auth/page"
-import Discover from "../Pages/Discover/page"
-import ProfilePage from "../Pages/Profile/ProfilePage"
+import Cover from "../features/cover/page"
+import Authentification from "../features/auth/page"
+import Discover from "../features/discover/page"
+import ProfilePage from "../features/profile/ProfilePage"
 
 
-// Pages map
 const PAGES = {
   cover: Cover,
   auth: Authentification,

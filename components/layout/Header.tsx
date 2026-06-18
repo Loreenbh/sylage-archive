@@ -1,7 +1,7 @@
 "use client"
 
 import { typography } from "@/styles/typography"
-
+/* TYPES */
 type HeaderItem = {
   label: string
   clickable?: boolean
@@ -13,6 +13,7 @@ type HeaderProps = {
   items: HeaderItem[]
   showFilters?: boolean
 }
+/*-------------------------------------------------*/
 
 const FILTERS = [
   "FASHION",
@@ -30,10 +31,10 @@ export default function Header({
   showFilters = false,
 }: HeaderProps) {
   return (
-    <div className="w-full h-[72px] sm:h-[100px] md:h-[120px]">
+    <div className="w-full h-[78px] sm:h-[130px] md:h-[120px] lg:h-[150px]">
 
       {/* NAVIGATION — responsive padding and margin-top */}
-      <div className="flex justify-between px-4 sm:px-4 md:px-6 lg:px-10 pt-6">
+      <div className="flex justify-between px-4 sm:px-4 md:px-6 lg:px-10 pt-8 sm:pt-10">
         {items.map((item) => (
           <button
             key={item.label}
@@ -43,7 +44,6 @@ export default function Header({
               ${typography.header}
               relative group
               transition-colors duration-300
-              text-[10px] sm:text-xs md:text-sm
 
               ${
                 item.active

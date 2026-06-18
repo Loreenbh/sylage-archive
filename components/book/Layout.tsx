@@ -1,11 +1,11 @@
-import Format from "./Format"
-
+import Format from "../layout/Format"
+/* TYPES */
 type Props = {
   header?: React.ReactNode
   children: React.ReactNode
   sidebar?: React.ReactNode
 }
-
+/*---------------------------------------------*/
 export default function BookLayout({
   header,
   children,
@@ -26,7 +26,7 @@ export default function BookLayout({
 
         {/* SIDEBAR — responsive width */}
         {sidebar && (
-          <div className="min-h-0 w-[40px] sm:w-[50px] md:w-[60px] bg-green-200">
+          <div className="min-h-0 w-[40px] sm:w-[60px] md:w-[65px] lg:w-[80px] bg-green-200">
             {sidebar}
           </div>
         )}

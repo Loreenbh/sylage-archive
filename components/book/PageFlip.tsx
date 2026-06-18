@@ -1,5 +1,14 @@
 "use client"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, ReactNode } from "react"
+/* TYPES */
+type Props = {
+  current: ReactNode
+  next: ReactNode | null
+  animating: boolean
+  direction: "next" | "prev"
+  onDone: () => void
+}
+/*-----------------------------------------*/
 
 export default function PageFlip({
   current,
@@ -7,9 +16,9 @@ export default function PageFlip({
   animating,
   direction,
   onDone,
-}) {
+} : Props) {
 
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
 

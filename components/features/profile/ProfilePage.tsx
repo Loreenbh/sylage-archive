@@ -2,19 +2,19 @@
 import { useRef, useState, useEffect } from "react"
 import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
-import BookLayout from "@/components/layout/Layout"
+import BookLayout from "@/components/book/Layout"
 import Header from "@/components/layout/Header"
 import Sidebar from "@/components/layout/SideBar"
-import CustomGrid from "@/components/ui/Grid/CustomGrid"
-import ProfileButton from "@/components/ui/Button/ProfileButton"
+import CustomGrid from "@/components/ui/grids/CustomGrid"
+import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import FooterLayout from "@/components/layout/Footer"
 /* STYLE */
 import { typography } from "@/styles/typography"
-
+/* TYPES */
 type Props = {
   onNavigate: OnNavigate
 }
-
+/*------------------------------------------------- */
 export default function ProfilePage({ onNavigate }: Props) {
   return (
     <BookLayout

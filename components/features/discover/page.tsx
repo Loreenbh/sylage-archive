@@ -2,19 +2,20 @@
 import { useState } from "react"
 import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
-import BookLayout from "@/components/layout/Layout"
+import BookLayout from "@/components/book/Layout"
 import Sidebar from "@/components/layout/SideBar"
 import Header from "@/components/layout/Header"
-import ScrollableGrid from "@/components/ui/Grid/ScrollableGrid"
-import ProfileButton from "@/components/ui/Button/ProfileButton"
+import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
+import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import FooterLayout from "@/components/layout/Footer"
 /*STYLE*/
 import { typography } from "@/styles/typography"
-
+import { spacing } from "@/styles/spacing"
+/* TYPES */
 type Props = {
   onNavigate: OnNavigate
 }
-
+/*---------------------------------------------------- */
 const moodboards = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
   user: `user_${String(i + 1).padStart(2, "0")}`,
@@ -33,7 +34,7 @@ export default function Discover({ onNavigate }: Props) {
         />
       }
       sidebar={
-        <Sidebar text="DISCOVER" gap="gap-22"/>
+        <Sidebar text="DISCOVER" gap={spacing.sidebar} clickable={true} onNavigate={onNavigate}/>
       }
     >
       <div className="flex flex-col h-full min-h-0">
@@ -53,7 +54,7 @@ export default function Discover({ onNavigate }: Props) {
         />
 
         <FooterLayout>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 sm:gap-6">
             <button className={typography.buttonBody}>new</button>
 
             <span className={typography.bullet}>•</span>

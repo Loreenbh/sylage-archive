@@ -17,9 +17,9 @@ export default function ScrollableGrid({
 
   return (
     <div className="flex-1 min-h-0 overflow-y-auto bg-purple-500">
-      <div className="flex flex-col gap-0.5">
+      <div className="flex flex-col gap-0.5 sm:gap-1">
         {rows.map((row, rowIdx) => (
-          <div key={rowIdx} className="grid grid-cols-2 gap-0.5">
+          <div key={rowIdx} className="grid grid-cols-2 gap-0.5 sm:gap-1">
             {row.map((item) => (
               <div key={item.id}>
                 {renderItem(item)}
