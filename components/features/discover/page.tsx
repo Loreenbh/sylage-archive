@@ -34,11 +34,10 @@ export default function Discover({ onNavigate }: Props) {
         />
       }
       sidebar={
-        <Sidebar text="DISCOVER" gap={spacing.sidebar} clickable={true} onNavigate={onNavigate}/>
+        <Sidebar text="DISCOVER" clickable={true} onNavigate={onNavigate}/>
       }
-    >
-      <div className="flex flex-col h-full min-h-0">
-        
+    >    
+      <div className="flex flex-col h-full "> 
         {/* GRID */}
         <ScrollableGrid
           data={moodboards}
@@ -52,9 +51,8 @@ export default function Discover({ onNavigate }: Props) {
             </div>
           )}
         />
-
         <FooterLayout>
-          <div className="flex items-center gap-2 sm:gap-6">
+          <div className="flex items-center gap-1 sm:gap-6">
             <button className={typography.buttonBody}>new</button>
 
             <span className={typography.bullet}>•</span>
@@ -68,8 +66,8 @@ export default function Discover({ onNavigate }: Props) {
 
           <ProfileButton onNavigate={onNavigate} />
         </FooterLayout>
-
       </div>
+
     </BookLayout>
   )
 }

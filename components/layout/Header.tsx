@@ -31,7 +31,7 @@ export default function Header({
   showFilters = false,
 }: HeaderProps) {
   return (
-    <div className="w-full h-[78px] sm:h-[130px] md:h-[120px] lg:h-[150px]">
+    <div className="w-full h-[70px] sm:h-[130px] md:h-[120px] lg:h-[150px] bg-green-100">
 
       {/* NAVIGATION — responsive padding and margin-top */}
       <div className="flex justify-between px-4 sm:px-4 md:px-6 lg:px-10 pt-8 sm:pt-10">

@@ -33,7 +33,7 @@ export default function Format({ children } : Props) {
                 inset 0 2px 8px rgba(139, 131, 131, 0.08),
                 inset 0 0 20px rgb(255, 255, 255),
                 -${layer.x * 0.3}px 0 ${12 + i * 2}px rgba(0,0,0,${0.15 + i * 0.02}),
-                inset -2px 0 4px rgba(0,0,0,0.06)
+                inset -2px 0 4px rgba(0,0,0,0)
               `,
             }}
           />

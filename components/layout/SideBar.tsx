@@ -2,17 +2,18 @@
 import { useState } from "react"
 import { roboto } from "@/styles/fonts"
 import type { OnNavigate } from "@/types/navigation"
+import { typography } from "@/styles/typography"
+
 /* TYPES */
 type Props = {
   text: string
-  gap?: string
   onNavigate?: OnNavigate
   clickable?: boolean
 }
 /*-------------------------------------------- */
+
 export default function Sidebar({
   text,
-  gap = "gap-4 sm:gap-6 md:gap-8 lg:gap-10",
   onNavigate,
   clickable = true,
 }: Props) {
@@ -20,7 +21,7 @@ export default function Sidebar({
 
   const handleClick = () => {
     if (clickable) {
-      setIsHovering(false)  // ← Reset hover au clic
+      setIsHovering(false)
       onNavigate?.({ to: "auth", direction: "next" })
     }
   }
@@ -33,21 +34,45 @@ export default function Sidebar({
       onMouseEnter={() => clickable && setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       className={`
-        flex flex-col items-center justify-start
-        w-full h-full ${gap}
+        flex flex-col items-center
+        w-full h-full
         transition-opacity duration-200
         ${clickable ? "cursor-pointer" : "cursor-default opacity-50"}
         ${isHovering && clickable ? "opacity-70" : "opacity-100"}
-        focus:outline-none
       `}
     >
-      {/* LINE */}
-      <div className="w-[1px] h-[150px] sm:h-[250px] md:h-[300px] lg:h-[400px] bg-black/30" />
-      
-      {/* TEXT */}
-      <p className={`${roboto.className} text-[20px] sm:text-4xl md:text-4xl lg:text-[50px] font-light -rotate-90 w-[70px] sm:w-[80px] md:w-[90px] tracking-[0.2em] text-black/60 whitespace-nowrap`}>
+      {/*
+        LIGNE VERTICALE
+        ─────────────────────────────────────────────────────────
+        • "flex-1" : occupe tout l'espace vertical disponible
+          entre le haut du bouton et le texte en bas.
+        • "w-px" : exactement 1px de large.
+        • min-h-0 : évite que flex-1 ne coince sur un min-height implicite.
+      */}
+      <div className="flex-1 min-h-0 w-px bg-black/30" />
+
+      {/*
+        TEXTE VERTICAL
+        ─────────────────────────────────────────────────────────
+        • mt-3 : espacement entre la ligne et le texte.
+        • rotate-90 ou writing-mode selon la préférence.
+          Ici on utilise [writing-mode:vertical-rl] pour un
+          rendu natif sans transformer le layout.
+        • text-start aligne le texte vers le haut du bloc rotaté.
+      */}
+      <p
+        className={`
+          ${roboto.className}
+          ${typography.sidebarTitle}
+          mt-4
+          shrink-0
+          [writing-mode:vertical-rl]
+          rotate-180
+        `}
+      >
         {text}
       </p>
+
     </button>
   )
 }

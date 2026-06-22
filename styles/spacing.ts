@@ -7,12 +7,19 @@ alignment*/
 export const spacing = {
     header: "text-center pt-2",
 
+    sidebarTitle: {cover: `gap-8`,
+        auth: `gap-16`,
+        discover: `gap-[100px]`,
+        profile: `gap-[80px]`,
+
+    },
+
     title: "",
 
-    subtitle: "pt-3 ml-40 sm:ml-60 md:ml-60 lg:ml-80",
+    subtitle: "ml-40 sm:ml-80 md:ml-80 lg:ml-80",
 
-    body: "pt-4 sm:pt-6",
+    body: "pt-2 sm:pt-6",
 
-    sidebar: "gap-12 sm:gap-40 md:gap-30 lg:gap-45"
+    sidebar: "gap-19 sm:gap-40 md:gap-30 lg:gap-45"
 
 }

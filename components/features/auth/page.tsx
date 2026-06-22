@@ -59,8 +59,9 @@ export default function Authentification({ onNavigate }: Props) {
           ]}
         />
       }
-      sidebar={<Sidebar text="ACCESS" gap={spacing.sidebar} clickable={false} />}
+      sidebar={<Sidebar text="ACCESS" clickable={false} />}
     >
+    <div className="flex flex-col h-full "> 
       <TwoColGrid
         left={
           <div className="bg-pink-200 flex flex-col justify-between h-full">
@@ -91,14 +92,13 @@ export default function Authentification({ onNavigate }: Props) {
             </button>
           </div>
         }
-        footer={
-          <FooterLayout>
-            <div className="flex items-center">
-              <button className={typography.buttonBody}>Forget password →</button>
-            </div>
-          </FooterLayout>
-        }
-      />
+        />
+        <FooterLayout>
+          <div className="flex items-center">
+            <button className={typography.buttonBody}>Forget password →</button>
+          </div>
+        </FooterLayout>
+      </div>
     </BookLayout>
   )
 }

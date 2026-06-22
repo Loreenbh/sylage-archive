@@ -27,10 +27,9 @@ export default function ProfilePage({ onNavigate }: Props) {
           ]}
         />
       }
-      sidebar={<Sidebar text="PROFILE" gap="gap-16" clickable={false} />}
+      sidebar={<Sidebar text="PROFILE" clickable={false} />}
     >
-
-    <div className="flex flex-col h-full min-h-0">
+    <div className="flex flex-col h-full "> 
       <CustomGrid
         left={
           <button className="bg-zinc-200 flex items-end p-4 h-full w-full text-left">
@@ -50,7 +49,6 @@ export default function ProfilePage({ onNavigate }: Props) {
           </button>
         }
       />
-
         {/* FOOTER */}
       <FooterLayout>
         <div className="flex items-center gap-2">
@@ -62,7 +60,7 @@ export default function ProfilePage({ onNavigate }: Props) {
       </FooterLayout>
 
 
-    </div>
+      </div>
     </BookLayout>
   )
 }
