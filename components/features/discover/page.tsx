@@ -8,6 +8,7 @@ import Header from "@/components/layout/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import FooterLayout from "@/components/layout/Footer"
+import Footer1 from "@/components/layout/Footer1"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 import { spacing } from "@/styles/spacing"
@@ -36,6 +37,27 @@ export default function Discover({ onNavigate }: Props) {
       sidebar={
         <Sidebar text="DISCOVER" clickable={true} onNavigate={onNavigate}/>
       }
+      footer={
+                <FooterLayout>
+          <div className="flex items-center gap-1 sm:gap-6">
+            <button className={typography.buttonBody}>new</button>
+
+            <span className={typography.bullet}>•</span>
+
+            <button className={typography.buttonBody}>featured</button>
+
+            <span className={typography.bullet}>•</span>
+
+            <button className={typography.buttonBody}>following</button>
+          </div>
+
+
+        </FooterLayout>
+      }
+
+            footer1={
+        <ProfileButton onNavigate={onNavigate} />
+      }
     >    
       <div className="flex flex-col h-full "> 
         {/* GRID */}
@@ -51,23 +73,7 @@ export default function Discover({ onNavigate }: Props) {
             </div>
           )}
         />
-        <FooterLayout>
-          <div className="flex items-center gap-1 sm:gap-6">
-            <button className={typography.buttonBody}>new</button>
-
-            <span className={typography.bullet}>•</span>
-
-            <button className={typography.buttonBody}>featured</button>
-
-            <span className={typography.bullet}>•</span>
-
-            <button className={typography.buttonBody}>following</button>
-          </div>
-
-          <ProfileButton onNavigate={onNavigate} />
-        </FooterLayout>
       </div>
-
     </BookLayout>
   )
 }

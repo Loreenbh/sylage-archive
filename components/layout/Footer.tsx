@@ -7,7 +7,7 @@ type Props = {
 
 export default function FooterLayout({ children, className = "" }: Props) {
   return (
-    <div className={`flex px-2 md:px-6 pt-1 pb-1 justify-between mt-0 ${className} bg-red-300`}>
+    <div className={`flex w-full px-2 md:px-6 pt-1 pb-1 justify-between ${className} bg-purple-300`}>
       {children}
     </div>
   )

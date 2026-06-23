@@ -5,7 +5,9 @@ type Props = {
   header?: React.ReactNode
   children: React.ReactNode
   sidebar?: React.ReactNode
+
   footer?: React.ReactNode
+  footer1?: React.ReactNode
 }
 
 export default function BookLayout({
@@ -13,6 +15,7 @@ export default function BookLayout({
   children,
   sidebar,
   footer,
+  footer1
 }: Props) {
   return (
     <Format>
@@ -45,9 +48,9 @@ export default function BookLayout({
             className="
               w-[280px]
               sm:w-[550px]
-              md:w-[550px]
-              lg:w-[650px]
-              xl:w-[750px]
+              md:w-[650px]
+              lg:w-[700px]
+              xl:w-[780px]
               aspect-square
               shrink-0
             "
@@ -72,6 +75,7 @@ export default function BookLayout({
               w-[40px]
               sm:w-[60px]
               md:w-[80px]
+              lg:w-[100px]
               bg-red-100
             ">
               {sidebar}
@@ -79,17 +83,21 @@ export default function BookLayout({
           )}
 
         </div>
+      </div>
 
 
-      {/* FOOTER */}
+              {/* FOOTER */}
       {footer && (
         <FooterLayout>
           {footer}
         </FooterLayout>
       )}
-
-      </div>
-
+      
+      {footer1 && (
+        <div className="w-full flex justify-end mt-auto bg-green-200">
+          {footer1}
+        </div>
+      )}
 
     </Format>
   )

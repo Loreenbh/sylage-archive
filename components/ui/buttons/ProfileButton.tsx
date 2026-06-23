@@ -13,7 +13,7 @@ export default function ProfileButton({ onNavigate }: Props) {
           direction: "next",
         })
       }
-      className="w-9 h-9 md:w-14 md:h-14 lg:w-18 lg:h-18 rounded-full bg-black/10 hover:bg-black/20 transition"
+      className=" bg-red-600 w-9 h-9 md:w-14 md:h-14 lg:w-18 lg:h-18 rounded-full bg-black/10 hover:bg-black/20 transition"
     />
   )
 }
