@@ -1,30 +1,29 @@
-import Format from "../layout/Format"
-import FooterLayout from "../layout/Footer"
+import BookFrame from "./BookFrame"
 
 type Props = {
   header?: React.ReactNode
   children: React.ReactNode
   sidebar?: React.ReactNode
 
+  actionsBar?: React.ReactNode
   footer?: React.ReactNode
-  footer1?: React.ReactNode
 }
 
 export default function BookLayout({
   header,
   children,
   sidebar,
-  footer,
-  footer1
+  actionsBar,
+  footer
 }: Props) {
   return (
-    <Format>
+    <BookFrame>
 
       {/* HEADER */}
       {header && <div>{header}</div>}
 
       {/* BODY
-          flex-1 + min-h-0 : occupe l'espace restant sans déborder du Format
+          flex-1 + min-h-0 : occupe l'espace restant sans déborder du BookFrame
           items-center justify-center : centre le bloc carré+sidebar
       */}
       <div className="flex mt-7 items-center justify-center min-h-0">
@@ -48,7 +47,7 @@ export default function BookLayout({
             className="
               w-[280px]
               sm:w-[550px]
-              md:w-[650px]
+              md:w-[540px]
               lg:w-[700px]
               xl:w-[780px]
               aspect-square
@@ -85,20 +84,18 @@ export default function BookLayout({
         </div>
       </div>
 
-
-              {/* FOOTER */}
-      {footer && (
-        <FooterLayout>
-          {footer}
-        </FooterLayout>
+      {actionsBar && (
+        <div className={`flex w-full px-2 md:px-6 pt-1 pb-1 justify-between bg-purple-300`}>
+          {actionsBar}
+        </div>
       )}
       
-      {footer1 && (
+      {footer && (
         <div className="w-full flex justify-end mt-auto bg-green-200">
-          {footer1}
+          {footer}
         </div>
       )}
 
-    </Format>
+    </BookFrame>
   )
 }

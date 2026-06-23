@@ -8,14 +8,15 @@ import PageFlip from "./PageFlip"
 import Cover from "../features/cover/page"
 import Authentification from "../features/auth/page"
 import Discover from "../features/discover/page"
-import ProfilePage from "../features/profile/ProfilePage"
-
+import ProfilePage from "../features/profile/profilePage"
+import Silhouettes from "../features/profile/silhouettes"
 
 const PAGES = {
   cover: Cover,
   auth: Authentification,
   discover: Discover,
   profile: ProfilePage,
+  silhouettes: Silhouettes
 } as const
 
 

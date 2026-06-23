@@ -7,7 +7,7 @@ text-transform*/
 
 export const typography = {
         sidebarTitle: `text-[20px] sm:text-4xl md:text-4xl lg:text-[50px] 
-                font-light sm:w-[80px] md:w-[90px] 
+                font-light 
                 whitespace-nowrap
                 tracking-[0.30em] sm:tracking-[0.25em] md:tracking-[0.30em] lg:tracking-[0.35em] 
                 xl:tracking-[0.4em] text-black/60`,

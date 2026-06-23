@@ -6,7 +6,7 @@ type Props = {
 }
 /*---------------------------------------*/
 
-export default function Format({ children } : Props) {
+export default function BookFrame({ children } : Props) {
   const layers = [
     { x: 24, y: 0, z: 0, opacity: 0.7, fromColor: "from-zinc-100", toColor: "to-zinc-200" },
     { x: 20, y: 1, z: 1, opacity: 0.8, fromColor: "from-zinc-50", toColor: "to-zinc-150" },

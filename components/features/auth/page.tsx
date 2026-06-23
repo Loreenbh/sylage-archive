@@ -1,11 +1,10 @@
 "use client"
 import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
-import BookLayout from "@/components/book/Layout"
+import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/layout/SideBar"
 import TwoColGrid from "@/components/ui/grids/TwoColGrid"
 import Header from "@/components/layout/Header"
-import FooterLayout from "@/components/layout/Footer"
 /* STYLE */
 import { typography } from "@/styles/typography"
 import { spacing } from "@/styles/spacing"
@@ -60,11 +59,11 @@ export default function Authentification({ onNavigate }: Props) {
         />
       }
       sidebar={<Sidebar text="ACCESS" clickable={false} />}
-      footer={        <FooterLayout>
+      actionsBar={        
           <div className="flex items-center">
             <button className={typography.buttonBody}>Forget password →</button>
           </div>
-        </FooterLayout>}
+        }
     >
     <div className="flex flex-col h-full "> 
       <TwoColGrid

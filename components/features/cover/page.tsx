@@ -2,10 +2,8 @@ import Image from "next/image"
 import type { OnNavigate } from "@/types/navigation"
 
 /* COMPONENTS */
-import BookLayout from "@/components/book/Layout"
+import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/layout/SideBar"
-import Footer1 from "@/components/layout/Footer1"
-import ProfileButton from "@/components/ui/buttons/ProfileButton"
 /* STYLE */
 import { spacing } from "@/styles/spacing"
 import { typography } from "@/styles/typography"
@@ -30,15 +28,14 @@ export default function Cover({ onNavigate }: Props) {
       sidebar={
         <Sidebar text="↓   26|27" clickable={true} onNavigate={onNavigate} />
       }
-      footer={
+      actionsBar={
         <p className={`${typography.body} ${spacing.body}`}>
           a collective visual mood system
         </p>
       }
     >
       {/* BODY */}
-      <div className="flex flex-col h-full min-h-0">
-
+      <div className="flex flex-col">
         <SimpleGrid
           square={
             <div className="relative w-[280px] sm:w-[500px] md:w-[550px] lg:w-[750px] aspect-square mx-auto">
@@ -51,7 +48,6 @@ export default function Cover({ onNavigate }: Props) {
             </div>
           }
         />
-
       </div>
     </BookLayout>
   )

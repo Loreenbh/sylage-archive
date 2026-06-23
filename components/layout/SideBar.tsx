@@ -49,7 +49,7 @@ export default function Sidebar({
         • "w-px" : exactement 1px de large.
         • min-h-0 : évite que flex-1 ne coince sur un min-height implicite.
       */}
-      <div className="flex-1 min-h-0 w-px bg-black/30" />
+      <div className="flex-1 min-h-0 w-px lg:w-[1.5px] bg-black/30" />
 
       {/*
         TEXTE VERTICAL
@@ -64,10 +64,11 @@ export default function Sidebar({
         className={`
           ${roboto.className}
           ${typography.sidebarTitle}
-          mt-4
+          mt-5
           shrink-0
           [writing-mode:vertical-rl]
           rotate-180
+          bg-red-500
         `}
       >
         {text}
