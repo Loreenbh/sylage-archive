@@ -10,13 +10,19 @@ import Authentification from "../features/auth/page"
 import Discover from "../features/discover/page"
 import ProfilePage from "../features/profile/profilePage"
 import Silhouettes from "../features/profile/silhouettes"
+import Loves from "../features/profile/loves"
+import Settings from "../features/profile/settings"
+import Moods from "../features/profile/moods"
 
 const PAGES = {
   cover: Cover,
   auth: Authentification,
   discover: Discover,
   profile: ProfilePage,
-  silhouettes: Silhouettes
+  silhouettes: Silhouettes,
+  loves: Loves,
+  settings: Settings,
+  moods: Moods
 } as const
 
 

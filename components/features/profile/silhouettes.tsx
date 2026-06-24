@@ -29,15 +29,12 @@ export default function Silhouettes({ onNavigate }: Props) {
       }
       sidebar={<Sidebar text="SILHOUETTES" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2">
+        <div className="flex w-full items-center justify-between">
           <button className={typography.buttonBody}>
-            Forget password →
+            Back
           </button>
-
-          <span className={typography.bullet}>•</span>
-
           <button className={typography.buttonBody}>
-            Settings
+            Next
           </button>
         </div>
       }
@@ -54,6 +51,7 @@ export default function Silhouettes({ onNavigate }: Props) {
                 onNavigate?.({ to: "discover", direction: "next" })
               }
               className="
+                relative
                 h-full w-full bg-zinc-200
                 flex items-end p-4 text-left
 
@@ -63,7 +61,10 @@ export default function Silhouettes({ onNavigate }: Props) {
                 hover:bg-zinc-300
               "
             >
-              silhouettes
+              {/*HEART*/}
+              <div className="absolute top-2 right-2 text-white/80 hover:text-white transition text-[40px]">
+                ♡
+              </div>
             </button>
           }
           center={
@@ -77,7 +78,6 @@ export default function Silhouettes({ onNavigate }: Props) {
                 hover:shadow-sm
               "
             >
-              archive
             </button>
           }
           right={
@@ -91,7 +91,6 @@ export default function Silhouettes({ onNavigate }: Props) {
                 hover:shadow-sm
               "
             >
-              moodboard
             </button>
           }
         />

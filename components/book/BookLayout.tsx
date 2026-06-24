@@ -4,7 +4,6 @@ type Props = {
   header?: React.ReactNode
   children: React.ReactNode
   sidebar?: React.ReactNode
-
   actionsBar?: React.ReactNode
   footer?: React.ReactNode
 }
@@ -14,7 +13,7 @@ export default function BookLayout({
   children,
   sidebar,
   actionsBar,
-  footer
+  footer,
 }: Props) {
   return (
     <BookFrame>
@@ -22,27 +21,13 @@ export default function BookLayout({
       {/* HEADER */}
       {header && <div>{header}</div>}
 
-      {/* BODY
-          flex-1 + min-h-0 : occupe l'espace restant sans déborder du BookFrame
-          items-center justify-center : centre le bloc carré+sidebar
-      */}
-      <div className="flex mt-7 items-center justify-center min-h-0">
+      {/* BODY */}
+      <div className="flex mt-7 items-center justify-center min-h-0 gap-1">
 
-        {/*
-          WRAPPER CARRÉ + SIDEBAR
-          ─────────────────────────────────────────────────────────────────
-          • "inline-flex" (ou "flex") sans contrainte de hauteur externe
-            laisse le carré (aspect-square) dicter librement sa hauteur.
-          • "items-stretch" propage cette hauteur à la sidebar.
-          • Pas de h-full ici : on laisse le contenu dimensionner le bloc.
-        */}
-        <div className="flex items-stretch gap-1">
+        {/* LEFT COLUMN = carré + actions */}
+        <div className="flex flex-col">
 
-          {/* CARRÉ — source de vérité de la hauteur
-              La largeur responsive définit à la fois la largeur ET la hauteur
-              grâce à aspect-square. La sidebar hérite de cette hauteur via
-              items-stretch sur le parent.
-          */}
+          {/* CARRÉ */}
           <div
             className="
               w-[280px]
@@ -57,41 +42,35 @@ export default function BookLayout({
             {children}
           </div>
 
-          {/* SIDEBAR
-              ──────────────────────────────────────────────────────────────
-              • "flex flex-col" pour organiser ligne + texte verticalement.
-              • "self-stretch" (redondant avec items-stretch du parent,
-                mais explicite et robuste) : prend exactement la hauteur
-                du carré en toutes circonstances.
-              • La largeur est fixe et responsive.
-              • Pas de h-full sur un enfant flex direct — inutile et parfois
-                source de conflits ; c'est items-stretch qui gère ça.
-          */}
-          {sidebar && (
-            <div className="
-              flex flex-col
-              self-stretch
-              w-[40px]
-              sm:w-[60px]
-              md:w-[80px]
-              lg:w-[100px]
-              bg-red-100
-            ">
-              {sidebar}
+          {/* ACTIONS BAR (aligné à la largeur du carré uniquement) */}
+          {actionsBar && (
+            <div className="flex w-full px-2 md:px-4 pt-2 justify-between">
+              {actionsBar}
             </div>
           )}
 
         </div>
+
+        {/* SIDEBAR */}
+        {sidebar && (
+          <div className="
+            flex flex-col
+            self-stretch
+            w-[40px]
+            sm:w-[60px]
+            md:w-[80px]
+            lg:w-[100px]
+            bg-red-100
+          ">
+            {sidebar}
+          </div>
+        )}
+
       </div>
 
-      {actionsBar && (
-        <div className={`flex w-full px-2 md:px-6 pt-1 pb-1 justify-between bg-purple-300`}>
-          {actionsBar}
-        </div>
-      )}
-      
+      {/* FOOTER */}
       {footer && (
-        <div className="w-full flex justify-end mt-auto bg-green-200">
+        <div className="w-full flex justify-end pr-4 md:pr-4 mt-auto">
           {footer}
         </div>
       )}

@@ -30,9 +30,19 @@ export default function ProfilePage({ onNavigate }: Props) {
       sidebar={<Sidebar text="PROFILE" clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-2">
-          <button className={typography.buttonBody}>Settings</button>
+          <button
+            className={typography.buttonBody}
+            onClick={() => onNavigate?.({ to: "settings", direction: "next" })}>
+            Settings
+          </button>
+
           <span className={typography.bullet}>•</span>
-          <button className={typography.buttonBody}>Loves</button>
+
+          <button
+            className={typography.buttonBody}
+            onClick={() => onNavigate?.({ to: "loves", direction: "next" })}>
+            Loves
+          </button>
         </div>
       }
 
@@ -51,14 +61,16 @@ export default function ProfilePage({ onNavigate }: Props) {
         }
 
         topRight={
-          <button className="bg-zinc-300 flex items-end p-4 h-full w-full text-left">
-            <p className={typography.body}>saved</p>
-          </button>
+          <GridButton
+            className="bg-zinc-200 hover:bg-zinc-300"
+            onClick={() => onNavigate?.({ to:"moods", direction: "next" })}>
+            <p className={typography.body}>moods</p>
+          </GridButton>
         }
 
         bottomRight={
           <button className="bg-zinc-400 flex items-end p-4 h-full w-full text-left">
-            <p className={typography.body}>moodboard</p>
+            <p className={typography.body}>following</p>
           </button>
         }
       />
