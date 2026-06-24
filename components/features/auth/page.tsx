@@ -2,12 +2,11 @@
 import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/layout/SideBar"
+import Sidebar from "@/components/navigation/SideBar"
 import TwoColGrid from "@/components/ui/grids/TwoColGrid"
-import Header from "@/components/layout/Header"
+import Header from "@/components/navigation/Header"
 /* STYLE */
 import { typography } from "@/styles/typography"
-import { spacing } from "@/styles/spacing"
 
 /*TYPES*/
 type Props = {

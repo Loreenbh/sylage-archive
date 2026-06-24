@@ -3,9 +3,10 @@ import React from "react"
 type Props = {
   data: any[]
   renderItem: (item: any) => React.ReactNode
+  onItemClick?: (item: any) => void
 }
 
-export default function ScrollableGrid({ data, renderItem }: Props) {
+export default function ScrollableGrid({ data, renderItem, onItemClick }: Props) {
   const rows: any[][] = []
 
   for (let i = 0; i < data.length; i += 2) {
@@ -26,7 +27,8 @@ export default function ScrollableGrid({ data, renderItem }: Props) {
               className="grid grid-cols-2 gap-0.5"
             >
               {row.map((item) => (
-                <div key={item.id}>
+                <div key={item.id}
+                  onClick={() => onItemClick?.(item)}>
                   {renderItem(item)}
                 </div>
               ))}

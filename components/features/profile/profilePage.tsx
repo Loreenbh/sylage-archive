@@ -3,19 +3,27 @@ import { useRef, useState, useEffect } from "react"
 import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
-import Header from "@/components/layout/Header"
-import Sidebar from "@/components/layout/SideBar"
+import Header from "@/components/navigation/Header"
+import Sidebar from "@/components/navigation/SideBar"
 import CustomGrid from "@/components/ui/grids/CustomGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import GridButton from "@/components/ui/buttons/GridButton"
+import ScrollFollow from "@/components/ui/cards/scrollFollow"
 /* STYLE */
 import { typography } from "@/styles/typography"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
 }
+
 /*------------------------------------------------- */
+
 export default function ProfilePage({ onNavigate }: Props) {
+  const following = Array.from({ length: 20 }, (_, i) => ({
+    id: i + 1,
+    user: `user_${String(i + 1).padStart(2, "0")}`,
+  }))
+
   return (
     <BookLayout
       header={
@@ -69,8 +77,13 @@ export default function ProfilePage({ onNavigate }: Props) {
         }
 
         bottomRight={
-          <button className="bg-zinc-400 flex items-end p-4 h-full w-full text-left">
-            <p className={typography.body}>following</p>
+          <button className="bg-zinc-400 h-full w-full text-left">
+            <ScrollFollow
+              title="following"
+              items={following}
+              
+            />
+              <p className={typography.body}>moods</p>
           </button>
         }
       />

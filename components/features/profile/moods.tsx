@@ -3,8 +3,8 @@ import { useState } from "react"
 import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/layout/SideBar"
-import Header from "@/components/layout/Header"
+import Sidebar from "@/components/navigation/SideBar"
+import Header from "@/components/navigation/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 /*STYLE*/

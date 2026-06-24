@@ -4,8 +4,8 @@ import type { OnNavigate } from "@/types/navigation"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/layout/SideBar"
-import Header from "@/components/layout/Header"
+import Sidebar from "@/components/navigation/SideBar"
+import Header from "@/components/navigation/Header"
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 
@@ -29,12 +29,6 @@ export default function Settings({ onNavigate }: Props) {
         />
       }
       sidebar={<Sidebar text="SETTINGS" clickable={false} />}
-      actionsBar={
-        <div className="flex w-full items-center justify-between">
-          <button className={typography.buttonBody}>Back</button>
-          <button className={typography.buttonBody}>Next</button>
-        </div>
-      }
       footer={<ProfileButton onNavigate={onNavigate} />}
     >
       <FourSquaresGrid

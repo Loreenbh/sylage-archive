@@ -3,7 +3,7 @@ import type { OnNavigate } from "@/types/navigation"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/layout/SideBar"
+import Sidebar from "@/components/navigation/SideBar"
 /* STYLE */
 import { spacing } from "@/styles/spacing"
 import { typography } from "@/styles/typography"

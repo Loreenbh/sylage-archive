@@ -13,6 +13,7 @@ import Silhouettes from "../features/profile/silhouettes"
 import Loves from "../features/profile/loves"
 import Settings from "../features/profile/settings"
 import Moods from "../features/profile/moods"
+import MoodDetails from "../features/discover/moodDetails"
 
 const PAGES = {
   cover: Cover,
@@ -22,7 +23,8 @@ const PAGES = {
   silhouettes: Silhouettes,
   loves: Loves,
   settings: Settings,
-  moods: Moods
+  moods: Moods,
+  moodDetails: MoodDetails
 } as const
 
 
@@ -31,12 +33,14 @@ export default function Book() {
   const [next, setNext] = useState<PageName | null>(null)
   const [animating, setAnimating] = useState<boolean>(false)
   const [direction, setDirection] = useState<"next" | "prev">("next")
+  const [params, setParams] = useState<Record<string, unknown> | null>(null)
   
-  function navigate({ to, direction = "next" }: NavigationParams) {
+  function navigate({ to, direction = "next", params }: NavigationParams) {
     if (animating) return
 
     setNext(to)
     setDirection(direction)
+    setParams(params ?? null)
     setAnimating(true)
   }
 
@@ -53,8 +57,8 @@ export default function Book() {
   return (
     <div className="w-full h-full flex">
       <PageFlip
-        current={<CurrentPage onNavigate={navigate} />}
-        next={NextPage ? <NextPage onNavigate={navigate} /> : null}
+        current={<CurrentPage onNavigate={navigate} params={params}/>}
+        next={NextPage ? <NextPage onNavigate={navigate} params={params} /> : null}
         animating={animating}
         direction={direction}
         onDone={onDone}

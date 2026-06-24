@@ -3,8 +3,8 @@ import { useState } from "react"
 import type { OnNavigate } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/layout/SideBar"
-import Header from "@/components/layout/Header"
+import Sidebar from "@/components/navigation/SideBar"
+import Header from "@/components/navigation/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 /*STYLE*/
@@ -13,14 +13,37 @@ import { spacing } from "@/styles/spacing"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
+  params?: Record<string, any> | null
 }
 /*---------------------------------------------------- */
-const moodboards = Array.from({ length: 20 }, (_, i) => ({
-  id: i + 1,
-  user: `user_${String(i + 1).padStart(2, "0")}`,
-}))
+// const moodboards = Array.from({ length: 20 }, (_, i) => ({
+//   id: i + 1,
+//   user: `user_${String(i + 1).padStart(2, "0")}`,
+// }))
 
 export default function Discover({ onNavigate }: Props) {
+  
+  const [selectedUser, setSelectedUser] = useState<string | null>(null)
+  const [tab, setTab] = useState<"new" | "featured" | "following">("new")
+  const moodboards = Array.from({ length: 20 }, (_, i) => ({
+    id: i + 1,
+    user: `user_${String(i + 1).padStart(2, "0")}`,
+    color: ["bg-zinc-200", "bg-zinc-300", "bg-zinc-400"][i % 3],
+  }))
+  const filteredMoodboards =
+  tab === "new"
+    ? moodboards
+    : tab === "featured"
+    ? [...moodboards].reverse()
+    : moodboards.slice(0, 10)
+
+    const sidebarTitle =
+  tab === "new"
+    ? "LATEST"
+    : tab === "featured"
+    ? "FEATURED"
+    : "FOLLOWING"
+
   return (
     <BookLayout
       header={
@@ -33,16 +56,22 @@ export default function Discover({ onNavigate }: Props) {
         />
       }
       sidebar={
-        <Sidebar text="DISCOVER" clickable={false}/>
+        <Sidebar text={sidebarTitle} clickable={false}/>
       }
       actionsBar={
         <div className="flex items-center gap-1 sm:gap-6">
-          <button className={typography.buttonBody}>new</button>
+          <button
+            onClick={() => setTab("new")} 
+            className={typography.buttonBody}>new</button>
           <span className={typography.bullet}>•</span>
-          <button className={typography.buttonBody}>featured</button>
+          <button
+            onClick={() => setTab("featured")} 
+            className={typography.buttonBody}>featured</button>
           <span className={typography.bullet}>•</span>
 
-          <button className={typography.buttonBody}>following</button>
+          <button 
+            onClick={() => setTab("following")}
+            className={typography.buttonBody}>following</button>
         </div>
       }
       footer={
@@ -52,7 +81,18 @@ export default function Discover({ onNavigate }: Props) {
       <div className="flex flex-col h-full "> 
         {/* GRID */}
         <ScrollableGrid
-          data={moodboards}
+          data={filteredMoodboards}
+          onItemClick={(board) => {
+            setSelectedUser(board.user)
+
+            onNavigate?.({
+              to: "moodDetails",
+              params: {
+                user: board.user,
+              },
+              direction: "next",
+            })
+          }}
           renderItem={(board) => (
             <div className="relative aspect-square w-full bg-zinc-100 cursor-pointer">
               <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300" />
