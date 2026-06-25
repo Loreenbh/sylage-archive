@@ -7,12 +7,11 @@ import PageFlip from "./PageFlip"
 /*PAGES*/
 import Cover from "../features/cover/page"
 import Authentification from "../features/auth/page"
-import Discover from "../features/discover/page"
+import Discover from "../features/discover/discover"
 import ProfilePage from "../features/profile/profilePage"
 import Silhouettes from "../features/profile/silhouettes"
 import Loves from "../features/profile/loves"
 import Settings from "../features/profile/settings"
-import Moods from "../features/profile/moods"
 import MoodDetails from "../features/discover/moodDetails"
 
 const PAGES = {
@@ -23,7 +22,6 @@ const PAGES = {
   silhouettes: Silhouettes,
   loves: Loves,
   settings: Settings,
-  moods: Moods,
   moodDetails: MoodDetails
 } as const
 
@@ -33,7 +31,7 @@ export default function Book() {
   const [next, setNext] = useState<PageName | null>(null)
   const [animating, setAnimating] = useState<boolean>(false)
   const [direction, setDirection] = useState<"next" | "prev">("next")
-  const [params, setParams] = useState<Record<string, unknown> | null>(null)
+  const [params, setParams] = useState<NavigationParams["params"] | null>(null)
   
   function navigate({ to, direction = "next", params }: NavigationParams) {
     if (animating) return

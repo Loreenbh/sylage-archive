@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import type { OnNavigate } from "@/types/navigation"
+import type { OnNavigate, NavigationParams } from "@/types/navigation"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
@@ -14,9 +14,10 @@ import GridPager from "@/components/ui/pagination/GridPager"
 
 type Props = {
   onNavigate: OnNavigate
+  params?: NavigationParams["params"] | null
 }
 
-export default function Silhouettes({ onNavigate }: Props) {
+export default function Silhouettes({ onNavigate, params }: Props) {
   const silhouettes = [
   { id: 1, color: "bg-white-200" },
   { id: 2, color: "bg-red-300" },
@@ -39,6 +40,14 @@ const handleNext = () => {
   setIndex((i) => Math.min(i + 1, silhouettes.length - 3))
 }
 
+const isOwner = params?.isOwner ?? false
+const user = params?.user
+
+const sidebarTitle =
+  isOwner
+    ? "SILHOUETTES | PROFILE"
+    : `${user} | SILHOUETTES`
+
   return (
     <BookLayout
       header={
@@ -50,7 +59,7 @@ const handleNext = () => {
           ]}
         />
       }
-      sidebar={<Sidebar text="SILHOUETTES" clickable={false} />}
+      sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
         <GridPager
           onPrev={handlePrev}

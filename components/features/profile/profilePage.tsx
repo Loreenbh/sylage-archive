@@ -1,6 +1,6 @@
 "use client"
 import { useRef, useState, useEffect } from "react"
-import type { OnNavigate } from "@/types/navigation"
+import type { OnNavigate, NavigationParams } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Header from "@/components/navigation/Header"
@@ -14,15 +14,23 @@ import { typography } from "@/styles/typography"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
+  params?: NavigationParams["params"] | null
+  
 }
 
 /*------------------------------------------------- */
 
-export default function ProfilePage({ onNavigate }: Props) {
+export default function ProfilePage({ onNavigate, params }: Props) {
   const following = Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
     user: `user_${String(i + 1).padStart(2, "0")}`,
   }))
+  const user = params?.user
+  const isOwner = params?.isOwner ?? true
+
+  const sidebarTitle = isOwner
+    ? "PROFILE"
+    : user ?? "USER"
 
   return (
     <BookLayout
@@ -35,22 +43,32 @@ export default function ProfilePage({ onNavigate }: Props) {
           ]}
         />
       }
-      sidebar={<Sidebar text="PROFILE" clickable={false} />}
+      sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-2">
-          <button
-            className={typography.buttonBody}
-            onClick={() => onNavigate?.({ to: "settings", direction: "next" })}>
-            Settings
-          </button>
+          {isOwner && (
+            <>
+              <button
+                className={typography.buttonBody}
+                onClick={() =>
+                  onNavigate?.({ to: "settings", direction: "next" })
+                }
+              >
+                Settings
+              </button>
 
-          <span className={typography.bullet}>•</span>
+              <span className={typography.bullet}>•</span>
 
-          <button
-            className={typography.buttonBody}
-            onClick={() => onNavigate?.({ to: "loves", direction: "next" })}>
-            Loves
-          </button>
+              <button
+                className={typography.buttonBody}
+                onClick={() =>
+                  onNavigate?.({ to: "loves", direction: "next" })
+                }
+              >
+                Loves
+              </button>
+            </>
+          )}
         </div>
       }
 
@@ -63,7 +81,15 @@ export default function ProfilePage({ onNavigate }: Props) {
         left={
           <GridButton
             className="bg-zinc-200 hover:bg-zinc-300"
-            onClick={() => onNavigate?.({ to: "silhouettes", direction: "next" })}>
+            onClick={() => 
+              onNavigate?.({ 
+                to: "silhouettes", 
+                direction: "next",
+                params:{
+                  user,
+                  isOwner
+                }
+                 })}>
             <p className={typography.body}>silhouettes</p>
           </GridButton>
         }
@@ -71,20 +97,30 @@ export default function ProfilePage({ onNavigate }: Props) {
         topRight={
           <GridButton
             className="bg-zinc-200 hover:bg-zinc-300"
-            onClick={() => onNavigate?.({ to:"moods", direction: "next" })}>
+            onClick={() => 
+              onNavigate?.({ 
+                to:"discover", 
+                direction: "next", 
+                params:{
+                  user,
+                  isOwner,
+                }, 
+              })
+            }
+          >
             <p className={typography.body}>moods</p>
           </GridButton>
         }
 
         bottomRight={
-          <button className="bg-zinc-400 h-full w-full text-left">
+          <div className="bg-zinc-400 h-full w-full text-left">
             <ScrollFollow
               title="following"
               items={following}
               
             />
-              <p className={typography.body}>moods</p>
-          </button>
+              <p className={typography.body}>inspired by</p>
+          </div>
         }
       />
       </div>
