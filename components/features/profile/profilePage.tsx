@@ -26,12 +26,16 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     user: `user_${String(i + 1).padStart(2, "0")}`,
   }))
   const user = params?.user
-  const isOwner = params?.isOwner ?? true
+  const mode = params?.isOwner ?? false
 
-  const sidebarTitle = isOwner
+
+
+  const sidebarTitle = 
+    mode === true
     ? "PROFILE"
-    : user ?? "USER"
+    : ` ${user}|PROFILE`
 
+  console.log("dans profilepage mode est:", mode)
   return (
     <BookLayout
       header={
@@ -46,7 +50,7 @@ export default function ProfilePage({ onNavigate, params }: Props) {
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-2">
-          {isOwner && (
+          {mode === true && (
             <>
               <button
                 className={typography.buttonBody}
@@ -86,8 +90,9 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                 to: "silhouettes", 
                 direction: "next",
                 params:{
-                  user,
-                  isOwner
+                  user: mode ? undefined: user,
+                  from: "silhouettes",
+                  mode,
                 }
                  })}>
             <p className={typography.body}>silhouettes</p>
@@ -99,11 +104,10 @@ export default function ProfilePage({ onNavigate, params }: Props) {
             className="bg-zinc-200 hover:bg-zinc-300"
             onClick={() => 
               onNavigate?.({ 
-                to:"discover", 
+                to:"moods", 
                 direction: "next", 
                 params:{
                   user,
-                  isOwner,
                 }, 
               })
             }

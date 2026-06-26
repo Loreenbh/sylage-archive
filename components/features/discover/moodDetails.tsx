@@ -19,11 +19,16 @@ type Props = {
 
 export default function MoodDetails({ onNavigate, params }: Props) {
 const user = params?.user
-const isOwner = params?.isOwner
+const mode = params?.isOwner ?? false
 const fromTab = params?.fromTab
-const sidebarTitle = isOwner
-  ? "PROFILE | MOODS"
-  : `${user} | MOODS`
+const from = params?.from
+
+  const sidebarTitle = 
+    mode === true
+    ? "DETAILS"
+    : ` ${user}|DETAILS`
+  
+  console.log("dans mooddetails mode est:", mode)
   return (
     <BookLayout
       header={
@@ -43,10 +48,11 @@ const sidebarTitle = isOwner
           <button
             onClick={() =>
               onNavigate?.({
-                to: "discover",
+                to: from === "moods" ? "moods" : "discover",
                 direction: "prev",
                 params: {
-                  isOwner,
+                  user,
+                  isOwner: mode,
                   fromTab,
                 },
               })
@@ -56,7 +62,7 @@ const sidebarTitle = isOwner
             back
           </button>
 
-          {!isOwner && (
+          {mode === false && (
             <>
               <span className={typography.bullet}>•</span>
 
@@ -67,7 +73,7 @@ const sidebarTitle = isOwner
                     direction: "prev",
                     params: {
                       user,
-                      isOwner
+                      isOwner: false
                     },
                   })
                 }

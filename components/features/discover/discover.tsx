@@ -20,10 +20,10 @@ type Tab = "new" | "featured" | "following"
 
 export default function Discover({ onNavigate, params }: Props) {
   const user = params?.user
-  const isOwner = params?.isOwner ?? false
+  const mode = params?.isOwner ?? false
+  const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
 
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
-  const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const moodboards = Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
     user: `user_${String(i + 1).padStart(2, "0")}`,
@@ -36,12 +36,9 @@ export default function Discover({ onNavigate, params }: Props) {
     ? [...moodboards].reverse()
     : moodboards.slice(0, 10)
 
-  const sidebarTitle = isOwner
-  ? "PROFILE | MOODS"
-  : user
-    ? `${user} | MOODS`
-    : `DISCOVER" | ${tab.toUpperCase()}`
+  const sidebarTitle = tab.toUpperCase()
 
+  console.log("dans discover mode est:", mode)
   return (
     <BookLayout
       header={
@@ -57,7 +54,6 @@ export default function Discover({ onNavigate, params }: Props) {
         <Sidebar text={sidebarTitle} clickable={false}/>
       }
       actionsBar={
-        !isOwner && (
         <div className="flex items-center gap-1 sm:gap-6">
           <button
             onClick={ () => setTab("new")}
@@ -72,7 +68,6 @@ export default function Discover({ onNavigate, params }: Props) {
             onClick={ () => setTab("following")}
             className={typography.buttonBody}>following</button>
         </div>
-        )
       }
       footer={
         <ProfileButton onNavigate={onNavigate} />
@@ -89,7 +84,7 @@ export default function Discover({ onNavigate, params }: Props) {
               direction: "next",
               params: {
                 user: board.user,
-                isOwner,
+                from: "discover",
                 fromTab: tab,
               },
             })
@@ -98,11 +93,10 @@ export default function Discover({ onNavigate, params }: Props) {
             <div className="relative aspect-square w-full bg-zinc-100 cursor-pointer">
               <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300" />
 
-              {!isOwner && (
               <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-black/30">
                 {board.user}
               </p>
-              )}
+
             </div>
           )}
         />

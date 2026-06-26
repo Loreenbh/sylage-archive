@@ -12,6 +12,7 @@ import ProfilePage from "../features/profile/profilePage"
 import Silhouettes from "../features/profile/silhouettes"
 import Loves from "../features/profile/loves"
 import Settings from "../features/profile/settings"
+import Moods from "../features/profile/moods"
 import MoodDetails from "../features/discover/moodDetails"
 
 const PAGES = {
@@ -22,6 +23,7 @@ const PAGES = {
   silhouettes: Silhouettes,
   loves: Loves,
   settings: Settings,
+  moods: Moods,
   moodDetails: MoodDetails
 } as const
 

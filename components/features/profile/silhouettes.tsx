@@ -11,6 +11,7 @@ import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import GridPager from "@/components/ui/pagination/GridPager"
 
 /* STYLE */
+import { typography } from "@/styles/typography"
 
 type Props = {
   onNavigate: OnNavigate
@@ -61,10 +62,28 @@ const sidebarTitle =
       }
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
-        <GridPager
-          onPrev={handlePrev}
-          onNext={handleNext}
-        />
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() =>
+              onNavigate?.({
+                to: "profile",
+                direction: "prev",
+                params:{
+                  user,
+                  isOwner
+                }
+              })
+            }
+            className={typography.buttonBody}
+          >
+            back
+          </button>
+
+          <GridPager
+            onPrev={handlePrev}
+            onNext={handleNext}
+          />
+        </div>
       }
       footer={
         <ProfileButton onNavigate={onNavigate} />
