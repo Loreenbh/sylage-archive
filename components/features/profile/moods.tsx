@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
+// import { getNavContext } from "@/lib/navigation/getNavContext"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
@@ -19,9 +20,10 @@ type Tab = "new" | "featured" | "following"
 /*---------------------------------------------------- */
 
 export default function Moods({ onNavigate, params }: Props) {
-  const user = params?.user
-  const mode = params?.isOwner ?? false
 
+// const mode = params?.isOwner
+// const user = params?.user
+const { isOwner: mode, user} = params ?? {}
 
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
@@ -37,10 +39,14 @@ export default function Moods({ onNavigate, params }: Props) {
     ? [...moodboards].reverse()
     : moodboards.slice(0, 10)
 
-  const sidebarTitle = 
-    mode === true
+
+const sidebarTitle =
+  mode
     ? "MOODS"
-    : ` ${user}|MOODS`
+    : user
+      ? `${user} | Moods`
+      : "Moods"
+
 
   console.log("dans moods mode est:", mode)
   return (
@@ -48,9 +54,9 @@ export default function Moods({ onNavigate, params }: Props) {
       header={
         <Header
           items={[
-            { label: "HOME" },
-            { label: "FILTER" },
-            { label: "CREATE" },
+            { section: "HOME" },
+            { section: "FILTER" },
+            { section: "CREATE" },
           ]}
         />
       }
@@ -58,23 +64,23 @@ export default function Moods({ onNavigate, params }: Props) {
         <Sidebar text={sidebarTitle} clickable={false}/>
       }
       actionsBar={
-        // mode === "normal" && (
-        // <div className="flex items-center gap-1 sm:gap-6">
-        //   <button
-        //     onClick={ () => setTab("new")}
-        //     className={typography.buttonBody}>new</button>
-        //   <span className={typography.bullet}>•</span>
-        //   <button
-        //     onClick={ () => setTab("featured")}
-        //     className={typography.buttonBody}>featured</button>
-        //   <span className={typography.bullet}>•</span>
-
-        //   <button 
-        //     onClick={ () => setTab("following")}
-        //     className={typography.buttonBody}>following</button>
-        // </div>
-        // )
-        <div></div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() =>
+              onNavigate?.({
+                to: "profile",
+                direction: "prev",
+                params:{
+                  user,
+                  isOwner: mode
+                }
+              })
+            }
+            className={typography.buttonBody}
+          >
+            back
+          </button>
+        </div>
       }
       footer={
         <ProfileButton onNavigate={onNavigate} />
@@ -93,6 +99,7 @@ export default function Moods({ onNavigate, params }: Props) {
                 user,
                 from: "moods",
                 fromTab: tab,
+                isOwner: mode
               },
             })
           }}

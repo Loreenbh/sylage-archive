@@ -41,22 +41,24 @@ const handleNext = () => {
   setIndex((i) => Math.min(i + 1, silhouettes.length - 3))
 }
 
-const isOwner = params?.isOwner ?? false
-const user = params?.user
-
+// const mode = params?.isOwner
+// const user = params?.user
+const { isOwner: mode, user} = params ?? {}
 const sidebarTitle =
-  isOwner
-    ? "SILHOUETTES | PROFILE"
-    : `${user} | SILHOUETTES`
+  mode
+    ? "SILHOUETTES"
+    : user
+      ? `${user} | SILHOUETTES`
+      : "SILHOUETTES"
 
   return (
     <BookLayout
       header={
         <Header
           items={[
-            { label: "HOME" },
-            { label: "FILTER" },
-            { label: "CREATE" },
+            { section: "HOME" },
+            { section: "FILTER" },
+            { section: "CREATE" },
           ]}
         />
       }
@@ -70,7 +72,7 @@ const sidebarTitle =
                 direction: "prev",
                 params:{
                   user,
-                  isOwner
+                  isOwner : mode
                 }
               })
             }

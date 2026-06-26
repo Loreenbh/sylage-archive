@@ -3,7 +3,7 @@
 import { typography } from "@/styles/typography"
 /* TYPES */
 type HeaderItem = {
-  label: string
+  section: string
   clickable?: boolean
   active?: boolean
   onClick?: () => void
@@ -37,7 +37,7 @@ export default function Header({
       <div className="flex justify-between px-4 sm:px-4 md:px-6 lg:px-10 pt-8 sm:pt-10">
         {items.map((item) => (
           <button
-            key={item.label}
+            key={item.section}
             onClick={item.clickable ? item.onClick : undefined}
             disabled={!item.clickable}
             className={`
@@ -54,7 +54,7 @@ export default function Header({
               }
             `}
           >
-            {item.label}
+            {item.section}
 
             <span
               className={`

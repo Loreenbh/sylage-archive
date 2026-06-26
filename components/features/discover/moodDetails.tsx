@@ -18,11 +18,11 @@ type Props = {
 }
 
 export default function MoodDetails({ onNavigate, params }: Props) {
-const user = params?.user
-const mode = params?.isOwner ?? false
-const fromTab = params?.fromTab
-const from = params?.from
-
+// const user = params?.user
+// const mode = params?.isOwner
+// const fromTab = params?.fromTab
+// const from = params?.from
+const { isOwner: mode, user, fromTab, from} = params ?? {}
   const sidebarTitle = 
     mode === true
     ? "DETAILS"
@@ -34,9 +34,18 @@ const from = params?.from
       header={
         <Header
           items={[
-            { label: "HOME" },
-            { label: "FILTER" },
-            { label: "CREATE" },
+            { section: "HOME",
+              clickable: true,
+              onClick: () => console.log("home clicked"),
+             },
+            { section: "FILTER",
+              clickable: true,
+              onClick: () => console.log("filter clicked"),
+             },
+            { section: "CREATE",
+              clickable: true,
+              onClick: () => console.log("create clicked"),
+             },
           ]}
         />
       }
@@ -70,10 +79,10 @@ const from = params?.from
                 onClick={() =>
                   onNavigate?.({
                     to: "profile",
-                    direction: "prev",
+                    direction: "next",
                     params: {
                       user,
-                      isOwner: false
+                      isOwner: mode
                     },
                   })
                 }

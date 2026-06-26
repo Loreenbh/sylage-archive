@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
+
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
@@ -19,10 +20,12 @@ type Tab = "new" | "featured" | "following"
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
-  const user = params?.user
-  const mode = params?.isOwner ?? false
-  const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
+  // const user = params?.user
+  // const mode = params?.isOwner ?? false
 
+const { isOwner: mode = false, user} = params ?? {}
+
+  const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const moodboards = Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
@@ -44,9 +47,18 @@ export default function Discover({ onNavigate, params }: Props) {
       header={
         <Header
           items={[
-            { label: "HOME" },
-            { label: "FILTER" },
-            { label: "CREATE" },
+            { section: "HOME",
+              clickable: false,
+              active: true,
+             },
+            { section: "FILTER",
+              clickable: true,
+              onClick: () => console.log("filter clicked"),
+             },
+            { section: "CREATE",
+              clickable: true,
+              onClick: () => console.log("create clicked"),
+             },
           ]}
         />
       }
@@ -86,6 +98,7 @@ export default function Discover({ onNavigate, params }: Props) {
                 user: board.user,
                 from: "discover",
                 fromTab: tab,
+                isOwner: mode
               },
             })
           }}

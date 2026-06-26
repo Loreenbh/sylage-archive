@@ -25,25 +25,25 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     id: i + 1,
     user: `user_${String(i + 1).padStart(2, "0")}`,
   }))
-  const user = params?.user
-  const mode = params?.isOwner ?? false
-
-
+  // const user = params?.user
+  // const mode = params?.isOwner
+const { isOwner: mode, user} = params ?? {}
 
   const sidebarTitle = 
-    mode === true
+    mode
     ? "PROFILE"
-    : ` ${user}|PROFILE`
-
+    : user
+      ? `${user} | PROFILE`
+      : "PROFILE"
   console.log("dans profilepage mode est:", mode)
   return (
     <BookLayout
       header={
         <Header
           items={[
-            { label: "HOME" },
-            { label: "FILTER" },
-            { label: "CREATE" },
+            { section: "HOME" },
+            { section: "FILTER" },
+            { section: "CREATE" },
           ]}
         />
       }
@@ -55,7 +55,14 @@ export default function ProfilePage({ onNavigate, params }: Props) {
               <button
                 className={typography.buttonBody}
                 onClick={() =>
-                  onNavigate?.({ to: "settings", direction: "next" })
+                  onNavigate?.({ 
+                    to: "settings", 
+                    direction: "next",
+                    params:{
+                      user,
+                      isOwner: mode,
+                    }
+                  })
                 }
               >
                 Settings
@@ -66,7 +73,14 @@ export default function ProfilePage({ onNavigate, params }: Props) {
               <button
                 className={typography.buttonBody}
                 onClick={() =>
-                  onNavigate?.({ to: "loves", direction: "next" })
+                  onNavigate?.({ 
+                    to: "loves", 
+                    direction: "next",
+                    params:{
+                      user,
+                      isOwner: mode,
+                    }
+                  })
                 }
               >
                 Loves
@@ -90,9 +104,9 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                 to: "silhouettes", 
                 direction: "next",
                 params:{
-                  user: mode ? undefined: user,
+                  user,
                   from: "silhouettes",
-                  mode,
+                  isOwner : mode
                 }
                  })}>
             <p className={typography.body}>silhouettes</p>
@@ -108,6 +122,7 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                 direction: "next", 
                 params:{
                   user,
+                  isOwner: mode,
                 }, 
               })
             }

@@ -1,6 +1,6 @@
 "use client"
 
-import type { OnNavigate } from "@/types/navigation"
+import type { OnNavigate, NavigationParams } from "@/types/navigation"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
@@ -12,11 +12,15 @@ import ProfileButton from "@/components/ui/buttons/ProfileButton"
 /* STYLE */
 import { typography } from "@/styles/typography"
 
+/* TYPES */
 type Props = {
   onNavigate: OnNavigate
+  params?: NavigationParams["params"] | null
+  
 }
 
-export default function Settings({ onNavigate }: Props) {
+
+export default function Settings({ onNavigate}: Props) {
   return (
     <BookLayout
       header={

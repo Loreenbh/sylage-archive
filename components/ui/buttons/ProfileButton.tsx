@@ -12,7 +12,8 @@ export default function ProfileButton({ onNavigate }: Props) {
           to: "profile",
           direction: "next",
           params:{
-            isOwner: true
+            isOwner: true,
+            user: undefined
           }
         })
       }
