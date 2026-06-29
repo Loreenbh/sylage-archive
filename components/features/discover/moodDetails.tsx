@@ -36,10 +36,18 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
           items={[
             { section: "HOME",
               clickable: true,
-              onClick: () => console.log("home clicked"),
-             },
+              onClick: () =>
+                onNavigate?.({
+                  to: "discover",
+                  direction: "prev",
+                  params:{
+                    user,
+                    isOwner: false
+                  }
+                })
+            },
             { section: "FILTER",
-              clickable: true,
+              clickable: false,
               onClick: () => console.log("filter clicked"),
              },
             { section: "CREATE",

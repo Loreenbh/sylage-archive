@@ -20,10 +20,10 @@ type Tab = "new" | "featured" | "following"
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
-  // const user = params?.user
-  // const mode = params?.isOwner ?? false
+  const user = params?.user
+  const mode = params?.isOwner ?? false
 
-const { isOwner: mode = false, user} = params ?? {}
+// const { isOwner: mode = false, user} = params ?? {}
 
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
@@ -57,7 +57,16 @@ const { isOwner: mode = false, user} = params ?? {}
              },
             { section: "CREATE",
               clickable: true,
-              onClick: () => console.log("create clicked"),
+                onClick: () =>
+                onNavigate?.({
+                  to: "create",
+                  direction: "next",
+                  params:{
+                    user,
+                    from: "discover",
+                    isOwner: mode
+                  }
+                })
              },
           ]}
         />

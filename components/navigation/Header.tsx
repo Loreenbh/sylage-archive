@@ -29,6 +29,7 @@ const FILTERS = [
 export default function Header({
   items,
   showFilters = false,
+  
 }: HeaderProps) {
   return (
     <div className="w-full h-[70px] sm:h-[130px] md:h-[120px] lg:h-[150px] bg-green-100">

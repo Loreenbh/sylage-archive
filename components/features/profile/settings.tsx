@@ -26,9 +26,22 @@ export default function Settings({ onNavigate}: Props) {
       header={
         <Header
           items={[
-            { label: "HOME" },
-            { label: "FILTER" },
-            { label: "CREATE" },
+            { section: "HOME",
+              clickable: true,
+              onClick: () =>
+                onNavigate?.({
+                  to: "discover",
+                  direction: "prev",
+                })
+            },
+            { section: "FILTER",
+              clickable: false,
+              onClick: () => console.log("filter clicked"),
+             },
+            { section: "CREATE",
+              clickable: true,
+              onClick: () => console.log("create clicked"),
+             },
           ]}
         />
       }

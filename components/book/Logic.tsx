@@ -14,6 +14,8 @@ import Loves from "../features/profile/loves"
 import Settings from "../features/profile/settings"
 import Moods from "../features/profile/moods"
 import MoodDetails from "../features/discover/moodDetails"
+import Create from "../features/create/create"
+import Editor from "../features/create/editor"
 
 const PAGES = {
   cover: Cover,
@@ -24,7 +26,9 @@ const PAGES = {
   loves: Loves,
   settings: Settings,
   moods: Moods,
-  moodDetails: MoodDetails
+  moodDetails: MoodDetails,
+  create: Create,
+  editor: Editor
 } as const
 
 

@@ -56,9 +56,26 @@ const sidebarTitle =
       header={
         <Header
           items={[
-            { section: "HOME" },
-            { section: "FILTER" },
-            { section: "CREATE" },
+            { section: "HOME",
+              clickable: true,
+              onClick: () =>
+                onNavigate?.({
+                  to: "discover",
+                  direction: "prev",
+                  params:{
+                    user,
+                    isOwner: false
+                  }
+                })
+            },
+            { section: "FILTER",
+              clickable: true,
+              onClick: () => console.log("filter clicked"),
+             },
+            { section: "CREATE",
+              clickable: true,
+              onClick: () => console.log("create clicked"),
+             },
           ]}
         />
       }

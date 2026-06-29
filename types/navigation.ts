@@ -8,6 +8,7 @@ export type NavigationPayload = {
   from?: PageName
   isOwner?: boolean
   fromTab?: "new" | "featured" | "following"
+  layout?: "A" | "B" | "C" | "D" 
 }
 
 export type NavigationParams = {

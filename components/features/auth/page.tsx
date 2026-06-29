@@ -51,9 +51,15 @@ export default function Authentification({ onNavigate }: Props) {
       header={
         <Header
           items={[
-            { label: "HOME" },
-            { label: "FILTER" },
-            { label: "CREATE" },
+            { section: "HOME",
+              clickable: false,
+            },
+            { section: "FILTER",
+              clickable: false,
+             },
+            { section: "CREATE",
+              clickable: false,
+             },
           ]}
         />
       }
