@@ -1,125 +1,84 @@
 "use client"
 
+import ImageSlot from "./ImageSlot"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
+
 type Props = {
-  images?: (string | null)[]
+  images?: MoodboardSlot[]
   onSelectSlot?: (index: number) => void
+  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void
 }
 
-export default function LayoutB({ images = [], onSelectSlot }: Props) {
+export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Props) {
+  const select = (index: number) => onSelectSlot?.(index)
+  const update = (index: number) => (patch: MoodboardSlotPatch) => onUpdateSlot?.(index, patch)
+
   return (
-    <div className="grid grid-cols-2 gap-[2px] h-full w-full">
+    <div className="grid grid-cols-2 gap-[2px] h-full w-full min-h-0 min-w-0">
 
       {/* ================= LEFT COLUMN ================= */}
-      <button
-        onClick={() => onSelectSlot?.(0)}
-        className="relative h-full w-full bg-zinc-200 hover:bg-zinc-300 transition overflow-hidden"
-      >
-        {images[0] ? (
-          <img src={images[0]} className="w-full h-full object-cover" />
-        ) : (
-          <span className="absolute inset-0 flex items-center justify-center text-black/30 text-xs">
-            +
-          </span>
-        )}
-      </button>
+      <ImageSlot
+        slot={images[0] ?? null}
+        onSelect={() => select(0)}
+        onChangeTransform={update(0)}
+        className="h-full w-full bg-zinc-200 hover:bg-zinc-300"
+      />
 
       {/* ================= RIGHT COLUMN ================= */}
-      <div className="grid grid-rows-[1fr_2fr_1fr] gap-[2px] h-full">
+      <div className="grid grid-rows-[1fr_2fr_1fr] gap-[2px] h-full min-h-0 min-w-0">
 
         {/* -------- C -------- */}
-        <button
-          onClick={() => onSelectSlot?.(1)}
-          className="relative bg-zinc-300 hover:bg-zinc-400 transition overflow-hidden"
-        >
-          {images[1] ? (
-            <img src={images[1]} className="w-full h-full object-cover" />
-          ) : (
-            <span className="absolute inset-0 flex items-center justify-center text-black/30 text-xs">
-              +
-            </span>
-          )}
-        </button>
+        <ImageSlot
+          slot={images[1] ?? null}
+          onSelect={() => select(1)}
+          onChangeTransform={update(1)}
+          className="bg-zinc-300 hover:bg-zinc-400"
+        />
 
         {/* -------- D (4 small squares) -------- */}
-        <div className="grid grid-cols-2 gap-[2px]">
+        <div className="grid grid-cols-2 gap-[2px] min-h-0 min-w-0">
 
           {/* D1 column */}
-          <div className="grid grid-rows-2 gap-[2px]">
-
-            <button
-              onClick={() => onSelectSlot?.(2)}
-              className="relative bg-zinc-400 hover:bg-zinc-500 transition overflow-hidden aspect-square"
-            >
-              {images[2] ? (
-                <img src={images[2]} className="w-full h-full object-cover" />
-              ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-black/30 text-xs">
-                  +
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => onSelectSlot?.(3)}
-              className="relative bg-zinc-400 hover:bg-zinc-500 transition overflow-hidden aspect-square"
-            >
-              {images[3] ? (
-                <img src={images[3]} className="w-full h-full object-cover" />
-              ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-black/30 text-xs">
-                  +
-                </span>
-              )}
-            </button>
-
+          <div className="grid grid-rows-2 gap-[2px] min-h-0 min-w-0">
+            <ImageSlot
+              slot={images[2] ?? null}
+              onSelect={() => select(2)}
+              onChangeTransform={update(2)}
+              className="bg-zinc-400 hover:bg-zinc-500"
+            />
+            <ImageSlot
+              slot={images[3] ?? null}
+              onSelect={() => select(3)}
+              onChangeTransform={update(3)}
+              className="bg-zinc-400 hover:bg-zinc-500"
+            />
           </div>
 
           {/* D2 column */}
-          <div className="grid grid-rows-2 gap-[2px]">
-
-            <button
-              onClick={() => onSelectSlot?.(4)}
-              className="relative bg-zinc-400 hover:bg-zinc-500 transition overflow-hidden aspect-square"
-            >
-              {images[4] ? (
-                <img src={images[4]} className="w-full h-full object-cover" />
-              ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-black/30 text-xs">
-                  +
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => onSelectSlot?.(5)}
-              className="relative bg-zinc-400 hover:bg-zinc-500 transition overflow-hidden aspect-square"
-            >
-              {images[5] ? (
-                <img src={images[5]} className="w-full h-full object-cover" />
-              ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-black/30 text-xs">
-                  +
-                </span>
-              )}
-            </button>
-
+          <div className="grid grid-rows-2 gap-[2px] min-h-0 min-w-0">
+            <ImageSlot
+              slot={images[4] ?? null}
+              onSelect={() => select(4)}
+              onChangeTransform={update(4)}
+              className="bg-zinc-400 hover:bg-zinc-500"
+            />
+            <ImageSlot
+              slot={images[5] ?? null}
+              onSelect={() => select(5)}
+              onChangeTransform={update(5)}
+              className="bg-zinc-400 hover:bg-zinc-500"
+            />
           </div>
 
         </div>
 
         {/* -------- E -------- */}
-        <button
-          onClick={() => onSelectSlot?.(6)}
-          className="relative bg-zinc-300 hover:bg-zinc-400 transition overflow-hidden"
-        >
-          {images[6] ? (
-            <img src={images[6]} className="w-full h-full object-cover" />
-          ) : (
-            <span className="absolute inset-0 flex items-center justify-center text-black/30 text-xs">
-              +
-            </span>
-          )}
-        </button>
+        <ImageSlot
+          slot={images[6] ?? null}
+          onSelect={() => select(6)}
+          onChangeTransform={update(6)}
+          className="bg-zinc-300 hover:bg-zinc-400"
+        />
 
       </div>
     </div>

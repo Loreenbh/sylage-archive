@@ -1,36 +1,27 @@
 "use client"
 
+import ImageSlot from "./ImageSlot"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
+
 type Props = {
-  images?: (string | null)[]
+  images?: MoodboardSlot[]
   onSelectSlot?: (index: number) => void
+  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void
 }
 
-export default function LayoutA({ images = [], onSelectSlot }: Props) {
+export default function LayoutA({ images = [], onSelectSlot, onUpdateSlot }: Props) {
   return (
-    <div className="grid grid-cols-3 grid-rows-3 h-full w-full gap-[2px]">
+    <div className="grid grid-cols-3 grid-rows-3 h-full w-full gap-[2px] min-h-0 min-w-0">
 
-      {Array.from({ length: 9 }).map((_, index) => {
-        const image = images[index] ?? null
-
-        return (
-          <button
-            key={index}
-            onClick={() => onSelectSlot?.(index)}
-            className="relative bg-pink-300 hover:bg-zinc-300 transition overflow-hidden"
-          >
-            {image ? (
-              <img
-                src={image}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="absolute inset-0 flex items-center justify-center text-black/30 text-xs">
-                +
-              </span>
-            )}
-          </button>
-        )
-      })}
+      {Array.from({ length: 9 }).map((_, index) => (
+        <ImageSlot
+          key={index}
+          slot={images[index] ?? null}
+          onSelect={() => onSelectSlot?.(index)}
+          onChangeTransform={(patch) => onUpdateSlot?.(index, patch)}
+          className="bg-pink-300 hover:bg-zinc-300"
+        />
+      ))}
 
     </div>
   )

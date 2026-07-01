@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useRef, useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
@@ -33,95 +34,72 @@ const LAYOUT_SLOT_COUNT = {
 export default function Editor({ onNavigate, params }: Props) {
   const layout = params?.layout as keyof typeof LAYOUT_SLOT_COUNT
 
-  console.log("📦 layout received:", layout)
-
   const slotCount = LAYOUT_SLOT_COUNT[layout] ?? 9
 
   /* ---------------- STATE ---------------- */
-  const [images, setImages] = useState<(string | null)[]>(
+  const [slots, setSlots] = useState<MoodboardSlot[]>(
     Array(slotCount).fill(null)
   )
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const activeSlotRef = useRef<number | null>(null)
 
-  /* ---------------- SLOT CLICK ---------------- */
+  /* ---------------- SLOT CLICK (upload / changer image) ---------------- */
   const handleSlotClick = (index: number) => {
-    console.log("🟡 slot clicked:", index)
-
     activeSlotRef.current = index
-    console.log("📌 activeSlotRef:", activeSlotRef.current)
-
     fileInputRef.current?.click()
-    console.log("📁 file input triggered")
   }
 
   /* ---------------- FILE CHANGE ---------------- */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-
-    console.log("📄 file:", file)
-
     const slot = activeSlotRef.current
-    console.log("📍 slot used:", slot)
 
     if (!file || slot === null) return
 
     const url = URL.createObjectURL(file)
-    console.log("🖼️ created URL:", url)
 
-    setImages((prev) => {
+    setSlots((prev) => {
       const copy = [...prev]
-
-      console.log("💾 updating images at index:", slot)
-
-      copy[slot] = url
-
-      console.log("📦 new images state:", copy)
-
+      copy[slot] = { url, scale: 1, offsetX: 0, offsetY: 0 }
       return copy
     })
 
     activeSlotRef.current = null
-    console.log("🧹 slot reset")
 
-    // IMPORTANT: permet re-upload même fichier
+    // permet re-upload même fichier
     e.target.value = ""
+  }
+
+  /* ---------------- TRANSFORM UPDATE (pan/zoom) ---------------- */
+  const handleUpdateSlot = (index: number, patch: MoodboardSlotPatch) => {
+    setSlots((prev) => {
+      const current = prev[index]
+      if (!current) return prev
+
+      const copy = [...prev]
+      copy[index] = { ...current, ...patch }
+      return copy
+    })
   }
 
   /* ---------------- RENDER LAYOUT ---------------- */
   const renderLayout = () => {
-    console.log("🎨 renderLayout called")
+    const layoutProps = {
+      images: slots,
+      onSelectSlot: handleSlotClick,
+      onUpdateSlot: handleUpdateSlot,
+    }
 
     switch (layout) {
       case "A":
-        return (
-          <LayoutA
-            images={images}
-            onSelectSlot={handleSlotClick}
-          />
-        )
+        return <LayoutA {...layoutProps} />
       case "B":
-        return (
-          <LayoutB
-            images={images}
-            onSelectSlot={handleSlotClick}
-          />
-        )
+        return <LayoutB {...layoutProps} />
       case "C":
-        return (
-          <LayoutC
-            images={images}
-            onSelectSlot={handleSlotClick}
-          />
-        )
+        return <LayoutC {...layoutProps} />
       case "D":
-        return (
-          <LayoutD
-            images={images}
-            onSelectSlot={handleSlotClick}
-          />
-        )
+        return <LayoutD {...layoutProps} />
       default:
         return (
           <div className="flex items-center justify-center h-full text-black/40">
