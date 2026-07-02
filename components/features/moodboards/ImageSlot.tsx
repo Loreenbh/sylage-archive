@@ -136,7 +136,7 @@ export default function ImageSlot({
   return (
     <div
       ref={containerRef}
-      className={`group relative min-w-0 min-h-0 overflow-hidden transition ${className}`}
+      className={`group relative w-full h-full min-w-0 min-h-0 overflow-hidden transition ${className}`}
     >
       {slot ? (
         <>
