@@ -6,7 +6,7 @@ import type { NavigationParams } from "@/types/navigation"
 import PageFlip from "./PageFlip"
 /*PAGES*/
 import Cover from "../features/cover/page"
-import Authentification from "../features/auth/page"
+import Authentification from "../features/auth/auth"
 import Discover from "../features/discover/discover"
 import ProfilePage from "../features/profile/profilePage"
 import Silhouettes from "../features/profile/silhouettes"

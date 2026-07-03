@@ -12,7 +12,7 @@ export async function POST(request: Request){
 
     const result = await pool.query(
         `INSERT INTO moodboards (user_id, layout, tags, images)
-        VALUES ($1 $2 $3 $4)
+        VALUES ($1, $2, $3, $4)
         RETURNING *`,
         [user_id, layout, tags, JSON.stringify(images)]
     )

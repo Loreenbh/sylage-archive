@@ -87,7 +87,7 @@ export default function Header({
               scrollbar-none
             "
           >
-            {FILTERS.map((filter) => (
+            {/* {FILTERS.map((filter) => (
               <button
                 key={filter}
                 className="
@@ -102,8 +102,8 @@ export default function Header({
                 "
               >
                 {filter}
-              </button>
-            ))}
+              </button> */}
+            {/* ))} */}
           </div>
 
         </div>
