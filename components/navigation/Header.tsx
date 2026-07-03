@@ -1,6 +1,8 @@
 "use client"
+import { useState } from "react"
 
 import { typography } from "@/styles/typography"
+import { MOODBOARD_TAGS } from "@/constants/tags"
 /* TYPES */
 type HeaderItem = {
   section: string
@@ -15,16 +17,6 @@ type HeaderProps = {
 }
 /*-------------------------------------------------*/
 
-const FILTERS = [
-  "FASHION",
-  "BEAUTY",
-  "ART",
-  "MUSIC",
-  "DESIGN",
-  "EDITORIAL",
-  "FUTURISM",
-  "ARCHIVE",
-]
 
 export default function Header({
   items,
