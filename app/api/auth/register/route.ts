@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 import bcrypt from 'bcrypt'
 import { pool } from '@/lib/db'
 
+
+//QUERY : envoyer une question a la base
+//pool.query " execute une requete sql sur la bdd"
+//json langage universel de donnees 
+//“le cookie transporte le token, et le token permet de retrouver la session en base”
+//request: requete hhtp envoyee par le nav(via fetch)
+//async : cette fonction va contenir du code qui prend du temps
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MIN_PASSWORD_LENGTH = 8
 const SALT_ROUNDS = 10
