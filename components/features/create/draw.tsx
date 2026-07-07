@@ -140,16 +140,17 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
           {mode === false && (
             <div className="ml-[200px]">
               <button
-                onClick={() =>
-                  onNavigate?.({
-                    to: "profile",
-                    direction: "next",
-                    params: {
-                      user,
-                      isOwner: mode
-                    },
-                  })
-                }
+                onClick={handlePublish}
+                // onClick={() =>
+                //   onNavigate?.({
+                //     to: "profile",
+                //     direction: "next",
+                //     params: {
+                //       user,
+                //       isOwner: mode
+                //     },
+                //   })
+                // }
                 className={typography.buttonBody}
               >
                 Publish

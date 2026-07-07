@@ -82,11 +82,19 @@ export default function Authentification({ onNavigate }: Props) {
     const handleRegister = async () =>{
       setRegisterError(null)
       setRegisterSuccess(null)
+      if (!registerForm.password || !registerForm.confirmPassword
+         || !registerForm.email || !registerForm.username
+      ){
+        setRegisterError("Champs manquants!")
+        return
+      }
 
     if (registerForm.password !== registerForm.confirmPassword){
       setRegisterError("Lesmoys de passe ne correspondent pas")
       return
     }
+
+
 
     setIsSubmitting(true)
 
@@ -128,6 +136,11 @@ export default function Authentification({ onNavigate }: Props) {
       console.log("Je clique sur Enter")
       setLoginError(null)
       setIsSubmitting(true)
+
+      if (!loginForm.identifier || !loginForm.password) {
+        setLoginError("Champs manquants")
+        return
+      }
 
       try{
         const res = await fetch("/api/auth/login",{
@@ -235,7 +248,7 @@ export default function Authentification({ onNavigate }: Props) {
             <div className="pt-16 sm:pt-35 lg:pt-50">
               <MagazineInput 
                 placeholder="Email/username" 
-                type="email"
+                type="text"
                 index={1}
                 value={loginForm.identifier}
                 onChange={updateLoginField("identifier")} />

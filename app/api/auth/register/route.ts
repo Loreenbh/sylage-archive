@@ -35,7 +35,7 @@ export async function POST(request: Request){
 
     if (password.length < MIN_PASSWORD_LENGTH){
         return NextResponse.json(
-            {error: 'Le mot de passe doit faire au moins ${MIN_PASSWORD_LENGTH}'},
+            {error: `Le mot de passe doit faire au moins ${MIN_PASSWORD_LENGTH}`},
             {status: 400}
         )
     }
