@@ -158,7 +158,7 @@ export default function ImageSlot({
               e.stopPropagation()
               onSelect()
             }}
-            className="absolute bottom-1 right-1 z-10 w-6 h-6 rounded-full bg-black/50 text-white text-xs
+            className="export-hidden absolute bottom-1 right-1 z-10 w-6 h-6 rounded-full bg-black/50 text-white text-xs
                        flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
             aria-label="Changer l'image"
           >
@@ -173,7 +173,7 @@ export default function ImageSlot({
             onPointerMove={handlePanPointerMove}
             onPointerUp={handlePanPointerUp}
             onClick={(e) => e.stopPropagation()}
-            className={`absolute top-1 left-1 z-10 w-6 h-6 rounded-full bg-black/50 text-white text-xs
+            className={`export-hidden absolute top-1 left-1 z-10 w-6 h-6 rounded-full bg-black/50 text-white text-xs
                         flex items-center justify-center transition touch-none
                         ${isPanning ? "cursor-grabbing opacity-100" : "cursor-grab opacity-70 group-hover:opacity-100"}`}
             aria-label="Déplacer l'image"
@@ -189,7 +189,7 @@ export default function ImageSlot({
             onPointerMove={handleZoomPointerMove}
             onPointerUp={handleZoomPointerUp}
             onClick={(e) => e.stopPropagation()}
-            className={`absolute top-1 right-1 z-10 w-6 h-6 rounded-full bg-black/50 text-white text-xs
+            className={`export-hidden absolute top-1 right-1 z-10 w-6 h-6 rounded-full bg-black/50 text-white text-xs
                         flex items-center justify-center transition touch-none
                         ${isZooming ? "cursor-ns-resize opacity-100" : "cursor-ns-resize opacity-70 group-hover:opacity-100"}`}
             aria-label="Zoomer l'image"

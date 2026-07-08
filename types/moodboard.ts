@@ -1,3 +1,11 @@
+export type Moodboard = {
+  id: number
+  user_id: number
+  image_url: string
+  tags: string[]
+  created_at: string
+}
+
 export type MoodboardSlot = {
     url: string
     scale: number

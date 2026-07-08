@@ -5,10 +5,12 @@ export const MOODBOARD_TAGS = [
     "ROCK",
     "MINIMAL",
     "WORKWEAR",
-    "FUTURIST"
+    "FUTURIST",
+    "SPORTWEAR",
+    "RETRO"
 ] as const
 
 
 export type MoodboardTag = (typeof MOODBOARD_TAGS)[number]
 
-export const MAX_TAG_PER_MOODBOARD = 5
+export const MAX_TAGS_PER_MOODBOARD = 5

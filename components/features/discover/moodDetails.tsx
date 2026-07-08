@@ -18,11 +18,8 @@ type Props = {
 }
 
 export default function MoodDetails({ onNavigate, params }: Props) {
-// const user = params?.user
-// const mode = params?.isOwner
-// const fromTab = params?.fromTab
-// const from = params?.from
-const { isOwner: mode, user, fromTab, from} = params ?? {}
+
+const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
   const sidebarTitle = 
     mode === true
     ? "DETAILS"
@@ -132,6 +129,13 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
       <SimpleGrid
         square={
             <div className="relative w-[280px] sm:w-[500px] md:w-[550px] lg:w-[750px] aspect-square mx-auto bg-red-200">
+                {moodboard && (
+                  <img
+                    src={moodboard.image_url}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                )}
             </div>
           }
         />

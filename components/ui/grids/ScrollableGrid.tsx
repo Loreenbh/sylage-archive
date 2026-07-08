@@ -17,14 +17,14 @@ export default function ScrollableGrid({ data, renderItem, onItemClick }: Props)
     <div className="h-full w-full flex flex-col">
 
       {/* SCROLL AREA */}
-      <div className="flex-1 min-h-0 overflow-y-auto bg-purple-500">
+      <div className="flex-1 min-h-0 overflow-y-auto">
 
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-col gap-4">
 
           {rows.map((row, rowIdx) => (
             <div
               key={rowIdx}
-              className="grid grid-cols-2 gap-0.5"
+              className="grid grid-cols-2 gap-4"
             >
               {row.map((item) => (
                 <div key={item.id}

@@ -30,6 +30,8 @@
    ```
    Le schéma (tables `moodboards`, `users`, `sessions`) se crée automatiquement au premier démarrage.
 
+```docker exec -i weave-postgres psql -U postgres -d weave < schema.sql```
+
 5. **Lancer l'app**
    ```bash
    npm run dev

@@ -1,10 +1,11 @@
 import type { PageName } from "./pages"
+import type { Moodboard } from "./moodboard"
 
 export type Direction = "next" | "prev"
 
 export type NavigationPayload = {
   user?: string
-  moodId?: number
+  moodboard?: Moodboard
   from?: PageName
   isOwner?: boolean
   fromTab?: "new" | "featured" | "following"
