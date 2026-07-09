@@ -13,10 +13,8 @@ CREATE TABLE moodboards (
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT NOW(),
     image_url TEXT NOT NULL,
-    -- layout TEXT NOT NULL DEFAULT 'A',
     tags TEXT[] NOT NULL DEFAULT '{}',
-    -- images JSONB NOT NULL DEFAULT '[]',
-    CONSTRAINT tags_between_3_and_5 CHECK (cardinality(tags) BETWEEN 3 AND 5)
+    CONSTRAINT tags_between_3_and_7 CHECK (cardinality(tags) BETWEEN 3 AND 7)
 );
 
 -- SESSIONS

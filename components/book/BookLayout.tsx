@@ -25,7 +25,7 @@ export default function BookLayout({
       <div className="flex mt-7 items-center justify-center min-h-0 gap-1">
 
         {/* LEFT COLUMN = carré + actions */}
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-blue-300">
 
           {/* CARRÉ */}
           <div

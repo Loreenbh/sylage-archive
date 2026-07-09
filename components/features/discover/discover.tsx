@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
-import type { Moodboard } from "@/types/moodboard"
+
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
@@ -18,6 +18,13 @@ type Props = {
 }
 type Tab = "new" | "featured" | "following"
 
+type Moodboard = {
+  id: number
+  user_id: number
+  image_url: string
+  tags: string[]
+  created_at: string
+}
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
@@ -27,6 +34,7 @@ export default function Discover({ onNavigate, params }: Props) {
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
 
   useEffect(() => {
     let cancelled = false
@@ -50,12 +58,17 @@ export default function Discover({ onNavigate, params }: Props) {
     }
   }, [])
 
-  const filteredMoodboards =
+  const byTab =
     tab === "new"
       ? moodboards
       : tab === "featured"
       ? [...moodboards].reverse()
       : moodboards.slice(0, 10)
+
+  const filteredMoodboards =
+    selectedFilters.length === 0
+      ? byTab
+      : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
   const sidebarTitle = tab.toUpperCase()
 
@@ -63,6 +76,7 @@ export default function Discover({ onNavigate, params }: Props) {
     <BookLayout
       header={
         <Header
+          onFiltersChange={setSelectedFilters}
           items={[
             { section: "HOME",
               clickable: false,
@@ -130,7 +144,6 @@ export default function Discover({ onNavigate, params }: Props) {
                 direction: "next",
                 params: {
                   user: String(board.username),
-                  moodboard: board,
                   from: "discover",
                   fromTab: tab,
                   isOwner: mode
@@ -145,7 +158,7 @@ export default function Discover({ onNavigate, params }: Props) {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
-                <p className="absolute bottom-2 left-1 text-[12px] bg-zinc-200 tracking-[0.2em] text-zinc-500 drop-shadow">
+                <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-white drop-shadow">
                   {board.username}
                 </p>
               </div>

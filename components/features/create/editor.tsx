@@ -4,7 +4,8 @@ import { useRef, useState } from "react"
 import { toPng } from "html-to-image"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
-import { MOODBOARD_TAGS, MAX_TAGS_PER_MOODBOARD } from "@/constants/tags"
+import { MIN_TAGS_TOTAL } from "@/constants/tags"
+import TagPicker from "@/components/filters/TagPicker"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
@@ -33,8 +34,6 @@ const LAYOUT_SLOT_COUNT = {
   D: 6,
 } as const
 
-const MIN_TAGS_PER_MOODBOARD = 3
-
 export default function Editor({ onNavigate, params }: Props) {
   const layout = params?.layout as keyof typeof LAYOUT_SLOT_COUNT
 
@@ -44,7 +43,9 @@ export default function Editor({ onNavigate, params }: Props) {
   const [slots, setSlots] = useState<MoodboardSlot[]>(
     Array(slotCount).fill(null)
   )
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [styleTags, setStyleTags] = useState<string[]>([])
+  const [ambianceTags, setAmbianceTags] = useState<string[]>([])
+  const [colorTags, setColorTags] = useState<string[]>([])
   const [publishError, setPublishError] = useState<string | null>(null)
   const [isPublishing, setIsPublishing] = useState(false)
 
@@ -89,27 +90,17 @@ export default function Editor({ onNavigate, params }: Props) {
     })
   }
 
-  /* ---------------- TAGS ---------------- */
-  const toggleTag = (tag: string) => {
-    setSelectedTags((prev) => {
-      if (prev.includes(tag)) return prev.filter((t) => t !== tag)
-      if (prev.length >= MAX_TAGS_PER_MOODBOARD) return prev
-      return [...prev, tag]
-    })
-  }
+  /* ---------------- TAGS (3 catégories, plafonds distincts) ---------------- */
+  const allSelectedTags = [...styleTags, ...ambianceTags, ...colorTags]
 
-  const canPublish =
-    selectedTags.length >= MIN_TAGS_PER_MOODBOARD &&
-    selectedTags.length <= MAX_TAGS_PER_MOODBOARD
+  const canPublish = allSelectedTags.length >= MIN_TAGS_TOTAL
 
   /* ---------------- PUBLISH ---------------- */
   const handlePublish = async () => {
     setPublishError(null)
 
     if (!canPublish) {
-      setPublishError(
-        `Choisis entre ${MIN_TAGS_PER_MOODBOARD} et ${MAX_TAGS_PER_MOODBOARD} tags`
-      )
+      setPublishError(`Choisis au moins ${MIN_TAGS_TOTAL} tags au total`)
       return
     }
 
@@ -124,7 +115,6 @@ export default function Editor({ onNavigate, params }: Props) {
       layoutRef.current.classList.add("export-mode")
       // 1. capture le layout affiché (avec les images déjà zoomées/positionnées) en PNG
       const imageData = await toPng(layoutRef.current)
-
       layoutRef.current.classList.remove("export-mode")
       // 2. upload cette image, récupère son URL réelle
       const uploadRes = await fetch("/api/upload", {
@@ -147,7 +137,7 @@ export default function Editor({ onNavigate, params }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imageUrl: uploadData.url,
-          tags: selectedTags,
+          tags: allSelectedTags,
         }),
       })
 
@@ -255,32 +245,20 @@ export default function Editor({ onNavigate, params }: Props) {
           {renderLayout()}
         </div>
 
-        {/* PICKER DE TAGS (3 à 5 obligatoires) */}
-        <div className="flex flex-col items-center gap-1 pb-2">
-          <div className="flex flex-wrap justify-center gap-2 px-4">
-            {MOODBOARD_TAGS.map((tag) => {
-              const isSelected = selectedTags.includes(tag)
-              return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => toggleTag(tag)}
-                  className={`
-                    text-[9px] sm:text-[10px] tracking-[0.2em] uppercase
-                    px-2 py-1 border transition
-                    ${isSelected
-                      ? "border-black text-black"
-                      : "border-black/20 text-black/30 hover:text-black/60"}
-                  `}
-                >
-                  {tag}
-                </button>
-              )
-            })}
-          </div>
+        {/* PICKER DE TAGS : 3 catégories dépliables */}
+        <div className="flex flex-col items-center gap-2 pb-2 px-4">
+
+          <TagPicker
+            styleTags={styleTags}
+            ambianceTags={ambianceTags}
+            colorTags={colorTags}
+            onChangeStyle={setStyleTags}
+            onChangeAmbiance={setAmbianceTags}
+            onChangeColor={setColorTags}
+          />
 
           <p className="text-[9px] text-black/30 tracking-[0.15em]">
-            {selectedTags.length}/{MAX_TAGS_PER_MOODBOARD} (min {MIN_TAGS_PER_MOODBOARD})
+            {allSelectedTags.length} tag{allSelectedTags.length > 1 ? "s" : ""} sélectionné{allSelectedTags.length > 1 ? "s" : ""} (min {MIN_TAGS_TOTAL})
           </p>
 
           {publishError && (
