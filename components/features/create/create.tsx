@@ -55,12 +55,30 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
         />
       }
       sidebar={<Sidebar text="CREATE" clickable={false} />}
+      actionsBar={
+        from != "discover" && (
+          <div className="flex w-full items-center justify-between">
+            <button
+              onClick={() =>
+                onNavigate({
+                  to: from ?? "discover",
+                  direction: "prev",
+                  // params: { layout },
+                })
+              }
+              className={typography.buttonBody}
+            >
+              back
+            </button>
+          </div>
+        )
+      }
       footer={<ProfileButton onNavigate={onNavigate} />}
     >
       <FourSquaresGrid
         topLeft={
           <button
-            className="h-full w-full bg-zinc-200 hover:bg-zinc-300 transition"
+            className="h-full w-full"
             onClick={() =>
               onNavigate({
                 to: "editor",

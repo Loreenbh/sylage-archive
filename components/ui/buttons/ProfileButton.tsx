@@ -2,12 +2,16 @@ import type { OnNavigate } from "@/types/navigation"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
+  active?: boolean
+  clickable?: boolean
 }
 /*------------------------------------------ */
-export default function ProfileButton({ onNavigate }: Props) {
+export default function ProfileButton({ onNavigate ,active = false, clickable = true}: Props) {
   return (
     <button
-      onClick={() =>
+      disabled={!clickable}
+      onClick={() => {
+        if (!clickable) return
         onNavigate({
           to: "profile",
           direction: "next",
@@ -16,8 +20,22 @@ export default function ProfileButton({ onNavigate }: Props) {
             user: undefined
           }
         })
-      }
-      className=" bg-red-600 w-9 h-9 md:w-14 md:h-14 lg:w-18 lg:h-18 rounded-full bg-black/10 hover:bg-black/20 transition"
+      }}
+      className={`
+                  w-9 h-9 md:w-14 md:h-14 lg:w-18 lg:h-18
+                  rounded-full transition
+
+                  ${
+                    active
+                    ? "bg-pink-200"
+                    : "bg-green-600 hover:bg-green-100"
+                  }
+                  ${
+                    !clickable
+                    ? "cursor-default"
+                    : "cursor-pointer"
+                  }
+                `}
     />
   )
 }

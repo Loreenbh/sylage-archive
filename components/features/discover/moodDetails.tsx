@@ -25,7 +25,7 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
     ? "DETAILS"
     : ` ${user}|DETAILS`
   
-  console.log("dans mooddetails mode est:", mode)
+  console.log("dans mooddetails mode est:", mode, "et from est", from)
   return (
     <BookLayout
       header={
@@ -49,7 +49,16 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
              },
             { section: "CREATE",
               clickable: true,
-              onClick: () => console.log("create clicked"),
+                onClick: () =>
+                onNavigate?.({
+                  to: "create",
+                  direction: "next",
+                  params:{
+                    user,
+                    from: "discover",
+                    isOwner: mode
+                  }
+                })
              },
           ]}
         />
@@ -58,27 +67,31 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
       actionsBar={
         <div className="flex items-center gap-5">
           
-          {/* BACK toujours visible */}
-          <button
-            onClick={() =>
-              onNavigate?.({
-                to: from === "moods" ? "moods" : "discover",
-                direction: "prev",
-                params: {
-                  user,
-                  isOwner: mode,
-                  fromTab,
-                },
-              })
-            }
-            className={typography.buttonBody}
-          >
-            back
-          </button>
+          {from !== "discover" && (
+            <>
+            <button
+              onClick={() =>
+                onNavigate?.({
+                  to: "discover",
+                  direction: "prev",
+                  params: {
+                    user,
+                    isOwner: mode,
+                    from: "moodDetails",
+                  },
+                })
+              }
+              className={typography.buttonBody}
+            >
+              back
+            </button>
+            <span className={typography.bullet}>•</span>
+            </>
+          )
+        }
 
           {mode === false && (
             <>
-              <span className={typography.bullet}>•</span>
 
               <button
                 onClick={() =>
@@ -87,7 +100,8 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
                     direction: "next",
                     params: {
                       user,
-                      isOwner: mode
+                      isOwner: mode,
+                      from: "moodDetails"
                     },
                   })
                 }

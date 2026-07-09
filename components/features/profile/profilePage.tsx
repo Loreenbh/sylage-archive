@@ -27,7 +27,7 @@ export default function ProfilePage({ onNavigate, params }: Props) {
   }))
   // const user = params?.user
   // const mode = params?.isOwner
-const { isOwner: mode, user} = params ?? {}
+const { isOwner: mode, user, fromTab, from} = params ?? {}
 
   const sidebarTitle = 
     mode
@@ -35,7 +35,8 @@ const { isOwner: mode, user} = params ?? {}
     : user
       ? `${user} | PROFILE`
       : "PROFILE"
-  console.log("dans profilepage mode est:", mode)
+      
+  console.log("dans profilepage mode est:", mode, "et from est", from)
   return (
     <BookLayout
       header={
@@ -59,7 +60,16 @@ const { isOwner: mode, user} = params ?? {}
              },
             { section: "CREATE",
               clickable: true,
-              onClick: () => console.log("create clicked"),
+                onClick: () =>
+                onNavigate?.({
+                  to: "create",
+                  direction: "next",
+                  params:{
+                    user,
+                    from: "discover",
+                    isOwner: mode
+                  }
+                })
              },
           ]}
         />
@@ -67,7 +77,7 @@ const { isOwner: mode, user} = params ?? {}
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-2">
-          {mode === true && (
+          {mode === true ? (
             <>
               <button
                 className={typography.buttonBody}
@@ -103,12 +113,34 @@ const { isOwner: mode, user} = params ?? {}
                 Loves
               </button>
             </>
+          ) : (
+            <>
+              <button
+                onClick={() =>
+                  onNavigate?.({
+                    to: from ?? "discover",
+                    direction: "prev",
+                    params: {
+                      user,
+                      isOwner: mode,
+                      from: "profile",
+                    },
+                  })
+                }
+                className={typography.buttonBody}
+              >
+                back
+              </button>
+            </>
           )}
         </div>
       }
 
       footer={
-        <ProfileButton onNavigate={onNavigate} />
+        <ProfileButton
+          onNavigate={onNavigate} 
+          clickable={false} 
+          active/>
       }
     >
     <div className="flex flex-col h-full "> 

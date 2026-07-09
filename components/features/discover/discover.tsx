@@ -28,9 +28,7 @@ type Moodboard = {
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
-  const user = params?.user
-  const mode = params?.isOwner ?? false
-
+const { isOwner: mode = false, user, fromTab, from = "discover", moodboard} = params ?? {}
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -71,7 +69,7 @@ export default function Discover({ onNavigate, params }: Props) {
       : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
   const sidebarTitle = tab.toUpperCase()
-
+    console.log("dans discover mode est:", mode, "et from est", from)
   return (
     <BookLayout
       header={
@@ -94,7 +92,7 @@ export default function Discover({ onNavigate, params }: Props) {
                   direction: "next",
                   params:{
                     user,
-                    from: "discover",
+                    // from: "discover",
                     isOwner: mode
                   }
                 })
@@ -145,6 +143,7 @@ export default function Discover({ onNavigate, params }: Props) {
                 params: {
                   user: String(board.username),
                   from: "discover",
+                  moodboard: board,
                   fromTab: tab,
                   isOwner: mode
                 },

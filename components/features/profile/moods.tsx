@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 // import { getNavContext } from "@/lib/navigation/getNavContext"
 /* COMPONENTS */
@@ -17,36 +17,72 @@ type Props = {
 
 }
 type Tab = "new" | "featured" | "following"
+
+type Moodboard = {
+  id: number
+  user_id: number
+  image_url: string
+  tags: string[]
+  created_at: string
+}
 /*---------------------------------------------------- */
 
 export default function Moods({ onNavigate, params }: Props) {
 
-// const mode = params?.isOwner
-// const user = params?.user
+
 const { isOwner: mode, user} = params ?? {}
 
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
-  const moodboards = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    user: `user_${String(i + 1).padStart(2, "0")}`,
-    color: ["bg-zinc-200", "bg-zinc-300", "bg-zinc-400"][i % 3],
-  }))
+  const [moodboards, setMoodboards] = useState<Moodboard[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+
+  const byTab =
+    tab === "new"
+      ? moodboards
+      : tab === "featured"
+      ? [...moodboards].reverse()
+      : moodboards.slice(0, 10)
+
+
   const filteredMoodboards =
-  tab === "new"
-    ? moodboards
-    : tab === "featured"
-    ? [...moodboards].reverse()
-    : moodboards.slice(0, 10)
+    selectedFilters.length === 0
+      ? byTab
+      : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
+
+  const sidebarTitle =
+    mode
+      ? "MOODS"
+      : user
+        ? `${user} | Moods`
+        : "Moods"
 
 
-const sidebarTitle =
-  mode
-    ? "MOODS"
-    : user
-      ? `${user} | Moods`
-      : "Moods"
+  useEffect(() => {
+    async function loadMoodboards() {
+      try {
+        setIsLoading(true)
 
+        const res = await fetch(`/api/moodboards?user=${user}`)
+        const data = await res.json()
+
+        setMoodboards(data)
+
+      } catch {
+        setMoodboards([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    if (user) {
+      loadMoodboards()
+    } else {
+      setIsLoading(false)
+    }
+
+  }, [user])
 
   console.log("dans moods mode est:", mode)
   return (
@@ -103,10 +139,57 @@ const sidebarTitle =
         <ProfileButton onNavigate={onNavigate} />
       }
     >    
-      <div className="flex flex-col h-full "> 
-        {/* GRID */}
-        <ScrollableGrid
-          data={filteredMoodboards}
+        <div className="flex flex-col h-full "> 
+
+        {isLoading ? (
+          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
+            CHARGEMENT...
+          </p>
+        ) : filteredMoodboards.length === 0 ? (
+          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
+            AUCUN MOODBOARD POUR L'INSTANT
+          </p>
+        ) : (
+          <ScrollableGrid
+            data={filteredMoodboards}
+            onItemClick={(board) => {
+              onNavigate?.({
+                to: "moodDetails",
+                direction: "next",
+                params: {
+                  user: String(board.username),
+                  from: "moods",
+                  moodboard: board,
+                  fromTab: tab,
+                  isOwner: mode
+                },
+              })
+            }}
+            renderItem={(board) => (
+              <div className="relative aspect-square w-full bg-zinc-100 cursor-pointer overflow-hidden">
+                <img
+                  src={board.image_url}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+
+                <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-white drop-shadow">
+                  {board.username}
+                </p>
+              </div>
+            )}
+          />
+        )}
+      </div>
+    </BookLayout>
+  )
+}
+
+
+
+
+{/* <ScrollableGrid
+          data={moodboards}
           onItemClick={(board) => {
             setSelectedUser(board.user)
             onNavigate?.({
@@ -118,21 +201,4 @@ const sidebarTitle =
                 fromTab: tab,
                 isOwner: mode
               },
-            })
-          }}
-          renderItem={(board) => (
-            <div className="relative aspect-square w-full bg-zinc-100 cursor-pointer">
-              <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300" />
-
-              {/* {mode === "normal" && (
-              <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-black/30">
-                {board.user}
-              </p>
-              )} */}
-            </div>
-          )}
-        />
-      </div>
-    </BookLayout>
-  )
-}
+            }) */}

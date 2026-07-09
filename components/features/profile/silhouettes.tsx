@@ -89,7 +89,8 @@ const sidebarTitle =
                 direction: "prev",
                 params:{
                   user,
-                  isOwner : mode
+                  isOwner : mode,
+                  from: "silhouettes"
                 }
               })
             }

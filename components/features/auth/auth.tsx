@@ -157,7 +157,7 @@ export default function Authentification({ onNavigate }: Props) {
          onNavigate({
             to: "discover",
             direction: "next",
-            params: { user: data.username, isOwner: true },
+            params: { user: data.username },
           })
         } catch {
           setLoginError("Erreur réseau")
