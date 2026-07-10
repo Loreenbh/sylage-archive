@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
-// import { getNavContext } from "@/lib/navigation/getNavContext"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
@@ -21,6 +20,7 @@ type Tab = "new" | "featured" | "following"
 type Moodboard = {
   id: number
   user_id: number
+  username: string
   image_url: string
   tags: string[]
   created_at: string
@@ -84,11 +84,11 @@ const { isOwner: mode, user} = params ?? {}
 
   }, [user])
 
-  console.log("dans moods mode est:", mode)
-  return (
+    return (
     <BookLayout
       header={
         <Header
+          onFiltersChange={setSelectedFilters}
           items={[
             { section: "HOME",
               clickable: true,
@@ -104,7 +104,6 @@ const { isOwner: mode, user} = params ?? {}
             },
             { section: "FILTER",
               clickable: true,
-              onClick: () => console.log("filter clicked"),
              },
             { section: "CREATE",
               clickable: true,
@@ -184,21 +183,3 @@ const { isOwner: mode, user} = params ?? {}
     </BookLayout>
   )
 }
-
-
-
-
-{/* <ScrollableGrid
-          data={moodboards}
-          onItemClick={(board) => {
-            setSelectedUser(board.user)
-            onNavigate?.({
-              to: "moodDetails",
-              direction: "next",
-              params: {
-                user,
-                from: "moods",
-                fromTab: tab,
-                isOwner: mode
-              },
-            }) */}

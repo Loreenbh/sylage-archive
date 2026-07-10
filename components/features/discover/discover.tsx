@@ -21,6 +21,7 @@ type Tab = "new" | "featured" | "following"
 type Moodboard = {
   id: number
   user_id: number
+  username: string
   image_url: string
   tags: string[]
   created_at: string
@@ -28,11 +29,15 @@ type Moodboard = {
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
-const { isOwner: mode = false, user, fromTab, from = "discover", moodboard} = params ?? {}
+  const user = params?.user
+  const mode = params?.isOwner ?? false
+
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+
+  console.log("luser est dsicover", user)
 
   useEffect(() => {
     let cancelled = false
@@ -69,7 +74,7 @@ const { isOwner: mode = false, user, fromTab, from = "discover", moodboard} = pa
       : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
   const sidebarTitle = tab.toUpperCase()
-    console.log("dans discover mode est:", mode, "et from est", from)
+
   return (
     <BookLayout
       header={
@@ -92,7 +97,7 @@ const { isOwner: mode = false, user, fromTab, from = "discover", moodboard} = pa
                   direction: "next",
                   params:{
                     user,
-                    // from: "discover",
+                    from: "discover",
                     isOwner: mode
                   }
                 })
@@ -120,7 +125,7 @@ const { isOwner: mode = false, user, fromTab, from = "discover", moodboard} = pa
         </div>
       }
       footer={
-        <ProfileButton onNavigate={onNavigate} />
+        <ProfileButton onNavigate={onNavigate} user={user} />
       }
     >    
       <div className="flex flex-col h-full "> 

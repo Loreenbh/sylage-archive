@@ -18,6 +18,10 @@ type Props = {
   
 }
 
+type LastMoodboard = {
+  image_url : string
+}
+
 /*------------------------------------------------- */
 
 export default function ProfilePage({ onNavigate, params }: Props) {
@@ -25,9 +29,28 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     id: i + 1,
     user: `user_${String(i + 1).padStart(2, "0")}`,
   }))
-  // const user = params?.user
-  // const mode = params?.isOwner
+
 const { isOwner: mode, user, fromTab, from} = params ?? {}
+
+const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
+
+  useEffect(() => {
+    console.log("luser est", user)
+    if (!user) return
+
+    async function loadLastMoodboard() {
+      try {
+        const res = await fetch(`/api/moodboards?user=${user}`)
+        const data = await res.json()
+        // l'API renvoie déjà triée par created_at DESC → le premier est le plus récent
+        setLastMoodboard(data[0] ?? null)
+      } catch {
+        setLastMoodboard(null)
+      }
+    }
+
+    loadLastMoodboard()
+  }, [user])
 
   const sidebarTitle = 
     mode
@@ -36,7 +59,6 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
       ? `${user} | PROFILE`
       : "PROFILE"
       
-  console.log("dans profilepage mode est:", mode, "et from est", from)
   return (
     <BookLayout
       header={
@@ -162,9 +184,9 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
           </GridButton>
         }
 
-        topRight={
+                topRight={
           <GridButton
-            className="bg-zinc-200 hover:bg-zinc-300"
+            className="relative overflow-hidden bg-zinc-200 hover:bg-zinc-300"
             onClick={() => 
               onNavigate?.({ 
                 to:"moods", 
@@ -176,7 +198,16 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
               })
             }
           >
-            <p className={typography.body}>moods</p>
+            {lastMoodboard && (
+              <img
+                src={lastMoodboard.image_url}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            <p className={`${typography.body} relative z-10 ${lastMoodboard ? "text-white drop-shadow" : ""}`}>
+              moods
+            </p>
           </GridButton>
         }
 
@@ -195,6 +226,3 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
     </BookLayout>
   )
 }
-
-
-

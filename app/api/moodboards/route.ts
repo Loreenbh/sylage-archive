@@ -79,14 +79,51 @@ export async function POST(request: Request){
     }
 }
 
+//soit mes mood a moi= profile, tous les mood des autres = feed, tous les moood d un user
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url)
+console.log("URL COMPLETE :", request.url)
+    const username = searchParams.get('user')
+  console.log("PARAM USER :", searchParams.get("user"))
 
-export async function GET() {
-    const res = await pool.query(
+
+  const cookieStore = await cookies()
+const token = cookieStore.get("session_token")?.value
+
+
+    const baseQuery =
         `SELECT moodboards.*, users.username
         FROM moodboards
         JOIN users
-        ON moodboards.user_id = users.id
-        ORDER BY created_at DESC`
+        ON users.id = moodboards.user_id
+    
+        `
+    const session = await pool.query(
+        `SELECT user_id
+        FROM sessions
+        WHERE token=$1
+        AND expires_at > NOW()
+        `,
+        [token]
     )
+
+    const currentUser = session.rows[0]
+
+    //username envoye dans l urldonc
+    // const res = username
+    // ? await pool.query(
+    //     `${baseQuery} WHERE users.username = $1
+    //     ORDER BY moodboards.created_at DESC`,
+    //     [username]
+    // )
+    // : await pool.query(`${currentUser.id} != moodboards.user_id ORDER BY moodboards.created_at DESC`)
+    const  requestedUsername = username // soit moi soit alice
+    if (!res) //personne
+    else if (res != currentUser.username) //ici alice
+
+    else //moi
+
     return NextResponse.json(res.rows)
 }
+
+//ma session a un user_id qui est lie a users.id dpmc currentUser

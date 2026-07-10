@@ -2,11 +2,12 @@ import type { OnNavigate } from "@/types/navigation"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
+  user?: string
   active?: boolean
   clickable?: boolean
 }
 /*------------------------------------------ */
-export default function ProfileButton({ onNavigate ,active = false, clickable = true}: Props) {
+export default function ProfileButton({ onNavigate , user, active = false, clickable = true}: Props) {
   return (
     <button
       disabled={!clickable}
@@ -17,7 +18,7 @@ export default function ProfileButton({ onNavigate ,active = false, clickable = 
           direction: "next",
           params:{
             isOwner: true,
-            user: undefined
+            user: user
           }
         })
       }}
