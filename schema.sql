@@ -23,3 +23,11 @@ CREATE TABLE sessions(
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     expires_at TIMESTAMP NOT NULL
 );
+
+--SILHOUETTES
+CREATE TABLE silhouettes (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    image_url TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);

@@ -19,11 +19,11 @@ type Props = {
 
 export default function MoodDetails({ onNavigate, params }: Props) {
 
-const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
+const { isOwner: mode, username, fromTab, from, moodboard} = params ?? {}
   const sidebarTitle = 
     mode === true
     ? "DETAILS"
-    : ` ${user}|DETAILS`
+    : ` ${username}|DETAILS`
   
   console.log("dans mooddetails mode est:", mode, "et from est", from)
   return (
@@ -38,7 +38,7 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
                   to: "discover",
                   direction: "prev",
                   params:{
-                    user,
+                    username,
                     isOwner: false
                   }
                 })
@@ -54,7 +54,7 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
                   to: "create",
                   direction: "next",
                   params:{
-                    user,
+                    username,
                     from: "discover",
                     isOwner: mode
                   }
@@ -75,7 +75,7 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
                   to: "discover",
                   direction: "prev",
                   params: {
-                    user,
+                    username,
                     isOwner: mode,
                     from: "moodDetails",
                   },
@@ -99,7 +99,7 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
                     to: "profile",
                     direction: "next",
                     params: {
-                      user,
+                      username,
                       isOwner: mode,
                       from: "moodDetails"
                     },
@@ -120,8 +120,9 @@ const { isOwner: mode, user, fromTab, from, moodboard} = params ?? {}
                     to: "draw",
                     direction: "next",
                     params: {
-                      user,
-                      isOwner: mode
+                      username,
+                      isOwner: mode,
+                      moodboard
                     },
                   })
                 }

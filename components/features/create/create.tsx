@@ -25,7 +25,7 @@ type Props = {
 
 
 export default function Create({ onNavigate, params }: Props) {
-const { isOwner: mode, user, fromTab, from} = params ?? {}
+const { isOwner: mode, username, fromTab, from} = params ?? {}
   return (
     <BookLayout
       header={
@@ -77,8 +77,8 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
     >
       <FourSquaresGrid
         topLeft={
-          <button
-            className="h-full w-full"
+          <div
+            className="h-full w-full cursor-pointer"
             onClick={() =>
               onNavigate({
                 to: "editor",
@@ -91,9 +91,9 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
             }
           >
             <div className="w-full h-full overflow-hidden bg-zinc-100">
-                <LayoutA images={Array(9).fill(null)} />
+              <LayoutA images={Array(9).fill(null)} />
             </div>
-          </button>
+          </div>
         }
         
         topRight={

@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState } from "react"
-import type { OnNavigate, NavigationParams } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
@@ -10,6 +9,9 @@ import ProfileButton from "@/components/ui/buttons/ProfileButton"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 /* TYPES */
+import type { OnNavigate, NavigationParams } from "@/types/navigation"
+import { Moodboard } from "@/types/moodboard" 
+
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
@@ -17,20 +19,12 @@ type Props = {
 }
 type Tab = "new" | "featured" | "following"
 
-type Moodboard = {
-  id: number
-  user_id: number
-  username: string
-  image_url: string
-  tags: string[]
-  created_at: string
-}
 /*---------------------------------------------------- */
 
 export default function Moods({ onNavigate, params }: Props) {
 
 
-const { isOwner: mode, user} = params ?? {}
+const { isOwner: mode, username} = params ?? {}
 
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
@@ -54,8 +48,8 @@ const { isOwner: mode, user} = params ?? {}
   const sidebarTitle =
     mode
       ? "MOODS"
-      : user
-        ? `${user} | Moods`
+      : username
+        ? `${username} | Moods`
         : "Moods"
 
 
@@ -64,7 +58,7 @@ const { isOwner: mode, user} = params ?? {}
       try {
         setIsLoading(true)
 
-        const res = await fetch(`/api/moodboards?user=${user}`)
+        const res = await fetch(`/api/moodboards?user=${username}`)
         const data = await res.json()
 
         setMoodboards(data)
@@ -76,13 +70,13 @@ const { isOwner: mode, user} = params ?? {}
       }
     }
 
-    if (user) {
+    if (username) {
       loadMoodboards()
     } else {
       setIsLoading(false)
     }
 
-  }, [user])
+  }, [username])
 
     return (
     <BookLayout
@@ -97,7 +91,7 @@ const { isOwner: mode, user} = params ?? {}
                   to: "discover",
                   direction: "prev",
                   params:{
-                    user,
+                    username,
                     isOwner: false
                   }
                 })
@@ -123,7 +117,7 @@ const { isOwner: mode, user} = params ?? {}
                 to: "profile",
                 direction: "prev",
                 params:{
-                  user,
+                  username,
                   isOwner: mode
                 }
               })
@@ -156,7 +150,7 @@ const { isOwner: mode, user} = params ?? {}
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  user: String(board.username),
+                  username: String(board.username),
                   from: "moods",
                   moodboard: board,
                   fromTab: tab,
@@ -172,9 +166,9 @@ const { isOwner: mode, user} = params ?? {}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
-                <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-white drop-shadow">
+                {/* <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-white drop-shadow">
                   {board.username}
-                </p>
+                </p> */}
               </div>
             )}
           />

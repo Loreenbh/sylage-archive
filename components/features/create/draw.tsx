@@ -1,7 +1,6 @@
 "use client"
-import { useState, useRef } from "react"
-import type { OnNavigate, NavigationParams } from "@/types/navigation"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
+
+import { useRef, useState } from "react"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
@@ -11,7 +10,12 @@ import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import ImageSlot from "../moodboards/ImageSlot"
 
 /* STYLE */
-import { typography} from "@/styles/typography"
+import { typography } from "@/styles/typography"
+
+/* TYPES */
+import type { OnNavigate, NavigationParams } from "@/types/navigation"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
+
 
 type Props = {
   onNavigate: OnNavigate
@@ -19,95 +23,221 @@ type Props = {
 }
 
 
-function SilhouetteGhost({slot} : {slot: MoodboardSlot}){
-    if (!slot) return null
-    return (
-        <img
-        src={slot.url}
-        draggable={false}
+function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
+  if (!slot) return null
+
+  return (
+    <img
+      src={slot.url}
+      draggable={false}
       style={{
-        transform: `translate(${slot.offsetX}px, ${slot.offsetY}px) scale(${slot.scale})`,
+        transform: `
+          translate(${slot.offsetX}px, ${slot.offsetY}px)
+          scale(${slot.scale})
+        `,
       }}
-      className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
+      className="
+        absolute inset-0 
+        w-full h-full 
+        object-cover 
+        opacity-20 
+        pointer-events-none 
+        select-none
+      "
     />
-    )
+  )
 }
 
 
-
 export default function Draw({ onNavigate, params }: Props) {
-const { isOwner: mode, user, fromTab, from} = params ?? {}
-  const sidebarTitle = 
-    mode === true
-    ? "PROPOSE"
-    : ` ${user}|PROPOSE`
 
-    const [silhouette, setSilhouette] = useState<MoodboardSlot>(null)
+  const {
+    isOwner: mode,
+    username,
+    fromTab,
+    moodboard
+  } = params ?? {}
+
+
+  const sidebarTitle =
+    mode === true
+      ? "PROPOSE"
+      : `${username}|PROPOSE`
+
+
+  const [silhouette, setSilhouette] = useState<MoodboardSlot>(null)
+
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
 
   const handleSelectSlot = () => {
     fileInputRef.current?.click()
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+
     const file = e.target.files?.[0]
+
     if (!file) return
 
-    const url = URL.createObjectURL(file)
-    setSilhouette({ url, scale: 1, offsetX: 0, offsetY: 0 })
 
-    // permet re-upload même fichier
+    const url = URL.createObjectURL(file)
+
+    setSilhouette({
+      url,
+      scale: 1,
+      offsetX: 0,
+      offsetY: 0,
+    })
+
+
     e.target.value = ""
   }
 
-  const handleChangeTransform = (patch: MoodboardSlotPatch) => {
-    setSilhouette((prev) => (prev ? { ...prev, ...patch } : prev))
+
+  const handleChangeTransform = (
+    patch: MoodboardSlotPatch
+  ) => {
+
+    setSilhouette(prev =>
+      prev
+        ? {
+            ...prev,
+            ...patch
+          }
+        : prev
+    )
   }
-  
-  console.log("dans mooddetails mode est:", mode)
+
+
+  const handlePublish = async () => {
+
+    if (!silhouette) {
+      console.log("aucune silhouette")
+      return
+    }
+
+
+    if (!moodboard) {
+      console.log("aucun moodboard")
+      return
+    }
+
+
+    try {
+
+      const res = await fetch("/api/silhouettes", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          imageUrl: silhouette.url,
+          moodboardId: moodboard.id,
+        })
+      })
+
+
+      const data = await res.json()
+
+
+      if (!res.ok) {
+        console.error(data.error)
+        return
+      }
+
+
+      console.log(
+        "silhouette créée",
+        data
+      )
+
+
+      onNavigate?.({
+        to:"moodDetails",
+        direction:"prev",
+        params:{
+          username,
+          isOwner:mode,
+          moodboard,
+          fromTab,
+        }
+      })
+
+
+    } catch(err){
+
+      console.error(
+        "Erreur sauvegarde silhouette",
+        err
+      )
+
+    }
+
+  }
+
+
+
   return (
     <BookLayout
+
       header={
         <Header
           items={[
-            { section: "HOME",
-              clickable: true,
-              onClick: () =>
+            {
+              section:"HOME",
+              clickable:true,
+              onClick:()=> 
                 onNavigate?.({
-                  to: "discover",
-                  direction: "prev",
+                  to:"discover",
+                  direction:"prev",
                   params:{
-                    user,
-                    isOwner: false
+                    username,
+                    isOwner:false
                   }
                 })
             },
-            { section: "FILTER",
-              clickable: false,
-              onClick: () => console.log("filter clicked"),
-             },
-            { section: "CREATE",
-              clickable: true,
-              onClick: () => console.log("create clicked"),
-             },
+
+            {
+              section:"FILTER",
+              clickable:false,
+            },
+
+            {
+              section:"CREATE",
+              clickable:true,
+              onClick:()=>console.log("create")
+            }
           ]}
         />
       }
-      sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
+
+
+      sidebar={
+        <Sidebar
+          text={sidebarTitle}
+          clickable={false}
+        />
+      }
+
+
       actionsBar={
         <div className="flex items-center gap-5">
-          
-          {/* BACK toujours visible */}
+
           <button
             onClick={() =>
               onNavigate?.({
-                to: "moodDetails",
-                direction: "prev",
-                params: {
-                  user,
-                  isOwner: mode,
+                to:"moodDetails",
+                direction:"prev",
+                params:{
+                  username,
+                  isOwner:mode,
+                  moodboard,
                   fromTab,
-                },
+                }
               })
             }
             className={typography.buttonBody}
@@ -115,19 +245,23 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
             back
           </button>
 
+
           {mode === false && (
             <>
-              <span className={typography.bullet}>•</span>
+              <span className={typography.bullet}>
+                •
+              </span>
+
 
               <button
                 onClick={() =>
                   onNavigate?.({
-                    to: "profile",
-                    direction: "next",
-                    params: {
-                      user,
-                      isOwner: mode
-                    },
+                    to:"profile",
+                    direction:"next",
+                    params:{
+                      username,
+                      isOwner:mode
+                    }
                   })
                 }
                 className={typography.buttonBody}
@@ -137,64 +271,108 @@ const { isOwner: mode, user, fromTab, from} = params ?? {}
             </>
           )}
 
-          {mode === false && (
-            <div className="ml-[200px]">
-              <button
-                onClick={handlePublish}
-                // onClick={() =>
-                //   onNavigate?.({
-                //     to: "profile",
-                //     direction: "next",
-                //     params: {
-                //       user,
-                //       isOwner: mode
-                //     },
-                //   })
-                // }
-                className={typography.buttonBody}
-              >
-                Publish
-              </button>
-              
-            </div>
-          )}
+
+
+          <div className="ml-[200px]">
+
+            <button
+              onClick={handlePublish}
+              className={typography.buttonBody}
+            >
+              Publish
+            </button>
+
+          </div>
+
+
         </div>
       }
+
+
       footer={
-        <ProfileButton onNavigate={onNavigate} />
+        <ProfileButton
+          onNavigate={onNavigate}
+        />
       }
+
     >
-      {/* 3 colonnes flex-1 : chacune prend 1/3 de la largeur disponible,
-          hauteur fixe par breakpoint (le flex étire automatiquement) */}
-      <div className="flex items-stretch w-full h-full gap-1">
 
-        <div className="relative overflow-hidden flex-1">
-          <SilhouetteGhost slot={silhouette} />
-        </div>
 
-        <div className="relative overflow-hidden flex-1">
-          <ImageSlot
+      <div className="
+        flex 
+        items-stretch 
+        w-full 
+        h-full 
+        gap-1
+      ">
+
+
+        <div className="
+          relative 
+          overflow-hidden 
+          flex-1
+        ">
+          <SilhouetteGhost
             slot={silhouette}
-            onSelect={handleSelectSlot}
-            onChangeTransform={handleChangeTransform}
-            className="bg-zinc-100"
           />
         </div>
 
-        <div className="relative overflow-hidden flex-1">
-          <SilhouetteGhost slot={silhouette} />
+
+
+        <div className="
+          relative 
+          overflow-hidden 
+          flex-1
+        ">
+
+          <ImageSlot
+
+            slot={silhouette}
+
+            onSelect={handleSelectSlot}
+
+            onChangeTransform={
+              handleChangeTransform
+            }
+
+            className="bg-zinc-100"
+
+          />
+
         </div>
+
+
+
+        <div className="
+          relative 
+          overflow-hidden 
+          flex-1
+        ">
+          <SilhouetteGhost
+            slot={silhouette}
+          />
+        </div>
+
 
       </div>
 
-      {/* INPUT FILE HIDDEN */}
+
+
       <input
+
         ref={fileInputRef}
+
         type="file"
+
         accept="image/*"
+
         onChange={handleFileChange}
+
         className="hidden"
+
       />
+
+
     </BookLayout>
   )
 }

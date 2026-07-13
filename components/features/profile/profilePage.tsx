@@ -30,17 +30,17 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     user: `user_${String(i + 1).padStart(2, "0")}`,
   }))
 
-const { isOwner: mode, user, fromTab, from} = params ?? {}
+const { isOwner: mode, fromTab, from, username} = params ?? {}
 
+// const [user, setUser] = useState(null)
 const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
 
   useEffect(() => {
-    console.log("luser est", user)
-    if (!user) return
+    // if (!user) return
 
     async function loadLastMoodboard() {
       try {
-        const res = await fetch(`/api/moodboards?user=${user}`)
+        const res = await fetch(`/api/moodboards?user=${username}`)
         const data = await res.json()
         // l'API renvoie déjà triée par created_at DESC → le premier est le plus récent
         setLastMoodboard(data[0] ?? null)
@@ -50,13 +50,13 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
     }
 
     loadLastMoodboard()
-  }, [user])
+  }, [username])
 
   const sidebarTitle = 
     mode
     ? "PROFILE"
-    : user
-      ? `${user} | PROFILE`
+    : username
+      ? `${username} | PROFILE`
       : "PROFILE"
       
   return (
@@ -71,7 +71,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                   to: "discover",
                   direction: "prev",
                   params:{
-                    user,
+                    username,
                     isOwner: false
                   }
                 })
@@ -87,7 +87,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                   to: "create",
                   direction: "next",
                   params:{
-                    user,
+                    // user,
                     from: "discover",
                     isOwner: mode
                   }
@@ -108,7 +108,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                     to: "settings", 
                     direction: "next",
                     params:{
-                      user,
+                      // user,
                       isOwner: mode,
                     }
                   })
@@ -126,7 +126,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                     to: "loves", 
                     direction: "next",
                     params:{
-                      user,
+                      // user,
                       isOwner: mode,
                     }
                   })
@@ -143,7 +143,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                     to: from ?? "discover",
                     direction: "prev",
                     params: {
-                      user,
+                      username,
                       isOwner: mode,
                       from: "profile",
                     },
@@ -175,7 +175,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                 to: "silhouettes", 
                 direction: "next",
                 params:{
-                  user,
+                  // user,
                   from: "silhouettes",
                   isOwner : mode
                 }
@@ -192,7 +192,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                 to:"moods", 
                 direction: "next", 
                 params:{
-                  user,
+                  username,
                   isOwner: mode,
                 }, 
               })

@@ -79,25 +79,15 @@ export async function POST(request: Request){
     }
 }
 
-//soit mes mood a moi= profile, tous les mood des autres = feed, tous les moood d un user
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
-console.log("URL COMPLETE :", request.url)
+    console.log("URL COMPLETE :", request.url)
     const username = searchParams.get('user')
-  console.log("PARAM USER :", searchParams.get("user"))
+    console.log("PARAM USER :", searchParams.get("user"))
 
+    const cookieStore = await cookies()
+    const token = cookieStore.get("session_token")?.value
 
-  const cookieStore = await cookies()
-const token = cookieStore.get("session_token")?.value
-
-
-    const baseQuery =
-        `SELECT moodboards.*, users.username
-        FROM moodboards
-        JOIN users
-        ON users.id = moodboards.user_id
-    
-        `
     const session = await pool.query(
         `SELECT user_id
         FROM sessions
@@ -106,24 +96,65 @@ const token = cookieStore.get("session_token")?.value
         `,
         [token]
     )
+    const currentSession = session.rows[0]
 
-    const currentUser = session.rows[0]
+    if (!username){ //tous les mood sauf le mien
+        console.log("1")
+        const res =  await pool.query(
+            `SELECT moodboards.*, users.username
+            FROM moodboards
+            JOIN users
+            ON users.id = moodboards.user_id
+            WHERE moodboards.user_id != $1
+            ORDER BY moodboards.created_at DESC
+            `,
+            [currentSession.user_id]
+        )
+        return NextResponse.json(res.rows)
+    }
+    else{
+        //personne demandee: moi ou x?
+        console.log("2")
+        const requestedUser =  await pool.query( //pas moi
+            `
+            SELECT id
+            FROM users
+            WHERE username = $1
+            `,
+            [username]
+        )
+        const userToShow = requestedUser.rows[0]
 
-    //username envoye dans l urldonc
-    // const res = username
-    // ? await pool.query(
-    //     `${baseQuery} WHERE users.username = $1
-    //     ORDER BY moodboards.created_at DESC`,
-    //     [username]
-    // )
-    // : await pool.query(`${currentUser.id} != moodboards.user_id ORDER BY moodboards.created_at DESC`)
-    const  requestedUsername = username // soit moi soit alice
-    if (!res) //personne
-    else if (res != currentUser.username) //ici alice
-
-    else //moi
-
-    return NextResponse.json(res.rows)
+        if (userToShow.id === currentSession.user_id){
+            // MON PROFIL
+            console.log("3")
+            const res = await pool.query( //moi
+                `SELECT moodboards.*, users.username
+                FROM moodboards
+                JOIN users
+                ON users.id = moodboards.user_id
+                WHERE moodboards.user_id = $1
+                ORDER BY moodboards.created_at DESC
+                `,
+                [userToShow.id]
+            )
+            return NextResponse.json(res.rows)
+        }
+        else{
+            // PROFIL AUTRE PERSONNE
+            console.log("4")
+            const res = await pool.query( //pasmoi
+                `SELECT moodboards.*, users.username
+                FROM moodboards
+                JOIN users
+                ON users.id = moodboards.user_id
+                WHERE moodboards.user_id = $1
+                ORDER BY moodboards.created_at DESC
+                `,
+                [userToShow.id]
+            )
+            return NextResponse.json(res.rows)
+        }
+    }
 }
 
-//ma session a un user_id qui est lie a users.id dpmc currentUser
