@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
+import { toPng } from "html-to-image"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
@@ -15,7 +16,7 @@ import { typography } from "@/styles/typography"
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
-
+import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 
 type Props = {
   onNavigate: OnNavigate
@@ -50,10 +51,13 @@ function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
 
 
 export default function Draw({ onNavigate, params }: Props) {
-
+    const {
+    currentUser,
+    requestedUser
+  } = params ?? {}
+  const profileUsername = requestedUser ?? currentUser
   const {
     isOwner: mode,
-    username,
     fromTab,
     moodboard
   } = params ?? {}
@@ -62,12 +66,15 @@ export default function Draw({ onNavigate, params }: Props) {
   const sidebarTitle =
     mode === true
       ? "PROPOSE"
-      : `${username}|PROPOSE`
+      : `${profileUsername}|PROPOSE`
 
 
   const [silhouette, setSilhouette] = useState<MoodboardSlot>(null)
+  const [publishError, setPublishError] = useState<string | null>(null)
+  const [isPublishing, setIsPublishing] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const slotRef = useRef<HTMLDivElement | null>(null)
 
 
   const handleSelectSlot = () => {
@@ -115,68 +122,76 @@ export default function Draw({ onNavigate, params }: Props) {
 
   const handlePublish = async () => {
 
+    setPublishError(null)
+
     if (!silhouette) {
-      console.log("aucune silhouette")
+      setPublishError("Ajoute une image avant de publier")
       return
     }
-
 
     if (!moodboard) {
-      console.log("aucun moodboard")
+      setPublishError("Erreur interne : moodboard introuvable")
       return
     }
 
+    if (!slotRef.current) {
+      setPublishError("Erreur interne : silhouette introuvable")
+      return
+    }
+
+    setIsPublishing(true)
 
     try {
-
-      const res = await fetch("/api/silhouettes", {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          imageUrl: silhouette.url,
-          moodboardId: moodboard.id,
-        })
+      slotRef.current.classList.add("export-mode")      // 1. capture le rendu affiché (avec le zoom/déplacement appliqué) en PNG
+      const imageData = await toPng(slotRef.current)
+      slotRef.current.classList.remove("export-mode")      // 2. upload cette image, récupère son URL réelle
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageData }),
       })
 
+      const uploadData = await uploadRes.json()
 
-      const data = await res.json()
-
-
-      if (!res.ok) {
-        console.error(data.error)
+      if (!uploadRes.ok) {
+        setPublishError(uploadData.error ?? "Erreur lors de l'upload")
         return
       }
 
+      // 3. crée la silhouette avec cette URL réelle, liée au moodboard
+      const res = await fetch("/api/silhouettes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageUrl: uploadData.url,
+          moodboardId: moodboard.id,
+        }),
+      })
 
-      console.log(
-        "silhouette créée",
-        data
-      )
+      const data = await res.json()
 
+      if (!res.ok) {
+        setPublishError(data.error ?? "Erreur lors de la publication")
+        return
+      }
 
       onNavigate?.({
-        to:"moodDetails",
-        direction:"prev",
-        params:{
-          username,
-          isOwner:mode,
+        to: "moodDetails",
+        direction: "prev",
+        params: {
+          currentUser,
+          requestedUser,
+          isOwner: mode,
           moodboard,
           fromTab,
         }
       })
 
-
-    } catch(err){
-
-      console.error(
-        "Erreur sauvegarde silhouette",
-        err
-      )
-
+    } catch {
+      setPublishError("Erreur réseau")
+    } finally {
+      setIsPublishing(false)
     }
-
   }
 
 
@@ -195,7 +210,8 @@ export default function Draw({ onNavigate, params }: Props) {
                   to:"discover",
                   direction:"prev",
                   params:{
-                    username,
+                    currentUser,
+                    requestedUser,
                     isOwner:false
                   }
                 })
@@ -233,7 +249,8 @@ export default function Draw({ onNavigate, params }: Props) {
                 to:"moodDetails",
                 direction:"prev",
                 params:{
-                  username,
+                  currentUser,
+                  requestedUser,
                   isOwner:mode,
                   moodboard,
                   fromTab,
@@ -259,7 +276,8 @@ export default function Draw({ onNavigate, params }: Props) {
                     to:"profile",
                     direction:"next",
                     params:{
-                      username,
+                      currentUser,
+                      requestedUser,
                       isOwner:mode
                     }
                   })
@@ -273,14 +291,21 @@ export default function Draw({ onNavigate, params }: Props) {
 
 
 
-          <div className="ml-[200px]">
+          <div className="ml-[200px] flex items-center gap-3">
 
             <button
               onClick={handlePublish}
-              className={typography.buttonBody}
+              disabled={isPublishing}
+              className={`${typography.buttonBody} disabled:opacity-40`}
             >
               Publish
             </button>
+
+            {publishError && (
+              <p className="text-[10px] text-red-600 tracking-[0.1em]">
+                {publishError}
+              </p>
+            )}
 
           </div>
 
@@ -288,14 +313,13 @@ export default function Draw({ onNavigate, params }: Props) {
         </div>
       }
 
-
       footer={
-        <ProfileButton
-          onNavigate={onNavigate}
-        />
-      }
-
-    >
+          <div className="flex items-center gap-4">
+            <CurrentUserName />
+            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+          </div>
+          }
+        >   
 
 
       <div className="
@@ -319,7 +343,7 @@ export default function Draw({ onNavigate, params }: Props) {
 
 
 
-        <div className="
+        <div ref={slotRef} className="
           relative 
           overflow-hidden 
           flex-1

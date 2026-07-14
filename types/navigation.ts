@@ -4,7 +4,8 @@ import type { Moodboard } from "./moodboard"
 export type Direction = "next" | "prev"
 
 export type NavigationPayload = {
-  username?: string
+  currentUser?: string //user connected
+  requestedUser?: string 
   moodboard?: Moodboard
   from?: PageName
   isOwner?: boolean

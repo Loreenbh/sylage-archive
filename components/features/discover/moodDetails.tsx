@@ -12,6 +12,9 @@ import SimpleGrid from "@/components/ui/grids/SimpleGrid"
 /* STYLE */
 import { typography} from "@/styles/typography"
 
+/* TYPES */
+import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
+
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
@@ -19,13 +22,20 @@ type Props = {
 
 export default function MoodDetails({ onNavigate, params }: Props) {
 
-const { isOwner: mode, username, fromTab, from, moodboard} = params ?? {}
+  const {
+    currentUser,
+    requestedUser
+  } = params ?? {}
+  const profileUsername = requestedUser ?? currentUser
+  const { isOwner: mode, from, moodboard} = params ?? {}
   const sidebarTitle = 
     mode === true
     ? "DETAILS"
-    : ` ${username}|DETAILS`
+    : ` ${profileUsername}|DETAILS`
   
-  console.log("dans mooddetails mode est:", mode, "et from est", from)
+  console.log("MOODDETAILS DE", profileUsername)
+  console.log("MOODDETAILS moodboard =", moodboard)
+  
   return (
     <BookLayout
       header={
@@ -38,7 +48,8 @@ const { isOwner: mode, username, fromTab, from, moodboard} = params ?? {}
                   to: "discover",
                   direction: "prev",
                   params:{
-                    username,
+                    currentUser,
+                    requestedUser,
                     isOwner: false
                   }
                 })
@@ -54,7 +65,7 @@ const { isOwner: mode, username, fromTab, from, moodboard} = params ?? {}
                   to: "create",
                   direction: "next",
                   params:{
-                    username,
+                    // username,
                     from: "discover",
                     isOwner: mode
                   }
@@ -75,9 +86,11 @@ const { isOwner: mode, username, fromTab, from, moodboard} = params ?? {}
                   to: "discover",
                   direction: "prev",
                   params: {
-                    username,
+                    currentUser,
+                    requestedUser,
                     isOwner: mode,
                     from: "moodDetails",
+                    moodboard
                   },
                 })
               }
@@ -99,9 +112,11 @@ const { isOwner: mode, username, fromTab, from, moodboard} = params ?? {}
                     to: "profile",
                     direction: "next",
                     params: {
-                      username,
+                      currentUser,
+                      requestedUser,
                       isOwner: mode,
-                      from: "moodDetails"
+                      from: "moodDetails",
+                      moodboard,
                     },
                   })
                 }
@@ -120,7 +135,7 @@ const { isOwner: mode, username, fromTab, from, moodboard} = params ?? {}
                     to: "draw",
                     direction: "next",
                     params: {
-                      username,
+                      // username,
                       isOwner: mode,
                       moodboard
                     },
@@ -136,9 +151,12 @@ const { isOwner: mode, username, fromTab, from, moodboard} = params ?? {}
         </div>
       }
       footer={
-        <ProfileButton onNavigate={onNavigate} />
-      }
-    >
+          <div className="flex items-center gap-4">
+            <CurrentUserName />
+            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+          </div>
+          }
+        >   
       <div className="flex flex-col h-full min-h-0 gap-1">
 
       <SimpleGrid

@@ -57,8 +57,8 @@ export async function POST(request: Request){
             `,
             [
                 user.user_id,
-                imageUrl,
-                moodboardId
+                moodboardId,
+                imageUrl
             ]
         )
 

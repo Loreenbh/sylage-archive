@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 
 /* COMPONENTS */
@@ -13,43 +13,85 @@ import GridPager from "@/components/ui/pagination/GridPager"
 /* STYLE */
 import { typography } from "@/styles/typography"
 
+/* TYPES */
+import { Silhouette } from "@/types/silhouettes"
+import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
 }
 
+
 export default function Silhouettes({ onNavigate, params }: Props) {
-  const silhouettes = [
-  { id: 1, color: "bg-white-200" },
-  { id: 2, color: "bg-red-300" },
-  { id: 3, color: "bg-pink-400" },
-  { id: 4, color: "bg-yellow-500" },
-  { id: 5, color: "bg-purple-600" },
-  { id: 6, color: "bg-blue-700" },
-]
-const [index, setIndex] = useState(0)
 
-const left = silhouettes[index]
-const center = silhouettes[index + 1]
-const right = silhouettes[index + 2]
+    const {
+    currentUser,
+    requestedUser
+  } = params ?? {}
+  const profileUsername = requestedUser ?? currentUser
+  const { isOwner: mode, from, moodboard } = params ?? {}
 
-const handlePrev = () => {
-  setIndex((i) => Math.max(i - 1, 0))
-}
+  const [silhouettes, setSilhouettes] = useState<Silhouette[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [index, setIndex] = useState(0)
+  console.log("SILHOUETTES DE", profileUsername)
 
-const handleNext = () => {
-  setIndex((i) => Math.min(i + 1, silhouettes.length - 3))
-}
+  useEffect(() => {
+    if (!profileUsername) {
+      setIsLoading(false)
+      return
+    }
 
-// const mode = params?.isOwner
-// const user = params?.user
-const { isOwner: mode, user} = params ?? {}
-const sidebarTitle =
-  mode
-    ? "SILHOUETTES"
-    : user
-      ? `${user} | SILHOUETTES`
-      : "SILHOUETTES"
+    let cancelled = false
+
+    async function loadSilhouettes() {
+      setIsLoading(true)
+      try {
+        const res = await fetch(`/api/silhouettes?user=${profileUsername}`)
+        const data = await res.json()
+        if (!cancelled) setSilhouettes(data)
+      } catch {
+        if (!cancelled) setSilhouettes([])
+      } finally {
+        if (!cancelled) setIsLoading(false)
+      }
+    }
+    loadSilhouettes()
+    return () => {
+      cancelled = true
+    }
+  }, [profileUsername])
+
+  const left = silhouettes[index]
+  const center = silhouettes[index + 1]
+  const right = silhouettes[index + 2]
+
+  const handlePrev = () => {
+    setIndex((i) => Math.max(i - 1, 0))
+  }
+
+  const handleNext = () => {
+    setIndex((i) => Math.min(i + 1, Math.max(silhouettes.length - 3, 0)))
+  }
+
+  const sidebarTitle =
+    mode
+      ? "SILHOUETTES"
+      : profileUsername
+        ? `${profileUsername} | SILHOUETTES`
+        : "SILHOUETTES"
+
+  const renderCell = (silhouette?: Silhouette) => (
+    <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
+      {silhouette && (
+        <img
+          src={silhouette.image_url}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
+    </div>
+  )
 
   return (
     <BookLayout
@@ -63,7 +105,8 @@ const sidebarTitle =
                   to: "discover",
                   direction: "prev",
                   params:{
-                    user,
+                    currentUser,
+                    requestedUser,
                     isOwner: false
                   }
                 })
@@ -88,9 +131,11 @@ const sidebarTitle =
                 to: "profile",
                 direction: "prev",
                 params:{
-                  user,
+                  currentUser,
+                  requestedUser,
                   isOwner : mode,
-                  from: "silhouettes"
+                  from: "moodDetails",
+                  moodboard
                 }
               })
             }
@@ -106,24 +151,29 @@ const sidebarTitle =
         </div>
       }
       footer={
-        <ProfileButton onNavigate={onNavigate} />
-      }
-    >
+          <div className="flex items-center gap-4">
+            <CurrentUserName />
+            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+          </div>
+          }
+        >   
       <div className="flex flex-col h-full min-h-0 gap-1">
 
-      <ThreeColGrid
-        left={
-          <div className={`h-full w-full ${left.color} relative`}>
-          </div>
-        }
-        center={
-          <div className={`h-full w-full ${center.color}`} />
-          
-        }
-        right={
-          <div className={`h-full w-full ${right.color}`} />
-        }
-      />
+        {isLoading ? (
+          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
+            CHARGEMENT...
+          </p>
+        ) : silhouettes.length === 0 ? (
+          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
+            AUCUNE SILHOUETTE POUR L'INSTANT
+          </p>
+        ) : (
+          <ThreeColGrid
+            left={renderCell(left)}
+            center={renderCell(center)}
+            right={renderCell(right)}
+          />
+        )}
 
       </div>
     </BookLayout>

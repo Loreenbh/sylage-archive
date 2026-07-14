@@ -27,7 +27,8 @@ CREATE TABLE sessions(
 --SILHOUETTES
 CREATE TABLE silhouettes (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    image_url TEXT,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    moodboard_id INTEGER NOT NULL REFERENCES moodboards(id) ON DELETE CASCADE,
+    image_url TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );

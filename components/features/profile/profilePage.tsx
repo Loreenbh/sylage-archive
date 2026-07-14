@@ -12,6 +12,7 @@ import ScrollFollow from "@/components/ui/cards/scrollFollow"
 /* STYLE */
 import { typography } from "@/styles/typography"
 /* TYPES */
+import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
@@ -22,25 +23,34 @@ type LastMoodboard = {
   image_url : string
 }
 
+type LastSilhouette = {
+  image_url : string
+}
 /*------------------------------------------------- */
 
 export default function ProfilePage({ onNavigate, params }: Props) {
+  const {
+    currentUser,
+    requestedUser
+  } = params ?? {}
+  const profileUsername = requestedUser ?? currentUser
+
   const following = Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
     user: `user_${String(i + 1).padStart(2, "0")}`,
   }))
 
-const { isOwner: mode, fromTab, from, username} = params ?? {}
+const { isOwner: mode, from, moodboard} = params ?? {}
 
-// const [user, setUser] = useState(null)
 const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
-
+const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null)
   useEffect(() => {
-    // if (!user) return
-
+    // if (!username) return
+    console.log("PROFIL PAGE", profileUsername)
+    console.log("PROFILE moodboard =", moodboard)
     async function loadLastMoodboard() {
       try {
-        const res = await fetch(`/api/moodboards?user=${username}`)
+        const res = await fetch(`/api/moodboards?user=${profileUsername}`)
         const data = await res.json()
         // l'API renvoie déjà triée par created_at DESC → le premier est le plus récent
         setLastMoodboard(data[0] ?? null)
@@ -49,14 +59,27 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
       }
     }
 
-    loadLastMoodboard()
-  }, [username])
+       async function loadLastSilhouette() {
+      try {
+        const res = await fetch(`/api/silhouettes?user=${profileUsername}`)
+        const data = await res.json()
+        setLastSilhouette(data[0] ?? null)
+      } catch {
+        setLastSilhouette(null)
+      }
+    }
 
+    loadLastMoodboard()
+    loadLastSilhouette()
+  }, [profileUsername])
+
+
+  
   const sidebarTitle = 
     mode
     ? "PROFILE"
-    : username
-      ? `${username} | PROFILE`
+    : profileUsername
+      ? `${profileUsername} | PROFILE`
       : "PROFILE"
       
   return (
@@ -71,7 +94,8 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                   to: "discover",
                   direction: "prev",
                   params:{
-                    username,
+                    currentUser,
+                    requestedUser,
                     isOwner: false
                   }
                 })
@@ -108,7 +132,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                     to: "settings", 
                     direction: "next",
                     params:{
-                      // user,
+                      // username,
                       isOwner: mode,
                     }
                   })
@@ -126,7 +150,7 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                     to: "loves", 
                     direction: "next",
                     params:{
-                      // user,
+                      // username,
                       isOwner: mode,
                     }
                   })
@@ -138,17 +162,20 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
           ) : (
             <>
               <button
-                onClick={() =>
+                onClick={() =>{
+                console.log("DAN PROFILE PAGE FROM=", from)
                   onNavigate?.({
                     to: from ?? "discover",
                     direction: "prev",
                     params: {
-                      username,
+                      currentUser,
+                      requestedUser,
                       isOwner: mode,
                       from: "profile",
+                      moodboard
                     },
                   })
-                }
+                }}
                 className={typography.buttonBody}
               >
                 back
@@ -159,12 +186,12 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
       }
 
       footer={
-        <ProfileButton
-          onNavigate={onNavigate} 
-          clickable={false} 
-          active/>
-      }
-    >
+          <div className="flex items-center gap-4">
+            <CurrentUserName />
+            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+          </div>
+          }
+        >   
     <div className="flex flex-col h-full "> 
       <CustomGrid
         left={
@@ -175,12 +202,24 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                 to: "silhouettes", 
                 direction: "next",
                 params:{
-                  // user,
-                  from: "silhouettes",
-                  isOwner : mode
+                  currentUser,
+                  requestedUser,
+                  from: "profile",
+                  isOwner : mode,
+                  moodboard
                 }
                  })}>
-            <p className={typography.body}>silhouettes</p>
+
+            {lastSilhouette && (
+              <img
+                src={lastSilhouette.image_url}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            <p className={`${typography.body} relative z-10 ${lastSilhouette ? "text-white drop-shadow" : ""}`}>
+              silhouettes
+            </p>
           </GridButton>
         }
 
@@ -192,8 +231,10 @@ const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
                 to:"moods", 
                 direction: "next", 
                 params:{
-                  username,
+                  currentUser,
+                  requestedUser,
                   isOwner: mode,
+                  moodboard
                 }, 
               })
             }

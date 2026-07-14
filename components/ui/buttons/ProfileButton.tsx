@@ -1,13 +1,17 @@
+"use client"
+import { useState } from "react"
 import type { OnNavigate } from "@/types/navigation"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
-  username?: string
+  currentUser?: string
   active?: boolean
   clickable?: boolean
 }
 /*------------------------------------------ */
-export default function ProfileButton({ onNavigate , username, active = false, clickable = true}: Props) {
+export default function ProfileButton({ onNavigate , currentUser, active = false, clickable = true}: Props) {
+  const [user_name, setUsername] = useState<string | null>(null)
+  
   return (
     <button
       disabled={!clickable}
@@ -17,11 +21,11 @@ export default function ProfileButton({ onNavigate , username, active = false, c
           to: "profile",
           direction: "next",
           params:{
-            username: username,
+            currentUser: currentUser,
             isOwner: true,
           }
         })
-        console.log(username, "cest luser dans profile")
+        console.log(currentUser, "cest luser dans profile")
       }}
       className={`
                   w-9 h-9 md:w-14 md:h-14 lg:w-18 lg:h-18

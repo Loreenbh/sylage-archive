@@ -11,7 +11,7 @@ import { typography } from "@/styles/typography"
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 import { Moodboard } from "@/types/moodboard" 
-
+import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
@@ -22,9 +22,13 @@ type Tab = "new" | "featured" | "following"
 /*---------------------------------------------------- */
 
 export default function Moods({ onNavigate, params }: Props) {
+  const {
+    currentUser,
+    requestedUser
+  } = params ?? {}
+  const profileUsername = requestedUser ?? currentUser
 
-
-const { isOwner: mode, username} = params ?? {}
+const { isOwner: mode, moodboard} = params ?? {}
 
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
@@ -48,8 +52,8 @@ const { isOwner: mode, username} = params ?? {}
   const sidebarTitle =
     mode
       ? "MOODS"
-      : username
-        ? `${username} | Moods`
+      : profileUsername
+        ? `${profileUsername} | Moods`
         : "Moods"
 
 
@@ -58,7 +62,7 @@ const { isOwner: mode, username} = params ?? {}
       try {
         setIsLoading(true)
 
-        const res = await fetch(`/api/moodboards?user=${username}`)
+        const res = await fetch(`/api/moodboards?user=${profileUsername}`)
         const data = await res.json()
 
         setMoodboards(data)
@@ -70,13 +74,13 @@ const { isOwner: mode, username} = params ?? {}
       }
     }
 
-    if (username) {
+    if (profileUsername) {
       loadMoodboards()
     } else {
       setIsLoading(false)
     }
 
-  }, [username])
+  }, [profileUsername])
 
     return (
     <BookLayout
@@ -91,7 +95,8 @@ const { isOwner: mode, username} = params ?? {}
                   to: "discover",
                   direction: "prev",
                   params:{
-                    username,
+                    currentUser,
+                    requestedUser,
                     isOwner: false
                   }
                 })
@@ -117,8 +122,10 @@ const { isOwner: mode, username} = params ?? {}
                 to: "profile",
                 direction: "prev",
                 params:{
-                  username,
-                  isOwner: mode
+                  currentUser,
+                  requestedUser,
+                  isOwner: mode,
+                  moodboard
                 }
               })
             }
@@ -129,9 +136,12 @@ const { isOwner: mode, username} = params ?? {}
         </div>
       }
       footer={
-        <ProfileButton onNavigate={onNavigate} />
-      }
-    >    
+          <div className="flex items-center gap-4">
+            <CurrentUserName />
+            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+          </div>
+          }
+        >    
         <div className="flex flex-col h-full "> 
 
         {isLoading ? (
@@ -150,7 +160,7 @@ const { isOwner: mode, username} = params ?? {}
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  username: String(board.username),
+                  // username: String(board.username),
                   from: "moods",
                   moodboard: board,
                   fromTab: tab,

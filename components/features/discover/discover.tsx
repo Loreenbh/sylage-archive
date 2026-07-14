@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
+import type { OnNavigate, NavigationParams } from "@/types/navigation"
 
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
@@ -13,42 +14,23 @@ import { typography } from "@/styles/typography"
 
 /* TYPES */
 import { Moodboard } from "@/types/moodboard"
-import { OnNavigate, NavigationParams } from "@/types/navigation"
-import { User } from "@/types/user"
-
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
 }
 type Tab = "new" | "featured" | "following"
 
-
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
-  // const user = params?.user
+  const currentUser = params?.currentUser
+  console.log("PREMIRE FOIS USER EST", currentUser)
   const mode = params?.isOwner ?? false
 
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
-
-  // console.log("luser est dsicover", user)
-
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
-
-  useEffect(() => {
-    async function loadUser() {
-      const res = await fetch("/api/auth/me")
-      const data = await res.json()
-
-      setCurrentUser(data.user)
-    }
-
-    loadUser()
-  }, [])
-
 
   useEffect(() => {
     let cancelled = false
@@ -85,7 +67,7 @@ export default function Discover({ onNavigate, params }: Props) {
       : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
   const sidebarTitle = tab.toUpperCase()
-
+  console.log("JE SUIS DANS DISCOVER EST L USER EST:", currentUser)
   return (
     <BookLayout
       header={
@@ -107,7 +89,7 @@ export default function Discover({ onNavigate, params }: Props) {
                   to: "create",
                   direction: "next",
                   params:{
-                    // user,
+                    currentUser,
                     from: "discover",
                     isOwner: mode
                   }
@@ -138,10 +120,10 @@ export default function Discover({ onNavigate, params }: Props) {
       footer={
           <div className="flex items-center gap-4">
             <CurrentUserName />
-            <ProfileButton onNavigate={onNavigate} username={currentUser?.username}/>
+            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
           </div>
           }
-        >    
+        >     
       <div className="flex flex-col h-full "> 
 
         {isLoading ? (
@@ -156,12 +138,12 @@ export default function Discover({ onNavigate, params }: Props) {
           <ScrollableGrid
             data={filteredMoodboards}
             onItemClick={(board) => {
-              console.log("BOARD CLIQUE :", board)
               onNavigate?.({
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  username: String(board.username),
+                  currentUser,
+                  requestedUser: String(board.username),
                   from: "discover",
                   moodboard: board,
                   fromTab: tab,
