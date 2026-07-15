@@ -12,6 +12,7 @@ import BookLayout from "@/components/book/BookLayout"
 import Header from "@/components/navigation/Header"
 import Sidebar from "@/components/navigation/SideBar"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
+import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 
 /* LAYOUTS */
 import LayoutA from "../moodboards/LayoutA"
@@ -35,6 +36,12 @@ const LAYOUT_SLOT_COUNT = {
 } as const
 
 export default function Editor({ onNavigate, params }: Props) {
+
+    const {
+    currentUser,
+    requestedUser
+  } = params ?? {}
+  const profileUsername = requestedUser ?? currentUser
   const layout = params?.layout as keyof typeof LAYOUT_SLOT_COUNT
 
   const slotCount = LAYOUT_SLOT_COUNT[layout] ?? 9
@@ -151,6 +158,10 @@ export default function Editor({ onNavigate, params }: Props) {
       onNavigate({
         to: "discover",
         direction: "prev",
+        params:{
+          currentUser,
+          requestedUser,
+        }
       })
     } catch {
       setPublishError("Erreur réseau")
@@ -184,7 +195,8 @@ export default function Editor({ onNavigate, params }: Props) {
         )
     }
   }
-
+  console.log("EDITOR", profileUsername)
+  // console.log("MOODDETAILS moodboard =", moodboard)
   /* ---------------- UI ---------------- */
   return (
     <BookLayout
@@ -238,7 +250,14 @@ export default function Editor({ onNavigate, params }: Props) {
           </button>
         </div>
       }
-    >
+      
+      footer={
+          <div className="flex items-center gap-4">
+            <CurrentUserName />
+            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+          </div>
+          }
+        >   
       <div className="flex flex-col h-full w-full gap-2">
 
         <div ref={layoutRef} className="h-full w-full">

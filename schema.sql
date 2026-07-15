@@ -32,3 +32,26 @@ CREATE TABLE silhouettes (
     image_url TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
+
+
+--LIKES
+CREATE TABLE likes(
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    moodboard_id INTEGER REFERENCES moodboards(id) ON DELETE CASCADE,
+    silhouette_id INTEGER REFERENCES silhouettes(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    CHECK (
+        (moodboard_id IS NOT NULL AND silhouette_id IS NULL)
+        OR
+        (moodboard_id IS NULL AND silhouette_id IS NOT NULL)
+    )
+);
+
+CREATE UNIQUE INDEX unique_user_moodboard_like
+ON likes(user_id, moodboard_id)
+WHERE moodboard_id IS NOT NULL;
+
+CREATE UNIQUE INDEX unique_user_silhouette_like
+ON likes(user_id, silhouette_id)
+WHERE silhouette_id IS NOT NULL;

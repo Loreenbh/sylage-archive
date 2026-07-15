@@ -9,6 +9,7 @@ import Header from "@/components/navigation/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
+import LikeButton from "@/components/ui/buttons/LikeButton"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 
@@ -67,7 +68,7 @@ export default function Discover({ onNavigate, params }: Props) {
       : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
   const sidebarTitle = tab.toUpperCase()
-  console.log("JE SUIS DANS DISCOVER EST L USER EST:", currentUser)
+  console.log("DISCOVER:", currentUser)
   return (
     <BookLayout
       header={
@@ -162,10 +163,16 @@ export default function Discover({ onNavigate, params }: Props) {
                 <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-white drop-shadow">
                   {board.username}
                 </p>
+
+                <LikeButton className="absolute left-2"
+                  initialCount={0}
+                  initialLiked={false}
+                />
               </div>
             )}
           />
         )}
+
       </div>
     </BookLayout>
   )

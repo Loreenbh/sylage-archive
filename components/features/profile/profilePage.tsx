@@ -111,7 +111,7 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
                   to: "create",
                   direction: "next",
                   params:{
-                    // user,
+                    currentUser,
                     from: "discover",
                     isOwner: mode
                   }

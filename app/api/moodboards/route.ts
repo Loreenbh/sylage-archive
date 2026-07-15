@@ -101,11 +101,14 @@ export async function GET(request: Request) {
     if (!username){ //tous les mood sauf le mien
         console.log("1")
         const res =  await pool.query(
-            `SELECT moodboards.*, users.username
+            `SELECT moodboards.*, users.username, COUNT(likes.id) AS likes_count
             FROM moodboards
             JOIN users
             ON users.id = moodboards.user_id
+            LEFT JOIN likes
+            ON likes.moodboard_id = moodboards.id
             WHERE moodboards.user_id != $1
+            GROUP BY moodboards.id, users.username
             ORDER BY moodboards.created_at DESC
             `,
             [currentSession.user_id]

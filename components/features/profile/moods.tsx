@@ -81,7 +81,7 @@ const { isOwner: mode, moodboard} = params ?? {}
     }
 
   }, [profileUsername])
-
+  console.log("MOODS:", currentUser)
     return (
     <BookLayout
       header={
@@ -106,7 +106,16 @@ const { isOwner: mode, moodboard} = params ?? {}
              },
             { section: "CREATE",
               clickable: true,
-              onClick: () => console.log("create clicked"),
+                onClick: () =>
+                onNavigate?.({
+                  to: "create",
+                  direction: "next",
+                  params:{
+                    currentUser,
+                    from: "moods",
+                    isOwner: mode
+                  }
+                })
              },
           ]}
         />
@@ -160,11 +169,12 @@ const { isOwner: mode, moodboard} = params ?? {}
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  // username: String(board.username),
+                  currentUser,
+                  requestedUser,
                   from: "moods",
                   moodboard: board,
                   fromTab: tab,
-                  isOwner: mode
+                  isOwner: mode,
                 },
               })
             }}

@@ -8,6 +8,7 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import SimpleGrid from "@/components/ui/grids/SimpleGrid"
+import LikeButton from "@/components/ui/buttons/LikeButton"
 
 /* STYLE */
 import { typography} from "@/styles/typography"
@@ -19,6 +20,7 @@ type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
 }
+
 
 export default function MoodDetails({ onNavigate, params }: Props) {
 
@@ -76,8 +78,8 @@ export default function MoodDetails({ onNavigate, params }: Props) {
       }
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-5">
-          
+        <div className="flex items-center gap-3">
+
           {from !== "discover" && (
             <>
             <button
@@ -148,7 +150,17 @@ export default function MoodDetails({ onNavigate, params }: Props) {
               
             </div>
           )}
+          {moodboard && (
+            <LikeButton
+              className=""
+              moodboardId={moodboard.id}
+              initialCount={0}
+              initialLiked={false}
+            />
+          )}
         </div>
+
+        
       }
       footer={
           <div className="flex items-center gap-4">

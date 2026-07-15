@@ -8,6 +8,7 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
+import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 
 import LayoutA from "../moodboards/LayoutA"
 import LayoutB from "../moodboards/LayoutB"
@@ -25,7 +26,13 @@ type Props = {
 
 
 export default function Create({ onNavigate, params }: Props) {
-const { isOwner: mode, username, fromTab, from} = params ?? {}
+    const {
+    currentUser,
+    requestedUser
+  } = params ?? {}
+  const profileUsername = requestedUser ?? currentUser
+const { isOwner: mode, fromTab, from} = params ?? {}
+  console.log("CREATE", profileUsername)
   return (
     <BookLayout
       header={
@@ -47,9 +54,9 @@ const { isOwner: mode, username, fromTab, from} = params ?? {}
             },
             {
               section: "CREATE",
-              clickable: true,
+              clickable: false,
               active: true,
-              onClick: () => console.log("create clicked"),
+              // onClick: () => console.log("create clicked"),
             },
           ]}
         />
@@ -63,7 +70,6 @@ const { isOwner: mode, username, fromTab, from} = params ?? {}
                 onNavigate({
                   to: from ?? "discover",
                   direction: "prev",
-                  // params: { layout },
                 })
               }
               className={typography.buttonBody}
@@ -73,8 +79,13 @@ const { isOwner: mode, username, fromTab, from} = params ?? {}
           </div>
         )
       }
-      footer={<ProfileButton onNavigate={onNavigate} />}
-    >
+      footer={
+          <div className="flex items-center gap-4">
+            <CurrentUserName />
+            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+          </div>
+          }
+        >    
       <FourSquaresGrid
         topLeft={
           <div
@@ -84,6 +95,7 @@ const { isOwner: mode, username, fromTab, from} = params ?? {}
                 to: "editor",
                 direction: "next",
                 params: {
+                  currentUser,
                   layout: "A",
                   from: "create",
                 },
@@ -97,14 +109,16 @@ const { isOwner: mode, username, fromTab, from} = params ?? {}
         }
         
         topRight={
-          <button
+          <div
             className="h-full w-full bg-zinc-300 hover:bg-zinc-400 transition"
             onClick={() =>
               onNavigate({
                 to: "editor",
                 direction: "next",
                 params: {
+                  currentUser,
                   layout: "B",
+                  from: "create",
                 },
               })
             }
@@ -112,18 +126,20 @@ const { isOwner: mode, username, fromTab, from} = params ?? {}
             <div className="w-full h-full overflow-hidden bg-zinc-100">
                 <LayoutB images={Array(7).fill(null)} />
             </div>
-          </button>
+          </div>
         }
 
         bottomLeft={
-          <button
+          <div
             className="h-full w-full bg-zinc-400 hover:bg-zinc-500 transition"
             onClick={() =>
               onNavigate({
                 to: "editor",
                 direction: "next",
                 params: {
+                  currentUser,
                   layout: "C",
+                  from: "create",
                 },
               })
             }
@@ -131,18 +147,21 @@ const { isOwner: mode, username, fromTab, from} = params ?? {}
             <div className="w-full h-full overflow-hidden bg-zinc-100">
                 <LayoutC images={Array(6).fill(null)} />
             </div>
-          </button>
+          </div>
         }
 
         bottomRight={
-          <button
+          <div
             className="h-full w-full bg-zinc-500 hover:bg-zinc-600 transition"
             onClick={() =>
               onNavigate({
                 to: "editor",
                 direction: "next",
                 params: {
+                  currentUser,
                   layout: "D",
+                  from: "create",
+
                 },
               })
             }
@@ -150,7 +169,7 @@ const { isOwner: mode, username, fromTab, from} = params ?? {}
             <div className="w-full h-full overflow-hidden bg-zinc-100">
                 <LayoutD images={Array(6).fill(null)} />
             </div>
-          </button>
+          </div>
         }
       />
     </BookLayout>
