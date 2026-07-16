@@ -81,10 +81,13 @@ export async function POST(request: Request){
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
-    console.log("URL COMPLETE :", request.url)
     const username = searchParams.get('user')
+    const owner = searchParams.get("owner")
+    
+    console.log("URL COMPLETE :", request.url)
     console.log("PARAM USER :", searchParams.get("user"))
 
+    /* RECUPERATION DE LA SESSION */
     const cookieStore = await cookies()
     const token = cookieStore.get("session_token")?.value
 
@@ -98,66 +101,114 @@ export async function GET(request: Request) {
     )
     const currentSession = session.rows[0]
 
-    if (!username){ //tous les mood sauf le mien
-        console.log("1")
-        const res =  await pool.query(
-            `SELECT moodboards.*, users.username, COUNT(likes.id) AS likes_count
+
+    if (owner === "true"){
+        const res = await pool.query( 
+            `SELECT moodboards.*, 
+            users.username, 
+            COUNT(likes.id)::int AS "likes_count",
+            EXISTS (
+                SELECT FROM likes 
+                WHERE likes.user_id = $1 
+                AND likes.moodboard_id = moodboards.id) 
+                AS liked_by_current_user
             FROM moodboards
             JOIN users
             ON users.id = moodboards.user_id
             LEFT JOIN likes
             ON likes.moodboard_id = moodboards.id
-            WHERE moodboards.user_id != $1
+            WHERE moodboards.user_id = $1
             GROUP BY moodboards.id, users.username
             ORDER BY moodboards.created_at DESC
             `,
-            [currentSession.user_id]
+            [userToShow.id]
         )
         return NextResponse.json(res.rows)
     }
-    else{
-        //personne demandee: moi ou x?
-        console.log("2")
-        const requestedUser =  await pool.query( //pas moi
-            `
-            SELECT id
-            FROM users
-            WHERE username = $1
-            `,
-            [username]
-        )
-        const userToShow = requestedUser.rows[0]
+    // if (!username){ //tous les mood sauf le mien
+    //     const res =  await pool.query(
+    //         `SELECT moodboards.*, 
+    //         users.username, 
+    //         COUNT(likes.id)::int AS "likes_count",
+    //         EXISTS (
+    //             SELECT FROM likes 
+    //             WHERE likes.user_id = $1 
+    //             AND likes.moodboard_id = moodboards.id) 
+    //             AS liked_by_current_user
+    //         FROM moodboards
+    //         JOIN users
+    //         ON users.id = moodboards.user_id
+    //         LEFT JOIN likes
+    //         ON likes.moodboard_id = moodboards.id
+    //         WHERE moodboards.user_id != $1
+    //         GROUP BY moodboards.id, users.username
+    //         ORDER BY moodboards.created_at DESC
+    //         `,
+    //         [currentSession.user_id]
+    //     )
+    //     return NextResponse.json(res.rows)
+    // }
+    // else{
+    //     //personne demandee: moi ou x?
+    //     console.log("2")
+    //     const requestedUser =  await pool.query( //pas moi
+    //         `
+    //         SELECT id
+    //         FROM users
+    //         WHERE username = $1
+    //         `,
+    //         [username]
+    //     )
+    //     const userToShow = requestedUser.rows[0]
 
-        if (userToShow.id === currentSession.user_id){
-            // MON PROFIL
-            console.log("3")
-            const res = await pool.query( //moi
-                `SELECT moodboards.*, users.username
-                FROM moodboards
-                JOIN users
-                ON users.id = moodboards.user_id
-                WHERE moodboards.user_id = $1
-                ORDER BY moodboards.created_at DESC
-                `,
-                [userToShow.id]
-            )
-            return NextResponse.json(res.rows)
-        }
-        else{
-            // PROFIL AUTRE PERSONNE
-            console.log("4")
-            const res = await pool.query( //pasmoi
-                `SELECT moodboards.*, users.username
-                FROM moodboards
-                JOIN users
-                ON users.id = moodboards.user_id
-                WHERE moodboards.user_id = $1
-                ORDER BY moodboards.created_at DESC
-                `,
-                [userToShow.id]
-            )
-            return NextResponse.json(res.rows)
-        }
-    }
+    //     if (userToShow.id === currentSession.user_id){
+    //         console.log("3")
+    //         const res = await pool.query( //moi
+    //             `SELECT moodboards.*, 
+    //             users.username, 
+    //             COUNT(likes.id)::int AS "likes_count",
+    //             EXISTS (
+    //                 SELECT FROM likes 
+    //                 WHERE likes.user_id = $1 
+    //                 AND likes.moodboard_id = moodboards.id) 
+    //                 AS liked_by_current_user
+    //             FROM moodboards
+    //             JOIN users
+    //             ON users.id = moodboards.user_id
+    //             LEFT JOIN likes
+    //             ON likes.moodboard_id = moodboards.id
+    //             WHERE moodboards.user_id = $1
+    //             GROUP BY moodboards.id, users.username
+    //             ORDER BY moodboards.created_at DESC
+    //             `,
+    //             [userToShow.id]
+    //         )
+    //         return NextResponse.json(res.rows)
+    //     }
+    //     else{
+    //         // PROFIL AUTRE PERSONNE
+    //         const res = await pool.query( //pasmoi
+    //             `SELECT moodboards.*, 
+    //             users.username, 
+    //             COUNT(likes.id)::int AS "likes_count",
+    //             EXISTS (
+    //                 SELECT FROM likes 
+    //                 WHERE likes.user_id = $1 
+    //                 AND likes.moodboard_id = moodboards.id) 
+    //                 AS liked_by_current_user
+    //             FROM moodboards
+    //             JOIN users
+    //             ON users.id = moodboards.user_id
+    //             LEFT JOIN likes
+    //             ON likes.moodboard_id = moodboards.id
+    //             WHERE moodboards.user_id = $1
+    //             GROUP BY moodboards.id, users.username
+    //             ORDER BY moodboards.created_at DESC
+    //             `,
+    //             [userToShow.id]
+    //         )
+    //         return NextResponse.json(res.rows)
+    //     }
+    // }
 }
 

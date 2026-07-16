@@ -78,7 +78,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
       }
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-[60px]">
 
           {from !== "discover" && (
             <>
@@ -107,7 +107,6 @@ export default function MoodDetails({ onNavigate, params }: Props) {
 
           {mode === false && (
             <>
-
               <button
                 onClick={() =>
                   onNavigate?.({
@@ -126,18 +125,15 @@ export default function MoodDetails({ onNavigate, params }: Props) {
               >
                 profile
               </button>
-            </>
-          )}
-
-          {mode === false && (
-            <div className="ml-[200px]">
+            <div className="">
               <button
                 onClick={() =>
                   onNavigate?.({
                     to: "draw",
                     direction: "next",
                     params: {
-                      // username,
+                      currentUser,
+                      requestedUser,
                       isOwner: mode,
                       moodboard
                     },
@@ -149,13 +145,18 @@ export default function MoodDetails({ onNavigate, params }: Props) {
               </button>
               
             </div>
+            </>
           )}
+
+
           {moodboard && (
             <LikeButton
-              className=""
-              moodboardId={moodboard.id}
-              initialCount={0}
-              initialLiked={false}
+              type="moodboard"
+              className={typography.buttonBody}
+              id={moodboard.id}
+              initialCount={moodboard.likes_count}
+              initialLiked={moodboard.liked_by_current_user}
+              disabled={false}
             />
           )}
         </div>

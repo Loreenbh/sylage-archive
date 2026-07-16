@@ -10,6 +10,7 @@ import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 import LikeButton from "@/components/ui/buttons/LikeButton"
+import SilhouetteCount from "@/components/ui/buttons/SilhouetteCount"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 
@@ -20,6 +21,10 @@ type Props = {
   params?: NavigationParams["params"] | null
 }
 type Tab = "new" | "featured" | "following"
+
+/* LIB */
+import { getDiscoverMoods } from "@/lib/services/discover"
+
 
 /*---------------------------------------------------- */
 
@@ -33,27 +38,32 @@ export default function Discover({ onNavigate, params }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
 
-  useEffect(() => {
-    let cancelled = false
+ useEffect(() => {
+  let cancelled = false
 
-    async function loadMoodboards() {
-      setIsLoading(true)
-      try {
-        const res = await fetch("/api/moodboards")
-        const data = await res.json()
-        if (!cancelled) setMoodboards(data)
-      } catch {
-        if (!cancelled) setMoodboards([])
-      } finally {
-        if (!cancelled) setIsLoading(false)
+  async function loadMoodboards() {
+    setIsLoading(true)
+    try {
+      const data = await getDiscoverMoods()
+      if (!cancelled) {
+        setMoodboards(data) //met tableau dans le state
+      }
+    } catch {
+      if (!cancelled) {
+        setMoodboards([])
+      }
+    } finally {
+      if (!cancelled) {
+        setIsLoading(false)
       }
     }
+  }
+  loadMoodboards()
+  return () => {
+    cancelled = true
+  }
 
-    loadMoodboards()
-    return () => {
-      cancelled = true
-    }
-  }, [])
+}, [])
 
   const byTab =
     tab === "new"
@@ -69,6 +79,7 @@ export default function Discover({ onNavigate, params }: Props) {
 
   const sidebarTitle = tab.toUpperCase()
   console.log("DISCOVER:", currentUser)
+  console.log("MOODBOARDS", filteredMoodboards)
   return (
     <BookLayout
       header={
@@ -90,9 +101,9 @@ export default function Discover({ onNavigate, params }: Props) {
                   to: "create",
                   direction: "next",
                   params:{
-                    currentUser,
+                    // currentUser,
                     from: "discover",
-                    isOwner: mode
+                    // isOwner: mode
                   }
                 })
              },
@@ -105,16 +116,16 @@ export default function Discover({ onNavigate, params }: Props) {
       actionsBar={
         <div className="flex items-center gap-1 sm:gap-6">
           <button
-            onClick={ () => setTab("new")}
+            // onClick={ () => setTab("new")}
             className={typography.buttonBody}>new</button>
           <span className={typography.bullet}>•</span>
           <button
-            onClick={ () => setTab("featured")}
+            // onClick={ () => setTab("featured")}
             className={typography.buttonBody}>featured</button>
           <span className={typography.bullet}>•</span>
 
           <button 
-            onClick={ () => setTab("following")}
+            // onClick={ () => setTab("following")}
             className={typography.buttonBody}>following</button>
         </div>
       }
@@ -160,19 +171,23 @@ export default function Discover({ onNavigate, params }: Props) {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
-                <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-white drop-shadow">
-                  {board.username}
-                </p>
-
-                <LikeButton className="absolute left-2"
-                  initialCount={0}
-                  initialLiked={false}
-                />
+                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-2 py-1 bg-black/40 text-white">
+                  <p className="text-[9px] tracking-[0.2em] drop-shadow">
+                    {board.username}
+                  </p>
+                      <LikeButton
+                        type="moodboard"
+                        className={typography.buttonBody}
+                        id={board.id}
+                        initialCount={board.likes_count}
+                        initialLiked={board.liked_by_current_user}
+                      />
+                      <SilhouetteCount count={board.silhouettes_count} />
+                </div>
               </div>
             )}
           />
         )}
-
       </div>
     </BookLayout>
   )

@@ -1,36 +1,48 @@
-import { useState } from "react"
-import { Moodboard } from "@/types/moodboard"
+import { useState, useEffect } from "react"
 
 type Props = {
-  moodboardId: number
+  type: "moodboard" | "silhouette"
+  id: number
   initialCount?: number
   initialLiked?: boolean
   onLike?: () => void
   className: string
+  disabled?: boolean
 }
 
 export default function LikeButton({
-  moodboardId,
+  type,
+  id,
   initialCount = 0,
   initialLiked = false,
   onLike,
-  className = ""
+  className = "",
+  disabled = false
 }: Props) {
 
   const [liked, setLiked] = useState(initialLiked)
   const [count, setCount] = useState(initialCount)
 
+  useEffect(() => {
+    setLiked(initialLiked)
+    setCount(initialCount)
+  }, [initialLiked, initialCount])
 
   const handleClick = async (e: React.MouseEvent) => {
     e.stopPropagation()
+
+    if (disabled) return
+
+    const body =
+      type === "moodboard"
+      ? {moodboardId: id}
+      : {silhouetteId : id}
 
     if (!liked) {
         const registerRes = await fetch("/api/likes", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          moodboardId: moodboardId ,
-        })
+        body: JSON.stringify(body)
       })
       
       if (registerRes.ok){
@@ -41,26 +53,30 @@ export default function LikeButton({
       const registerRes = await fetch("/api/likes", {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          moodboardId: moodboardId ,
-        })
+        body: JSON.stringify(body)
       })
       
       if (registerRes.ok){
         setLiked(false)
-        setCount((prev) => prev - 1)
+        setCount((prev) => Math.max(0, prev - 1))
       }
     }
     onLike?.()
   }
 
-
   return (
     <button
       onClick={handleClick}
       className={className}
+      disabled={disabled}
     >
-      {liked ? "♥" : "♡"} {count}
+      {type === "moodboard" ? (
+        liked ? "♥" : "♡"
+      ) : (
+        liked ? "★" : "☆"
+      )}
+      {" "}
+      {count}
     </button>
   )
 }

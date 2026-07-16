@@ -4,11 +4,11 @@ import { pool } from "@/lib/db";
 
 export async function POST(request: Request){
     const body = await request.json()
-    const { moodboardId } = body
-
-    if (!moodboardId){
+    const { moodboardId, silhouetteId } = body
+    console.log(body)
+    if (!moodboardId || !silhouetteId){
         return NextResponse.json(
-            {error:"Moodboard is missing"},
+            {error:"Missing target"},
             {status:400}
         )
     }
@@ -47,13 +47,14 @@ export async function POST(request: Request){
         const result = await pool.query(
             `
             INSERT INTO likes
-            (user_id, moodboard_id)
-            VALUES ($1, $2)
+            (user_id, moodboard_id, silhouette_id)
+            VALUES ($1, $2, $3)
             RETURNING *
             `,
             [
                 user.user_id,
-                moodboardId,
+                moodboardId ?? null,
+                silhouetteId ?? null
             ]
         )
 
@@ -77,11 +78,11 @@ export async function POST(request: Request){
 
 export async function DELETE(request: Request) {
     const body = await request.json()
-    const { moodboardId } = body
+    const { moodboardId, silhouetteId } = body
 
-    if (!moodboardId){
+    if (!moodboardId || !silhouetteId){
         return NextResponse.json(
-            {error:"Moodboard is missing"},
+            {error:"Missing target"},
             {status:400}
         )
     }
@@ -120,13 +121,18 @@ export async function DELETE(request: Request) {
         const result = await pool.query(
             `
             DELETE FROM likes
-            WHERE moodboard_id = $1 
-            AND user_id = $2
+            WHERE user_id = $1
+            AND(
+                moodboard_id = $2
+                OR
+                silhouette_id = $3
+            )
             RETURNING *
             `,
             [
-                moodboardId,
                 user.user_id,
+                moodboardId ?? null,
+                silhouetteId ?? null
             ]
         )
 

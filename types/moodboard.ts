@@ -4,6 +4,9 @@ export type Moodboard = {
   image_url: string
   tags: string[]
   created_at: string
+  likes_count : number
+  silhouettes_count: number
+  liked_by_current_user: boolean
 }
 
 export type MoodboardSlot = {
