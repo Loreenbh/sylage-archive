@@ -9,12 +9,11 @@ import Header from "@/components/navigation/Header"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import SimpleGrid from "@/components/ui/grids/SimpleGrid"
 import LikeButton from "@/components/ui/buttons/LikeButton"
+import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 
 /* STYLE */
 import { typography} from "@/styles/typography"
 
-/* TYPES */
-import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 
 type Props = {
   onNavigate: OnNavigate
@@ -25,18 +24,21 @@ type Props = {
 export default function MoodDetails({ onNavigate, params }: Props) {
 
   const {
-    currentUser,
-    requestedUser
+    requestedUser,
+    isOwner,
+    from,
+    moodboard
   } = params ?? {}
-  const profileUsername = requestedUser ?? currentUser
-  const { isOwner: mode, from, moodboard} = params ?? {}
+  const profileUsername = isOwner ? null : requestedUser
+
   const sidebarTitle = 
-    mode === true
-    ? "DETAILS"
-    : ` ${profileUsername}|DETAILS`
+    isOwner
+    ? "PROFILE"
+    : profileUsername
+      ? `${profileUsername} | DETAILS`
+      : "DETAILS"
   
   console.log("MOODDETAILS DE", profileUsername)
-  console.log("MOODDETAILS moodboard =", moodboard)
   
   return (
     <BookLayout
@@ -50,7 +52,6 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                   to: "discover",
                   direction: "prev",
                   params:{
-                    currentUser,
                     requestedUser,
                     isOwner: false
                   }
@@ -69,7 +70,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                   params:{
                     // username,
                     from: "discover",
-                    isOwner: mode
+                    isOwner
                   }
                 })
              },
@@ -88,11 +89,9 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                   to: "discover",
                   direction: "prev",
                   params: {
-                    currentUser,
                     requestedUser,
-                    isOwner: mode,
+                    isOwner,
                     from: "moodDetails",
-                    moodboard
                   },
                 })
               }
@@ -105,7 +104,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
           )
         }
 
-          {mode === false && (
+          {!isOwner && (
             <>
               <button
                 onClick={() =>
@@ -113,11 +112,10 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                     to: "profile",
                     direction: "next",
                     params: {
-                      currentUser,
+
                       requestedUser,
-                      isOwner: mode,
+                      isOwner,
                       from: "moodDetails",
-                      moodboard,
                     },
                   })
                 }
@@ -132,10 +130,9 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                     to: "draw",
                     direction: "next",
                     params: {
-                      currentUser,
                       requestedUser,
-                      isOwner: mode,
-                      moodboard
+                      moodboard,
+                      isOwner,
                     },
                   })
                 }
@@ -148,17 +145,16 @@ export default function MoodDetails({ onNavigate, params }: Props) {
             </>
           )}
 
-
-          {moodboard && (
-            <LikeButton
-              type="moodboard"
-              className={typography.buttonBody}
-              id={moodboard.id}
-              initialCount={moodboard.likes_count}
-              initialLiked={moodboard.liked_by_current_user}
-              disabled={false}
-            />
-          )}
+            {moodboard && (
+              <LikeButton
+                type="moodboard"
+                className={typography.buttonBody}
+                id={moodboard.id}
+                initialCount={moodboard.likes_count}
+                initialLiked={moodboard.liked_by_current_user}
+                disabled={false}
+              />
+            )}
         </div>
 
         
@@ -166,7 +162,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
       footer={
           <div className="flex items-center gap-4">
             <CurrentUserName />
-            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+            <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
         >   

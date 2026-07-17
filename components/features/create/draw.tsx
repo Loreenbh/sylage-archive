@@ -16,13 +16,16 @@ import { typography } from "@/styles/typography"
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
-import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
+import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
 }
 
+/*SERVICES*/
+import { uploadImage } from "@/lib/services/upload"
+import { createSilhouette } from "@/lib/services/silhouette"
 
 function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
   if (!slot) return null
@@ -52,21 +55,17 @@ function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
 
 export default function Draw({ onNavigate, params }: Props) {
     const {
-    currentUser,
-    requestedUser
-  } = params ?? {}
-  const profileUsername = requestedUser ?? currentUser
-  const {
-    isOwner: mode,
+    requestedUser,
+    moodboard,
     fromTab,
-    moodboard
+    isOwner
   } = params ?? {}
+  const profileUsername = requestedUser ?? null
 
-
-  const sidebarTitle =
-    mode === true
-      ? "PROPOSE"
-      : `${profileUsername}|PROPOSE`
+  // const sidebarTitle =
+  //   isOwner
+  //     ? "PROPOSE"
+  //     : `${profileUsername}|PROPOSE`
 
 
   const [silhouette, setSilhouette] = useState<MoodboardSlot>(null)
@@ -142,46 +141,29 @@ export default function Draw({ onNavigate, params }: Props) {
     setIsPublishing(true)
 
     try {
-      slotRef.current.classList.add("export-mode")      // 1. capture le rendu affiché (avec le zoom/déplacement appliqué) en PNG
-      const imageData = await toPng(slotRef.current)
-      slotRef.current.classList.remove("export-mode")      // 2. upload cette image, récupère son URL réelle
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageData }),
-      })
+   slotRef.current.classList.add("export-mode")
 
-      const uploadData = await uploadRes.json()
+    const imageData = await toPng(slotRef.current)
 
-      if (!uploadRes.ok) {
-        setPublishError(uploadData.error ?? "Erreur lors de l'upload")
-        return
-      }
+    slotRef.current.classList.remove("export-mode")
 
-      // 3. crée la silhouette avec cette URL réelle, liée au moodboard
-      const res = await fetch("/api/silhouettes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          imageUrl: uploadData.url,
-          moodboardId: moodboard.id,
-        }),
-      })
 
-      const data = await res.json()
+    // 1. upload image
+    const imageUrl = await uploadImage(imageData)
 
-      if (!res.ok) {
-        setPublishError(data.error ?? "Erreur lors de la publication")
-        return
-      }
+
+    // 2. créer silhouette en base
+    await createSilhouette(
+      imageUrl,
+      moodboard.id
+    )
 
       onNavigate?.({
         to: "moodDetails",
         direction: "prev",
         params: {
-          currentUser,
           requestedUser,
-          isOwner: mode,
+          isOwner,
           moodboard,
           fromTab,
         }
@@ -210,7 +192,6 @@ export default function Draw({ onNavigate, params }: Props) {
                   to:"discover",
                   direction:"prev",
                   params:{
-                    currentUser,
                     requestedUser,
                     isOwner:false
                   }
@@ -234,7 +215,7 @@ export default function Draw({ onNavigate, params }: Props) {
 
       sidebar={
         <Sidebar
-          text={sidebarTitle}
+          text={"PROPOSE"}
           clickable={false}
         />
       }
@@ -249,9 +230,8 @@ export default function Draw({ onNavigate, params }: Props) {
                 to:"moodDetails",
                 direction:"prev",
                 params:{
-                  currentUser,
                   requestedUser,
-                  isOwner:mode,
+                  isOwner,
                   moodboard,
                   fromTab,
                 }
@@ -263,7 +243,7 @@ export default function Draw({ onNavigate, params }: Props) {
           </button>
 
 
-          {mode === false && (
+          {!isOwner && (
             <>
               <span className={typography.bullet}>
                 •
@@ -276,9 +256,8 @@ export default function Draw({ onNavigate, params }: Props) {
                     to:"profile",
                     direction:"next",
                     params:{
-                      currentUser,
                       requestedUser,
-                      isOwner:mode
+                      isOwner
                     }
                   })
                 }
@@ -316,7 +295,7 @@ export default function Draw({ onNavigate, params }: Props) {
       footer={
           <div className="flex items-center gap-4">
             <CurrentUserName />
-            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+            <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
         >   

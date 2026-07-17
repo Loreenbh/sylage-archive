@@ -6,4 +6,6 @@ export type Silhouette = {
   image_url: string
   tags: string[]
   created_at: string
+  likes_count: number
+  liked_by_current_user: boolean
 }

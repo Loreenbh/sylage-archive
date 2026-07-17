@@ -6,12 +6,14 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
+import LikeButton from "@/components/ui/buttons/LikeButton"
+import SilhouetteCount from "@/components/ui/buttons/SilhouetteCount"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 import { Moodboard } from "@/types/moodboard" 
-import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
+import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
@@ -19,16 +21,17 @@ type Props = {
 }
 type Tab = "new" | "featured" | "following"
 
+/* SERVICES */
+import { getMoodboardData } from "@/lib/services/moodboard"
+
 /*---------------------------------------------------- */
 
 export default function Moods({ onNavigate, params }: Props) {
-  const {
-    currentUser,
-    requestedUser
-  } = params ?? {}
-  const profileUsername = requestedUser ?? currentUser
+  const { isOwner, from, requestedUser} = params ?? {}
 
-const { isOwner: mode, moodboard} = params ?? {}
+  const profileUsername = isOwner 
+    ? null 
+    : requestedUser
 
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
@@ -50,38 +53,40 @@ const { isOwner: mode, moodboard} = params ?? {}
       : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
   const sidebarTitle =
-    mode
+    isOwner
       ? "MOODS"
       : profileUsername
-        ? `${profileUsername} | Moods`
-        : "Moods"
+        ? `${profileUsername} | MOODS`
+        : "MOODS"
 
 
   useEffect(() => {
+    let cancelled = false
+
     async function loadMoodboards() {
+      setIsLoading(true)
       try {
-        setIsLoading(true)
-
-        const res = await fetch(`/api/moodboards?user=${profileUsername}`)
-        const data = await res.json()
-
-        setMoodboards(data)
-
+        const data = await getMoodboardData(profileUsername ?? undefined)
+        if (!cancelled) {
+          setMoodboards(data) //met tableau dans le state
+        }
       } catch {
-        setMoodboards([])
+        if (!cancelled) {
+          setMoodboards([])
+        }
       } finally {
-        setIsLoading(false)
+        if (!cancelled) {
+          setIsLoading(false)
+        }
       }
     }
-
-    if (profileUsername) {
-      loadMoodboards()
-    } else {
-      setIsLoading(false)
+    loadMoodboards()
+    return () => {
+      cancelled = true
     }
 
   }, [profileUsername])
-  console.log("MOODS:", currentUser)
+
     return (
     <BookLayout
       header={
@@ -95,7 +100,7 @@ const { isOwner: mode, moodboard} = params ?? {}
                   to: "discover",
                   direction: "prev",
                   params:{
-                    currentUser,
+                    
                     requestedUser,
                     isOwner: false
                   }
@@ -111,9 +116,9 @@ const { isOwner: mode, moodboard} = params ?? {}
                   to: "create",
                   direction: "next",
                   params:{
-                    currentUser,
+                    
                     from: "moods",
-                    isOwner: mode
+                    isOwner
                   }
                 })
              },
@@ -131,10 +136,9 @@ const { isOwner: mode, moodboard} = params ?? {}
                 to: "profile",
                 direction: "prev",
                 params:{
-                  currentUser,
+                  
                   requestedUser,
-                  isOwner: mode,
-                  moodboard
+                  isOwner,
                 }
               })
             }
@@ -147,7 +151,7 @@ const { isOwner: mode, moodboard} = params ?? {}
       footer={
           <div className="flex items-center gap-4">
             <CurrentUserName />
-            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+            <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
         >    
@@ -169,12 +173,11 @@ const { isOwner: mode, moodboard} = params ?? {}
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  currentUser,
                   requestedUser,
                   from: "moods",
                   moodboard: board,
                   fromTab: tab,
-                  isOwner: mode,
+                  isOwner,
                 },
               })
             }}
@@ -186,9 +189,17 @@ const { isOwner: mode, moodboard} = params ?? {}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
-                {/* <p className="absolute bottom-2 left-2 text-[9px] tracking-[0.2em] text-white drop-shadow">
-                  {board.username}
-                </p> */}
+                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-2 py-1 bg-black/40 text-white">
+                      <LikeButton
+                        type="moodboard"
+                        className={typography.buttonBody}
+                        id={board.id}
+                        initialCount={board.likes_count}
+                        initialLiked={board.liked_by_current_user}
+                        disabled={true}
+                      />
+                      <SilhouetteCount count={board.silhouettes_count} />
+                </div>
               </div>
             )}
           />

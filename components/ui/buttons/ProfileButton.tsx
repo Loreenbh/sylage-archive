@@ -4,12 +4,11 @@ import type { OnNavigate } from "@/types/navigation"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
-  currentUser?: string
   active?: boolean
   clickable?: boolean
 }
 /*------------------------------------------ */
-export default function ProfileButton({ onNavigate , currentUser, active = false, clickable = true}: Props) {
+export default function ProfileButton({ onNavigate, active = false, clickable = true}: Props) {
   const [user_name, setUsername] = useState<string | null>(null)
   
   return (
@@ -21,11 +20,9 @@ export default function ProfileButton({ onNavigate , currentUser, active = false
           to: "profile",
           direction: "next",
           params:{
-            currentUser: currentUser,
             isOwner: true,
           }
         })
-        console.log(currentUser, "cest luser dans profile")
       }}
       className={`
                   w-9 h-9 md:w-14 md:h-14 lg:w-18 lg:h-18

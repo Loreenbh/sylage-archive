@@ -4,9 +4,10 @@ import { pool } from "@/lib/db";
 
 export async function POST(request: Request){
     const body = await request.json()
+      console.log("API RECEIVED LIKE =", body)
     const { moodboardId, silhouetteId } = body
     console.log(body)
-    if (!moodboardId || !silhouetteId){
+    if (!moodboardId && !silhouetteId){
         return NextResponse.json(
             {error:"Missing target"},
             {status:400}
@@ -42,7 +43,48 @@ export async function POST(request: Request){
         )
     }
 
+    if (moodboardId) {
+        const moodboard = await pool.query(
+            `
+            SELECT user_id
+            FROM moodboards
+            WHERE id = $1
+            `,
+            [moodboardId]
+        )
 
+        if (moodboard.rows[0]?.user_id === user.user_id) {
+                console.log(
+        "BLOQUE LIKE",
+        "proprietaire:",
+        moodboard.rows[0].user_id,
+        "connecté:",
+        user.user_id
+    )
+            return NextResponse.json(
+                { error: "Impossible de liker son propre moodboard" },
+                { status: 403 }
+            )
+        }
+    }
+
+    if (silhouetteId) {
+        const silhouette = await pool.query(
+            `
+            SELECT user_id
+            FROM silhouettes
+            WHERE id = $1
+            `,
+            [silhouetteId]
+        )
+
+        if (silhouette.rows[0]?.user_id === user.user_id) {
+            return NextResponse.json(
+                { error: "Impossible de liker sa propre silhouette" },
+                { status: 403 }
+            )
+        }
+    }
     try{
         const result = await pool.query(
             `
@@ -80,7 +122,7 @@ export async function DELETE(request: Request) {
     const body = await request.json()
     const { moodboardId, silhouetteId } = body
 
-    if (!moodboardId || !silhouetteId){
+    if (!moodboardId && !silhouetteId){
         return NextResponse.json(
             {error:"Missing target"},
             {status:400}

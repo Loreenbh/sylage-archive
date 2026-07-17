@@ -2,17 +2,21 @@
 
 import { useEffect, useState } from "react"
 import { typography } from "@/styles/typography"
+import { getCurrentUser } from "@/lib/services/auth"
 
 export default function CurrentUserName() {
   const [username, setUsername] = useState<string | null>(null)
 
   useEffect(() => {
     async function loadUser() {
-      const res = await fetch("/api/auth/me")
-      const data = await res.json()
+      try {
+        const data = await getCurrentUser()
 
-      if (data.user) {
-        setUsername(data.user.username)
+        if (data.user) {
+          setUsername(data.user.username)
+        }
+      } catch {
+        setUsername(null)
       }
     }
 
@@ -21,9 +25,9 @@ export default function CurrentUserName() {
 
   return (
     <div className={typography.body}>
-        <span>
+      <span>
         {username ?? "guest"}
-        </span>
+      </span>
     </div>
   )
 }

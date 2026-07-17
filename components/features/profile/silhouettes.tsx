@@ -9,13 +9,15 @@ import Header from "@/components/navigation/Header"
 import ThreeColGrid from "@/components/ui/grids/ThreeColGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import GridPager from "@/components/ui/pagination/GridPager"
+import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
+import LikeButton from "@/components/ui/buttons/LikeButton"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
 
 /* TYPES */
 import { Silhouette } from "@/types/silhouettes"
-import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
+import { getSilhouetteData } from "@/lib/services/silhouette"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
@@ -25,42 +27,58 @@ type Props = {
 export default function Silhouettes({ onNavigate, params }: Props) {
 
     const {
-    currentUser,
-    requestedUser
+    requestedUser,
+    isOwner,
+    moodboard,
+    from
   } = params ?? {}
-  const profileUsername = requestedUser ?? currentUser
-  const { isOwner: mode, from, moodboard } = params ?? {}
+
+  const profileUsername = isOwner 
+    ? null 
+    : requestedUser
 
   const [silhouettes, setSilhouettes] = useState<Silhouette[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [index, setIndex] = useState(0)
-  console.log("SILHOUETTES DE", profileUsername)
 
-  useEffect(() => {
-    if (!profileUsername) {
-      setIsLoading(false)
-      return
-    }
+useEffect(() => {
 
-    let cancelled = false
+  let cancelled = false
 
-    async function loadSilhouettes() {
-      setIsLoading(true)
-      try {
-        const res = await fetch(`/api/silhouettes?user=${profileUsername}`)
-        const data = await res.json()
-        if (!cancelled) setSilhouettes(data)
-      } catch {
-        if (!cancelled) setSilhouettes([])
-      } finally {
-        if (!cancelled) setIsLoading(false)
+  async function loadSilhouettes() {
+    setIsLoading(true)
+
+    try {
+
+      const data = await getSilhouetteData(profileUsername ?? undefined)
+
+      if (!cancelled) {
+        setSilhouettes(data)
       }
+
+    } catch {
+
+      if (!cancelled) {
+        setSilhouettes([])
+      }
+
+    } finally {
+
+      if (!cancelled) {
+        setIsLoading(false)
+      }
+
     }
-    loadSilhouettes()
-    return () => {
-      cancelled = true
-    }
-  }, [profileUsername])
+  }
+
+  loadSilhouettes()
+
+  return () => {
+    cancelled = true
+  }
+
+}, [profileUsername])
+
 
   const left = silhouettes[index]
   const center = silhouettes[index + 1]
@@ -75,23 +93,44 @@ export default function Silhouettes({ onNavigate, params }: Props) {
   }
 
   const sidebarTitle =
-    mode
+    isOwner
       ? "SILHOUETTES"
       : profileUsername
         ? `${profileUsername} | SILHOUETTES`
         : "SILHOUETTES"
 
-  const renderCell = (silhouette?: Silhouette) => (
-    <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
-      {silhouette && (
+const renderCell = (silhouette?: Silhouette) => (
+  <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
+
+    {silhouette && (
+      <>
         <img
           src={silhouette.image_url}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
-      )}
-    </div>
-  )
+
+        <div className="
+          absolute bottom-0 left-0 right-0
+          flex items-center justify-between
+          px-2 py-1
+          bg-black/40
+          text-white
+        ">
+          <LikeButton
+            type="silhouette"
+            className={typography.buttonBody}
+            id={silhouette.id}
+            initialCount={silhouette.likes_count}
+            initialLiked={silhouette.liked_by_current_user}
+            disabled={false}
+          />
+        </div>
+      </>
+    )}
+
+  </div>
+)
 
   return (
     <BookLayout
@@ -105,7 +144,6 @@ export default function Silhouettes({ onNavigate, params }: Props) {
                   to: "discover",
                   direction: "prev",
                   params:{
-                    currentUser,
                     requestedUser,
                     isOwner: false
                   }
@@ -131,9 +169,9 @@ export default function Silhouettes({ onNavigate, params }: Props) {
                 to: "profile",
                 direction: "prev",
                 params:{
-                  currentUser,
+                  
                   requestedUser,
-                  isOwner : mode,
+                  isOwner,
                   from: "moodDetails",
                   moodboard
                 }
@@ -153,7 +191,7 @@ export default function Silhouettes({ onNavigate, params }: Props) {
       footer={
           <div className="flex items-center gap-4">
             <CurrentUserName />
-            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+            <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
         >   
@@ -173,6 +211,8 @@ export default function Silhouettes({ onNavigate, params }: Props) {
             center={renderCell(center)}
             right={renderCell(right)}
           />
+
+          
         )}
 
       </div>

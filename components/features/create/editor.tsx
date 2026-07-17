@@ -12,7 +12,7 @@ import BookLayout from "@/components/book/BookLayout"
 import Header from "@/components/navigation/Header"
 import Sidebar from "@/components/navigation/SideBar"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
+import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 
 /* LAYOUTS */
 import LayoutA from "../moodboards/LayoutA"
@@ -22,6 +22,10 @@ import LayoutD from "../moodboards/LayoutD"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
+
+/* SERVICES */
+import { uploadImage } from "@/lib/services/upload"
+import { createMoodboard } from "@/lib/services/moodboard"
 
 type Props = {
   onNavigate: OnNavigate
@@ -37,11 +41,11 @@ const LAYOUT_SLOT_COUNT = {
 
 export default function Editor({ onNavigate, params }: Props) {
 
-    const {
-    currentUser,
-    requestedUser
-  } = params ?? {}
-  const profileUsername = requestedUser ?? currentUser
+  //   const {
+
+  //   requestedUser
+  // } = params ?? {}
+  // const profileUsername = requestedUser ?? null
   const layout = params?.layout as keyof typeof LAYOUT_SLOT_COUNT
 
   const slotCount = LAYOUT_SLOT_COUNT[layout] ?? 9
@@ -120,48 +124,21 @@ export default function Editor({ onNavigate, params }: Props) {
 
     try {
       layoutRef.current.classList.add("export-mode")
-      // 1. capture le layout affiché (avec les images déjà zoomées/positionnées) en PNG
       const imageData = await toPng(layoutRef.current)
       layoutRef.current.classList.remove("export-mode")
-      // 2. upload cette image, récupère son URL réelle
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageData }),
-      })
-
-      const uploadData = await uploadRes.json()
-
-      if (!uploadRes.ok) {
-        setPublishError(uploadData.error ?? "Erreur lors de l'upload")
-        return
-      }
-
-      // 3. crée le moodboard avec cette URL + les tags
-      //    (le serveur déduit l'utilisateur depuis la session, pas besoin de l'envoyer)
-      const res = await fetch("/api/moodboards", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          imageUrl: uploadData.url,
-          tags: allSelectedTags,
-        }),
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        setPublishError(data.error ?? "Erreur lors de la publication")
-        return
-      }
-
+      const imgUrl = await uploadImage(imageData)
+      await createMoodboard(
+        imgUrl,
+        allSelectedTags
+      )
+     
       onNavigate({
         to: "discover",
         direction: "prev",
-        params:{
-          currentUser,
-          requestedUser,
-        }
+        // params:{
+      
+        //   requestedUser,
+        // }
       })
     } catch {
       setPublishError("Erreur réseau")
@@ -195,9 +172,7 @@ export default function Editor({ onNavigate, params }: Props) {
         )
     }
   }
-  console.log("EDITOR", profileUsername)
-  // console.log("MOODDETAILS moodboard =", moodboard)
-  /* ---------------- UI ---------------- */
+
   return (
     <BookLayout
       header={
@@ -254,7 +229,7 @@ export default function Editor({ onNavigate, params }: Props) {
       footer={
           <div className="flex items-center gap-4">
             <CurrentUserName />
-            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+            <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
         >   

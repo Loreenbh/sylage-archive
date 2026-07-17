@@ -8,7 +8,7 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
+import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 
 import LayoutA from "../moodboards/LayoutA"
 import LayoutB from "../moodboards/LayoutB"
@@ -24,15 +24,8 @@ type Props = {
   params?: NavigationParams["params"] | null
 }
 
-
 export default function Create({ onNavigate, params }: Props) {
-    const {
-    currentUser,
-    requestedUser
-  } = params ?? {}
-  const profileUsername = requestedUser ?? currentUser
-const { isOwner: mode, fromTab, from} = params ?? {}
-  console.log("CREATE", profileUsername)
+const { from } = params ?? {}
   return (
     <BookLayout
       header={
@@ -82,7 +75,7 @@ const { isOwner: mode, fromTab, from} = params ?? {}
       footer={
           <div className="flex items-center gap-4">
             <CurrentUserName />
-            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+            <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
         >    
@@ -95,7 +88,6 @@ const { isOwner: mode, fromTab, from} = params ?? {}
                 to: "editor",
                 direction: "next",
                 params: {
-                  currentUser,
                   layout: "A",
                   from: "create",
                 },
@@ -116,7 +108,6 @@ const { isOwner: mode, fromTab, from} = params ?? {}
                 to: "editor",
                 direction: "next",
                 params: {
-                  currentUser,
                   layout: "B",
                   from: "create",
                 },
@@ -137,7 +128,6 @@ const { isOwner: mode, fromTab, from} = params ?? {}
                 to: "editor",
                 direction: "next",
                 params: {
-                  currentUser,
                   layout: "C",
                   from: "create",
                 },
@@ -158,7 +148,6 @@ const { isOwner: mode, fromTab, from} = params ?? {}
                 to: "editor",
                 direction: "next",
                 params: {
-                  currentUser,
                   layout: "D",
                   from: "create",
 

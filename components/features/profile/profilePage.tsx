@@ -9,74 +9,67 @@ import CustomGrid from "@/components/ui/grids/CustomGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import GridButton from "@/components/ui/buttons/GridButton"
 import ScrollFollow from "@/components/ui/cards/scrollFollow"
+import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 /* STYLE */
 import { typography } from "@/styles/typography"
 /* TYPES */
-import CurrentUserName from "@/components/ui/pagination/CurrentUserName"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
   
 }
+import { Moodboard } from "@/types/moodboard"
+import { Silhouette } from "@/types/silhouettes"
 
-type LastMoodboard = {
-  image_url : string
-}
-
-type LastSilhouette = {
-  image_url : string
-}
 /*------------------------------------------------- */
 
 export default function ProfilePage({ onNavigate, params }: Props) {
   const {
-    currentUser,
-    requestedUser
+    isOwner,
+    requestedUser,
+    from
   } = params ?? {}
-  const profileUsername = requestedUser ?? currentUser
+  const profileUsername = isOwner 
+    ? null 
+    : requestedUser
 
   const following = Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
     user: `user_${String(i + 1).padStart(2, "0")}`,
   }))
 
-const { isOwner: mode, from, moodboard} = params ?? {}
+  const [moodboards, setMoodboards] = useState<Moodboard[]>([])
+  const [silhouettes, setSilhouettes] = useState<Silhouette[]>([])
 
-const [lastMoodboard, setLastMoodboard] = useState<LastMoodboard | null>(null)
-const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null)
   useEffect(() => {
-    // if (!username) return
-    console.log("PROFIL PAGE", profileUsername)
-    console.log("PROFILE moodboard =", moodboard)
-    async function loadLastMoodboard() {
+  if (!isOwner && !requestedUser) return
+    async function loadProfile() {
       try {
-        const res = await fetch(`/api/moodboards?user=${profileUsername}`)
+        const url = isOwner
+          ? "/api/profile"
+          : `/api/profile?user=${requestedUser}`
+
+        const res = await fetch(url)
         const data = await res.json()
-        // l'API renvoie déjà triée par created_at DESC → le premier est le plus récent
-        setLastMoodboard(data[0] ?? null)
+
+        setMoodboards(data.moodboards)
+        setSilhouettes(data.silhouettes)
+
       } catch {
-        setLastMoodboard(null)
+        setMoodboards([])
+        setSilhouettes([])
       }
     }
 
-       async function loadLastSilhouette() {
-      try {
-        const res = await fetch(`/api/silhouettes?user=${profileUsername}`)
-        const data = await res.json()
-        setLastSilhouette(data[0] ?? null)
-      } catch {
-        setLastSilhouette(null)
-      }
-    }
+    loadProfile()
 
-    loadLastMoodboard()
-    loadLastSilhouette()
-  }, [profileUsername])
+  }, [isOwner, requestedUser])
 
-
+  const lastMoodboard = moodboards[0] ?? null
+  const lastSilhouette = silhouettes[0] ?? null
   
   const sidebarTitle = 
-    mode
+    isOwner
     ? "PROFILE"
     : profileUsername
       ? `${profileUsername} | PROFILE`
@@ -94,8 +87,6 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
                   to: "discover",
                   direction: "prev",
                   params:{
-                    currentUser,
-                    requestedUser,
                     isOwner: false
                   }
                 })
@@ -111,9 +102,8 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
                   to: "create",
                   direction: "next",
                   params:{
-                    currentUser,
                     from: "discover",
-                    isOwner: mode
+                    isOwner: isOwner
                   }
                 })
              },
@@ -123,7 +113,7 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-2">
-          {mode === true ? (
+          {isOwner === true ? (
             <>
               <button
                 className={typography.buttonBody}
@@ -133,7 +123,7 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
                     direction: "next",
                     params:{
                       // username,
-                      isOwner: mode,
+                      isOwner: isOwner,
                     }
                   })
                 }
@@ -151,7 +141,7 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
                     direction: "next",
                     params:{
                       // username,
-                      isOwner: mode,
+                      isOwner: isOwner,
                     }
                   })
                 }
@@ -168,11 +158,9 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
                     to: from ?? "discover",
                     direction: "prev",
                     params: {
-                      currentUser,
                       requestedUser,
-                      isOwner: mode,
+                      isOwner: isOwner,
                       from: "profile",
-                      moodboard
                     },
                   })
                 }}
@@ -188,7 +176,7 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
       footer={
           <div className="flex items-center gap-4">
             <CurrentUserName />
-            <ProfileButton onNavigate={onNavigate} currentUser={currentUser}/>
+            <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
         >   
@@ -196,17 +184,15 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
       <CustomGrid
         left={
           <GridButton
-            className="bg-zinc-200 hover:bg-zinc-300"
+            className="relative overflow-hidden bg-zinc-200 hover:bg-zinc-300"
             onClick={() => 
               onNavigate?.({ 
                 to: "silhouettes", 
                 direction: "next",
                 params:{
-                  currentUser,
                   requestedUser,
                   from: "profile",
-                  isOwner : mode,
-                  moodboard
+                  isOwner : isOwner,
                 }
                  })}>
 
@@ -231,10 +217,7 @@ const [lastSilhouette, setLastSilhouette] = useState<LastSilhouette | null>(null
                 to:"moods", 
                 direction: "next", 
                 params:{
-                  currentUser,
-                  requestedUser,
-                  isOwner: mode,
-                  moodboard
+                  isOwner: isOwner,
                 }, 
               })
             }
