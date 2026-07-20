@@ -124,6 +124,9 @@ export default function Editor({ onNavigate, params }: Props) {
 
     try {
       layoutRef.current.classList.add("export-mode")
+      console.log(
+        layoutRef.current.getBoundingClientRect()
+      )
       const imageData = await toPng(layoutRef.current)
       layoutRef.current.classList.remove("export-mode")
       const imgUrl = await uploadImage(imageData)
@@ -233,10 +236,21 @@ export default function Editor({ onNavigate, params }: Props) {
           </div>
           }
         >   
-      <div className="flex flex-col h-full w-full gap-2">
+        <div className="flex flex-col h-full w-full gap-2 min-h-0">
 
-        <div ref={layoutRef} className="h-full w-full">
-          {renderLayout()}
+        <div className="flex-1 min-h-0 flex justify-center">
+          <div
+            ref={layoutRef}
+            className="
+              aspect-square
+              h-full
+              max-w-full
+              overflow-hidden
+              relative
+            "
+          >
+            {renderLayout()}
+          </div>
         </div>
 
         {/* PICKER DE TAGS : 3 catégories dépliables */}

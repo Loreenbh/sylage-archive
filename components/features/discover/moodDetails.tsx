@@ -155,9 +155,24 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                 disabled={false}
               />
             )}
-        </div>
-
-        
+            <button
+              onClick={() =>
+                onNavigate?.({
+                  to: "silhouettes",
+                  direction: "next",
+                  params: {
+                    requestedUser,
+                    isOwner,
+                    moodboard,
+                    from: "moodDetails",
+                  },
+                })
+              }
+              className={typography.buttonBody}
+            >
+              silhouettes
+            </button>
+        </div>               
       }
       footer={
           <div className="flex items-center gap-4">

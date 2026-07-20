@@ -24,6 +24,16 @@ CREATE TABLE sessions(
     expires_at TIMESTAMP NOT NULL
 );
 
+-- FOLLOW
+CREATE TABLE follows (
+    id SERIAL PRIMARY KEY,
+    follower_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    following_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(follower_id, following_id)
+
+)
+
 --SILHOUETTES
 CREATE TABLE silhouettes (
     id SERIAL PRIMARY KEY,

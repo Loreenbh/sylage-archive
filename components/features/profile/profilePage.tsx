@@ -41,6 +41,16 @@ export default function ProfilePage({ onNavigate, params }: Props) {
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
   const [silhouettes, setSilhouettes] = useState<Silhouette[]>([])
 
+  const handleLogout = async ()  => {
+    await fetch("/api/auth/logout", {
+      method: "POST"
+    })
+    onNavigate?.({
+      to:"cover",
+      direction:"prev"
+    })
+  }
+
   useEffect(() => {
   if (!isOwner && !requestedUser) return
     async function loadProfile() {
@@ -148,6 +158,15 @@ export default function ProfilePage({ onNavigate, params }: Props) {
               >
                 Loves
               </button>
+
+              <div className="justify-end">
+                <button
+                  className={typography.buttonBody}
+                  onClick={handleLogout}
+                >
+                  Out
+                </button>
+              </div>
             </>
           ) : (
             <>
@@ -167,6 +186,14 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                 className={typography.buttonBody}
               >
                 back
+              </button>
+
+
+              <button
+                onClick={() =>{}}
+                className={typography.buttonBody}
+              >
+                follow
               </button>
             </>
           )}

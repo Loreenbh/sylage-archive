@@ -8,6 +8,7 @@ import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import LikeButton from "@/components/ui/buttons/LikeButton"
 import SilhouetteCount from "@/components/ui/buttons/SilhouetteCount"
+import ContentOverlay from "@/components/ui/cards/ContentOverlay"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 /* TYPES */
@@ -33,6 +34,7 @@ export default function Moods({ onNavigate, params }: Props) {
     ? null 
     : requestedUser
 
+    console.log("dans mood owner est", isOwner)
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
@@ -60,22 +62,23 @@ export default function Moods({ onNavigate, params }: Props) {
         : "MOODS"
 
 
-  useEffect(() => {
-    let cancelled = false
-
-    async function loadMoodboards() {
-      setIsLoading(true)
-      try {
-        const data = await getMoodboardData(profileUsername ?? undefined)
-        if (!cancelled) {
-          setMoodboards(data) //met tableau dans le state
-        }
-      } catch {
-        if (!cancelled) {
-          setMoodboards([])
-        }
-      } finally {
-        if (!cancelled) {
+        
+        useEffect(() => {
+          let cancelled = false
+          
+          async function loadMoodboards() {
+            setIsLoading(true)
+            try {
+              const data = await getMoodboardData(profileUsername ?? undefined)
+              if (!cancelled) {
+                setMoodboards(data) //met tableau dans le state
+              }
+            } catch {
+              if (!cancelled) {
+                setMoodboards([])
+              }
+            } finally {
+              if (!cancelled) {
           setIsLoading(false)
         }
       }
@@ -84,31 +87,44 @@ export default function Moods({ onNavigate, params }: Props) {
     return () => {
       cancelled = true
     }
-
+    
   }, [profileUsername])
+  
+  const handleDelete = async (id:number) => {
+  
+    const res = await fetch(`/api/moodboards?id=${id}`, {
+      method:"DELETE"
+    })
+  
+    if(res.ok){
+      setMoodboards(prev =>
+        prev.filter(board => board.id !== id)
+      )
+    }
+  }
 
-    return (
+  return (
     <BookLayout
-      header={
-        <Header
-          onFiltersChange={setSelectedFilters}
-          items={[
-            { section: "HOME",
-              clickable: true,
-              onClick: () =>
-                onNavigate?.({
-                  to: "discover",
-                  direction: "prev",
-                  params:{
-                    
-                    requestedUser,
-                    isOwner: false
-                  }
-                })
-            },
-            { section: "FILTER",
-              clickable: true,
-             },
+    header={
+      <Header
+      onFiltersChange={setSelectedFilters}
+      items={[
+        { section: "HOME",
+          clickable: true,
+          onClick: () =>
+            onNavigate?.({
+              to: "discover",
+              direction: "prev",
+              params:{
+                
+                requestedUser,
+                isOwner: false
+              }
+            })
+          },
+          { section: "FILTER",
+            clickable: true,
+          },
             { section: "CREATE",
               clickable: true,
                 onClick: () =>
@@ -157,16 +173,20 @@ export default function Moods({ onNavigate, params }: Props) {
         >    
         <div className="flex flex-col h-full "> 
 
-        {isLoading ? (
-          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
-            CHARGEMENT...
-          </p>
-        ) : filteredMoodboards.length === 0 ? (
-          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
-            AUCUN MOODBOARD POUR L'INSTANT
-          </p>
-        ) : (
-          <ScrollableGrid
+          {isLoading ? (
+            <div className="h-full flex items-center justify-center">
+              <p className="text-black/30 text-xs tracking-[0.2em]">
+                CHARGEMENT...
+              </p>
+            </div>
+          ) : filteredMoodboards.length === 0 ? (
+            <div className="h-full flex items-center justify-center">
+              <p className="text-black/30 text-xs tracking-[0.2em]">
+                AUCUN MOODBOARD POUR L'INSTANT
+              </p>
+            </div>
+          ) : (
+            <ScrollableGrid
             data={filteredMoodboards}
             onItemClick={(board) => {
               onNavigate?.({
@@ -188,18 +208,19 @@ export default function Moods({ onNavigate, params }: Props) {
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
                 />
+                <ContentOverlay
+                  username={board.username}
+                  isOwner={isOwner ?? false}
+                  like={{
+                    type:"moodboard",
+                    id:board.id,
+                    count:board.likes_count,
+                    liked:board.liked_by_current_user
+                    
+                  }}
+                  onDelete={() => handleDelete(board.id)}
 
-                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-2 py-1 bg-black/40 text-white">
-                      <LikeButton
-                        type="moodboard"
-                        className={typography.buttonBody}
-                        id={board.id}
-                        initialCount={board.likes_count}
-                        initialLiked={board.liked_by_current_user}
-                        disabled={true}
-                      />
-                      <SilhouetteCount count={board.silhouettes_count} />
-                </div>
+                />
               </div>
             )}
           />

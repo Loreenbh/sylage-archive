@@ -86,6 +86,8 @@ export async function GET(request: Request){
   const username = searchParams.get("user")
   const tag = searchParams.get("tag")
 
+  const moodboardId = searchParams.get("moodboard")
+
   const cookieStore = await cookies()
   const token = cookieStore.get("session_token")?.value
 
@@ -108,8 +110,51 @@ export async function GET(request: Request){
     )
   }
 
+  if (moodboardId){
+
+    const result = await pool.query(
+      `
+      SELECT 
+        silhouettes.*,
+        users.username,
+        moodboards.tags,
+
+        COUNT(likes.id)::int AS likes_count,
+
+        EXISTS (
+          SELECT FROM likes
+          WHERE likes.user_id = $2
+          AND likes.silhouette_id = silhouettes.id
+        ) AS liked_by_current_user
+
+      FROM silhouettes
+
+      JOIN users
+      ON users.id = silhouettes.user_id
+
+      JOIN moodboards
+      ON moodboards.id = silhouettes.moodboard_id
+
+      LEFT JOIN likes
+      ON likes.silhouette_id = silhouettes.id
+
+      WHERE silhouettes.moodboard_id = $1
+
+      GROUP BY silhouettes.id, users.username, moodboards.tags
+
+      ORDER BY silhouettes.created_at DESC
+      `,
+      [
+        moodboardId,
+        currentSession.user_id
+      ]
+    )
+
+    return NextResponse.json(result.rows)
+  }
 
   let userId
+
 
   if (!username) {
     userId = currentSession.user_id
@@ -189,4 +234,63 @@ export async function GET(request: Request){
 
 
   return NextResponse.json(result.rows)
+}
+
+
+export async function DELETE(request: Request){
+  const { searchParams } = new URL(request.url)
+  const id = searchParams.get("id")
+
+  if(!id){
+    return NextResponse.json(
+      {error:"Missing id"},
+      {status:400}
+    )
+  }
+
+      /* AUTHENTIFICATION */
+    const cookieStore = await cookies()
+    const token = cookieStore.get("session_token")?.value
+
+    if (!token){
+        return NextResponse.json(
+            {error:"Non connecte"},
+            {status:401}
+        )
+    }
+
+    const session = await pool.query(
+        `SELECT user_id
+        FROM sessions
+        WHERE token=$1
+        AND expires_at > NOW()
+        `,
+        [token]
+    )
+
+    const user = session.rows[0]
+
+    if (!user){
+        return NextResponse.json(
+            {error:"Session invalide"},
+            {status:401}
+        )
+    }
+
+
+  await pool.query(
+    `
+    DELETE FROM silhouettes
+    WHERE id=$1
+    AND user_id=$2
+    `,
+    [id,
+      user.user_id
+    ]
+  )
+
+
+  return NextResponse.json({
+    success:true
+  })
 }

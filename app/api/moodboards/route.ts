@@ -128,3 +128,61 @@ export async function GET(request: Request) {
     return NextResponse.json(res.rows)
 
     }
+
+export async function DELETE(request: Request){
+  const { searchParams } = new URL(request.url)
+  const id = searchParams.get("id")
+
+  if(!id){
+    return NextResponse.json(
+      {error:"Missing id"},
+      {status:400}
+    )
+  }
+
+      /* AUTHENTIFICATION */
+    const cookieStore = await cookies()
+    const token = cookieStore.get("session_token")?.value
+
+    if (!token){
+        return NextResponse.json(
+            {error:"Non connecte"},
+            {status:401}
+        )
+    }
+
+    const session = await pool.query(
+        `SELECT user_id
+        FROM sessions
+        WHERE token=$1
+        AND expires_at > NOW()
+        `,
+        [token]
+    )
+
+    const user = session.rows[0]
+
+    if (!user){
+        return NextResponse.json(
+            {error:"Session invalide"},
+            {status:401}
+        )
+    }
+
+
+  await pool.query(
+    `
+    DELETE FROM moodboards
+    WHERE id=$1
+    AND user_id=$2
+    `,
+    [id,
+      user.user_id
+    ]
+  )
+
+
+  return NextResponse.json({
+    success:true
+  })
+}

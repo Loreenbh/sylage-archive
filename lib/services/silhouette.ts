@@ -23,10 +23,14 @@ export async function createSilhouette(
 }
 
 
-export async function getSilhouetteData(username?: string){
-    const url = username
-    ? `/api/silhouettes?user=${username}`
-    : `/api/silhouettes`
+export async function getSilhouetteData(username?: string, moodboardId?: number){
+    let url = "/api/silhouettes"
+
+    if (moodboardId){
+      url += `?moodboard=${moodboardId}`
+    } else if (username){
+      url += `?user=${username}`
+    }
 
     const res = await fetch(url)
     if (!res.ok) {

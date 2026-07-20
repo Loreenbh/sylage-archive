@@ -11,6 +11,7 @@ import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import GridPager from "@/components/ui/pagination/GridPager"
 import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 import LikeButton from "@/components/ui/buttons/LikeButton"
+import ContentOverlay from "@/components/ui/cards/ContentOverlay"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
@@ -33,6 +34,7 @@ export default function Silhouettes({ onNavigate, params }: Props) {
     from
   } = params ?? {}
 
+  console.log(moodboard)
   const profileUsername = isOwner 
     ? null 
     : requestedUser
@@ -50,7 +52,7 @@ useEffect(() => {
 
     try {
 
-      const data = await getSilhouetteData(profileUsername ?? undefined)
+      const data = await getSilhouetteData(profileUsername ?? undefined, moodboard?.id)
 
       if (!cancelled) {
         setSilhouettes(data)
@@ -92,6 +94,20 @@ useEffect(() => {
     setIndex((i) => Math.min(i + 1, Math.max(silhouettes.length - 3, 0)))
   }
 
+  const handleDelete = async (id:number) => {
+
+    const res = await fetch(`/api/silhouettes?id=${id}`, {
+      method:"DELETE"
+    })
+
+    if(res.ok){
+      setSilhouettes(prev =>
+        prev.filter(s => s.id !== id)
+      )
+    }
+  }
+
+
   const sidebarTitle =
     isOwner
       ? "SILHOUETTES"
@@ -109,23 +125,17 @@ const renderCell = (silhouette?: Silhouette) => (
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
-
-        <div className="
-          absolute bottom-0 left-0 right-0
-          flex items-center justify-between
-          px-2 py-1
-          bg-black/40
-          text-white
-        ">
-          <LikeButton
-            type="silhouette"
-            className={typography.buttonBody}
-            id={silhouette.id}
-            initialCount={silhouette.likes_count}
-            initialLiked={silhouette.liked_by_current_user}
-            disabled={false}
-          />
-        </div>
+        <ContentOverlay
+          username={silhouette.username}
+          isOwner={isOwner ?? false}
+          like={{
+            type:"silhouette",
+            id:silhouette.id,
+            count:silhouette.likes_count,
+            liked:silhouette.liked_by_current_user
+          }}
+          onDelete={() => handleDelete(silhouette.id)}
+        />   
       </>
     )}
 
@@ -197,23 +207,25 @@ const renderCell = (silhouette?: Silhouette) => (
         >   
       <div className="flex flex-col h-full min-h-0 gap-1">
 
-        {isLoading ? (
-          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
+      {isLoading ? (
+        <div className="h-full flex items-center justify-center">
+          <p className="text-black/30 text-xs tracking-[0.2em]">
             CHARGEMENT...
           </p>
-        ) : silhouettes.length === 0 ? (
-          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
+        </div>
+      ) : silhouettes.length === 0 ? (
+        <div className="h-full flex items-center justify-center">
+          <p className="text-black/30 text-xs tracking-[0.2em]">
             AUCUNE SILHOUETTE POUR L'INSTANT
           </p>
-        ) : (
-          <ThreeColGrid
-            left={renderCell(left)}
-            center={renderCell(center)}
-            right={renderCell(right)}
-          />
-
-          
-        )}
+        </div>
+      ) : (
+        <ThreeColGrid
+          left={renderCell(left)}
+          center={renderCell(center)}
+          right={renderCell(right)}
+        />
+      )}
 
       </div>
     </BookLayout>
