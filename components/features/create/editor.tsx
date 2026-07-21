@@ -3,7 +3,7 @@
 import { useRef, useState } from "react"
 import { toPng } from "html-to-image"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
 import { MIN_TAGS_TOTAL } from "@/constants/tags"
 import TagPicker from "@/components/filters/TagPicker"
 
@@ -12,7 +12,7 @@ import BookLayout from "@/components/book/BookLayout"
 import Header from "@/components/navigation/Header"
 import Sidebar from "@/components/navigation/SideBar"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
+// import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 
 /* LAYOUTS */
 import LayoutA from "../moodboards/LayoutA"
@@ -231,7 +231,7 @@ export default function Editor({ onNavigate, params }: Props) {
       
       footer={
           <div className="flex items-center gap-4">
-            <CurrentUserName />
+            {/* <CurrentUserName /> */}
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }

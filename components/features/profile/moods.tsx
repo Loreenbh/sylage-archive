@@ -6,15 +6,15 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import LikeButton from "@/components/ui/buttons/LikeButton"
-import SilhouetteCount from "@/components/ui/buttons/SilhouetteCount"
+// import LikeButton from "@/components/ui/buttons/LikeButton"
+// import SilhouetteCount from "@/components/ui/buttons/SilhouetteCount"
 import ContentOverlay from "@/components/ui/cards/ContentOverlay"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 import { Moodboard } from "@/types/moodboard" 
-import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
+
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
@@ -23,22 +23,23 @@ type Props = {
 type Tab = "new" | "featured" | "following"
 
 /* SERVICES */
-import { getMoodboardData } from "@/lib/services/moodboard"
+import { useUserMoodboards } from "@/hooks/useUserMoodboards"
+
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 /*---------------------------------------------------- */
 
 export default function Moods({ onNavigate, params }: Props) {
-  const { isOwner, from, requestedUser} = params ?? {}
+  const { user: currentUser } = useCurrentUser()
+  const { isOwner, userId, from} = params ?? {}
 
-  const profileUsername = isOwner 
-    ? null 
-    : requestedUser
+const {
+  moodboards,
+  isLoading,
+  setMoodboards
+} = useUserMoodboards(userId)
 
-    console.log("dans mood owner est", isOwner)
-  const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
-  const [moodboards, setMoodboards] = useState<Moodboard[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
 
   const byTab =
@@ -57,39 +58,10 @@ export default function Moods({ onNavigate, params }: Props) {
   const sidebarTitle =
     isOwner
       ? "MOODS"
-      : profileUsername
-        ? `${profileUsername} | MOODS`
+      : user?.username
+        ? `${user.username} | MOODS`
         : "MOODS"
 
-
-        
-        useEffect(() => {
-          let cancelled = false
-          
-          async function loadMoodboards() {
-            setIsLoading(true)
-            try {
-              const data = await getMoodboardData(profileUsername ?? undefined)
-              if (!cancelled) {
-                setMoodboards(data) //met tableau dans le state
-              }
-            } catch {
-              if (!cancelled) {
-                setMoodboards([])
-              }
-            } finally {
-              if (!cancelled) {
-          setIsLoading(false)
-        }
-      }
-    }
-    loadMoodboards()
-    return () => {
-      cancelled = true
-    }
-    
-  }, [profileUsername])
-  
   const handleDelete = async (id:number) => {
   
     const res = await fetch(`/api/moodboards?id=${id}`, {
@@ -116,8 +88,6 @@ export default function Moods({ onNavigate, params }: Props) {
               to: "discover",
               direction: "prev",
               params:{
-                
-                requestedUser,
                 isOwner: false
               }
             })
@@ -152,8 +122,6 @@ export default function Moods({ onNavigate, params }: Props) {
                 to: "profile",
                 direction: "prev",
                 params:{
-                  
-                  requestedUser,
                   isOwner,
                 }
               })
@@ -166,7 +134,9 @@ export default function Moods({ onNavigate, params }: Props) {
       }
       footer={
           <div className="flex items-center gap-4">
-            <CurrentUserName />
+            {/* <span className="text-sm tracking-[0.2em]">
+              {user?.username}
+            </span>              */}
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
@@ -193,9 +163,8 @@ export default function Moods({ onNavigate, params }: Props) {
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  requestedUser,
                   from: "moods",
-                  moodboard: board,
+                  // moodboard: board,
                   fromTab: tab,
                   isOwner,
                 },
@@ -210,14 +179,14 @@ export default function Moods({ onNavigate, params }: Props) {
                 />
                 <ContentOverlay
                   username={board.username}
-                  isOwner={isOwner ?? false}
+                  isOwner={true}
                   like={{
-                    type:"moodboard",
-                    id:board.id,
-                    count:board.likes_count,
-                    liked:board.liked_by_current_user
-                    
+                    type: "moodboard",
+                    id: board.id,
+                    count: board.likes_count,
+                    liked: board.liked_by_current_user
                   }}
+                  silhouettesCount={board.silhouettes_count}
                   onDelete={() => handleDelete(board.id)}
 
                 />

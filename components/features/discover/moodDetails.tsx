@@ -9,10 +9,11 @@ import Header from "@/components/navigation/Header"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import SimpleGrid from "@/components/ui/grids/SimpleGrid"
 import LikeButton from "@/components/ui/buttons/LikeButton"
-import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 /* STYLE */
 import { typography} from "@/styles/typography"
+import { useMoodboard } from "@/hooks/useMoodboard"
 
 
 type Props = {
@@ -22,23 +23,27 @@ type Props = {
 
 
 export default function MoodDetails({ onNavigate, params }: Props) {
-
+  const { user } = useCurrentUser()
   const {
-    requestedUser,
     isOwner,
     from,
-    moodboard
+    moodboardId,
   } = params ?? {}
-  const profileUsername = isOwner ? null : requestedUser
+
+console.log("ID reçu dans MoodDetails :", moodboardId)
+  const {
+    moodboard,
+    isLoading
+  } = useMoodboard(moodboardId)
+
+  console.log(moodboard)
 
   const sidebarTitle = 
     isOwner
-    ? "PROFILE"
-    : profileUsername
-      ? `${profileUsername} | DETAILS`
-      : "DETAILS"
-  
-  console.log("MOODDETAILS DE", profileUsername)
+    ? "MY MOOD"
+    : moodboard?.username
+      ? `${moodboard.username} | MOOD`
+      : "MOOD"
   
   return (
     <BookLayout
@@ -52,7 +57,6 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                   to: "discover",
                   direction: "prev",
                   params:{
-                    requestedUser,
                     isOwner: false
                   }
                 })
@@ -68,7 +72,6 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                   to: "create",
                   direction: "next",
                   params:{
-                    // username,
                     from: "discover",
                     isOwner
                   }
@@ -80,7 +83,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-[60px]">
-
+{/* 
           {from !== "discover" && (
             <>
             <button
@@ -89,7 +92,6 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                   to: "discover",
                   direction: "prev",
                   params: {
-                    requestedUser,
                     isOwner,
                     from: "moodDetails",
                   },
@@ -102,7 +104,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
             <span className={typography.bullet}>•</span>
             </>
           )
-        }
+        } */}
 
           {!isOwner && (
             <>
@@ -112,10 +114,9 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                     to: "profile",
                     direction: "next",
                     params: {
-
-                      requestedUser,
                       isOwner,
                       from: "moodDetails",
+                      userId:moodboard?.user_id,
                     },
                   })
                 }
@@ -123,6 +124,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
               >
                 profile
               </button>
+
             <div className="">
               <button
                 onClick={() =>
@@ -130,9 +132,9 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                     to: "draw",
                     direction: "next",
                     params: {
-                      requestedUser,
-                      moodboard,
-                      isOwner,
+                      moodboardId : moodboard?.id,
+                      // userId: moodboard?.user_id,
+                      // isOwner,
                     },
                   })
                 }
@@ -145,25 +147,24 @@ export default function MoodDetails({ onNavigate, params }: Props) {
             </>
           )}
 
-            {moodboard && (
-              <LikeButton
-                type="moodboard"
-                className={typography.buttonBody}
-                id={moodboard.id}
-                initialCount={moodboard.likes_count}
-                initialLiked={moodboard.liked_by_current_user}
-                disabled={false}
-              />
-            )}
+          {moodboard && (
+            <LikeButton
+              type="moodboard"
+              className={typography.buttonBody}
+              id={moodboard.id}
+              initialCount={moodboard.likes_count}
+              initialLiked={moodboard.liked_by_current_user}
+              disabled={false}
+            />
+          )}
             <button
               onClick={() =>
                 onNavigate?.({
                   to: "silhouettes",
                   direction: "next",
                   params: {
-                    requestedUser,
                     isOwner,
-                    moodboard,
+                    moodboardId: moodboard?.id,
                     from: "moodDetails",
                   },
                 })
@@ -176,7 +177,9 @@ export default function MoodDetails({ onNavigate, params }: Props) {
       }
       footer={
           <div className="flex items-center gap-4">
-            <CurrentUserName />
+            <span className="text-sm tracking-[0.2em]">
+              {user?.username}
+            </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }

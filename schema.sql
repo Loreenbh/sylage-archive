@@ -32,7 +32,7 @@ CREATE TABLE follows (
     created_at TIMESTAMP DEFAULT NOW(),
     UNIQUE(follower_id, following_id)
 
-)
+);
 
 --SILHOUETTES
 CREATE TABLE silhouettes (

@@ -3,11 +3,8 @@ import { typography } from "@/styles/typography"
 
 type Props = {
   username?: string
-
   isOwner: boolean
-
   showUsername?: boolean
-
   like?: {
     type: "moodboard" | "silhouette"
     id: number
@@ -15,6 +12,7 @@ type Props = {
     liked: boolean
   }
 
+  silhouettesCount?: number
   onDelete?: () => void
 }
 
@@ -23,6 +21,7 @@ export default function ContentOverlay({
   isOwner,
   showUsername = true,
   like,
+  silhouettesCount,
   onDelete
 }: Props) {
 
@@ -59,6 +58,11 @@ export default function ContentOverlay({
           />
         )}
 
+        {silhouettesCount !== undefined && (
+          <span className={typography.buttonBody}>
+            👗 {silhouettesCount}
+          </span>
+        )}
 
         {isOwner && onDelete && (
           <button

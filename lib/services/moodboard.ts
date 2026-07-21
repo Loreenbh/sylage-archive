@@ -22,15 +22,12 @@ export async function createMoodboard(
   return data
 }
 
+export async function getDiscoverMoodboards(){
 
-export async function getMoodboardData(username?: string){
-    const url = username
-    ? `/api/moodboards?user=${username}`
-    : `/api/moodboards`
+    const res = await fetch("/api/discover")
 
-    const res = await fetch(url)
     if (!res.ok) {
-        throw new Error("Erreur récupération moodboard")
+        throw new Error("Erreur récupération moodboards")
     }
 
     return res.json()

@@ -133,7 +133,6 @@ export default function Authentification({ onNavigate }: Props) {
 
     /* CONNEXION */
     const handleLogin = async () => {
-      console.log("Je clique sur Enter")
       setLoginError(null)
       setIsSubmitting(true)
 
@@ -157,7 +156,7 @@ export default function Authentification({ onNavigate }: Props) {
          onNavigate({
             to: "discover",
             direction: "next",
-            params: { currentUser: data.username },
+            // params: { currentUser: data.username },
           })
         } catch {
           setLoginError("Erreur réseau")

@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 
 /* COMPONENTS */
@@ -8,62 +8,33 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
-import LikeButton from "@/components/ui/buttons/LikeButton"
-import SilhouetteCount from "@/components/ui/buttons/SilhouetteCount"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
+import ContentOverlay from "@/components/ui/cards/ContentOverlay"
+
 /*STYLE*/
 import { typography } from "@/styles/typography"
 
 /* TYPES */
-import { Moodboard } from "@/types/moodboard"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
 }
 type Tab = "new" | "featured" | "following"
 
-/* SERVICES */
-import { getDiscoverMoods } from "@/lib/services/discover"
-
+/* HOOKS */
+import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods"
 
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
-  // const currentUser = params?.currentUser
-  // console.log("PREMIRE FOIS USER EST", currentUser)
-  const mode = params?.isOwner ?? false
-
   const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
-  const [moodboards, setMoodboards] = useState<Moodboard[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
-
- useEffect(() => {
-  let cancelled = false
-
-  async function loadMoodboards() {
-    setIsLoading(true)
-    try {
-      const data = await getDiscoverMoods()
-      if (!cancelled) {
-        setMoodboards(data) //met tableau dans le state
-      }
-    } catch {
-      if (!cancelled) {
-        setMoodboards([])
-      }
-    } finally {
-      if (!cancelled) {
-        setIsLoading(false)
-      }
-    }
-  }
-  loadMoodboards()
-  return () => {
-    cancelled = true
-  }
-
-}, [])
+  const {
+    moodboards,
+    isLoading
+  } = useDiscoverMoodboards()
+  
+  const { user } = useCurrentUser()
 
   const byTab =
     tab === "new"
@@ -78,7 +49,6 @@ export default function Discover({ onNavigate, params }: Props) {
       : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
   const sidebarTitle = tab.toUpperCase()
-  // console.log("MOODBOARDS", filteredMoodboards)
   return (
     <BookLayout
       header={
@@ -128,7 +98,9 @@ export default function Discover({ onNavigate, params }: Props) {
       }
       footer={
           <div className="flex items-center gap-4">
-            <CurrentUserName />
+            <span className="text-sm tracking-[0.2em]">
+              {user?.username}
+            </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
@@ -137,7 +109,7 @@ export default function Discover({ onNavigate, params }: Props) {
 
         {isLoading ? (
           <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
-            CHARGEMENT...
+            LOADING...
           </p>
         ) : filteredMoodboards.length === 0 ? (
           <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
@@ -147,16 +119,15 @@ export default function Discover({ onNavigate, params }: Props) {
           <ScrollableGrid
             data={filteredMoodboards}
             onItemClick={(board) => {
+              console.log("ID envoyé :", board.id)
               onNavigate?.({
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  // currentUser,
-                  requestedUser: String(board.username),
                   from: "discover",
-                  moodboard: board,
+                  moodboardId: board.id,
                   fromTab: tab,
-                  isOwner: mode
+                  isOwner: user?.id === board.user_id
                 },
               })
             }}
@@ -167,21 +138,17 @@ export default function Discover({ onNavigate, params }: Props) {
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-
-                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-2 py-1 bg-black/40 text-white">
-                  <p className="text-[9px] tracking-[0.2em] drop-shadow">
-                    {board.username}
-                  </p>
-                      <LikeButton
-                        type="moodboard"
-                        className={typography.buttonBody}
-                        id={board.id}
-                        initialCount={board.likes_count}
-                        initialLiked={board.liked_by_current_user}
-                        disabled={true}
-                      />
-                      <SilhouetteCount count={board.silhouettes_count} />
-                </div>
+                <ContentOverlay
+                  username={board.username}
+                  isOwner={user?.id === board.user_id}
+                  like={{
+                    type: "moodboard",
+                    id: board.id,
+                    count: board.likes_count,
+                    liked: board.liked_by_current_user
+                  }}
+                  silhouettesCount={board.silhouettes_count}
+                />
               </div>
             )}
           />

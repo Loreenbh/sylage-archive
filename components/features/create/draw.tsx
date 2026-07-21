@@ -15,8 +15,7 @@ import { typography } from "@/styles/typography"
 
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
-import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
 
 type Props = {
   onNavigate: OnNavigate
@@ -26,6 +25,9 @@ type Props = {
 /*SERVICES*/
 import { uploadImage } from "@/lib/services/upload"
 import { createSilhouette } from "@/lib/services/silhouette"
+
+/* HOOKS */
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
   if (!slot) return null
@@ -54,19 +56,13 @@ function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
 
 
 export default function Draw({ onNavigate, params }: Props) {
+  const { user } = useCurrentUser()
+
     const {
-    requestedUser,
-    moodboard,
+    moodboardId,
     fromTab,
     isOwner
   } = params ?? {}
-  const profileUsername = requestedUser ?? null
-
-  // const sidebarTitle =
-  //   isOwner
-  //     ? "PROPOSE"
-  //     : `${profileUsername}|PROPOSE`
-
 
   const [silhouette, setSilhouette] = useState<MoodboardSlot>(null)
   const [publishError, setPublishError] = useState<string | null>(null)
@@ -75,11 +71,9 @@ export default function Draw({ onNavigate, params }: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const slotRef = useRef<HTMLDivElement | null>(null)
 
-
   const handleSelectSlot = () => {
     fileInputRef.current?.click()
   }
-
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -89,17 +83,13 @@ export default function Draw({ onNavigate, params }: Props) {
 
     if (!file) return
 
-
     const url = URL.createObjectURL(file)
-
     setSilhouette({
       url,
       scale: 1,
       offsetX: 0,
       offsetY: 0,
     })
-
-
     e.target.value = ""
   }
 
@@ -107,7 +97,6 @@ export default function Draw({ onNavigate, params }: Props) {
   const handleChangeTransform = (
     patch: MoodboardSlotPatch
   ) => {
-
     setSilhouette(prev =>
       prev
         ? {
@@ -128,7 +117,7 @@ export default function Draw({ onNavigate, params }: Props) {
       return
     }
 
-    if (!moodboard) {
+    if (!moodboardId) {
       setPublishError("Erreur interne : moodboard introuvable")
       return
     }
@@ -155,16 +144,15 @@ export default function Draw({ onNavigate, params }: Props) {
     // 2. créer silhouette en base
     await createSilhouette(
       imageUrl,
-      moodboard.id
+      moodboardId
     )
 
       onNavigate?.({
         to: "moodDetails",
         direction: "prev",
         params: {
-          requestedUser,
           isOwner,
-          moodboard,
+          moodboardId,
           fromTab,
         }
       })
@@ -192,7 +180,6 @@ export default function Draw({ onNavigate, params }: Props) {
                   to:"discover",
                   direction:"prev",
                   params:{
-                    requestedUser,
                     isOwner:false
                   }
                 })
@@ -230,9 +217,8 @@ export default function Draw({ onNavigate, params }: Props) {
                 to:"moodDetails",
                 direction:"prev",
                 params:{
-                  requestedUser,
                   isOwner,
-                  moodboard,
+                  // moodboard,
                   fromTab,
                 }
               })
@@ -256,7 +242,6 @@ export default function Draw({ onNavigate, params }: Props) {
                     to:"profile",
                     direction:"next",
                     params:{
-                      requestedUser,
                       isOwner
                     }
                   })
@@ -294,7 +279,9 @@ export default function Draw({ onNavigate, params }: Props) {
 
       footer={
           <div className="flex items-center gap-4">
-            <CurrentUserName />
+            <span className="text-sm tracking-[0.2em]">
+              {user?.username}
+            </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }

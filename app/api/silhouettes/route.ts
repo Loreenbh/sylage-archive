@@ -80,14 +80,15 @@ export async function POST(request: Request){
     }
 }
 
-export async function GET(request: Request){
+export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url)
-  const username = searchParams.get("user")
-  const tag = searchParams.get("tag")
 
-  const moodboardId = searchParams.get("moodboard")
+  const userIdParam = searchParams.get("userId")
+  const moodboardId = searchParams.get("moodboardId")
 
+
+  // SESSION
   const cookieStore = await cookies()
   const token = cookieStore.get("session_token")?.value
 
@@ -105,26 +106,52 @@ export async function GET(request: Request){
 
   if (!currentSession) {
     return NextResponse.json(
-      { error: "Non connecté" },
-      { status: 401 }
+      {error:"Non connecté"},
+      {status:401}
     )
   }
 
-  if (moodboardId){
 
-    const result = await pool.query(
+  // CAS 1 : PROPOSITIONS D'UN MOODBOARD
+  if (moodboardId) {
+
+    const moodboard = await pool.query(
+      `
+      SELECT 
+        users.id,
+        users.username
+      FROM moodboards
+
+      JOIN users
+      ON users.id = moodboards.user_id
+
+      WHERE moodboards.id=$1
+      `,
+      [moodboardId]
+    )
+
+
+    if (!moodboard.rows[0]) {
+      return NextResponse.json(
+        {error:"Moodboard introuvable"},
+        {status:404}
+      )
+    }
+
+
+    const silhouettes = await pool.query(
       `
       SELECT 
         silhouettes.*,
         users.username,
-        moodboards.tags,
 
         COUNT(likes.id)::int AS likes_count,
 
         EXISTS (
-          SELECT FROM likes
-          WHERE likes.user_id = $2
-          AND likes.silhouette_id = silhouettes.id
+          SELECT 1
+          FROM likes
+          WHERE likes.user_id=$2
+          AND likes.silhouette_id=silhouettes.id
         ) AS liked_by_current_user
 
       FROM silhouettes
@@ -132,15 +159,12 @@ export async function GET(request: Request){
       JOIN users
       ON users.id = silhouettes.user_id
 
-      JOIN moodboards
-      ON moodboards.id = silhouettes.moodboard_id
-
       LEFT JOIN likes
       ON likes.silhouette_id = silhouettes.id
 
-      WHERE silhouettes.moodboard_id = $1
+      WHERE silhouettes.moodboard_id=$1
 
-      GROUP BY silhouettes.id, users.username, moodboards.tags
+      GROUP BY silhouettes.id, users.username
 
       ORDER BY silhouettes.created_at DESC
       `,
@@ -150,46 +174,53 @@ export async function GET(request: Request){
       ]
     )
 
-    return NextResponse.json(result.rows)
+
+    return NextResponse.json({
+      user: moodboard.rows[0],
+      silhouettes: silhouettes.rows
+    })
   }
 
-  let userId
 
 
-  if (!username) {
-    userId = currentSession.user_id
-  } else {
+  // CAS 2 : PROFIL
 
-    const requestedUser = await pool.query(
-      `
-      SELECT id
-      FROM users
-      WHERE username=$1
-      `,
-      [username]
+  const userId = userIdParam
+    ? Number(userIdParam)
+    : currentSession.user_id
+
+
+  const user = await pool.query(
+    `
+    SELECT id, username
+    FROM users
+    WHERE id=$1
+    `,
+    [userId]
+  )
+
+
+  if (!user.rows[0]) {
+    return NextResponse.json(
+      {error:"Utilisateur introuvable"},
+      {status:404}
     )
-
-    if (!requestedUser.rows[0]) {
-      return NextResponse.json(
-        {error:"Utilisateur introuvable"},
-        {status:404}
-      )
-    }
-
-    userId = requestedUser.rows[0].id
   }
 
 
-  let query = `
+  const silhouettes = await pool.query(
+    `
     SELECT 
-      silhouettes.*, 
-      users.username, 
-      moodboards.tags,
+      silhouettes.*,
+      users.username,
+
       COUNT(likes.id)::int AS likes_count,
+
       EXISTS (
-        SELECT FROM likes
-        WHERE likes.user_id = $2
-        AND likes.silhouette_id = silhouettes.id
+        SELECT 1
+        FROM likes
+        WHERE likes.user_id=$2
+        AND likes.silhouette_id=silhouettes.id
       ) AS liked_by_current_user
 
     FROM silhouettes
@@ -197,44 +228,29 @@ export async function GET(request: Request){
     JOIN users
     ON users.id = silhouettes.user_id
 
-    JOIN moodboards
-    ON moodboards.id = silhouettes.moodboard_id
-
     LEFT JOIN likes
-    ON likes.silhouette_id = silhouettes.id
+    ON likes.silhouette_id=silhouettes.id
 
-    WHERE silhouettes.user_id = $1
-  `
+    WHERE silhouettes.user_id=$1
 
+    GROUP BY silhouettes.id, users.username
 
-  const values:any[] = [
-    userId,
-    currentSession.user_id
-  ]
-
-
-  if(tag){
-    query += `
-      AND $3 = ANY(moodboards.tags)
-    `
-    values.push(tag)
-  }
-
-
-  query += `
-    GROUP BY silhouettes.id, users.username, moodboards.tags
     ORDER BY silhouettes.created_at DESC
-  `
-
-
-  const result = await pool.query(
-    query,
-    values
+    `,
+    [
+      userId,
+      currentSession.user_id
+    ]
   )
 
 
-  return NextResponse.json(result.rows)
+  return NextResponse.json({
+    user:user.rows[0],
+    silhouettes:silhouettes.rows
+  })
+
 }
+
 
 
 export async function DELETE(request: Request){

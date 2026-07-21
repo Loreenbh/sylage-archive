@@ -9,7 +9,7 @@ import CustomGrid from "@/components/ui/grids/CustomGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import GridButton from "@/components/ui/buttons/GridButton"
 import ScrollFollow from "@/components/ui/cards/scrollFollow"
-import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
+
 /* STYLE */
 import { typography } from "@/styles/typography"
 /* TYPES */
@@ -18,28 +18,22 @@ type Props = {
   params?: NavigationParams["params"] | null
   
 }
-import { Moodboard } from "@/types/moodboard"
-import { Silhouette } from "@/types/silhouettes"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { useProfile } from "@/hooks/useProfile"
 
 /*------------------------------------------------- */
 
 export default function ProfilePage({ onNavigate, params }: Props) {
   const {
     isOwner,
-    requestedUser,
+    userId,
     from
   } = params ?? {}
-  const profileUsername = isOwner 
-    ? null 
-    : requestedUser
 
   const following = Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
     user: `user_${String(i + 1).padStart(2, "0")}`,
   }))
-
-  const [moodboards, setMoodboards] = useState<Moodboard[]>([])
-  const [silhouettes, setSilhouettes] = useState<Silhouette[]>([])
 
   const handleLogout = async ()  => {
     await fetch("/api/auth/logout", {
@@ -51,38 +45,25 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     })
   }
 
-  useEffect(() => {
-  if (!isOwner && !requestedUser) return
-    async function loadProfile() {
-      try {
-        const url = isOwner
-          ? "/api/profile"
-          : `/api/profile?user=${requestedUser}`
+ const { user: currentUser } = useCurrentUser()
 
-        const res = await fetch(url)
-        const data = await res.json()
+  const {
+    user: profileUser,
+    moodboards,
+    silhouettes,
+    isLoading
+  } = useProfile(userId, isOwner)
 
-        setMoodboards(data.moodboards)
-        setSilhouettes(data.silhouettes)
-
-      } catch {
-        setMoodboards([])
-        setSilhouettes([])
-      }
-    }
-
-    loadProfile()
-
-  }, [isOwner, requestedUser])
+  console.log("silhouette", silhouettes)
 
   const lastMoodboard = moodboards[0] ?? null
   const lastSilhouette = silhouettes[0] ?? null
   
   const sidebarTitle = 
     isOwner
-    ? "PROFILE"
-    : profileUsername
-      ? `${profileUsername} | PROFILE`
+    ? "MY PROFILE"
+    : profileUser?.username
+      ? `${profileUser.username} | PROFILE`
       : "PROFILE"
       
   return (
@@ -150,7 +131,6 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                     to: "loves", 
                     direction: "next",
                     params:{
-                      // username,
                       isOwner: isOwner,
                     }
                   })
@@ -177,7 +157,7 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                     to: from ?? "discover",
                     direction: "prev",
                     params: {
-                      requestedUser,
+                      // requestedUser,
                       isOwner: isOwner,
                       from: "profile",
                     },
@@ -202,7 +182,9 @@ export default function ProfilePage({ onNavigate, params }: Props) {
 
       footer={
           <div className="flex items-center gap-4">
-            <CurrentUserName />
+            <span className="text-sm tracking-[0.2em]">
+              {currentUser?.username}
+            </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
@@ -217,9 +199,9 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                 to: "silhouettes", 
                 direction: "next",
                 params:{
-                  requestedUser,
+                  userId: profileUser?.id,
                   from: "profile",
-                  isOwner : isOwner,
+                  isOwner : isOwner, //a modifier
                 }
                  })}>
 
@@ -245,6 +227,7 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                 direction: "next", 
                 params:{
                   isOwner: isOwner,
+                  userId: profileUser?.id,
                 }, 
               })
             }

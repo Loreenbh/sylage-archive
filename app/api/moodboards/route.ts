@@ -1,3 +1,9 @@
+/*
+/api/moodboards
+    GET     → feed discover (tous les moodboards)
+    POST    → publier un moodboard
+*/
+
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
@@ -36,7 +42,6 @@ export async function POST(request: Request) {
       )
    }
 
-
    const result = await pool.query(
       `
       INSERT INTO moodboards
@@ -63,9 +68,6 @@ export async function POST(request: Request) {
 
 
 export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url)
-    const username = searchParams.get('user')
-    
     /* RECUPERATION DE LA SESSION */
     const cookieStore = await cookies()
     const token = cookieStore.get("session_token")?.value
@@ -88,101 +90,85 @@ export async function GET(request: Request) {
         )
     }
 
-    let userId
-
-    if (!username) {
-        userId = currentSession.user_id
-    } else {
-        const requestedUser = await pool.query(
-            `
-            SELECT id
-            FROM users
-            WHERE username = $1
-            `,
-            [username]
-        )
-        userId = requestedUser.rows[0].id
-    }
-
     const res = await pool.query(
-    `
-    SELECT moodboards.*, 
-    users.username, 
-    COUNT(likes.id)::int AS "likes_count",
-    EXISTS (
-        SELECT FROM likes 
-        WHERE likes.user_id = $1 
-        AND likes.moodboard_id = moodboards.id
-    ) AS liked_by_current_user
-    FROM moodboards
-    JOIN users
-    ON users.id = moodboards.user_id
-    LEFT JOIN likes
-    ON likes.moodboard_id = moodboards.id
-    WHERE moodboards.user_id = $1
-    GROUP BY moodboards.id, users.username
-    ORDER BY moodboards.created_at DESC
-    `,
-    [userId]
+      `
+      SELECT moodboards.*, 
+      users.username, 
+      COUNT(likes.id)::int AS "likes_count",
+      EXISTS (
+          SELECT FROM likes 
+          WHERE likes.user_id = $1 
+          AND likes.moodboard_id = moodboards.id
+      ) AS liked_by_current_user
+      FROM moodboards
+      JOIN users
+      ON users.id = moodboards.user_id
+      LEFT JOIN likes
+      ON likes.moodboard_id = moodboards.id
+      WHERE moodboards.user_id = $1
+      GROUP BY moodboards.id, users.username
+      ORDER BY moodboards.created_at DESC
+      `,
+      [currentSession.user_id]
     )
-    return NextResponse.json(res.rows)
+  return NextResponse.json(res.rows)
 
-    }
-
-export async function DELETE(request: Request){
-  const { searchParams } = new URL(request.url)
-  const id = searchParams.get("id")
-
-  if(!id){
-    return NextResponse.json(
-      {error:"Missing id"},
-      {status:400}
-    )
-  }
-
-      /* AUTHENTIFICATION */
-    const cookieStore = await cookies()
-    const token = cookieStore.get("session_token")?.value
-
-    if (!token){
-        return NextResponse.json(
-            {error:"Non connecte"},
-            {status:401}
-        )
-    }
-
-    const session = await pool.query(
-        `SELECT user_id
-        FROM sessions
-        WHERE token=$1
-        AND expires_at > NOW()
-        `,
-        [token]
-    )
-
-    const user = session.rows[0]
-
-    if (!user){
-        return NextResponse.json(
-            {error:"Session invalide"},
-            {status:401}
-        )
-    }
-
-
-  await pool.query(
-    `
-    DELETE FROM moodboards
-    WHERE id=$1
-    AND user_id=$2
-    `,
-    [id,
-      user.user_id
-    ]
-  )
-
-
-  return NextResponse.json({
-    success:true
-  })
 }
+
+// export async function DELETE(request: Request){
+//   const { searchParams } = new URL(request.url)
+//   const id = searchParams.get("id")
+
+//   if(!id){
+//     return NextResponse.json(
+//       {error:"Missing id"},
+//       {status:400}
+//     )
+//   }
+
+//       /* AUTHENTIFICATION */
+//     const cookieStore = await cookies()
+//     const token = cookieStore.get("session_token")?.value
+
+//     if (!token){
+//         return NextResponse.json(
+//             {error:"Non connecte"},
+//             {status:401}
+//         )
+//     }
+
+//     const session = await pool.query(
+//         `SELECT user_id
+//         FROM sessions
+//         WHERE token=$1
+//         AND expires_at > NOW()
+//         `,
+//         [token]
+//     )
+
+//     const user = session.rows[0]
+
+//     if (!user){
+//         return NextResponse.json(
+//             {error:"Session invalide"},
+//             {status:401}
+//         )
+//     }
+
+
+//   await pool.query(
+//     `
+//     DELETE FROM moodboards
+//     WHERE id=$1
+//     AND user_id=$2
+//     `,
+//     [id,
+//       user.user_id
+//     ]
+//   )
+
+
+//   return NextResponse.json({
+//     success:true
+//   })
+// }

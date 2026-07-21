@@ -8,7 +8,6 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 
 import LayoutA from "../moodboards/LayoutA"
 import LayoutB from "../moodboards/LayoutB"
@@ -74,7 +73,7 @@ const { from } = params ?? {}
       }
       footer={
           <div className="flex items-center gap-4">
-            <CurrentUserName />
+            {/* <CurrentUserName /> */}
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }

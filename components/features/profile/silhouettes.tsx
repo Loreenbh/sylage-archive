@@ -9,79 +9,56 @@ import Header from "@/components/navigation/Header"
 import ThreeColGrid from "@/components/ui/grids/ThreeColGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import GridPager from "@/components/ui/pagination/GridPager"
-import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
-import LikeButton from "@/components/ui/buttons/LikeButton"
 import ContentOverlay from "@/components/ui/cards/ContentOverlay"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
 
 /* TYPES */
-import { Silhouette } from "@/types/silhouettes"
-import { getSilhouetteData } from "@/lib/services/silhouette"
+import { Silhouette } from "@/types/silhouette"
+
+
+import { useCurrentUser } from "@/hooks/useCurrentUser"
+
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
 }
 
+/* HOOKS */
+import { useSilhouettes } from "@/hooks/useSilhouettes"
 
 export default function Silhouettes({ onNavigate, params }: Props) {
 
     const {
-    requestedUser,
+    userId,
     isOwner,
-    moodboard,
+    moodboardId,
     from
   } = params ?? {}
 
-  console.log(moodboard)
-  const profileUsername = isOwner 
-    ? null 
-    : requestedUser
+  const {
+    silhouettes,
+    isLoading,
+    user: profileUser,
+    setSilhouettes,
+  } = useSilhouettes(userId, moodboardId)
 
-  const [silhouettes, setSilhouettes] = useState<Silhouette[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+
+ const { user: currentUser } = useCurrentUser()
+
+const sidebarTitle =
+  isOwner
+    ? "MY SILHOUETTES"
+    : moodboardId
+      ? profileUser?.username
+        ? `${profileUser.username} | PROPOSITIONS`
+        : "PROPOSITIONS"
+      : profileUser?.username
+        ? `${profileUser.username} | SILHOUETTES`
+        : "SILHOUETTES"
+
   const [index, setIndex] = useState(0)
-
-useEffect(() => {
-
-  let cancelled = false
-
-  async function loadSilhouettes() {
-    setIsLoading(true)
-
-    try {
-
-      const data = await getSilhouetteData(profileUsername ?? undefined, moodboard?.id)
-
-      if (!cancelled) {
-        setSilhouettes(data)
-      }
-
-    } catch {
-
-      if (!cancelled) {
-        setSilhouettes([])
-      }
-
-    } finally {
-
-      if (!cancelled) {
-        setIsLoading(false)
-      }
-
-    }
-  }
-
-  loadSilhouettes()
-
-  return () => {
-    cancelled = true
-  }
-
-}, [profileUsername])
-
-
   const left = silhouettes[index]
   const center = silhouettes[index + 1]
   const right = silhouettes[index + 2]
@@ -106,14 +83,6 @@ useEffect(() => {
       )
     }
   }
-
-
-  const sidebarTitle =
-    isOwner
-      ? "SILHOUETTES"
-      : profileUsername
-        ? `${profileUsername} | SILHOUETTES`
-        : "SILHOUETTES"
 
 const renderCell = (silhouette?: Silhouette) => (
   <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
@@ -154,7 +123,6 @@ const renderCell = (silhouette?: Silhouette) => (
                   to: "discover",
                   direction: "prev",
                   params:{
-                    requestedUser,
                     isOwner: false
                   }
                 })
@@ -180,10 +148,10 @@ const renderCell = (silhouette?: Silhouette) => (
                 direction: "prev",
                 params:{
                   
-                  requestedUser,
+                  userId,
                   isOwner,
                   from: "moodDetails",
-                  moodboard
+                  // moodboard
                 }
               })
             }
@@ -200,7 +168,9 @@ const renderCell = (silhouette?: Silhouette) => (
       }
       footer={
           <div className="flex items-center gap-4">
-            <CurrentUserName />
+            <span className="text-sm tracking-[0.2em]">
+              {currentUser?.username}
+            </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
