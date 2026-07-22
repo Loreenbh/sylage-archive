@@ -38,7 +38,6 @@ export function useSilhouettes(
   }, [userId, moodboardId])
 
 
-  console.log("dans usesilhouette", user)
   return {
     silhouettes,
     user,

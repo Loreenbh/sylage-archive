@@ -5,6 +5,8 @@ type Props = {
   username?: string
   isOwner: boolean
   showUsername?: boolean
+  isFollowed?: boolean
+  onFollowToggle?: () => void
   like?: {
     type: "moodboard" | "silhouette"
     id: number
@@ -20,6 +22,8 @@ export default function ContentOverlay({
   username,
   isOwner,
   showUsername = true,
+  isFollowed,
+  onFollowToggle,
   like,
   silhouettesCount,
   onDelete
@@ -41,7 +45,7 @@ export default function ContentOverlay({
           <p className="text-[9px] tracking-[0.2em] drop-shadow">
             {username}
           </p>
-        )}
+        )}     
       </div>
 
 
@@ -63,6 +67,19 @@ export default function ContentOverlay({
             👗 {silhouettesCount}
           </span>
         )}
+
+        {!isOwner && onFollowToggle && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onFollowToggle()
+            }}
+            className="text-[9px] tracking-[0.2em] drop-shadow"
+          >
+            {isFollowed ? "unfollow" : "follow"}
+          </button>
+        )}
+
 
         {isOwner && onDelete && (
           <button

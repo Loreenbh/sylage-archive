@@ -43,32 +43,45 @@ export default function Silhouettes({ onNavigate, params }: Props) {
     user: profileUser,
     setSilhouettes,
   } = useSilhouettes(userId, moodboardId)
+  console.log("SILHOUETTES DANS COMPONENT :", silhouettes)
 
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+  const { user: currentUser } = useCurrentUser()
 
- const { user: currentUser } = useCurrentUser()
+  const sidebarTitle =
+    isOwner
+      ? "MY SILHOUETTES"
+      : moodboardId
+        ? profileUser?.username
+          ? `${profileUser.username} | PROPOSITIONS`
+          : "PROPOSITIONS"
+        : profileUser?.username
+          ? `${profileUser.username} | SILHOUETTES`
+          : "SILHOUETTES"
 
-const sidebarTitle =
-  isOwner
-    ? "MY SILHOUETTES"
-    : moodboardId
-      ? profileUser?.username
-        ? `${profileUser.username} | PROPOSITIONS`
-        : "PROPOSITIONS"
-      : profileUser?.username
-        ? `${profileUser.username} | SILHOUETTES`
-        : "SILHOUETTES"
+  const filteredSilhouettes =
+    moodboardId || selectedFilters.length === 0
+      ? silhouettes
+      : silhouettes.filter((silhouette) =>
+          silhouette.tags?.some(tag =>
+            selectedFilters.includes(tag)
+          )
+        )
+
 
   const [index, setIndex] = useState(0)
-  const left = silhouettes[index]
-  const center = silhouettes[index + 1]
-  const right = silhouettes[index + 2]
+  const left = filteredSilhouettes[index]
+  const center = filteredSilhouettes[index + 1]
+  const right = filteredSilhouettes[index + 2]
+
+
 
   const handlePrev = () => {
     setIndex((i) => Math.max(i - 1, 0))
   }
 
   const handleNext = () => {
-    setIndex((i) => Math.min(i + 1, Math.max(silhouettes.length - 3, 0)))
+    setIndex((i) => Math.min(i + 1, Math.max(filteredSilhouettes.length- 3, 0)))
   }
 
   const handleDelete = async (id:number) => {
@@ -115,6 +128,7 @@ const renderCell = (silhouette?: Silhouette) => (
     <BookLayout
       header={
         <Header
+          onFiltersChange={setSelectedFilters}
           items={[
             { section: "HOME",
               clickable: true,
@@ -127,10 +141,13 @@ const renderCell = (silhouette?: Silhouette) => (
                   }
                 })
             },
-            { section: "FILTER",
-              clickable: true,
-              onClick: () => console.log("filter clicked"),
-             },
+            {
+              section: "FILTER",
+              clickable: !moodboardId,
+              onClick: moodboardId
+                ? undefined
+                : () => console.log("filter clicked"),
+            },
             { section: "CREATE",
               clickable: true,
               onClick: () => console.log("create clicked"),
@@ -183,7 +200,7 @@ const renderCell = (silhouette?: Silhouette) => (
             CHARGEMENT...
           </p>
         </div>
-      ) : silhouettes.length === 0 ? (
+      ) : filteredSilhouettes.length === 0 ? (
         <div className="h-full flex items-center justify-center">
           <p className="text-black/30 text-xs tracking-[0.2em]">
             AUCUNE SILHOUETTE POUR L'INSTANT

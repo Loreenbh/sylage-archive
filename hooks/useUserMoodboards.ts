@@ -1,32 +1,34 @@
 import { useEffect, useState } from "react"
 import type { Moodboard } from "@/types/moodboard"
 import { getUserMoodboards } from "@/lib/services/userMoodboards"
+import type { User } from "@/types/user"
 
 export function useUserMoodboards(userId?: number) {
 
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-
-    if (!userId) {
-      setIsLoading(false)
-      return
-    }
-
-    const currentUserId = userId
 
     async function loadMoodboards(){
 
       try {
 
-        const data = await getUserMoodboards(currentUserId)
+        const data = await getUserMoodboards(userId)
 
-        setMoodboards(data)
+        console.log("DATA API MOODBOARDS :", data)
+
+        setMoodboards(data.moodboards)
+
+        if(data.user){
+          setUser(data.user)
+        }
 
       } catch {
 
         setMoodboards([])
+        setUser(null)
 
       } finally {
 
@@ -43,6 +45,7 @@ export function useUserMoodboards(userId?: number) {
   return {
     moodboards,
     isLoading,
+    user,
     setMoodboards
   }
 }

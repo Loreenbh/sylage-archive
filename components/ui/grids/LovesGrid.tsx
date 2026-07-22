@@ -12,12 +12,10 @@ export default function LovesGrid({
   return (
     <div className="h-full w-full flex gap-1">
 
-      {/* LEFT — grand bloc */}
       <div className="flex-1 aspect-square h-full overflow-hidden">
         {left}
       </div>
 
-      {/* RIGHT — colonne de 2 blocs */}
       <div className="flex-1 h-full flex flex-col gap-1">
 
         <div className="flex-1 overflow-hidden">

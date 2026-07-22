@@ -6,12 +6,12 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server"
 import { pool } from "@/lib/db"
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id:string }> }
+) {
 
-  const { searchParams } = new URL(request.url)
-
-  const userIdParam = searchParams.get("userId")
-
+  const { id } = await params
   const cookieStore = await cookies()
   const token = cookieStore.get("session_token")?.value
 
@@ -34,11 +34,6 @@ export async function GET(request: Request) {
       { status:401 }
     )
   }
-
-
-  const userId = userIdParam
-    ? Number(userIdParam)
-    : currentSession.user_id
 
 
   const result = await pool.query(
@@ -69,18 +64,16 @@ export async function GET(request: Request) {
     LEFT JOIN silhouettes
     ON silhouettes.moodboard_id = moodboards.id
 
-    WHERE moodboards.user_id = $1
+    WHERE moodboards.id = $1
 
     GROUP BY moodboards.id, users.username
-
-    ORDER BY moodboards.created_at DESC
     `,
     [
-      userId,
+      id,
       currentSession.user_id
     ]
   )
 
 
-  return NextResponse.json(result.rows)
+  return NextResponse.json(result.rows[0])
 }

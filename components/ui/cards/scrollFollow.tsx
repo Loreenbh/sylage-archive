@@ -1,65 +1,86 @@
-type FollowItem = {
-  id: number
-  user: string
-  avatar?: string
-}
+import { Follow } from "@/types/follow"
 
 type Props = {
-  title: string
-  items: FollowItem[]
-  onOpenProfile?: (item: FollowItem) => void
-  onUnfollow?: (item: FollowItem) => void
+  followingTitle: string
+  followersTitle: string
+
+  following: Follow[]
+  followers: Follow[]
+  onOpenProfile?: (item: Follow) => void
+  onUnfollow?: (item: Follow) => void
 }
 
 export default function ScrollFollow({
-  title,
-  items,
+  followingTitle,
+  followersTitle,
+  following,
+  followers,
   onOpenProfile,
   onUnfollow,
 }: Props) {
-  return (
-    <div className="h-full w-full flex flex-col p-4">
 
-      {/* title */}
+  const sortedFollowing = [...following].sort((a,b) =>
+    a.username.localeCompare(b.username)
+  )
+
+  const sortedFollowers = [...followers].sort((a,b) =>
+    a.username.localeCompare(b.username)
+  )
+
+
+  const renderList = (
+    title:string,
+    items:Follow[],
+    showUnfollow:boolean
+  ) => (
+    <div className="flex-1 flex flex-col p-4 min-h-0">
+
       <p className="text-sm uppercase tracking-widest text-center">
         {title}
       </p>
 
-      {/* list */}
-      <div className="flex-1 overflow-y-auto min-h-0 space-y-4 mt-3">
 
-        {items.map((item) => (
-          <div key={item.id} className="flex items-center justify-center gap-3">
+      <div className="flex-1 overflow-y-auto space-y-4 mt-3">
 
-            {/* avatar → profile */}
+        {items.map((item)=>(
+          <div 
+            key={item.id}
+            className="flex items-center justify-center gap-3"
+          >
+
             <button
               onClick={() => onOpenProfile?.(item)}
-              className="w-10 h-10 rounded-full bg-zinc-300 overflow-hidden flex-shrink-0"
+              className="
+                w-10 h-10 rounded-full
+                bg-zinc-300 overflow-hidden
+              "
             >
               {item.avatar && (
                 <img
                   src={item.avatar}
                   className="w-full h-full object-cover"
-                  alt=""
                 />
               )}
             </button>
 
-            {/* text block */}
+
             <div className="flex flex-col">
 
-              {/* username → unfollow */}
               <button
-                onClick={() => onUnfollow?.(item)}
-                className="text-sm opacity-80 hover:opacity-100 text-left"
+                onClick={() =>
+                  showUnfollow && onUnfollow?.(item)
+                }
+                className="text-sm text-left"
               >
-                {item.user}
+                {item.username}
               </button>
 
-              {/* secondary label */}
-              <span className="text-[10px] opacity-40 tracking-wide">
-                unfollow
-              </span>
+
+              {showUnfollow && (
+                <span className="text-[10px] opacity-40">
+                  unfollow
+                </span>
+              )}
 
             </div>
 
@@ -67,6 +88,26 @@ export default function ScrollFollow({
         ))}
 
       </div>
+
+    </div>
+  )
+
+
+  return (
+    <div className="h-full w-full flex gap-1">
+
+      {renderList(
+        followingTitle,
+        sortedFollowing,
+        true
+      )}
+
+      {renderList(
+        followersTitle,
+        sortedFollowers,
+        false
+      )}
+
     </div>
   )
 }

@@ -29,7 +29,7 @@ export function useMoodboard(id?: number) {
     loadMoodboard()
 
   }, [id])
-
+  console.log("HOOK REPONSE:", moodboard)
   return {
     moodboard,
     isLoading

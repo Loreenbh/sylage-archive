@@ -7,6 +7,13 @@ export async function GET(request: Request) {
     const cookieStore = await cookies()
     const token = cookieStore.get("session_token")?.value
 
+    if (!token) {
+    return NextResponse.json(
+        { error: "Non connecté" },
+        { status: 401 }
+    )
+    }
+
     const session = await pool.query(
         `SELECT user_id
         FROM sessions
@@ -15,13 +22,6 @@ export async function GET(request: Request) {
         `,
         [token]
     )
-
-    if (!token) {
-        return NextResponse.json(
-            { error: "Non connecté" },
-            { status: 401 }
-        )
-    }
 
     const currentSession = session.rows[0]
 
@@ -34,6 +34,14 @@ export async function GET(request: Request) {
     const res =  await pool.query(
         `SELECT moodboards.*, 
         users.username, 
+
+        EXISTS (
+            SELECT 1
+            FROM follows
+            WHERE follows.follower_id = $1
+            AND follows.following_id = users.id
+        ) AS is_followed,
+
         COUNT(DISTINCT likes.id)::int AS "likes_count",
         COUNT(DISTINCT silhouettes.id)::int AS "silhouettes_count",
 
@@ -50,7 +58,7 @@ export async function GET(request: Request) {
         LEFT JOIN silhouettes
         ON silhouettes.moodboard_id = moodboards.id
         WHERE moodboards.user_id != $1
-        GROUP BY moodboards.id, users.username
+        GROUP BY moodboards.id, users.id, users.username
         ORDER BY moodboards.created_at DESC
         `,
         [currentSession.user_id]

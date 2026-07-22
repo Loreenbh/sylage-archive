@@ -20,7 +20,8 @@ type Props = {
 }
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { useProfile } from "@/hooks/useProfile"
-
+import { logout } from "@/lib/services/logout"
+import { useFollows } from "@/hooks/useFollows"
 /*------------------------------------------------- */
 
 export default function ProfilePage({ onNavigate, params }: Props) {
@@ -30,21 +31,24 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     from
   } = params ?? {}
 
-  const following = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    user: `user_${String(i + 1).padStart(2, "0")}`,
-  }))
+  const {
+    following,
+    followers
+  } = useFollows(userId)
 
-  const handleLogout = async ()  => {
-    await fetch("/api/auth/logout", {
-      method: "POST"
-    })
-    onNavigate?.({
-      to:"cover",
-      direction:"prev"
-    })
+  const handleLogout = async () => {
+    try {
+      await logout()
+
+      onNavigate?.({
+        to: "cover",
+        direction: "prev"
+      })
+
+    } catch (error) {
+      console.error(error)
+    }
   }
-
  const { user: currentUser } = useCurrentUser()
 
   const {
@@ -54,7 +58,6 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     isLoading
   } = useProfile(userId, isOwner)
 
-  console.log("silhouette", silhouettes)
 
   const lastMoodboard = moodboards[0] ?? null
   const lastSilhouette = silhouettes[0] ?? null
@@ -218,7 +221,7 @@ export default function ProfilePage({ onNavigate, params }: Props) {
           </GridButton>
         }
 
-                topRight={
+        topRight={
           <GridButton
             className="relative overflow-hidden bg-zinc-200 hover:bg-zinc-300"
             onClick={() => 
@@ -245,16 +248,32 @@ export default function ProfilePage({ onNavigate, params }: Props) {
           </GridButton>
         }
 
-        bottomRight={
-          <div className="bg-zinc-400 h-full w-full text-left">
-            <ScrollFollow
-              title="following"
-              items={following}
-              
-            />
-              <p className={typography.body}>inspired by</p>
-          </div>
-        }
+          bottomRight={
+            <div className="bg-zinc-400 h-full w-full text-left">
+              <ScrollFollow
+                followingTitle="Inspired by"
+                followersTitle="Inspiring"
+
+                following={following}
+                followers={followers}
+
+                onOpenProfile={(item)=>{
+                  onNavigate?.({
+                    to:"profile",
+                    direction:"next",
+                    params:{
+                      userId:item.id,
+                      isOwner:false
+                    }
+                  })
+                }}
+
+                onUnfollow={(item)=>{
+                  console.log("unfollow", item)
+                }}
+              />
+            </div>
+          }
       />
       </div>
     </BookLayout>

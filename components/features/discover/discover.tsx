@@ -23,7 +23,7 @@ type Tab = "new" | "featured" | "following"
 
 /* HOOKS */
 import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods"
-
+import { followUser , unfollowUser } from "@/lib/services/follows"
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
@@ -31,7 +31,8 @@ export default function Discover({ onNavigate, params }: Props) {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const {
     moodboards,
-    isLoading
+    isLoading,
+    setMoodboards
   } = useDiscoverMoodboards()
   
   const { user } = useCurrentUser()
@@ -42,6 +43,30 @@ export default function Discover({ onNavigate, params }: Props) {
       : tab === "featured"
       ? [...moodboards].reverse()
       : moodboards.slice(0, 10)
+
+  const handleFollowToggle = async (
+    userId:number,
+    isFollowed:boolean
+  ) => {
+
+    if(isFollowed){
+      await unfollowUser(userId)
+    } else {
+      await followUser(userId)
+    }
+
+
+    setMoodboards(prev =>
+      prev.map(board =>
+        board.user_id === userId
+          ? {
+              ...board,
+              is_followed: !isFollowed
+            }
+          : board
+      )
+    )
+  }
 
   const filteredMoodboards =
     selectedFilters.length === 0
@@ -141,6 +166,13 @@ export default function Discover({ onNavigate, params }: Props) {
                 <ContentOverlay
                   username={board.username}
                   isOwner={user?.id === board.user_id}
+                  isFollowed={board.is_followed}
+                  onFollowToggle={() => 
+                    handleFollowToggle(
+                      board.user_id,
+                      board.is_followed
+                    )
+                  }
                   like={{
                     type: "moodboard",
                     id: board.id,

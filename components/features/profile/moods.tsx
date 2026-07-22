@@ -33,9 +33,15 @@ export default function Moods({ onNavigate, params }: Props) {
   const { user: currentUser } = useCurrentUser()
   const { isOwner, userId, from} = params ?? {}
 
+console.log("PARAMS MOODS :", params)
+console.log("USER ID MOODS :", userId)
+console.log("OWNER :", isOwner)
+
+
 const {
   moodboards,
   isLoading,
+  user: profileUser,
   setMoodboards
 } = useUserMoodboards(userId)
 
@@ -55,11 +61,12 @@ const {
       ? byTab
       : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
+  console.log("PROFILEUSER", profileUser)
   const sidebarTitle =
     isOwner
       ? "MOODS"
-      : user?.username
-        ? `${user.username} | MOODS`
+      : profileUser?.username
+        ? `${profileUser.username} | MOODS`
         : "MOODS"
 
   const handleDelete = async (id:number) => {
@@ -134,9 +141,9 @@ const {
       }
       footer={
           <div className="flex items-center gap-4">
-            {/* <span className="text-sm tracking-[0.2em]">
-              {user?.username}
-            </span>              */}
+            <span className="text-sm tracking-[0.2em]">
+              {currentUser?.username}
+            </span>             
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
@@ -164,7 +171,7 @@ const {
                 direction: "next",
                 params: {
                   from: "moods",
-                  // moodboard: board,
+                  moodboardId: board.id,
                   fromTab: tab,
                   isOwner,
                 },
@@ -179,7 +186,7 @@ const {
                 />
                 <ContentOverlay
                   username={board.username}
-                  isOwner={true}
+                  isOwner={isOwner ?? false}
                   like={{
                     type: "moodboard",
                     id: board.id,
@@ -188,7 +195,6 @@ const {
                   }}
                   silhouettesCount={board.silhouettes_count}
                   onDelete={() => handleDelete(board.id)}
-
                 />
               </div>
             )}

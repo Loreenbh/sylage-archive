@@ -36,7 +36,7 @@ console.log("ID reçu dans MoodDetails :", moodboardId)
     isLoading
   } = useMoodboard(moodboardId)
 
-  console.log(moodboard)
+  console.log("modoboard dans moddetails", moodboard)
 
   const sidebarTitle = 
     isOwner
