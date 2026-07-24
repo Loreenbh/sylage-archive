@@ -12,23 +12,48 @@ export async function getProfileData(username?: string){
 }
 
 
-export async function updateAvatar(avatar_url: string) {
+export async function updateUser(data: {
+    avatar_url?: string
+    username?: string
+    oldPassword?: string
+    password?: string
+}) {
 
-  const res = await fetch("/api/users/avatar", {
+  const res = await fetch("/api/users", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      avatar_url
-    })
+    body: JSON.stringify(data)
   })
-  console.log("RETOUR API /AVATAR:", res)
+  const result = await res.json()
 
+  console.log("REPONSE API UPDATE USER :", result)
   if (!res.ok) {
-    throw new Error("Erreur mise à jour avatar")
+    throw new Error(
+      result.error ?? "Erreur mise à jour utilisateur"
+    )
   }
 
 
-  return res.json()
+  return result
+}
+
+
+export async function deleteUser(){
+
+  const res = await fetch("/api/users", {
+    method:"DELETE"
+  })
+
+
+  const data = await res.json()
+
+
+  if(!res.ok){
+    throw new Error(data.error)
+  }
+
+
+  return data
 }

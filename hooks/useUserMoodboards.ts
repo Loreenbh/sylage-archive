@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import type { Moodboard } from "@/types/moodboard"
-import { getUserMoodboards } from "@/lib/services/userMoodboards"
+import { getUserMoodboards } from "@/hooks/userMoodboards"
 import type { User } from "@/types/user"
 
 export function useUserMoodboards(userId?: number) {
