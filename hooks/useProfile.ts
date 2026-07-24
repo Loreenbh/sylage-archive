@@ -39,6 +39,7 @@ export function useProfile(
         setUser(data.user)
         setMoodboards(data.moodboards)
         setSilhouettes(data.silhouettes)
+        console.log("API USER:", user)
 
       } catch {
 

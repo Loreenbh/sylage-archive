@@ -13,7 +13,11 @@ export async function GET() {
 
 
     const result = pool.query(
-        `SELECT users.id, users.email, users.username 
+        `SELECT 
+            users.id, 
+            users.email, 
+            users.username,
+            users.avatar_url
         FROM sessions
         JOIN users ON users.id = sessions.user_id
         WHERE sessions.token= $1 AND sessions.expires_at > NOW()`,

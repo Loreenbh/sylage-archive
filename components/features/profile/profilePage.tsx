@@ -35,6 +35,8 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     following,
     followers
   } = useFollows(userId)
+console.log("FOLLOWING :", following)
+console.log("FOLLOWERS :", followers)
 
   const handleLogout = async () => {
     try {
@@ -57,7 +59,8 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     silhouettes,
     isLoading
   } = useProfile(userId, isOwner)
-
+console.log("PROFILE USER :", profileUser)
+console.log("MOODBOARDS :", moodboards)
 
   const lastMoodboard = moodboards[0] ?? null
   const lastSilhouette = silhouettes[0] ?? null

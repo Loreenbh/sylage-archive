@@ -1,7 +1,7 @@
 "use client"
-import { useState, useEffect } from "react"
 import type { OnNavigate } from "@/types/navigation"
-import { getCurrentUser } from "@/lib/services/auth"
+import Avatar from "../pagination/Avatar"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 /* TYPES */
 type Props = {
@@ -11,60 +11,34 @@ type Props = {
 }
 /*------------------------------------------ */
 export default function ProfileButton({ onNavigate, active = false, clickable = true}: Props) {
-  const [user_name, setUsername] = useState<string | null>(null)
-  
-  useEffect(() => {
-      async function loadUser() {
-        try {
-          const data = await getCurrentUser()
+  const { user } = useCurrentUser()
 
-          if (data.user) {
-            setUsername(data.user.username)
-          }
-
-        } catch {
-          setUsername(null)
-        }
-      }
-
-      loadUser()
-    }, [])
   return (
     <button
       disabled={!clickable}
       onClick={() => {
         if (!clickable) return
+
         onNavigate({
-          to: "profile",
-          direction: "next",
+          to:"profile",
+          direction:"next",
           params:{
-            isOwner: true,
+            isOwner:true
           }
         })
       }}
       className={`
-              w-9 h-9 md:w-14 md:h-14 lg:w-18 lg:h-18
-              rounded-full
-              flex items-center justify-center
-              transition
-              font-serif
-              text-white
-              tracking-[0.2em]
-
-              ${
-                active
-                ? "bg-pink-200"
-                : "bg-black hover:bg-neutral-800"
-              }
-
-              ${
-                !clickable
-                ? "cursor-default"
-                : "cursor-pointer"
-              }
-            `}
-          >
-            {user_name?.[0]?.toUpperCase() ?? "U"}
-          </button>
-        )
-      }
+        w-13 h-13 md:w-14 md:h-14 lg:w-18 lg:h-18
+      `}
+    >
+      <Avatar
+        user={user}
+        className="
+          w-full
+          h-full
+          rounded-full
+        "
+      />
+    </button>
+  )
+}

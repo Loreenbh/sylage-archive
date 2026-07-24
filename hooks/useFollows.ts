@@ -16,7 +16,7 @@ export function useFollows(userId?:number){
       try {
 
         const data = await getFollows(userId)
-
+        console.log("FOLLOW API:", data)
         setFollowing(data.following)
         setFollowers(data.followers)
 

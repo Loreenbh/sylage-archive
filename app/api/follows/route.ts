@@ -70,6 +70,7 @@ export async function GET(request: Request) {
     SELECT 
       users.id,
       users.username,
+      users.avatar_url,
 
       EXISTS (
         SELECT 1
@@ -101,6 +102,7 @@ export async function GET(request: Request) {
     SELECT 
       users.id,
       users.username,
+      users.avatar_url,
 
       EXISTS (
         SELECT 1

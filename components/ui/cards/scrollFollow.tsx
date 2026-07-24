@@ -55,11 +55,15 @@ export default function ScrollFollow({
                 bg-zinc-300 overflow-hidden
               "
             >
-              {item.avatar && (
+              {item.avatar_url ? (
                 <img
-                  src={item.avatar}
+                  src={item.avatar_url}
                   className="w-full h-full object-cover"
                 />
+              ) : (
+                <span className="w-full h-full flex items-center justify-center bg-black text-white">
+                  {item.username[0].toUpperCase()}
+                </span>
               )}
             </button>
 

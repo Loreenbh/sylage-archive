@@ -1,0 +1,37 @@
+import type { User } from "@/types/user"
+
+type Props = {
+  user?: User | null
+  className?: string
+}
+
+export default function Avatar({
+  user,
+  className = ""
+}: Props) {
+
+  return (
+    <div
+      className={`
+        rounded-full
+        flex items-center justify-center
+        overflow-hidden
+        bg-black
+        text-white
+        font-serif
+        tracking-[0.2em]
+        ${className}
+      `}
+    >
+      {user?.avatar_url ? (
+        <img
+          src={user.avatar_url}
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        user?.username?.[0]?.toUpperCase() ?? "U"
+      )}
+    </div>
+  )
+}
