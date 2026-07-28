@@ -9,10 +9,10 @@ import Header from "@/components/navigation/Header"
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 
-import LayoutA from "../moodboards/LayoutA"
-import LayoutB from "../moodboards/LayoutB"
-import LayoutC from "../moodboards/LayoutC"
-import LayoutD from "../moodboards/LayoutD"
+import LayoutAPreview from "../moodboards/previews/LayoutAPreview"
+import LayoutBPreview from "../moodboards/previews/LayoutBPreview"
+import LayoutCPreview from "../moodboards/previews/LayoutCPreview"
+import LayoutDPreview from "../moodboards/previews/LayoutDPreview"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
@@ -91,14 +91,14 @@ const { from } = params ?? {}
             }
           >
             <div className="w-full h-full overflow-hidden bg-zinc-100">
-              <LayoutA images={Array(9).fill(null)} />
+              <LayoutAPreview />
             </div>
           </div>
         }
         
         topRight={
           <div
-            className="h-full w-full bg-zinc-300 hover:bg-zinc-400 transition"
+            className="h-full w-full cursor-pointer"
             onClick={() =>
               onNavigate({
                 to: "editor",
@@ -111,7 +111,7 @@ const { from } = params ?? {}
             }
           >
             <div className="w-full h-full overflow-hidden bg-zinc-100">
-                <LayoutB images={Array(7).fill(null)} />
+                <LayoutBPreview />
             </div>
           </div>
         }
@@ -131,29 +131,26 @@ const { from } = params ?? {}
             }
           >
             <div className="w-full h-full overflow-hidden bg-zinc-100">
-                <LayoutC images={Array(6).fill(null)} />
+                <LayoutCPreview />
             </div>
           </div>
         }
 
         bottomRight={
           <div
-            className="h-full w-full bg-zinc-500 hover:bg-zinc-600 transition"
             onClick={() =>
               onNavigate({
-                to: "editor",
-                direction: "next",
-                params: {
-                  layout: "D",
-                  from: "create",
-
-                },
+                to:"editor",
+                direction:"next",
+                params:{
+                  layout:"D",
+                  from:"create"
+                }
               })
             }
+            className="h-full w-full cursor-pointer"
           >
-            <div className="w-full h-full overflow-hidden bg-zinc-100">
-                <LayoutD images={Array(6).fill(null)} />
-            </div>
+            <LayoutDPreview />
           </div>
         }
       />

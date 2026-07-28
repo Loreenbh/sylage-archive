@@ -73,7 +73,7 @@ export default function LikeButton({
       {type === "moodboard" ? (
         liked ? "♥" : "♡"
       ) : (
-        liked ? "★" : "☆"
+        liked ? "♥" : "♡"
       )}
       {" "}
       {count}

@@ -35,12 +35,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
     isLoading
   } = useMoodboard(moodboardId)
 
-  const sidebarTitle = 
-    isOwner
-    ? "MY MOOD"
-    : moodboard?.username
-      ? `${moodboard.username} | MOOD`
-      : "MOOD"
+  const sidebarTitle = "MOODBOARD"
   
   return (
     <BookLayout
@@ -116,9 +111,14 @@ export default function MoodDetails({ onNavigate, params }: Props) {
                     },
                   })
                 }
-                className={typography.buttonBody}
+                  className={`
+                    ${typography.buttonBody}
+                    transition-opacity
+                    hover:opacity-60
+                    cursor-pointer
+                  `}
               >
-                profile
+                by {moodboard?.username}
               </button>
 
             <div className="">
@@ -167,7 +167,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
               }
               className={typography.buttonBody}
             >
-              silhouettes
+              looks
             </button>
         </div>               
       }

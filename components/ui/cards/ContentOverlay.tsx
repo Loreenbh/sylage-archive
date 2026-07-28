@@ -16,6 +16,8 @@ type Props = {
 
   silhouettesCount?: number
   onDelete?: () => void
+  onOpenLooks?: () => void
+  onOpenProfile?: () => void
 }
 
 export default function ContentOverlay({
@@ -26,28 +28,43 @@ export default function ContentOverlay({
   onFollowToggle,
   like,
   silhouettesCount,
-  onDelete
+  onDelete,
+  onOpenLooks,
+  onOpenProfile
 }: Props) {
 
-  return (
+    return (
     <div
       className="
         absolute bottom-0 left-0 right-0
         flex items-center justify-between
         px-2 py-1
-        bg-red-500
+        bg-pink-600
         text-white
       "
     >
-
       <div>
         {!isOwner && showUsername && username && (
-          <p className="text-[9px] tracking-[0.2em] drop-shadow">
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onOpenProfile?.()
+            }}
+            className="
+              text-[10px]
+              tracking-[0.2em]
+              drop-shadow
+              cursor-pointer
+              text-white/70
+              hover:text-white
+              hover:drop-shadow-md
+              transition-all
+            "
+          >
             {username}
-          </p>
-        )}     
+          </button>
+        )}
       </div>
-
 
       <div className="flex items-center gap-3">
 
@@ -63,9 +80,15 @@ export default function ContentOverlay({
         )}
 
         {silhouettesCount !== undefined && (
-          <span className={typography.buttonBody}>
-            👗 {silhouettesCount}
-          </span>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onOpenLooks?.()
+            }}
+            className="text-[10px] tracking-[0.2em] drop-shadow"
+          >
+            looks · {silhouettesCount}
+          </button>
         )}
 
         {!isOwner && onFollowToggle && (
@@ -74,23 +97,26 @@ export default function ContentOverlay({
               e.stopPropagation()
               onFollowToggle()
             }}
-            className="text-[9px] tracking-[0.2em] drop-shadow"
+            className="text-[12px] tracking-[0.2em] drop-shadow"
           >
-            {isFollowed ? "unfollow" : "follow"}
+            {isFollowed ? "✓" : "+"}
           </button>
         )}
 
-
         {isOwner && onDelete && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onDelete()
-            }}
-            className={typography.buttonBody}
-          >
-            x
-          </button>
+          <>
+            <span className={typography.bullet}>|</span>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                onDelete()
+              }}
+              className={typography.buttonBody}
+            >
+              x
+            </button>
+          </>
         )}
 
       </div>

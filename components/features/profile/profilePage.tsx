@@ -1,5 +1,5 @@
 "use client"
-import { useRef, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
@@ -16,12 +16,15 @@ import { typography } from "@/styles/typography"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
-  
 }
+
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { useProfile } from "@/hooks/useProfile"
 import { logout } from "@/lib/services/logout"
 import { useFollows } from "@/hooks/useFollows"
+import { getFollows, unfollowUser, followUser } from "@/lib/services/follows"
+
+import BackButton from "@/components/ui/buttons/BackButton"
 /*------------------------------------------------- */
 
 export default function ProfilePage({ onNavigate, params }: Props) {
@@ -31,10 +34,63 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     from
   } = params ?? {}
 
+  const { user: currentUser } = useCurrentUser()
+
+  const [isFollowed, setIsFollowed] = useState(false)
+
+
+  // Connexions du profil affiché
   const {
     following,
-    followers
+    followers,
+    handleUnfollow
   } = useFollows(userId)
+
+
+  const {
+    user: profileUser,
+    moodboards,
+    silhouettes,
+    isLoading
+  } = useProfile(userId, isOwner)
+
+
+
+  // Vérifie si moi je suis abonné à ce profil
+useEffect(() => {
+  if (!profileUser || !currentUser) return
+
+  const currentUserId = currentUser.id
+  const profileUserId = profileUser.id
+
+  async function checkFollow() {
+    const res = await getFollows(currentUserId)
+
+    const followed = res.following.some(
+      (user: { id: number }) => user.id === profileUserId
+    )
+
+    setIsFollowed(followed)
+  }
+
+  checkFollow()
+
+}, [profileUser, currentUser])
+
+
+  const handleFollowToggle = async () => {
+    if (!profileUser) return
+
+    if (isFollowed) {
+      await unfollowUser(profileUser.id)
+    } else {
+      await followUser(profileUser.id)
+    }
+
+    setIsFollowed(prev => !prev)
+  }
+
+
 
   const handleLogout = async () => {
     try {
@@ -49,25 +105,14 @@ export default function ProfilePage({ onNavigate, params }: Props) {
       console.error(error)
     }
   }
- const { user: currentUser } = useCurrentUser()
 
-  const {
-    user: profileUser,
-    moodboards,
-    silhouettes,
-    isLoading
-  } = useProfile(userId, isOwner)
 
   const lastMoodboard = moodboards[0] ?? null
   const lastSilhouette = silhouettes[0] ?? null
-  
-  const sidebarTitle = 
-    isOwner
-    ? "MY PROFILE"
-    : profileUser?.username
-      ? `${profileUser.username} | PROFILE`
-      : "PROFILE"
-      
+
+
+  const sidebarTitle = "PROFILE"
+
   return (
     <BookLayout
       header={
@@ -151,7 +196,7 @@ export default function ProfilePage({ onNavigate, params }: Props) {
             </>
           ) : (
             <>
-              <button
+              {/* <button
                 onClick={() =>{
                   onNavigate?.({
                     to: from ?? "discover",
@@ -165,21 +210,42 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                 className={typography.buttonBody}
               >
                 back
-              </button>
+              </button> */}
 
+              <p className={typography.buttonBody}>
+                BY {profileUser?.username}
+              </p>
+
+              <span className={typography.bullet}>•</span>
 
               <button
-                onClick={() =>{}}
-                className={typography.buttonBody}
+                onClick={handleFollowToggle}
+                className={`
+                    ${typography.buttonBody}
+                    transition-opacity
+                    hover:opacity-60
+                    cursor-pointer
+                  `}
               >
-                follow
+                {isFollowed ? "unfollow" : "follow"}
               </button>
             </>
           )}
         </div>
       }
 
-      footer={
+      footerLeft={
+        <BackButton
+          onNavigate={onNavigate}
+          backTo={from}
+          params={{
+            // moodboardId,
+            userId,
+            isOwner
+          }}
+        />
+      }
+      footerRight={
           <div className="flex items-center gap-4">
             <span className="text-sm tracking-[0.2em]">
               {currentUser?.username}
@@ -212,7 +278,7 @@ export default function ProfilePage({ onNavigate, params }: Props) {
               />
             )}
             <p className={`${typography.body} relative z-10 ${lastSilhouette ? "text-white drop-shadow" : ""}`}>
-              silhouettes
+              creations
             </p>
           </GridButton>
         }
@@ -243,13 +309,13 @@ export default function ProfilePage({ onNavigate, params }: Props) {
             </p>
           </GridButton>
         }
+        bottomRight={
+          <div className="bg-zinc-400 h-full w-full flex flex-col">
 
-          bottomRight={
-            <div className="bg-zinc-400 h-full w-full text-left">
+            <div className="flex-1 min-h-0">
               <ScrollFollow
                 followingTitle="Inspired by"
                 followersTitle="Inspiring"
-
                 following={following}
                 followers={followers}
 
@@ -259,16 +325,26 @@ export default function ProfilePage({ onNavigate, params }: Props) {
                     direction:"next",
                     params:{
                       userId:item.id,
-                      isOwner:false
+                      isOwner:item.id === currentUser?.id,
+                      from:"profile"
                     }
                   })
                 }}
 
                 onUnfollow={(item)=>{
+                  handleUnfollow(item.id)
                 }}
               />
             </div>
-          }
+
+            <div className="flex items-end p-4 h-12">
+              <p className={typography.body}>
+                CONNECTIONS
+              </p>
+            </div>
+
+          </div>
+        }
       />
       </div>
     </BookLayout>

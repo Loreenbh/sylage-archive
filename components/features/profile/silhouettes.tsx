@@ -36,7 +36,6 @@ export default function Silhouettes({ onNavigate, params }: Props) {
     moodboardId,
     from
   } = params ?? {}
-
   const {
     silhouettes,
     isLoading,
@@ -52,8 +51,8 @@ export default function Silhouettes({ onNavigate, params }: Props) {
       ? "MY SILHOUETTES"
       : moodboardId
         ? profileUser?.username
-          ? `${profileUser.username} | PROPOSITIONS`
-          : "PROPOSITIONS"
+          ? `${profileUser.username} | LOOKS`
+          : "LOOKS"
         : profileUser?.username
           ? `${profileUser.username} | SILHOUETTES`
           : "SILHOUETTES"
@@ -75,12 +74,14 @@ export default function Silhouettes({ onNavigate, params }: Props) {
 
 
 
-  const handlePrev = () => {
-    setIndex((i) => Math.max(i - 1, 0))
+  const handleNext = () => {
+    setIndex((i) =>
+      Math.min(i + 3, Math.max(filteredSilhouettes.length - 3, 0))
+    )
   }
 
-  const handleNext = () => {
-    setIndex((i) => Math.min(i + 1, Math.max(filteredSilhouettes.length- 3, 0)))
+  const handlePrev = () => {
+    setIndex((i) => Math.max(i - 3, 0))
   }
 
   const handleDelete = async (id:number) => {
@@ -108,7 +109,18 @@ const renderCell = (silhouette?: Silhouette) => (
         />
         <ContentOverlay
           username={silhouette.username}
-          isOwner={isOwner ?? false}
+          isOwner={silhouette.user_id === currentUser?.id}
+          onOpenProfile={() =>
+            onNavigate?.({
+              to: "profile",
+              direction: "next",
+              params: {
+                userId: silhouette.user_id,
+                isOwner: silhouette.user_id === currentUser?.id,
+                from: "silhouettes"
+              }
+            })
+          }
           like={{
             type:"silhouette",
             id:silhouette.id,

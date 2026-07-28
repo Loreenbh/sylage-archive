@@ -9,7 +9,7 @@ type Props = {
   onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void
 }
 
-export default function LayoutD({ images = [], onSelectSlot, onUpdateSlot }: Props) {
+export default function LayoutC({ images = [], onSelectSlot, onUpdateSlot }: Props) {
   const select = (index: number) => onSelectSlot?.(index)
   const update = (index: number) => (patch: MoodboardSlotPatch) => onUpdateSlot?.(index, patch)
 

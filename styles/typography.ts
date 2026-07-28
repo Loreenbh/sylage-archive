@@ -32,9 +32,9 @@ export const typography = {
 
         buttonAuth: `text-[10px] sm:text-[20px] md:text-[20px] lg:text-[35px] tracking-[0.40em] uppercase text-black/50`,
 
-        buttonBody: `text-[7px] sm:text-[10px] md:text-[12px] lg:text-[16px] tracking-[0.30em] uppercase text-black/60`,
+        buttonBody: `text-[7px] sm:text-[10px] md:text-[10px] lg:text-[16px] tracking-[0.30em] uppercase text-black/60`,
 
-        bullet: `text-black/30 text-[8px]`
+        bullet: `text-black/20 text-[16px]`
 
 
 

@@ -115,9 +115,9 @@ export default function Discover({ onNavigate, params }: Props) {
             className={typography.buttonBody}>following</button>
         </div>
       }
-      footer={
+      footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className="text-sm tracking-[0.35em] uppercase text-black/30">
               {user?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
@@ -177,6 +177,28 @@ export default function Discover({ onNavigate, params }: Props) {
                     liked: board.liked_by_current_user
                   }}
                   silhouettesCount={board.silhouettes_count}
+                    onOpenLooks={() =>
+                      onNavigate?.({
+                        to: "silhouettes",
+                        direction: "next",
+                        params: {
+                          moodboardId: board.id,
+                          from: "discover",
+                          isOwner: user?.id === board.user_id
+                        }
+                      })
+                    }
+                    onOpenProfile={() =>
+                      onNavigate?.({
+                        to: "profile",
+                        direction: "next",
+                        params: {
+                          userId: board.user_id,
+                          isOwner: user?.id === board.user_id,
+                          from: "discover"
+                        }
+                      })
+                    }
                 />
               </div>
             )}

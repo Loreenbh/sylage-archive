@@ -1,5 +1,4 @@
 import type { PageName } from "./pages"
-import type { Moodboard } from "./moodboard"
 
 export type Direction = "next" | "prev"
 
@@ -8,6 +7,8 @@ export type NavigationPayload = {
   moodboardId?: number
   
   from?: PageName
+  backTo?: PageName
+
   isOwner?: boolean
   fromTab?: "latest" | "curated" | "following"
   layout?: "A" | "B" | "C" | "D" 

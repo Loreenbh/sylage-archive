@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getFollows } from "@/lib/services/follows"
+import { getFollows, unfollowUser } from "@/lib/services/follows"
 import type { Follow } from "@/types/follow"
 
 export function useFollows(userId?:number){
@@ -37,11 +37,22 @@ export function useFollows(userId?:number){
 
   },[userId])
 
+    async function handleUnfollow(targetUserId:number){
+
+      await unfollowUser(targetUserId)
+
+      setFollowing(prev =>
+        prev.filter(user => user.id !== targetUserId)
+      )
+
+    }
+
 
   return {
     following,
     followers,
-    isLoading
+    isLoading,
+    handleUnfollow
   }
 
 }

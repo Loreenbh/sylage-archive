@@ -71,19 +71,24 @@ export default function ScrollFollow({
             <div className="flex flex-col">
 
               <button
-                onClick={() =>
-                  showUnfollow && onUnfollow?.(item)
-                }
                 className="text-sm text-left"
               >
                 {item.username}
               </button>
 
-
               {showUnfollow && (
-                <span className="text-[10px] opacity-40">
+                <button
+                  onClick={() => onUnfollow?.(item)}
+                    className="
+                      text-[10px]
+                      text-left
+                      opacity-40
+                      transition
+                      hover:opacity-100
+                    "
+                >
                   unfollow
-                </span>
+                </button>
               )}
 
             </div>
