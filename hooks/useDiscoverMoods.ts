@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import type { Moodboard } from "@/types/moodboard"
 import { getDiscoverMoodboards } from "@/lib/services/moodboard"
 
-export function useDiscoverMoodboards() {
+export function useDiscoverMoodboards(sort: "latest" | "curated" | "following") {
 
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -19,7 +19,7 @@ export function useDiscoverMoodboards() {
 
       try {
 
-        const data = await getDiscoverMoodboards()
+        const data = await getDiscoverMoodboards(sort)
 
         if (!cancelled) {
           setMoodboards(data)
@@ -46,7 +46,7 @@ export function useDiscoverMoodboards() {
       cancelled = true
     }
 
-  }, [])
+  }, [sort])
 
 
   return {

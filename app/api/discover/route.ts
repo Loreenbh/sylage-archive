@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
 
 export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url)
+    const sort = searchParams.get("sort") ?? "latest"
     /* RECUPERATION DE LA SESSION */
     const cookieStore = await cookies()
     const token = cookieStore.get("session_token")?.value
@@ -31,6 +33,43 @@ export async function GET(request: Request) {
             { status: 401 }
         )
     }
+
+    /* TRI */
+      /* TRI */
+    let orderBy = `
+        ORDER BY moodboards.created_at DESC
+    `
+    if (sort === "curated") {
+
+        orderBy = `
+        ORDER BY (
+            COUNT(DISTINCT likes.id) * 2
+            +
+            COUNT(DISTINCT silhouettes.id)
+        ) DESC
+        `
+
+    }
+
+
+    /* FILTRE */
+    let whereCondition = `
+        WHERE moodboards.user_id != $1
+    `
+
+
+    if (sort === "following") {
+
+        whereCondition = `
+        WHERE moodboards.user_id IN (
+            SELECT following_id
+            FROM follows
+            WHERE follower_id = $1
+        )
+        `
+
+    }
+
     const res =  await pool.query(
         `SELECT moodboards.*, 
         users.username, 
@@ -57,9 +96,9 @@ export async function GET(request: Request) {
         ON likes.moodboard_id = moodboards.id
         LEFT JOIN silhouettes
         ON silhouettes.moodboard_id = moodboards.id
-        WHERE moodboards.user_id != $1
+        ${whereCondition}
         GROUP BY moodboards.id, users.id, users.username
-        ORDER BY moodboards.created_at DESC
+        ${orderBy}
         `,
         [currentSession.user_id]
     )

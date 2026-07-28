@@ -124,9 +124,6 @@ export default function Editor({ onNavigate, params }: Props) {
 
     try {
       layoutRef.current.classList.add("export-mode")
-      console.log(
-        layoutRef.current.getBoundingClientRect()
-      )
       const imageData = await toPng(layoutRef.current)
       layoutRef.current.classList.remove("export-mode")
       const imgUrl = await uploadImage(imageData)
@@ -138,10 +135,6 @@ export default function Editor({ onNavigate, params }: Props) {
       onNavigate({
         to: "discover",
         direction: "prev",
-        // params:{
-      
-        //   requestedUser,
-        // }
       })
     } catch {
       setPublishError("Erreur réseau")

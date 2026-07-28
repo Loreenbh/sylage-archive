@@ -30,13 +30,10 @@ export default function MoodDetails({ onNavigate, params }: Props) {
     moodboardId,
   } = params ?? {}
 
-console.log("ID reçu dans MoodDetails :", moodboardId)
   const {
     moodboard,
     isLoading
   } = useMoodboard(moodboardId)
-
-  console.log("modoboard dans moddetails", moodboard)
 
   const sidebarTitle = 
     isOwner
@@ -63,7 +60,6 @@ console.log("ID reçu dans MoodDetails :", moodboardId)
             },
             { section: "FILTER",
               clickable: false,
-              onClick: () => console.log("filter clicked"),
              },
             { section: "CREATE",
               clickable: true,

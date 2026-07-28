@@ -9,7 +9,7 @@ export type NavigationPayload = {
   
   from?: PageName
   isOwner?: boolean
-  fromTab?: "new" | "featured" | "following"
+  fromTab?: "latest" | "curated" | "following"
   layout?: "A" | "B" | "C" | "D" 
 }
 

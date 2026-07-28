@@ -38,7 +38,6 @@ export default function LikeButton({
       ? {moodboardId: id}
       : {silhouetteId : id}
 
-    console.log("LIKE BODY =", body)
     if (!liked) {
         const registerRes = await fetch("/api/likes", {
         method: "POST",

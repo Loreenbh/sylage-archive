@@ -154,7 +154,6 @@ export async function GET(request: Request) {
       currentSession.user_id
     ]
   )
-  console.log("DANS API USER EST", user)
     return NextResponse.json({
       user: user.rows[0],
       moodboards: result.rows

@@ -17,8 +17,6 @@ export function useUserMoodboards(userId?: number) {
 
         const data = await getUserMoodboards(userId)
 
-        console.log("DATA API MOODBOARDS :", data)
-
         setMoodboards(data.moodboards)
 
         if(data.user){

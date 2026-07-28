@@ -193,7 +193,14 @@ export default function Draw({ onNavigate, params }: Props) {
             {
               section:"CREATE",
               clickable:true,
-              onClick:()=>console.log("create")
+              onClick: () =>
+                onNavigate?.({
+                  to: "create",
+                  direction: "next",
+                  params:{
+                    from: "discover",
+                  }
+                })
             }
           ]}
         />

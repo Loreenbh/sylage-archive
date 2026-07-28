@@ -4,9 +4,7 @@ import { pool } from "@/lib/db";
 
 export async function POST(request: Request){
     const body = await request.json()
-      console.log("API RECEIVED LIKE =", body)
     const { moodboardId, silhouetteId } = body
-    console.log(body)
     if (!moodboardId && !silhouetteId){
         return NextResponse.json(
             {error:"Missing target"},
@@ -54,13 +52,6 @@ export async function POST(request: Request){
         )
 
         if (moodboard.rows[0]?.user_id === user.user_id) {
-                console.log(
-        "BLOQUE LIKE",
-        "proprietaire:",
-        moodboard.rows[0].user_id,
-        "connecté:",
-        user.user_id
-    )
             return NextResponse.json(
                 { error: "Impossible de liker son propre moodboard" },
                 { status: 403 }

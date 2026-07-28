@@ -35,8 +35,6 @@ export default function ProfilePage({ onNavigate, params }: Props) {
     following,
     followers
   } = useFollows(userId)
-console.log("FOLLOWING :", following)
-console.log("FOLLOWERS :", followers)
 
   const handleLogout = async () => {
     try {
@@ -59,8 +57,6 @@ console.log("FOLLOWERS :", followers)
     silhouettes,
     isLoading
   } = useProfile(userId, isOwner)
-console.log("PROFILE USER :", profileUser)
-console.log("MOODBOARDS :", moodboards)
 
   const lastMoodboard = moodboards[0] ?? null
   const lastSilhouette = silhouettes[0] ?? null
@@ -90,7 +86,6 @@ console.log("MOODBOARDS :", moodboards)
             },
             { section: "FILTER",
               clickable: false,
-              onClick: () => console.log("filter clicked"),
              },
             { section: "CREATE",
               clickable: true,
@@ -134,7 +129,7 @@ console.log("MOODBOARDS :", moodboards)
                 className={typography.buttonBody}
                 onClick={() =>
                   onNavigate?.({ 
-                    to: "loves", 
+                    to: "inspirations", 
                     direction: "next",
                     params:{
                       isOwner: isOwner,
@@ -142,7 +137,7 @@ console.log("MOODBOARDS :", moodboards)
                   })
                 }
               >
-                Loves
+                Inspirations
               </button>
 
               <div className="justify-end">
@@ -158,12 +153,10 @@ console.log("MOODBOARDS :", moodboards)
             <>
               <button
                 onClick={() =>{
-                console.log("DAN PROFILE PAGE FROM=", from)
                   onNavigate?.({
                     to: from ?? "discover",
                     direction: "prev",
                     params: {
-                      // requestedUser,
                       isOwner: isOwner,
                       from: "profile",
                     },
@@ -272,7 +265,6 @@ console.log("MOODBOARDS :", moodboards)
                 }}
 
                 onUnfollow={(item)=>{
-                  console.log("unfollow", item)
                 }}
               />
             </div>

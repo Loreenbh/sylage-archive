@@ -42,13 +42,11 @@ const { from } = params ?? {}
             {
               section: "FILTER",
               clickable: false,
-              onClick: () => console.log("filter clicked"),
             },
             {
               section: "CREATE",
               clickable: false,
               active: true,
-              // onClick: () => console.log("create clicked"),
             },
           ]}
         />
@@ -73,7 +71,6 @@ const { from } = params ?? {}
       }
       footer={
           <div className="flex items-center gap-4">
-            {/* <CurrentUserName /> */}
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }

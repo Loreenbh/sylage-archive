@@ -10,14 +10,13 @@ import Authentification from "../features/auth/auth"
 import Discover from "../features/discover/discover"
 import ProfilePage from "../features/profile/profilePage"
 import Silhouettes from "../features/profile/silhouettes"
-import Loves from "../features/profile/loves"
+import Inspirations from "../features/profile/inspirations"
 import Settings from "../features/profile/settings"
 import Moods from "../features/profile/moods"
 import MoodDetails from "../features/discover/moodDetails"
 import Create from "../features/create/create"
 import Editor from "../features/create/editor"
 import Draw from "../features/create/draw"
-// import EditProfile from "../features/profile/editProfile"
 
 const PAGES = {
   cover: Cover,
@@ -25,14 +24,13 @@ const PAGES = {
   discover: Discover,
   profile: ProfilePage,
   silhouettes: Silhouettes,
-  loves: Loves,
+  inspirations: Inspirations,
   settings: Settings,
   moods: Moods,
   moodDetails: MoodDetails,
   create: Create,
   editor: Editor,
   draw: Draw,
-  // editProfile: EditProfile
 } as const
 
 

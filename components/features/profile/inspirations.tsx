@@ -32,11 +32,17 @@ export default function Loves({ onNavigate }: Props) {
             },
             { section: "FILTER",
               clickable: false,
-              onClick: () => console.log("filter clicked"),
              },
             { section: "CREATE",
               clickable: true,
-              onClick: () => console.log("create clicked"),
+              onClick: () =>
+                onNavigate?.({
+                  to: "create",
+                  direction: "next",
+                  params:{
+                    from: "discover",
+                  }
+                }),
              },
           ]}
         />

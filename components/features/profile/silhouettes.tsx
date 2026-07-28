@@ -43,7 +43,6 @@ export default function Silhouettes({ onNavigate, params }: Props) {
     user: profileUser,
     setSilhouettes,
   } = useSilhouettes(userId, moodboardId)
-  console.log("SILHOUETTES DANS COMPONENT :", silhouettes)
 
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const { user: currentUser } = useCurrentUser()
@@ -144,13 +143,17 @@ const renderCell = (silhouette?: Silhouette) => (
             {
               section: "FILTER",
               clickable: !moodboardId,
-              onClick: moodboardId
-                ? undefined
-                : () => console.log("filter clicked"),
             },
             { section: "CREATE",
               clickable: true,
-              onClick: () => console.log("create clicked"),
+              onClick: () =>
+                onNavigate?.({
+                  to: "create",
+                  direction: "next",
+                  params:{
+                    from: "discover",
+                  }
+                }),
              },
           ]}
         />

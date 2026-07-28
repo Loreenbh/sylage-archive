@@ -1,5 +1,5 @@
 "use client"
-import { use, useEffect, useState } from "react"
+import { useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 
 /* COMPONENTS */
@@ -19,7 +19,6 @@ type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
 }
-type Tab = "new" | "featured" | "following"
 
 /* HOOKS */
 import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods"
@@ -27,22 +26,16 @@ import { followUser , unfollowUser } from "@/lib/services/follows"
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
-  const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
+  const [tab, setTab] = useState(params?.fromTab ?? "latest")
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const {
     moodboards,
     isLoading,
     setMoodboards
-  } = useDiscoverMoodboards()
+  } = useDiscoverMoodboards(tab)
   
   const { user } = useCurrentUser()
 
-  const byTab =
-    tab === "new"
-      ? moodboards
-      : tab === "featured"
-      ? [...moodboards].reverse()
-      : moodboards.slice(0, 10)
 
   const handleFollowToggle = async (
     userId:number,
@@ -54,8 +47,6 @@ export default function Discover({ onNavigate, params }: Props) {
     } else {
       await followUser(userId)
     }
-
-
     setMoodboards(prev =>
       prev.map(board =>
         board.user_id === userId
@@ -70,8 +61,12 @@ export default function Discover({ onNavigate, params }: Props) {
 
   const filteredMoodboards =
     selectedFilters.length === 0
-      ? byTab
-      : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
+      ? moodboards
+      : moodboards.filter((board) =>
+          board.tags.some((tag) =>
+            selectedFilters.includes(tag)
+          )
+        )
 
   const sidebarTitle = tab.toUpperCase()
   return (
@@ -86,7 +81,6 @@ export default function Discover({ onNavigate, params }: Props) {
              },
             { section: "FILTER",
               clickable: true,
-              onClick: () => console.log("filter clicked"),
              },
             { section: "CREATE",
               clickable: true,
@@ -108,16 +102,16 @@ export default function Discover({ onNavigate, params }: Props) {
       actionsBar={
         <div className="flex items-center gap-1 sm:gap-6">
           <button
-            // onClick={ () => setTab("new")}
-            className={typography.buttonBody}>new</button>
+            onClick={() => setTab("latest")}
+            className={typography.buttonBody}>latest</button>
           <span className={typography.bullet}>•</span>
           <button
-            // onClick={ () => setTab("featured")}
-            className={typography.buttonBody}>featured</button>
+            onClick={() => setTab("curated")}
+            className={typography.buttonBody}>curated</button>
           <span className={typography.bullet}>•</span>
 
           <button 
-            // onClick={ () => setTab("following")}
+            onClick={() => setTab("following")}
             className={typography.buttonBody}>following</button>
         </div>
       }
@@ -134,17 +128,20 @@ export default function Discover({ onNavigate, params }: Props) {
 
         {isLoading ? (
           <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
-            LOADING...
+            LOADING ARCHIVE...
           </p>
         ) : filteredMoodboards.length === 0 ? (
           <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
-            AUCUN MOODBOARD POUR L'INSTANT
+            {tab === "following"
+              ? "FOLLOW CREATORS TO BUILD YOUR FEED"
+              : tab === "curated"
+              ? "NO CURATED PIECES YET"
+              : "THE ARCHIVE IS EMPTY"}
           </p>
         ) : (
           <ScrollableGrid
             data={filteredMoodboards}
             onItemClick={(board) => {
-              console.log("ID envoyé :", board.id)
               onNavigate?.({
                 to: "moodDetails",
                 direction: "next",

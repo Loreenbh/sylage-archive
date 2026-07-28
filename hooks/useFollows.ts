@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getFollows, unfollowUser, followUser} from "@/lib/services/follows"
+import { getFollows } from "@/lib/services/follows"
 import type { Follow } from "@/types/follow"
 
 export function useFollows(userId?:number){
@@ -16,7 +16,6 @@ export function useFollows(userId?:number){
       try {
 
         const data = await getFollows(userId)
-        console.log("FOLLOW API:", data)
         setFollowing(data.following)
         setFollowers(data.followers)
 

@@ -29,8 +29,6 @@ export default function Header({
   const handleItemClick = (item: HeaderItem) => {
     if (!item.clickable) return
 
-    // le bouton "FILTER" pilote l'ouverture du panneau, en plus
-    // de tout onClick custom passé par la page parente
     if (item.section === "FILTER") {
       setIsFilterOpen((prev) => !prev)
     }
@@ -38,7 +36,6 @@ export default function Header({
     item.onClick?.()
   }
 
-  // à chaque changement dans une catégorie, on recombine les 3 et on notifie le parent
   const updateStyle = (tags: string[]) => {
     setStyleTags(tags)
     onFiltersChange?.([...tags, ...ambianceTags, ...colorTags])

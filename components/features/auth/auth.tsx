@@ -147,7 +147,6 @@ export default function Authentification({ onNavigate }: Props) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(loginForm),
         })
-            console.log("Status :", res.status)
         const data = await res.json()
         if (!res.ok){
           setLoginError(data.error ?? "Erreur de connexion")
@@ -156,7 +155,6 @@ export default function Authentification({ onNavigate }: Props) {
          onNavigate({
             to: "discover",
             direction: "next",
-            // params: { currentUser: data.username },
           })
         } catch {
           setLoginError("Erreur réseau")

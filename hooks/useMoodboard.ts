@@ -13,7 +13,6 @@ export function useMoodboard(id?: number) {
 
       try {
         const res = await fetch(`/api/moodboards/${id}`)
-        console.log("appel API :", `/api/moodboards/${id}`)
         const data = await res.json()
 
         setMoodboard(data)
@@ -29,7 +28,6 @@ export function useMoodboard(id?: number) {
     loadMoodboard()
 
   }, [id])
-  console.log("HOOK REPONSE:", moodboard)
   return {
     moodboard,
     isLoading

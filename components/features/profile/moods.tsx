@@ -33,11 +33,6 @@ export default function Moods({ onNavigate, params }: Props) {
   const { user: currentUser } = useCurrentUser()
   const { isOwner, userId, from} = params ?? {}
 
-console.log("PARAMS MOODS :", params)
-console.log("USER ID MOODS :", userId)
-console.log("OWNER :", isOwner)
-
-
 const {
   moodboards,
   isLoading,
@@ -61,7 +56,6 @@ const {
       ? byTab
       : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
 
-  console.log("PROFILEUSER", profileUser)
   const sidebarTitle =
     isOwner
       ? "MOODS"

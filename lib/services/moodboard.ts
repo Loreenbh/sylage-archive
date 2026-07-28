@@ -22,13 +22,19 @@ export async function createMoodboard(
   return data
 }
 
-export async function getDiscoverMoodboards(){
+export async function getDiscoverMoodboards(sort: "latest" | "curated" | "following"){
 
-    const res = await fetch("/api/discover")
+    const res = await fetch(`/api/discover?sort=${sort}`)
 
     if (!res.ok) {
         throw new Error("Erreur récupération moodboards")
     }
 
-    return res.json()
+    const data = await res.json()
+
+    console.log("DISCOVER RESPONSE :", data)
+
+    return data
+
+    // return res.json()
 }

@@ -54,7 +54,6 @@ export async function POST(request: Request){
         )
         return NextResponse.json(result.rows[0], {status:201})
     } catch (err: any){
-        // code 23505 = violation de contrainte UNIQUE (Postgres)
         if (err.code === '23505'){
             return NextResponse.json(
                 {error: 'Pseudo/mail deja utilise'},

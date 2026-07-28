@@ -28,7 +28,6 @@ export async function updateUser(data: {
   })
   const result = await res.json()
 
-  console.log("REPONSE API UPDATE USER :", result)
   if (!res.ok) {
     throw new Error(
       result.error ?? "Erreur mise à jour utilisateur"
