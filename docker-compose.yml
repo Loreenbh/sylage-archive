@@ -1,10 +1,13 @@
+# Local development only
+# Production uses Supabase PostgreSQL
+
 services:
   postgres:
     image: postgres:18
-    container_name: weave-postgres
+    container_name: sylage_postgres
     environment:
-      POSTGRES_PASSWORD: portfolio
-      POSTGRES_DB: weave
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
