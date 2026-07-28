@@ -1,7 +1,7 @@
 "use client"
 
 import ImageSlot from "./ImageSlot"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
 
 type Props = {
   images?: MoodboardSlot[]

@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useRef, useState } from "react"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/moodboard"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
 
 type Props = {
   slot: MoodboardSlot
