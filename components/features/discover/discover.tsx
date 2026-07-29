@@ -69,6 +69,7 @@ export default function Discover({ onNavigate, params }: Props) {
         )
 
   const sidebarTitle = tab.toUpperCase()
+
   return (
     <BookLayout
       header={
@@ -88,9 +89,9 @@ export default function Discover({ onNavigate, params }: Props) {
                 onNavigate?.({
                   to: "create",
                   direction: "next",
-                  params:{
-                    from: "discover",
-                  }
+                  // params:{
+                  //   from: "discover",
+                  // }
                 })
              },
           ]}
@@ -146,9 +147,9 @@ export default function Discover({ onNavigate, params }: Props) {
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  from: "discover",
+                  // from: "discover",
                   moodboardId: board.id,
-                  fromTab: tab,
+                  // fromTab: tab,
                   isOwner: user?.id === board.user_id
                 },
               })
@@ -179,11 +180,11 @@ export default function Discover({ onNavigate, params }: Props) {
                   silhouettesCount={board.silhouettes_count}
                     onOpenLooks={() =>
                       onNavigate?.({
-                        to: "silhouettes",
+                        to: "looks",
                         direction: "next",
                         params: {
-                          moodboardId: board.id,
                           from: "discover",
+                          moodboardId: board.id,
                           isOwner: user?.id === board.user_id
                         }
                       })
@@ -195,7 +196,6 @@ export default function Discover({ onNavigate, params }: Props) {
                         params: {
                           userId: board.user_id,
                           isOwner: user?.id === board.user_id,
-                          from: "discover"
                         }
                       })
                     }

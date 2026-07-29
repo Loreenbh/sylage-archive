@@ -6,21 +6,18 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-// import LikeButton from "@/components/ui/buttons/LikeButton"
-// import SilhouetteCount from "@/components/ui/buttons/SilhouetteCount"
 import ContentOverlay from "@/components/ui/cards/ContentOverlay"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
-import { Moodboard } from "@/types/moodboard" 
-
+import BackButton from "@/components/ui/buttons/BackButton"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
+  onBack?: () => void
 
 }
-type Tab = "new" | "featured" | "following"
 
 /* SERVICES */
 import { useUserMoodboards } from "@/hooks/useUserMoodboards"
@@ -29,8 +26,8 @@ import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 /*---------------------------------------------------- */
 
-export default function Moods({ onNavigate, params }: Props) {
-  const { user: currentUser } = useCurrentUser()
+export default function Moods({ onNavigate, params, onBack }: Props) {
+  const { user } = useCurrentUser()
   const { isOwner, userId, from} = params ?? {}
 
 const {
@@ -40,28 +37,16 @@ const {
   setMoodboards
 } = useUserMoodboards(userId)
 
-  const [tab, setTab] = useState<Tab>(params?.fromTab ?? "new")
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
-
-  const byTab =
-    tab === "new"
-      ? moodboards
-      : tab === "featured"
-      ? [...moodboards].reverse()
-      : moodboards.slice(0, 10)
-
 
   const filteredMoodboards =
     selectedFilters.length === 0
-      ? byTab
-      : byTab.filter((board) => board.tags.some((tag) => selectedFilters.includes(tag)))
-
-  const sidebarTitle =
-    isOwner
-      ? "MOODS"
-      : profileUser?.username
-        ? `${profileUser.username} | MOODS`
-        : "MOODS"
+      ? moodboards
+      : moodboards.filter((board) =>
+          board.tags.some((tag) =>
+            selectedFilters.includes(tag)
+          )
+        )
 
   const handleDelete = async (id:number) => {
   
@@ -103,8 +88,6 @@ const {
                   to: "create",
                   direction: "next",
                   params:{
-                    
-                    from: "moods",
                     isOwner
                   }
                 })
@@ -113,31 +96,25 @@ const {
         />
       }
       sidebar={
-        <Sidebar text={sidebarTitle} clickable={false}/>
+        <Sidebar text="MOODS" clickable={false}/>
       }
       actionsBar={
         <div className="flex items-center gap-4">
-          <button
-            onClick={() =>
-              onNavigate?.({
-                to: "profile",
-                direction: "prev",
-                params:{
-                  isOwner,
-                }
-              })
+          <span className={typography.buttonBody}>
+            {isOwner
+              ? "MY MOODS"
+              : `${profileUser?.username.toUpperCase()}'S MOODS`
             }
-            className={typography.buttonBody}
-          >
-            back
-          </button>
+          </span>
         </div>
       }
-      footer={
+      footerLeft={ <BackButton onBack={onBack} />
+      }
+      footerRight={
           <div className="flex items-center gap-4">
             <span className="text-sm tracking-[0.2em]">
-              {currentUser?.username}
-            </span>             
+              {user?.username}
+            </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
@@ -166,7 +143,6 @@ const {
                 params: {
                   from: "moods",
                   moodboardId: board.id,
-                  fromTab: tab,
                   isOwner,
                 },
               })
@@ -188,6 +164,17 @@ const {
                     liked: board.liked_by_current_user
                   }}
                   silhouettesCount={board.silhouettes_count}
+                  onOpenLooks={() =>
+                    onNavigate?.({
+                      to: "looks",
+                      direction: "next",
+                      params: {
+                        from: "moods",
+                        moodboardId: board.id,
+                        isOwner: user?.id === board.user_id
+                      }
+                    })
+                  }
                   onDelete={() => handleDelete(board.id)}
                 />
               </div>

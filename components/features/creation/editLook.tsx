@@ -8,7 +8,7 @@ import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import ImageSlot from "../moodboards/ImageSlot"
+import ImageSlot from "./layouts/ImageSlot"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
@@ -16,10 +16,13 @@ import { typography } from "@/styles/typography"
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
+import BackButton from "@/components/ui/buttons/BackButton"
 
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
+  onBack?: () => void
+
 }
 
 /*SERVICES*/
@@ -55,8 +58,8 @@ function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
 }
 
 
-export default function Draw({ onNavigate, params }: Props) {
-  const { user } = useCurrentUser()
+export default function Draw({ onNavigate, params, onBack }: Props) {
+const { user: currentUser } = useCurrentUser()
 
     const {
     moodboardId,
@@ -283,18 +286,16 @@ export default function Draw({ onNavigate, params }: Props) {
 
         </div>
       }
-
-      footer={
+      footerLeft={ <BackButton onBack={onBack} /> }
+      footerRight={
           <div className="flex items-center gap-4">
             <span className="text-sm tracking-[0.2em]">
-              {user?.username}
+              {currentUser?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
         >   
-
-
       <div className="
         flex 
         items-stretch 

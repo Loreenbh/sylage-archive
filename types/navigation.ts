@@ -7,7 +7,6 @@ export type NavigationPayload = {
   moodboardId?: number
   
   from?: PageName
-  backTo?: PageName
 
   isOwner?: boolean
   fromTab?: "latest" | "curated" | "following"

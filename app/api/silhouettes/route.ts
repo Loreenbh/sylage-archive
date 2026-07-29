@@ -213,6 +213,8 @@ export async function GET(request: Request) {
     SELECT 
       silhouettes.*,
       users.username,
+      target_user.id AS target_user_id,
+      target_user.username AS target_username,
       moodboards.tags,
 
       COUNT(likes.id)::int AS likes_count,
@@ -232,6 +234,9 @@ export async function GET(request: Request) {
     JOIN moodboards
     ON moodboards.id = silhouettes.moodboard_id
 
+    JOIN users target_user
+    ON target_user.id = moodboards.user_id
+
     LEFT JOIN likes
     ON likes.silhouette_id=silhouettes.id
 
@@ -240,6 +245,8 @@ export async function GET(request: Request) {
     GROUP BY 
       silhouettes.id, 
       users.username,
+      target_user_id,
+      target_user.username,
       moodboards.tags
 
     ORDER BY silhouettes.created_at DESC

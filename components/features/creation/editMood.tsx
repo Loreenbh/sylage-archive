@@ -13,12 +13,13 @@ import Header from "@/components/navigation/Header"
 import Sidebar from "@/components/navigation/SideBar"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 // import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
+import BackButton from "@/components/ui/buttons/BackButton"
 
 /* LAYOUTS */
-import LayoutA from "../moodboards/LayoutA"
-import LayoutB from "../moodboards/LayoutB"
-import LayoutC from "../moodboards/LayoutC"
-import LayoutD from "../moodboards/LayoutD"
+import LayoutA from "./layouts/LayoutA"
+import LayoutB from "./layouts/LayoutB"
+import LayoutC from "./layouts/LayoutC"
+import LayoutD from "./layouts/LayoutD"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
@@ -26,10 +27,13 @@ import { typography } from "@/styles/typography"
 /* SERVICES */
 import { uploadImage } from "@/lib/services/upload"
 import { createMoodboard } from "@/lib/services/moodboard"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
+  onBack?: () => void
+
 }
 
 const LAYOUT_SLOT_COUNT = {
@@ -39,13 +43,8 @@ const LAYOUT_SLOT_COUNT = {
   D: 6,
 } as const
 
-export default function Editor({ onNavigate, params }: Props) {
-
-  //   const {
-
-  //   requestedUser
-  // } = params ?? {}
-  // const profileUsername = requestedUser ?? null
+export default function Editor({ onNavigate, params, onBack }: Props) {
+  const { user: currentUser } = useCurrentUser()
   const layout = params?.layout as keyof typeof LAYOUT_SLOT_COUNT
 
   const slotCount = LAYOUT_SLOT_COUNT[layout] ?? 9
@@ -200,19 +199,6 @@ export default function Editor({ onNavigate, params }: Props) {
       actionsBar={
         <div className="flex w-full items-center justify-between">
           <button
-            onClick={() =>
-              onNavigate({
-                to: "create",
-                direction: "prev",
-                params: { layout },
-              })
-            }
-            className={typography.buttonBody}
-          >
-            back
-          </button>
-
-          <button
             onClick={handlePublish}
             disabled={!canPublish || isPublishing}
             className={`${typography.buttonBody} disabled:opacity-40`}
@@ -221,10 +207,12 @@ export default function Editor({ onNavigate, params }: Props) {
           </button>
         </div>
       }
-      
-      footer={
+      footerLeft={ <BackButton onBack={onBack} /> }
+      footerRight={
           <div className="flex items-center gap-4">
-            {/* <CurrentUserName /> */}
+            <span className="text-sm tracking-[0.2em]">
+              {currentUser?.username}
+            </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }

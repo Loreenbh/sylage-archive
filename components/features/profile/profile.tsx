@@ -16,6 +16,7 @@ import { typography } from "@/styles/typography"
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
+  onBack?: () => void
 }
 
 import { useCurrentUser } from "@/hooks/useCurrentUser"
@@ -27,7 +28,7 @@ import { getFollows, unfollowUser, followUser } from "@/lib/services/follows"
 import BackButton from "@/components/ui/buttons/BackButton"
 /*------------------------------------------------- */
 
-export default function ProfilePage({ onNavigate, params }: Props) {
+export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   const {
     isOwner,
     userId,
@@ -150,28 +151,35 @@ useEffect(() => {
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-2">
-          {isOwner === true ? (
+          {isOwner ? (
             <>
               <button
-                className={typography.buttonBody}
+                className={`
+                  ${typography.buttonBody}
+                  transition-opacity
+                  hover:opacity-60
+                  cursor-pointer
+                `}
                 onClick={() =>
                   onNavigate?.({ 
                     to: "settings", 
                     direction: "next",
                     params:{
-                      // username,
                       isOwner: isOwner,
                     }
                   })
                 }
               >
-                Settings
+                Edit
               </button>
-
               <span className={typography.bullet}>•</span>
-
               <button
-                className={typography.buttonBody}
+                className={`
+                  ${typography.buttonBody}
+                  transition-opacity
+                  hover:opacity-60
+                  cursor-pointer
+                `}
                 onClick={() =>
                   onNavigate?.({ 
                     to: "inspirations", 
@@ -182,38 +190,25 @@ useEffect(() => {
                   })
                 }
               >
-                Inspirations
+                References
               </button>
-
-              <div className="justify-end">
-                <button
-                  className={typography.buttonBody}
-                  onClick={handleLogout}
-                >
-                  Out
-                </button>
-              </div>
+              <span className={typography.bullet}>•</span>
+              <button
+                className={`
+                  ${typography.buttonBody}
+                  transition-opacity
+                  hover:opacity-60
+                  cursor-pointer
+                `}
+                onClick={handleLogout}
+              >
+                Exit
+              </button>
             </>
           ) : (
             <>
-              {/* <button
-                onClick={() =>{
-                  onNavigate?.({
-                    to: from ?? "discover",
-                    direction: "prev",
-                    params: {
-                      isOwner: isOwner,
-                      from: "profile",
-                    },
-                  })
-                }}
-                className={typography.buttonBody}
-              >
-                back
-              </button> */}
-
               <p className={typography.buttonBody}>
-                BY {profileUser?.username}
+                {profileUser?.username}'S ARCHIVE
               </p>
 
               <span className={typography.bullet}>•</span>
@@ -233,17 +228,8 @@ useEffect(() => {
           )}
         </div>
       }
-
       footerLeft={
-        <BackButton
-          onNavigate={onNavigate}
-          backTo={from}
-          params={{
-            // moodboardId,
-            userId,
-            isOwner
-          }}
-        />
+        <BackButton onBack={onBack} />
       }
       footerRight={
           <div className="flex items-center gap-4">
@@ -261,12 +247,12 @@ useEffect(() => {
             className="relative overflow-hidden bg-zinc-200 hover:bg-zinc-300"
             onClick={() => 
               onNavigate?.({ 
-                to: "silhouettes", 
+                to: "looks", 
                 direction: "next",
                 params:{
                   userId: profileUser?.id,
                   from: "profile",
-                  isOwner : isOwner, //a modifier
+                  isOwner : profileUser?.id === currentUser?.id,
                 }
                  })}>
 
@@ -278,7 +264,7 @@ useEffect(() => {
               />
             )}
             <p className={`${typography.body} relative z-10 ${lastSilhouette ? "text-white drop-shadow" : ""}`}>
-              creations
+              looks
             </p>
           </GridButton>
         }

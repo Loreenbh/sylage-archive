@@ -34,8 +34,8 @@ export const typography = {
 
         buttonBody: `text-[7px] sm:text-[10px] md:text-[10px] lg:text-[16px] tracking-[0.30em] uppercase text-black/60`,
 
-        bullet: `text-black/20 text-[16px]`
+        bullet: `text-black/20 text-[10px]`,
 
-
+        actionButton:` text-[11px] tracking-[0.20em] transition-opacity hover:opacity-60 cursor-pointer`
 
 }

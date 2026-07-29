@@ -8,33 +8,32 @@ import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import ThreeColGrid from "@/components/ui/grids/ThreeColGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import GridPager from "@/components/ui/pagination/GridPager"
+import CarouselControls from "@/components/ui/navigation/CarouselControls"
 import ContentOverlay from "@/components/ui/cards/ContentOverlay"
-
-/* STYLE */
-import { typography } from "@/styles/typography"
 
 /* TYPES */
 import { Silhouette } from "@/types/silhouette"
 
 
 import { useCurrentUser } from "@/hooks/useCurrentUser"
+import BackButton from "@/components/ui/buttons/BackButton"
 
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
+  onBack?: () => void
 }
 
 /* HOOKS */
 import { useSilhouettes } from "@/hooks/useSilhouettes"
+import { typography } from "@/styles/typography"
 
-export default function Silhouettes({ onNavigate, params }: Props) {
-
-    const {
+export default function Looks({ onNavigate, onBack, params }: Props) {
+  const {
     userId,
     isOwner,
     moodboardId,
-    from
+    // from
   } = params ?? {}
   const {
     silhouettes,
@@ -42,20 +41,16 @@ export default function Silhouettes({ onNavigate, params }: Props) {
     user: profileUser,
     setSilhouettes,
   } = useSilhouettes(userId, moodboardId)
-
+  
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const { user: currentUser } = useCurrentUser()
-
-  const sidebarTitle =
-    isOwner
-      ? "MY SILHOUETTES"
-      : moodboardId
-        ? profileUser?.username
-          ? `${profileUser.username} | LOOKS`
-          : "LOOKS"
-        : profileUser?.username
-          ? `${profileUser.username} | SILHOUETTES`
-          : "SILHOUETTES"
+  
+  const carouselLabel =
+  isOwner
+    ? `BY ${currentUser?.username}`
+    : moodboardId
+      ? `FOR ${profileUser?.username}`
+      : `BY ${profileUser?.username}`
 
   const filteredSilhouettes =
     moodboardId || selectedFilters.length === 0
@@ -66,19 +61,26 @@ export default function Silhouettes({ onNavigate, params }: Props) {
           )
         )
 
-
   const [index, setIndex] = useState(0)
   const left = filteredSilhouettes[index]
   const center = filteredSilhouettes[index + 1]
   const right = filteredSilhouettes[index + 2]
 
-
+  const currentItem = Math.min(
+    index + 3,
+    filteredSilhouettes.length
+  )
 
   const handleNext = () => {
     setIndex((i) =>
       Math.min(i + 3, Math.max(filteredSilhouettes.length - 3, 0))
     )
   }
+
+  const canPrev = index > 0
+
+  const canNext =
+    index + 3 < filteredSilhouettes.length
 
   const handlePrev = () => {
     setIndex((i) => Math.max(i - 3, 0))
@@ -107,31 +109,52 @@ const renderCell = (silhouette?: Silhouette) => (
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <ContentOverlay
-          username={silhouette.username}
-          isOwner={silhouette.user_id === currentUser?.id}
-          onOpenProfile={() =>
-            onNavigate?.({
-              to: "profile",
-              direction: "next",
-              params: {
-                userId: silhouette.user_id,
-                isOwner: silhouette.user_id === currentUser?.id,
-                from: "silhouettes"
-              }
-            })
-          }
-          like={{
-            type:"silhouette",
-            id:silhouette.id,
-            count:silhouette.likes_count,
-            liked:silhouette.liked_by_current_user
-          }}
-          onDelete={() => handleDelete(silhouette.id)}
-        />   
-      </>
-    )}
+      <ContentOverlay
+                username={
+                  moodboardId
+                    ? silhouette.username
+                    : silhouette.target_username
+                }
 
+                prefix={
+                  moodboardId
+                    ? "BY"
+                    : "FOR"
+                }
+
+                isOwner={
+                  moodboardId
+                    ? silhouette.user_id === currentUser?.id
+                    : silhouette.target_user_id === currentUser?.id
+                }
+
+                onOpenProfile={() =>
+                  onNavigate?.({
+                    to: "profile",
+                    direction: "next",
+                    params: {
+                      userId: moodboardId
+                        ? silhouette.user_id
+                        : silhouette.target_user_id,
+                      isOwner: moodboardId
+                        ? silhouette.user_id === currentUser?.id
+                        : silhouette.target_user_id === currentUser?.id,
+                      from: "looks"
+                    }
+                  })
+                }
+
+                like={{
+                  type:"silhouette",
+                  id:silhouette.id,
+                  count:silhouette.likes_count,
+                  liked:silhouette.liked_by_current_user
+                }}
+
+                onDelete={() => handleDelete(silhouette.id)}
+              />
+            </>
+    )}
   </div>
 )
 
@@ -170,35 +193,29 @@ const renderCell = (silhouette?: Silhouette) => (
           ]}
         />
       }
-      sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
+      sidebar={<Sidebar text="LOOKS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() =>
-              onNavigate?.({
-                to: "profile",
-                direction: "prev",
-                params:{
-                  
-                  userId,
-                  isOwner,
-                  from: "moodDetails",
-                  // moodboard
-                }
-              })
-            }
-            className={typography.buttonBody}
-          >
-            back
-          </button>
+        <div className="flex items-center justify-between w-full">
 
-          <GridPager
+          <span className={typography.buttonBody}>
+            {carouselLabel}
+          </span>
+
+          <span className={typography.buttonBody}>
+            {String(currentItem).padStart(2, "0")} / {String(filteredSilhouettes.length).padStart(2, "0")}
+          </span>
+
+          <CarouselControls
             onPrev={handlePrev}
             onNext={handleNext}
+            canPrev={canPrev}
+            canNext={canNext}
           />
+
         </div>
       }
-      footer={
+      footerLeft={ <BackButton onBack={onBack} /> }
+      footerRight={
           <div className="flex items-center gap-4">
             <span className="text-sm tracking-[0.2em]">
               {currentUser?.username}
@@ -212,13 +229,13 @@ const renderCell = (silhouette?: Silhouette) => (
       {isLoading ? (
         <div className="h-full flex items-center justify-center">
           <p className="text-black/30 text-xs tracking-[0.2em]">
-            CHARGEMENT...
+            ...
           </p>
         </div>
       ) : filteredSilhouettes.length === 0 ? (
         <div className="h-full flex items-center justify-center">
           <p className="text-black/30 text-xs tracking-[0.2em]">
-            AUCUNE SILHOUETTE POUR L'INSTANT
+            NO LOOKS
           </p>
         </div>
       ) : (

@@ -14,15 +14,17 @@ import { useCurrentUser } from "@/hooks/useCurrentUser"
 /* STYLE */
 import { typography} from "@/styles/typography"
 import { useMoodboard } from "@/hooks/useMoodboard"
-
+import BackButton from "@/components/ui/buttons/BackButton"
 
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
+  onBack?: () => void
+
 }
 
 
-export default function MoodDetails({ onNavigate, params }: Props) {
+export default function MoodDetails({ onNavigate, params, onBack }: Props) {
   const { user } = useCurrentUser()
   const {
     isOwner,
@@ -74,29 +76,6 @@ export default function MoodDetails({ onNavigate, params }: Props) {
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-[60px]">
-{/* 
-          {from !== "discover" && (
-            <>
-            <button
-              onClick={() =>
-                onNavigate?.({
-                  to: "discover",
-                  direction: "prev",
-                  params: {
-                    isOwner,
-                    from: "moodDetails",
-                  },
-                })
-              }
-              className={typography.buttonBody}
-            >
-              back
-            </button>
-            <span className={typography.bullet}>•</span>
-            </>
-          )
-        } */}
-
           {!isOwner && (
             <>
               <button
@@ -156,7 +135,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
             <button
               onClick={() =>
                 onNavigate?.({
-                  to: "silhouettes",
+                  to: "looks",
                   direction: "next",
                   params: {
                     isOwner,
@@ -171,7 +150,10 @@ export default function MoodDetails({ onNavigate, params }: Props) {
             </button>
         </div>               
       }
-      footer={
+      footerLeft={
+        <BackButton onBack={onBack} />
+      }
+      footerRight={
           <div className="flex items-center gap-4">
             <span className="text-sm tracking-[0.2em]">
               {user?.username}
@@ -179,7 +161,7 @@ export default function MoodDetails({ onNavigate, params }: Props) {
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
-        >   
+        >     
       <div className="flex flex-col h-full min-h-0 gap-1">
 
       <SimpleGrid

@@ -9,22 +9,27 @@ import Header from "@/components/navigation/Header"
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 
-import LayoutAPreview from "../moodboards/previews/LayoutAPreview"
-import LayoutBPreview from "../moodboards/previews/LayoutBPreview"
-import LayoutCPreview from "../moodboards/previews/LayoutCPreview"
-import LayoutDPreview from "../moodboards/previews/LayoutDPreview"
+import LayoutAPreview from "./layouts/previews/LayoutAPreview"
+import LayoutBPreview from "./layouts/previews/LayoutBPreview"
+import LayoutCPreview from "./layouts/previews/LayoutCPreview"
+import LayoutDPreview from "./layouts/previews/LayoutDPreview"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
-
+import BackButton from "@/components/ui/buttons/BackButton"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
+  onBack?: () => void
+
 }
 
-export default function Create({ onNavigate, params }: Props) {
-const { from } = params ?? {}
+export default function Create({ onNavigate, params, onBack }: Props) {
+// const { from } = params ?? {}
+const { user: currentUser } = useCurrentUser()
+
   return (
     <BookLayout
       header={
@@ -52,25 +57,18 @@ const { from } = params ?? {}
         />
       }
       sidebar={<Sidebar text="CREATE" clickable={false} />}
-      actionsBar={
-        from != "discover" && (
-          <div className="flex w-full items-center justify-between">
-            <button
-              onClick={() =>
-                onNavigate({
-                  to: from ?? "discover",
-                  direction: "prev",
-                })
-              }
-              className={typography.buttonBody}
-            >
-              back
-            </button>
-          </div>
-        )
-      }
-      footer={
+      // actionsBar={
+      //     <div>
+  
+      //     </div>
+      //   )
+      // }
+      footerLeft={ <BackButton onBack={onBack} /> }
+      footerRight={
           <div className="flex items-center gap-4">
+            <span className="text-sm tracking-[0.2em]">
+              {currentUser?.username}
+            </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
@@ -85,7 +83,7 @@ const { from } = params ?? {}
                 direction: "next",
                 params: {
                   layout: "A",
-                  from: "create",
+                  // from: "create",
                 },
               })
             }
@@ -105,7 +103,7 @@ const { from } = params ?? {}
                 direction: "next",
                 params: {
                   layout: "B",
-                  from: "create",
+                  // from: "create",
                 },
               })
             }
@@ -125,7 +123,7 @@ const { from } = params ?? {}
                 direction: "next",
                 params: {
                   layout: "C",
-                  from: "create",
+                  // from: "create",
                 },
               })
             }
@@ -144,7 +142,7 @@ const { from } = params ?? {}
                 direction:"next",
                 params:{
                   layout:"D",
-                  from:"create"
+                  // from:"create"
                 }
               })
             }

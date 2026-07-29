@@ -40,9 +40,13 @@ export async function getSilhouetteData(
 
   const res = await fetch(url)
 
-  if(!res.ok){
-    throw new Error("Erreur récupération silhouettes")
-  }
-
+  // if(!res.ok){
+  //   throw new Error("Erreur récupération silhouettes")
+  // }
+if(!res.ok){
+  const error = await res.text()
+  console.log("API ERROR:", res.status, error)
+  throw new Error(error)
+}
   return res.json()
 }

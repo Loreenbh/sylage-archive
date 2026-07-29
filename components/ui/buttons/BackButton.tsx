@@ -2,31 +2,24 @@ import { OnNavigate, } from "@/types/navigation"
 import { PageName } from "@/types/pages"
 
 type Props = {
-  onNavigate?: OnNavigate
-  backTo?: PageName
-  params?: Record<string, any>
+  onBack?: () => void
 }
 
 export default function BackButton({
-  onNavigate,
-  backTo,
-  params
+  onBack
 }: Props) {
-    if (!backTo) return null
+  if (!onBack) return null
+
   return (
     <button
-      onClick={() =>
-        onNavigate?.({
-          to: backTo,
-          direction: "prev",
-          params
-        })
-      }
+      onClick={onBack}
       className="
         text-sm
         tracking-[0.2em]
         transition-opacity
         hover:opacity-50
+        uppercase
+        text-black/60
       "
     >
       back
