@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { PageName } from "@/types/pages"
 import type { NavigationParams } from "@/types/navigation"
 /*COMPONENTS*/
@@ -17,6 +17,8 @@ import MoodDetails from "../features/discover/details"
 import Create from "../features/creation/selection"
 import Editor from "../features/creation/editMood"
 import Draw from "../features/creation/editLook"
+
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 type HistoryItem = {
   page: PageName
@@ -40,7 +42,7 @@ const PAGES = {
 
 
 export default function Book() {
-  const [current, setCurrent] = useState<PageName>("cover")
+  const [current, setCurrent] = useState<PageName>("discover")
 
   const [currentParams, setCurrentParams] =
     useState<NavigationParams["params"] | null>(null)
@@ -55,6 +57,18 @@ export default function Book() {
   const [animating, setAnimating] = useState<boolean>(false)
   const [direction, setDirection] = useState<"next" | "prev">("next")
 
+
+  const { user, isLoading } = useCurrentUser()
+
+  useEffect(() => {
+    if (isLoading) return
+
+    if (user) {
+      setCurrent("discover")
+    } else {
+      setCurrent("cover")
+    }
+  }, [user, isLoading])
 
   function navigate({ to, direction = "next", params }: NavigationParams) {
     if (animating) return

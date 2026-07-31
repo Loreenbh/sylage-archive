@@ -2,57 +2,47 @@ import { useEffect, useState } from "react"
 import { getFollows, unfollowUser } from "@/lib/services/follows"
 import type { Follow } from "@/types/follow"
 
-export function useFollows(userId?:number){
+export function useFollows(userId?: number) {
 
-  const [following,setFollowing] = useState<Follow[]>([])
-  const [followers,setFollowers] = useState<Follow[]>([])
-  const [isLoading,setIsLoading] = useState(true)
+  const [following, setFollowing] = useState<Follow[]>([])
+  const [followers, setFollowers] = useState<Follow[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
+  async function load() {
+    try {
+      const data = await getFollows(userId)
 
-  useEffect(()=>{
+      setFollowing(data.following)
+      setFollowers(data.followers)
 
-    async function load(){
+    } catch {
+      setFollowing([])
+      setFollowers([])
 
-      try {
-
-        const data = await getFollows(userId)
-        setFollowing(data.following)
-        setFollowers(data.followers)
-
-      } catch {
-
-        setFollowing([])
-        setFollowers([])
-
-      } finally {
-
-        setIsLoading(false)
-
-      }
-
+    } finally {
+      setIsLoading(false)
     }
+  }
 
 
+  useEffect(() => {
     load()
+  }, [userId])
 
-  },[userId])
 
-    async function handleUnfollow(targetUserId:number){
+  async function handleUnfollow(targetUserId: number) {
 
-      await unfollowUser(targetUserId)
+    await unfollowUser(targetUserId)
 
-      setFollowing(prev =>
-        prev.filter(user => user.id !== targetUserId)
-      )
-
-    }
+    await load()
+  }
 
 
   return {
     following,
     followers,
     isLoading,
-    handleUnfollow
+    handleUnfollow,
+    refreshFollows: load
   }
-
 }

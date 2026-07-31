@@ -8,6 +8,7 @@ type Props = {
   followers: Follow[]
   onOpenProfile?: (item: Follow) => void
   onUnfollow?: (item: Follow) => void
+  canManageFollow?: boolean
 }
 
 export default function ScrollFollow({
@@ -17,6 +18,7 @@ export default function ScrollFollow({
   followers,
   onOpenProfile,
   onUnfollow,
+  canManageFollow = false,
 }: Props) {
 
   const sortedFollowing = [...following].sort((a,b) =>
@@ -108,7 +110,7 @@ export default function ScrollFollow({
       {renderList(
         followingTitle,
         sortedFollowing,
-        true
+        canManageFollow
       )}
 
       {renderList(

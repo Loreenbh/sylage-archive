@@ -44,7 +44,8 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   const {
     following,
     followers,
-    handleUnfollow
+    handleUnfollow,
+    refreshFollows
   } = useFollows(userId)
 
 
@@ -79,19 +80,19 @@ useEffect(() => {
 }, [profileUser, currentUser])
 
 
-  const handleFollowToggle = async () => {
-    if (!profileUser) return
+const handleFollowToggle = async () => {
+  if (!profileUser) return
 
-    if (isFollowed) {
-      await unfollowUser(profileUser.id)
-    } else {
-      await followUser(profileUser.id)
-    }
-
-    setIsFollowed(prev => !prev)
+  if (isFollowed) {
+    await unfollowUser(profileUser.id)
+  } else {
+    await followUser(profileUser.id)
   }
 
+  setIsFollowed(prev => !prev)
 
+  await refreshFollows()
+}
 
   const handleLogout = async () => {
     try {
@@ -304,7 +305,7 @@ useEffect(() => {
                 followersTitle="Inspiring"
                 following={following}
                 followers={followers}
-
+                canManageFollow={profileUser?.id === currentUser?.id}
                 onOpenProfile={(item)=>{
                   onNavigate?.({
                     to:"profile",
@@ -317,9 +318,7 @@ useEffect(() => {
                   })
                 }}
 
-                onUnfollow={(item)=>{
-                  handleUnfollow(item.id)
-                }}
+                onUnfollow={(item) => handleUnfollow(item.id)}
               />
             </div>
 
