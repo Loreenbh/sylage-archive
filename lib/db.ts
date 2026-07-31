@@ -1,15 +1,14 @@
-import { Pool } from 'pg'
+import { Pool } from "pg"
 
 declare global {
-    var pgPool: Pool | undefined
+  var pgPool: Pool | undefined
 }
 
 export const pool =
-    global.pgPool ??
-    new Pool ({
-        connectionString: process.env.DATABASE_URL,
-    })
+  global.pgPool ??
+  new Pool({
+    connectionString: process.env.DATABASE_URL,
+    max: 5,
+  })
 
-if (process.env.NODE_ENV !== 'production') {
-    global.pgPool = pool
-}
+global.pgPool = pool
