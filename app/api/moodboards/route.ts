@@ -159,3 +159,74 @@ export async function GET(request: Request) {
       moodboards: result.rows
   })
 }
+
+
+export async function DELETE(request: Request) {
+
+  const { searchParams } = new URL(request.url)
+
+  const moodboardId = searchParams.get("id")
+
+
+  if (!moodboardId) {
+    return NextResponse.json(
+      { error: "ID manquant" },
+      { status: 400 }
+    )
+  }
+
+
+  // récupérer la session utilisateur
+  const cookieStore = await cookies()
+  const token = cookieStore.get("session_token")?.value
+
+
+  const session = await pool.query(
+    `
+    SELECT user_id
+    FROM sessions
+    WHERE token = $1
+    AND expires_at > NOW()
+    `,
+    [token]
+  )
+
+
+  const currentUser = session.rows[0]
+
+
+  if (!currentUser) {
+    return NextResponse.json(
+      { error: "Non connecté" },
+      { status: 401 }
+    )
+  }
+
+
+  const result = await pool.query(
+    `
+    DELETE FROM moodboards
+    WHERE id = $1
+    AND user_id = $2
+    RETURNING *
+    `,
+    [
+      moodboardId,
+      currentUser.user_id
+    ]
+  )
+
+
+  if (result.rowCount === 0) {
+    return NextResponse.json(
+      { error: "Moodboard introuvable ou non autorisé" },
+      { status: 404 }
+    )
+  }
+
+
+  return NextResponse.json({
+    success: true
+  })
+
+}
