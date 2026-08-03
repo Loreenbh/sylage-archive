@@ -9,18 +9,29 @@ import LovesGrid from "@/components/ui/grids/LovesGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 import BackButton from "@/components/ui/buttons/BackButton"
-
+import { NavigationParams } from "@/types/navigation"
+import { useReferences } from "@/hooks/useReferences"
 /* STYLE */
 import { typography } from "@/styles/typography"
 
 type Props = {
+  params?: NavigationParams["params"] | null
   onNavigate: OnNavigate
   onBack?: () => void
 }
 
-export default function Loves({ onNavigate, onBack }: Props) {
+export default function References({ onNavigate, onBack, params }: Props) {
   const { user: currentUser } = useCurrentUser()
+  const { isOwner, userId, from } = params ?? {}
+  const { references, isLoading } = useReferences() 
   
+  const latestLooks = references?.looks?.slice(0, 3)
+  const latestMoods = references?.moods?.slice(0, 3)
+  const featuredCreator = references?.muse
+
+console.log("looks :", references?.looks?.length)
+console.log("moods :", references?.moods?.length)
+console.log("muse :", references?.muse)
   return (
     <BookLayout
       header={
@@ -51,12 +62,6 @@ export default function Loves({ onNavigate, onBack }: Props) {
       sidebar={<Sidebar text="REFERENCES" clickable={false} />}
       actionsBar={
         <div className="flex w-full items-center justify-between">
-          <button className={typography.buttonBody}>
-            Back
-          </button>
-          <button className={typography.buttonBody}>
-            Next
-          </button>
         </div>
       }
       footerLeft={ <BackButton onBack={onBack} /> }
@@ -70,26 +75,200 @@ export default function Loves({ onNavigate, onBack }: Props) {
           }
         >   
       <div className="flex flex-col h-full min-h-0 gap-1">
-
         <LovesGrid
-            left={
-                <button className="relative h-full w-full bg-zinc-200 flex items-end p-4">
-                </button>
-            }
+          left={
+            <button
+              onClick={() =>
+                onNavigate?.({
+                  to:"looks",
+                  direction:"next",
+                  params:{
+                    from:"references",
+                    isOwner:true
+                  }
+                })
+              }
+              className="
+                relative
+                h-full
+                w-full
+                overflow-hidden
+                bg-zinc-200
+                text-left
+              "
+            >
 
-            topRight={
-                <button className="h-full w-full bg-zinc-300 flex items-end p-4">
-                top right
-                </button>
-            }
+              {latestLooks?.[0] && (
+                <img
+                  src={latestLooks[0].image_url}
+                  className="
+                    absolute
+                    inset-0
+                    w-full
+                    h-full
+                    object-cover
+                  "
+                />
+              )}
 
-            bottomRight={
-                <button className="h-full w-full bg-zinc-400 flex items-end p-4">
-                bottom right
+              <div className="
+                absolute
+                bottom-0
+                left-0
+                p-4
+                text-white
+              ">
+                <p className={typography.buttonBody}>
+                  LOOKS
+                </p>
+
+                <p className="
+                  text-[10px]
+                  tracking-[0.2em]
+                  text-white/70
+                ">
+                  LIKED SILHOUETTES
+                </p>
+              </div>
+
+            </button>
+          }
+          topRight={
+            <button
+              onClick={() =>
+                onNavigate?.({
+                  to:"moods",
+                  direction:"next",
+                  params:{
+                    from:"references",
+                    isOwner:true
+                  }
+                })
+              }
+              className="
+                relative
+                h-full
+                w-full
+                overflow-hidden
+                bg-zinc-300
+                text-left
+              "
+            >
+
+              {latestMoods?.[0] && (
+                <img
+                  src={latestMoods[0].image_url}
+                  className="
+                    absolute
+                    inset-0
+                    w-full
+                    h-full
+                    object-cover
+                  "
+                />
+              )}
+
+              <div className="
+                absolute
+                bottom-0
+                left-0
+                p-4
+                text-white
+              ">
+                <p className={typography.buttonBody}>
+                  MOODS
+                </p>
+
+                <p className="
+                  text-[10px]
+                  tracking-[0.2em]
+                  text-white/70
+                ">
+                  LIKED MOODBOARDS
+                </p>
+              </div>
+
+            </button>
+          }
+          bottomRight={
+            <div
+              className="
+                relative
+                h-full
+                w-full
+                overflow-hidden
+                bg-zinc-400
+                flex
+                flex-col
+                items-center
+                justify-center
+                text-white
+              "
+            >
+
+              {featuredCreator && (
+                <button
+                  onClick={() =>
+                    onNavigate?.({
+                      to: "profile",
+                      direction: "next",
+                      params: {
+                        userId: featuredCreator.id,
+                        isOwner: false,
+                        from: "references"
+                      }
+                    })
+                  }
+                  className="
+                    flex
+                    flex-col
+                    items-center
+                    hover:opacity-70
+                    transition-opacity
+                  "
+                >
+                  <img
+                    src={featuredCreator.avatar_url}
+                    alt=""
+                    className="
+                      w-35
+                      h-35
+                      rounded-full
+                      object-cover
+                    "
+                  />
+
+                  <p
+                    className="
+                      mt-3
+                      text-sm
+                      tracking-[0.2em]
+                    "
+                  >
+                    {featuredCreator.username}
+                  </p>
                 </button>
-            }
-            />
-      </div>
-    </BookLayout>
-  )
-}
+              )}
+
+              <div
+                className="
+                  absolute
+                  bottom-0
+                  left-0
+                  p-4
+                "
+              >
+                <p className={typography.buttonBody}>
+                  FEATURED CREATOR
+                </p>
+              </div>
+
+            </div>
+          }
+              />
+
+            </div>
+
+          </BookLayout>
+        )
+      }

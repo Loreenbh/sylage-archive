@@ -5,7 +5,9 @@ import type { User } from "@/types/user"
 
 export function useSilhouettes(
   userId?: number,
-  moodboardId?: number
+  moodboardId?: number,
+  from?: string
+
 ) {
 
   const [silhouettes, setSilhouettes] = useState<Silhouette[]>([])
@@ -21,7 +23,8 @@ export function useSilhouettes(
 
         const data = await getSilhouetteData(
           userId,
-          moodboardId
+          moodboardId,
+          from
         )
 
         setSilhouettes(data.silhouettes)
@@ -35,7 +38,7 @@ export function useSilhouettes(
 
     loadSilhouettes()
 
-  }, [userId, moodboardId])
+  }, [userId, moodboardId, from])
 
 
   return {

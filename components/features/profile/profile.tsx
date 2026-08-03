@@ -183,7 +183,7 @@ const handleFollowToggle = async () => {
                 `}
                 onClick={() =>
                   onNavigate?.({ 
-                    to: "inspirations", 
+                    to: "references", 
                     direction: "next",
                     params:{
                       isOwner: isOwner,

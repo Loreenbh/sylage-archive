@@ -1,8 +1,13 @@
-export async function getUserMoodboards(userId?: number){
+export async function getUserMoodboards(userId?: number, from?:string){
 
-  const url = userId
-    ? `/api/moodboards?userId=${userId}`
-    : `/api/moodboards`
+  let url = "/api/moodboards"
+
+  if(from === "references"){
+    url += "?liked=true"
+  }
+  else if(userId){
+    url += `?userId=${userId}`
+  }
 
   const res = await fetch(url)
 

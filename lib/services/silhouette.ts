@@ -25,28 +25,30 @@ export async function createSilhouette(
 
 export async function getSilhouetteData(
   userId?: number,
-  moodboardId?: number
+  moodboardId?: number,
+  from?:string
 ){
 
   let url = "/api/silhouettes"
 
-  if(moodboardId){
+  if (from === "references") {
+    console.log("1")
+    url += "?liked=true"
+  }
+  else if (moodboardId) {
+        console.log("2")
     url += `?moodboardId=${moodboardId}`
   }
-  else if(userId){
+  else if (userId) {
+        console.log("3")
     url += `?userId=${userId}`
   }
 
-
+  console.log("SILHOUETTES URL :", url)
   const res = await fetch(url)
 
-  // if(!res.ok){
-  //   throw new Error("Erreur récupération silhouettes")
-  // }
-if(!res.ok){
-  const error = await res.text()
-  console.log("API ERROR:", res.status, error)
-  throw new Error(error)
-}
+  if(!res.ok){
+    throw new Error("Erreur récupération silhouettes")
+  }
   return res.json()
 }

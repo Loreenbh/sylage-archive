@@ -3,7 +3,7 @@ import type { Moodboard } from "@/types/moodboard"
 import { getUserMoodboards } from "@/hooks/userMoodboards"
 import type { User } from "@/types/user"
 
-export function useUserMoodboards(userId?: number) {
+export function useUserMoodboards(userId?: number, from?: string) {
 
   const [moodboards, setMoodboards] = useState<Moodboard[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -15,7 +15,7 @@ export function useUserMoodboards(userId?: number) {
 
       try {
 
-        const data = await getUserMoodboards(userId)
+        const data = await getUserMoodboards(userId, from)
 
         setMoodboards(data.moodboards)
 
@@ -37,7 +37,7 @@ export function useUserMoodboards(userId?: number) {
 
     loadMoodboards()
 
-  }, [userId])
+  }, [userId, from])
 
 
   return {

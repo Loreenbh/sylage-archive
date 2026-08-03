@@ -70,7 +70,9 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url)
+
   const userIdParam = searchParams.get("userId")
+  const liked = searchParams.get("liked")
 
     /* RECUPERATION DE LA SESSION */
     const cookieStore = await cookies()
@@ -94,6 +96,86 @@ export async function GET(request: Request) {
         )
     }
 
+
+   // CAS 0 : MOODBOARDS LIKEES PAR L'UTILISATEUR
+
+  if (liked === "true") {
+
+    try {
+
+      const moodboards = await pool.query(
+        `
+        SELECT 
+          moodboards.*,
+          users.username,
+
+          COUNT(DISTINCT likes_all.id)::int AS likes_count,
+          COUNT(DISTINCT silhouettes.id)::int AS silhouettes_count,
+
+          EXISTS (
+            SELECT 1
+            FROM likes user_likes
+            WHERE user_likes.user_id = $1
+            AND user_likes.moodboard_id = moodboards.id
+          ) AS liked_by_current_user
+
+
+        FROM likes l
+
+
+        JOIN moodboards
+        ON moodboards.id = l.moodboard_id
+
+
+        JOIN users
+        ON users.id = moodboards.user_id
+
+
+        LEFT JOIN likes likes_all
+        ON likes_all.moodboard_id = moodboards.id
+
+
+        LEFT JOIN silhouettes
+        ON silhouettes.moodboard_id = moodboards.id
+
+
+        WHERE l.user_id = $1
+
+
+        GROUP BY
+          moodboards.id,
+          users.username
+
+
+        ORDER BY MAX(l.created_at) DESC
+        `,
+        [
+          currentSession.user_id
+        ]
+      )
+
+
+      return NextResponse.json({
+        user:null,
+        moodboards:moodboards.rows
+      })
+
+
+    } catch(err) {
+
+      console.error(
+        "ERROR LIKED MOODBOARDS:",
+        err
+      )
+
+      return NextResponse.json(
+        { error:"Erreur récupération moodboards likés" },
+        { status:500 }
+      )
+    }
+  }
+
+  // CAS PROFIL
 
     const userId = userIdParam
       ? Number(userIdParam)
@@ -158,75 +240,4 @@ export async function GET(request: Request) {
       user: user.rows[0],
       moodboards: result.rows
   })
-}
-
-
-export async function DELETE(request: Request) {
-
-  const { searchParams } = new URL(request.url)
-
-  const moodboardId = searchParams.get("id")
-
-
-  if (!moodboardId) {
-    return NextResponse.json(
-      { error: "ID manquant" },
-      { status: 400 }
-    )
-  }
-
-
-  // récupérer la session utilisateur
-  const cookieStore = await cookies()
-  const token = cookieStore.get("session_token")?.value
-
-
-  const session = await pool.query(
-    `
-    SELECT user_id
-    FROM sessions
-    WHERE token = $1
-    AND expires_at > NOW()
-    `,
-    [token]
-  )
-
-
-  const currentUser = session.rows[0]
-
-
-  if (!currentUser) {
-    return NextResponse.json(
-      { error: "Non connecté" },
-      { status: 401 }
-    )
-  }
-
-
-  const result = await pool.query(
-    `
-    DELETE FROM moodboards
-    WHERE id = $1
-    AND user_id = $2
-    RETURNING *
-    `,
-    [
-      moodboardId,
-      currentUser.user_id
-    ]
-  )
-
-
-  if (result.rowCount === 0) {
-    return NextResponse.json(
-      { error: "Moodboard introuvable ou non autorisé" },
-      { status: 404 }
-    )
-  }
-
-
-  return NextResponse.json({
-    success: true
-  })
-
 }

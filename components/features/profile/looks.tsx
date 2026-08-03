@@ -33,125 +33,132 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
     userId,
     isOwner,
     moodboardId,
-    // from
+    from
   } = params ?? {}
   const {
     silhouettes,
     isLoading,
     user: profileUser,
     setSilhouettes,
-  } = useSilhouettes(userId, moodboardId)
-  
+  } = useSilhouettes(userId, moodboardId, from)
+  console.log("silhouettes", silhouettes)
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const { user: currentUser } = useCurrentUser()
   
-  const carouselLabel =
-  isOwner
-    ? `BY ${currentUser?.username}`
-    : moodboardId
-      ? `FOR ${profileUser?.username}`
-      : `BY ${profileUser?.username}`
+const carouselLabel =
+  from === "references"
+    ? "LIKED LOOKS"
+    : isOwner
+      ? `BY ${currentUser?.username}`
+      : moodboardId
+        ? `FOR ${profileUser?.username}`
+        : `BY ${profileUser?.username}`
 
-
-      
-      const filteredSilhouettes =
-      moodboardId || selectedFilters.length === 0
+  const filteredSilhouettes =
+    moodboardId || selectedFilters.length === 0
       ? silhouettes
       : silhouettes.filter((silhouette) =>
-        silhouette.tags?.some(tag =>
-          selectedFilters.includes(tag)
+          silhouette.tags?.some(tag =>
+            selectedFilters.includes(tag)
+          )
         )
-      )
-      
-      const [index, setIndex] = useState(0)
-      const left = filteredSilhouettes[index]
-      const center = filteredSilhouettes[index + 1]
-      const right = filteredSilhouettes[index + 2]
-      
-      const currentItem = Math.min(
-        index + 3,
-        filteredSilhouettes.length
-      )
-      
-      const handleNext = () => {
-        setIndex((i) =>
-          Math.min(i + 3, Math.max(filteredSilhouettes.length - 3, 0))
-      )
-    }
-    
-    const canPrev = index > 0
-    
-    const canNext =
-    index + 3 < filteredSilhouettes.length
-    
-    const handlePrev = () => {
-      setIndex((i) => Math.max(i - 3, 0))
-    }
-    
-    const handleDelete = async (id:number) => {
-      
-      const res = await fetch(`/api/silhouettes?id=${id}`, {
-        method:"DELETE"
-      })
-      
-      if(res.ok){
-        setSilhouettes(prev =>
-          prev.filter(s => s.id !== id)
-        )
-      }
-    }
-    
-   const renderCell = (silhouette?: Silhouette) => {
 
-  if (!silhouette) {
-    return (
-      <div className="relative h-full w-full bg-zinc-100 overflow-hidden" />
+  const [index, setIndex] = useState(0)
+  const left = filteredSilhouettes[index]
+  const center = filteredSilhouettes[index + 1]
+  const right = filteredSilhouettes[index + 2]
+
+  const currentItem = Math.min(
+    index + 3,
+    filteredSilhouettes.length
+  )
+
+  const handleNext = () => {
+    setIndex((i) =>
+      Math.min(i + 3, Math.max(filteredSilhouettes.length - 3, 0))
     )
   }
 
-  const canDelete = silhouette.user_id === currentUser?.id
+  const canPrev = index > 0
 
-  return (
-    <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
+  const canNext =
+    index + 3 < filteredSilhouettes.length
 
-      <img
-        src={silhouette.image_url}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+  const handlePrev = () => {
+    setIndex((i) => Math.max(i - 3, 0))
+  }
 
+  const handleDelete = async (id:number) => {
+
+    const res = await fetch(`/api/silhouettes?id=${id}`, {
+      method:"DELETE"
+    })
+
+    if(res.ok){
+      setSilhouettes(prev =>
+        prev.filter(s => s.id !== id)
+      )
+    }
+  }
+
+const renderCell = (silhouette?: Silhouette) => (
+  <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
+
+    {silhouette && (
+      <>
+        <img
+          src={silhouette.image_url}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       <ContentOverlay
-        username={
-          moodboardId
-            ? silhouette.username
-            : silhouette.target_username
-        }
+                username={
+                  moodboardId || from === "references"
+                    ? silhouette.username
+                    : silhouette.target_username
+                }
 
-        prefix={
-          moodboardId
-            ? "BY"
-            : "FOR"
-        }
+                prefix={
+                  moodboardId || from === "references"
+                    ? "BY"
+                    : "FOR"
+                }
 
-        isOwner={canDelete}
+                isOwner={
+                  moodboardId
+                    ? silhouette.user_id === currentUser?.id
+                    : silhouette.target_user_id === currentUser?.id
+                }
 
-        like={{
-          type: "silhouette",
-          id: silhouette.id,
-          count: silhouette.likes_count,
-          liked: silhouette.liked_by_current_user
-        }}
+                onOpenProfile={() =>
+                  onNavigate?.({
+                    to: "profile",
+                    direction: "next",
+                    params: {
+                      userId: moodboardId || from === "references"
+                        ? silhouette.user_id
+                        : silhouette.target_user_id,
+                      isOwner: moodboardId
+                        ? silhouette.user_id === currentUser?.id
+                        : silhouette.target_user_id === currentUser?.id,
+                      from: "looks"
+                    }
+                  })
+                }
 
-        onDelete={
-          canDelete
-            ? () => handleDelete(silhouette.id)
-            : undefined
-        }
-      />
+                like={{
+                  type:"silhouette",
+                  id:silhouette.id,
+                  count:silhouette.likes_count,
+                  liked:silhouette.liked_by_current_user
+                }}
 
-    </div>
-  )
-}
+                onDelete={() => handleDelete(silhouette.id)}
+              />
+            </>
+    )}
+  </div>
+)
 
   return (
     <BookLayout

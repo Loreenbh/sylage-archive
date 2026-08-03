@@ -86,7 +86,7 @@ export async function GET(request: Request) {
 
   const userIdParam = searchParams.get("userId")
   const moodboardId = searchParams.get("moodboardId")
-
+  const liked = searchParams.get("liked")
 
   // SESSION
   const cookieStore = await cookies()
@@ -110,6 +110,80 @@ export async function GET(request: Request) {
       {status:401}
     )
   }
+
+ // CAS 0 : SILHOUETTES LIKEES PAR L'UTILISATEUR
+
+if (liked === "true") {
+
+  try {
+
+    const silhouettes = await pool.query(
+      `
+      SELECT 
+        silhouettes.*,
+        creator.username,
+        target_user.id AS target_user_id,
+        target_user.username AS target_username,
+        moodboards.tags,
+
+        COUNT(DISTINCT likes_all.id)::int AS likes_count,
+
+        EXISTS (
+          SELECT 1
+          FROM likes user_likes
+          WHERE user_likes.user_id = $1
+          AND user_likes.silhouette_id = silhouettes.id
+        ) AS liked_by_current_user
+
+      FROM likes l
+
+      JOIN silhouettes
+      ON silhouettes.id = l.silhouette_id
+
+      JOIN users creator
+      ON creator.id = silhouettes.user_id
+
+      JOIN moodboards
+      ON moodboards.id = silhouettes.moodboard_id
+
+      JOIN users target_user
+      ON target_user.id = moodboards.user_id
+
+      LEFT JOIN likes likes_all
+      ON likes_all.silhouette_id = silhouettes.id
+
+      WHERE l.user_id = $1
+
+      GROUP BY 
+        silhouettes.id,
+        creator.username,
+        target_user.id,
+        target_user.username,
+        moodboards.tags
+
+      ORDER BY MAX(l.created_at) DESC
+      `,
+      [
+        currentSession.user_id
+      ]
+    )
+    return NextResponse.json({
+      user: null,
+      silhouettes: silhouettes.rows
+    })
+
+  } catch (err) {
+
+    console.error("ERROR LIKED SILHOUETTES:", err)
+
+    return NextResponse.json(
+      { error: "Erreur récupération silhouettes likées" },
+      { status: 500 }
+    )
+
+  }
+}
+
 
 
   // CAS 1 : PROPOSITIONS D'UN MOODBOARD

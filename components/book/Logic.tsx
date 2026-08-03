@@ -10,7 +10,7 @@ import Authentification from "../features/auth/auth"
 import Discover from "../features/discover/discover"
 import ProfilePage from "../features/profile/profile"
 import Looks from "../features/profile/looks"
-import Inspirations from "../features/profile/references"
+import References from "../features/profile/references"
 import Settings from "../features/profile/settings"
 import Moods from "../features/profile/moods"
 import MoodDetails from "../features/discover/details"
@@ -31,7 +31,7 @@ const PAGES = {
   discover: Discover,
   profile: ProfilePage,
   looks: Looks,
-  inspirations: Inspirations,
+  references: References,
   settings: Settings,
   moods: Moods,
   moodDetails: MoodDetails,

@@ -35,7 +35,7 @@ const {
   isLoading,
   user: profileUser,
   setMoodboards
-} = useUserMoodboards(userId)
+} = useUserMoodboards(userId, from)
 
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
 
@@ -101,9 +101,11 @@ const {
       actionsBar={
         <div className="flex items-center gap-4">
           <span className={typography.buttonBody}>
-            {isOwner
-              ? "MY MOODS"
-              : `${profileUser?.username.toUpperCase()}'S MOODS`
+            {from === "references"
+              ? "LIKED MOODS"
+              : isOwner
+                ? "MY MOODS"
+                : `${profileUser?.username.toUpperCase()}'S MOODS`
             }
           </span>
         </div>
@@ -156,7 +158,7 @@ const {
                 />
                 <ContentOverlay
                   username={board.username}
-                  isOwner={isOwner ?? false}
+                  isOwner={board.user_id === user?.id}
                   like={{
                     type: "moodboard",
                     id: board.id,
@@ -175,7 +177,11 @@ const {
                       }
                     })
                   }
-                  onDelete={() => handleDelete(board.id)}
+                  onDelete={
+                    board.user_id === user?.id
+                      ? () => handleDelete(board.id)
+                      : undefined
+                  }
                 />
               </div>
             )}
