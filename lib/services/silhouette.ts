@@ -32,21 +32,15 @@ export async function getSilhouetteData(
   let url = "/api/silhouettes"
 
   if (from === "references") {
-    console.log("1")
     url += "?liked=true"
   }
   else if (moodboardId) {
-        console.log("2")
     url += `?moodboardId=${moodboardId}`
   }
   else if (userId) {
-        console.log("3")
     url += `?userId=${userId}`
   }
-
-  console.log("SILHOUETTES URL :", url)
   const res = await fetch(url)
-
   if(!res.ok){
     throw new Error("Erreur récupération silhouettes")
   }

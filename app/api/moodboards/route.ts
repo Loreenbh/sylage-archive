@@ -7,6 +7,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
+import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function POST(request: Request) {
    const body = await request.json()
@@ -20,20 +21,21 @@ export async function POST(request: Request) {
       )
    }
 
-   const cookieStore = await cookies()
-   const token = cookieStore.get("session_token")?.value
+  //  const cookieStore = await cookies()
+  //  const token = cookieStore.get("session_token")?.value
 
-   const session = await pool.query(
-     `
-     SELECT user_id
-     FROM sessions
-     WHERE token=$1
-     AND expires_at > NOW()
-     `,
-     [token]
-   )
+  //  const session = await pool.query(
+  //    `
+  //    SELECT user_id
+  //    FROM sessions
+  //    WHERE token=$1
+  //    AND expires_at > NOW()
+  //    `,
+  //    [token]
+  //  )
 
-   const user = session.rows[0]
+  //  const user = session.rows[0]
+  const user = await getCurrentSessionUser()
 
    if (!user) {
       return NextResponse.json(
@@ -74,19 +76,19 @@ export async function GET(request: Request) {
   const userIdParam = searchParams.get("userId")
   const liked = searchParams.get("liked")
 
-    /* RECUPERATION DE LA SESSION */
-    const cookieStore = await cookies()
-    const token = cookieStore.get("session_token")?.value
+    // /* RECUPERATION DE LA SESSION */
+    // const cookieStore = await cookies()
+    // const token = cookieStore.get("session_token")?.value
 
-    const session = await pool.query(
-        `SELECT user_id
-        FROM sessions
-        WHERE token=$1
-        AND expires_at > NOW()
-        `,
-        [token]
-    )
-    const currentSession = session.rows[0]
+    // const session = await pool.query(
+    //     `SELECT user_id
+    //     FROM sessions
+    //     WHERE token=$1
+    //     AND expires_at > NOW()
+    //     `,
+    //     [token]
+    // )
+    const currentSession = await getCurrentSessionUser()
 
 
     if (!currentSession) {
@@ -121,6 +123,7 @@ export async function GET(request: Request) {
 
 
         FROM likes l
+  const res = await fetch(url)
 
 
         JOIN moodboards

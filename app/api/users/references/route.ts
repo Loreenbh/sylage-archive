@@ -1,29 +1,30 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
+import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function GET(request: Request) {
-    // SESSION
-    const cookieStore = await cookies()
-    const token = cookieStore.get("session_token")?.value
+    // // SESSION
+    // const cookieStore = await cookies()
+    // const token = cookieStore.get("session_token")?.value
 
-    if (!token) {
-        return NextResponse.json(
-            { error: "Non connecté" },
-            { status: 401 }
-        )
-    }
-    const session = await pool.query(
-        `
-        SELECT user_id
-        FROM sessions
-        WHERE token=$1
-        AND expires_at > NOW()
-        `,
-        [token]
-    )
+    // if (!token) {
+    //     return NextResponse.json(
+    //         { error: "Non connecté" },
+    //         { status: 401 }
+    //     )
+    // }
+    // const session = await pool.query(
+    //     `
+    //     SELECT user_id
+    //     FROM sessions
+    //     WHERE token=$1
+    //     AND expires_at > NOW()
+    //     `,
+    //     [token]
+    // )
 
-    const currentSession = session.rows[0]
+    const currentSession = await getCurrentSessionUser()
 
     if (!currentSession) {
         return NextResponse.json(
@@ -31,7 +32,6 @@ export async function GET(request: Request) {
         {status:401}
         )
     }
-    console.log("current user", currentSession.user_id)
 
     const likedLooks = await pool.query(
     `

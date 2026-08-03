@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
+import { getCurrentSessionUser } from "@/lib/services/session";
 
 
 export async function GET(request: Request) {
@@ -11,22 +12,22 @@ export async function GET(request: Request) {
 
 
   // SESSION
-  const cookieStore = await cookies()
-  const token = cookieStore.get("session_token")?.value
+  // const cookieStore = await cookies()
+  // const token = cookieStore.get("session_token")?.value
 
 
-  const session = await pool.query(
-    `
-    SELECT user_id
-    FROM sessions
-    WHERE token=$1
-    AND expires_at > NOW()
-    `,
-    [token]
-  )
+  // const session = await pool.query(
+  //   `
+  //   SELECT user_id
+  //   FROM sessions
+  //   WHERE token=$1
+  //   AND expires_at > NOW()
+  //   `,
+  //   [token]
+  // )
 
 
-  const currentSession = session.rows[0]
+  const currentSession = await getCurrentSessionUser()
 
 
   if (!currentSession) {
@@ -138,29 +139,27 @@ export async function GET(request: Request) {
 
 // FOLLOW
 export async function POST(request: Request) {
-
   const body = await request.json()
-
   const { userId } = body
 
 
-  const cookieStore = await cookies()
-  const token = cookieStore.get("session_token")?.value
+  // const cookieStore = await cookies()
+  // const token = cookieStore.get("session_token")?.value
 
 
-  const session = await pool.query(
-    `
-    SELECT user_id
-    FROM sessions
-    WHERE token=$1
-    AND expires_at > NOW()
-    `,
-    [token]
-  )
+  // const session = await pool.query(
+  //   `
+  //   SELECT user_id
+  //   FROM sessions
+  //   WHERE token=$1
+  //   AND expires_at > NOW()
+  //   `,
+  //   [token]
+  // )
 
 
-  const currentUser = session.rows[0]
-
+  // const currentUser = session.rows[0]
+  const currentUser = await getCurrentSessionUser()
 
   if(!currentUser){
     return NextResponse.json(
@@ -211,31 +210,28 @@ export async function DELETE(request: Request) {
   const userId = searchParams.get("userId")
 
 
-  const cookieStore = await cookies()
-  const token = cookieStore.get("session_token")?.value
+  // const cookieStore = await cookies()
+  // const token = cookieStore.get("session_token")?.value
 
 
-  const session = await pool.query(
-    `
-    SELECT user_id
-    FROM sessions
-    WHERE token=$1
-    AND expires_at > NOW()
-    `,
-    [token]
-  )
+  // const session = await pool.query(
+  //   `
+  //   SELECT user_id
+  //   FROM sessions
+  //   WHERE token=$1
+  //   AND expires_at > NOW()
+  //   `,
+  //   [token]
+  // )
 
 
-  const currentUser = session.rows[0]
-
-
+  const currentUser = await getCurrentSessionUser()
   if(!currentUser){
     return NextResponse.json(
       {error:"Non connecté"},
       {status:401}
     )
   }
-
 
   await pool.query(
     `
@@ -248,8 +244,6 @@ export async function DELETE(request: Request) {
       userId
     ]
   )
-
-
   return NextResponse.json({
     success:true
   })

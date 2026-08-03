@@ -1,5 +1,3 @@
-//Est ce que l user est connecte, si oui c est qui ?
-
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { pool } from '@/lib/db'

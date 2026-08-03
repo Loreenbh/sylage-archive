@@ -41,7 +41,6 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
     user: profileUser,
     setSilhouettes,
   } = useSilhouettes(userId, moodboardId, from)
-  console.log("silhouettes", silhouettes)
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const { user: currentUser } = useCurrentUser()
   

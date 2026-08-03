@@ -8,7 +8,7 @@ import TwoColGrid from "@/components/ui/grids/TwoColGrid"
 import Header from "@/components/navigation/Header"
 /* STYLE */
 import { typography } from "@/styles/typography"
-
+import { useAuthForm } from "@/hooks/useAuthForm"
 /*TYPES*/
 type Props = {
   onNavigate: OnNavigate
@@ -51,118 +51,18 @@ function MagazineInput({ placeholder, type = "text", index, value, onChange } : 
 }
 
 export default function Authentification({ onNavigate }: Props) {
-  const [registerForm, setRegisterForm] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
-  })
-  const [loginForm, setLoginForm] = useState({
-    identifier: "",
-    password: ""
-  })
-  
-  const [registerError, setRegisterError] = useState<string | null>(null)
-  const [registerSuccess, setRegisterSuccess] = useState<string | null>(null)
-
-  const [loginError, setLoginError] = useState<string | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const updateRegisterField =
-    (field: keyof typeof registerForm) => (value: string) =>
-      setRegisterForm((prev) => ({ ...prev, [field]: value }))
-
-  const updateLoginField =
-    (field: keyof typeof loginForm) => (value: string) =>
-      setLoginForm((prev) => ({ ...prev, [field]: value }))
-
-
-
-    /* INSCRIPTION */
-    const handleRegister = async () =>{
-      setRegisterError(null)
-      setRegisterSuccess(null)
-      if (!registerForm.password || !registerForm.confirmPassword
-         || !registerForm.email || !registerForm.username
-      ){
-        setRegisterError("Champs manquants!")
-        return
-      }
-
-    if (registerForm.password !== registerForm.confirmPassword){
-      setRegisterError("Lesmoys de passe ne correspondent pas")
-      return
-    }
-
-
-
-    setIsSubmitting(true)
-
-    try{
-      const registerRes = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          username: registerForm.username,
-          email: registerForm.email,
-          password: registerForm.password,
-        })
-      })
-
-      //const body = await request.json() et apres recup response back
-      const registerData = await registerRes.json()
-  
-      if (!registerRes.ok){
-        setRegisterError(registerData.error ?? "Erreur lors de l'inscription")
-        return
-      }
-
-      setRegisterSuccess("Inscription reussie, veuillez vous connecter")
-      setRegisterForm({
-          username: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        })
-      } catch {
-        setRegisterError("Error network")
-      } finally {
-        setIsSubmitting(false)
-      }
-    } 
-
-    /* CONNEXION */
-    const handleLogin = async () => {
-      setLoginError(null)
-      setIsSubmitting(true)
-
-      if (!loginForm.identifier || !loginForm.password) {
-        setLoginError("Champs manquants")
-        return
-      }
-
-      try{
-        const res = await fetch("/api/auth/login",{
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(loginForm),
-        })
-        const data = await res.json()
-        if (!res.ok){
-          setLoginError(data.error ?? "Erreur de connexion")
-          return
-        }
-         onNavigate({
-            to: "discover",
-            direction: "next",
-          })
-        } catch {
-          setLoginError("Erreur réseau")
-        } finally {
-          setIsSubmitting(false)
-      }
-    }
-
+  const {
+    registerForm,
+    loginForm,
+    registerError,
+    registerSuccess,
+    loginError,
+    isSubmitting,
+    updateRegisterField,
+    updateLoginField,
+    handleRegister,
+    handleLogin
+  } = useAuthForm(onNavigate)
 
   return (
 
@@ -234,7 +134,6 @@ export default function Authentification({ onNavigate }: Props) {
 
             <button
               onClick={handleRegister}
-              // onClick={() => onNavigate({ to: "discover", direction: "next" })}
               className={`${typography.buttonAuth} pb-6`}>
               Join →
             </button>

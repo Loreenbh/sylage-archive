@@ -2,9 +2,10 @@
     GET     → détail d'un moodboard
     DELETE  → supprimer un moodboard
 */
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import { NextResponse } from "next/server"
 import { pool } from "@/lib/db"
+import { getCurrentSessionUser } from "@/lib/services/session"
 
 export async function GET(
   request: Request,
@@ -12,21 +13,22 @@ export async function GET(
 ) {
 
   const { id } = await params
-  const cookieStore = await cookies()
-  const token = cookieStore.get("session_token")?.value
+  // const cookieStore = await cookies()
+  // const token = cookieStore.get("session_token")?.value
 
-  const session = await pool.query(
-    `
-    SELECT user_id
-    FROM sessions
-    WHERE token=$1
-    AND expires_at > NOW()
-    `,
-    [token]
-  )
+  // const session = await pool.query(
+  //   `
+  //   SELECT user_id
+  //   FROM sessions
+  //   WHERE token=$1
+  //   AND expires_at > NOW()
+  //   `,
+  //   [token]
+  // )
 
-  const currentSession = session.rows[0]
+  // const currentSession = session.rows[0]
 
+  const currentSession = await getCurrentSessionUser()
 
   if (!currentSession) {
     return NextResponse.json(

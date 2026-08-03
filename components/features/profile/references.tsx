@@ -29,9 +29,6 @@ export default function References({ onNavigate, onBack, params }: Props) {
   const latestMoods = references?.moods?.slice(0, 3)
   const featuredCreator = references?.muse
 
-console.log("looks :", references?.looks?.length)
-console.log("moods :", references?.moods?.length)
-console.log("muse :", references?.muse)
   return (
     <BookLayout
       header={

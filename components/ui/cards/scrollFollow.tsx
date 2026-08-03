@@ -47,7 +47,7 @@ export default function ScrollFollow({
         {items.map((item)=>(
           <div 
             key={item.id}
-            className="flex items-center justify-center gap-3"
+            className="flex items-center justify-start gap-3"
           >
 
             <button

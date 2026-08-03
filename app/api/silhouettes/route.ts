@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
+import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function POST(request: Request){
 
@@ -8,27 +9,27 @@ export async function POST(request: Request){
     const { imageUrl, moodboardId } = body
 
 
-    /* AUTHENTIFICATION */
-    const cookieStore = await cookies()
-    const token = cookieStore.get("session_token")?.value
+    // /* AUTHENTIFICATION */
+    // const cookieStore = await cookies()
+    // const token = cookieStore.get("session_token")?.value
 
-    if (!token){
-        return NextResponse.json(
-            {error:"Non connecte"},
-            {status:401}
-        )
-    }
+    // if (!token){
+    //     return NextResponse.json(
+    //         {error:"Non connecte"},
+    //         {status:401}
+    //     )
+    // }
 
-    const session = await pool.query(
-        `SELECT user_id
-        FROM sessions
-        WHERE token=$1
-        AND expires_at > NOW()
-        `,
-        [token]
-    )
+    // const session = await pool.query(
+    //     `SELECT user_id
+    //     FROM sessions
+    //     WHERE token=$1
+    //     AND expires_at > NOW()
+    //     `,
+    //     [token]
+    // )
 
-    const user = session.rows[0]
+    const user = await getCurrentSessionUser()
 
     if (!user){
         return NextResponse.json(
@@ -36,7 +37,6 @@ export async function POST(request: Request){
             {status:401}
         )
     }
-
 
     /* VALIDATION */
 
@@ -88,21 +88,21 @@ export async function GET(request: Request) {
   const moodboardId = searchParams.get("moodboardId")
   const liked = searchParams.get("liked")
 
-  // SESSION
-  const cookieStore = await cookies()
-  const token = cookieStore.get("session_token")?.value
+  // // SESSION
+  // const cookieStore = await cookies()
+  // const token = cookieStore.get("session_token")?.value
 
-  const session = await pool.query(
-    `
-    SELECT user_id
-    FROM sessions
-    WHERE token=$1
-    AND expires_at > NOW()
-    `,
-    [token]
-  )
+  // const session = await pool.query(
+  //   `
+  //   SELECT user_id
+  //   FROM sessions
+  //   WHERE token=$1
+  //   AND expires_at > NOW()
+  //   `,
+  //   [token]
+  // )
 
-  const currentSession = session.rows[0]
+  const currentSession = await getCurrentSessionUser()
 
   if (!currentSession) {
     return NextResponse.json(
@@ -352,28 +352,27 @@ export async function DELETE(request: Request){
     )
   }
 
-      /* AUTHENTIFICATION */
-    const cookieStore = await cookies()
-    const token = cookieStore.get("session_token")?.value
+    //   /* AUTHENTIFICATION */
+    // const cookieStore = await cookies()
+    // const token = cookieStore.get("session_token")?.value
 
-    if (!token){
-        return NextResponse.json(
-            {error:"Non connecte"},
-            {status:401}
-        )
-    }
+    // if (!token){
+    //     return NextResponse.json(
+    //         {error:"Non connecte"},
+    //         {status:401}
+    //     )
+    // }
 
-    const session = await pool.query(
-        `SELECT user_id
-        FROM sessions
-        WHERE token=$1
-        AND expires_at > NOW()
-        `,
-        [token]
-    )
+    // const session = await pool.query(
+    //     `SELECT user_id
+    //     FROM sessions
+    //     WHERE token=$1
+    //     AND expires_at > NOW()
+    //     `,
+    //     [token]
+    // )
 
-    const user = session.rows[0]
-
+    const user = await getCurrentSessionUser()
     if (!user){
         return NextResponse.json(
             {error:"Session invalide"},

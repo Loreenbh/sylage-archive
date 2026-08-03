@@ -11,7 +11,6 @@ export function useReferences() {
     async function fetchReferences() {
       try {
         const data = await getReferences()
-        console.log("REFERENCES API :", data)
         setReferences(data)
       } finally {
         setIsLoading(false)
