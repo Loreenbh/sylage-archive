@@ -44,7 +44,7 @@ export default function BookFrame({ children } : Props) {
           className="
             absolute inset-0 rounded-sm
             w-full h-full
-            bg-gradient-to-b from-zinc-50 to-zinc-200
+            bg-[#f8f3e8]
             p-2 sm:p-3 md:p-4 lg:p-5
             flex flex-col
             overflow-hidden

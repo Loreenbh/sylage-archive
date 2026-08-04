@@ -41,8 +41,9 @@ export default function ContentOverlay({
         absolute bottom-0 left-0 right-0
         flex items-center justify-between
         px-2 py-1
-        bg-pink-600
-        text-white
+        bg-[#1B1613]/80
+        text-[#f8f3e8]
+        backdrop-blur-sm
       "
     >
       <div className="flex flex-col">

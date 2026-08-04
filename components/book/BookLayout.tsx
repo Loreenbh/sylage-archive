@@ -18,23 +18,22 @@ export default function BookLayout({
   actionsBar,
   footerLeft,
   footerRight
-}: Props) {
+  }: Props) {
   return (
     <BookFrame>
-
-      {/* HEADER */}
-      {header && <div>{header}</div>}
-
+      {header && (
+        <div className="w-full">
+          {header}
+        </div>
+      )}
       {/* BODY */}
-      <div className="flex mt-7 items-center justify-center min-h-0 gap-1">
-
-        {/* LEFT COLUMN = carré + actions */}
-        <div className="flex flex-col bg-blue-300">
-
-          {/* CARRÉ */}
+      <div className="flex mt-5 items-stretch justify-center flex-1 min-h-0">
+        {/* LEFT COLUMN */}
+        <div className="flex flex-col ml-6">
+          {/* IMAGE */}
           <div
             className="
-              w-[280px]
+              w-[270px]
               sm:w-[550px]
               md:w-[540px]
               lg:w-[700px]
@@ -45,33 +44,27 @@ export default function BookLayout({
           >
             {children}
           </div>
-
-          {/* ACTIONS BAR (aligné à la largeur du carré uniquement) */}
           {actionsBar && (
-            <div className="flex w-full px-2 md:px-4 pt-2 justify-between">
+            <div className="flex md:px-4">
               {actionsBar}
             </div>
           )}
-
         </div>
-
         {/* SIDEBAR */}
         {sidebar && (
           <div className="
-            flex flex-col
+            flex 
+            flex-col
             self-stretch
             w-[40px]
             sm:w-[60px]
             md:w-[80px]
             lg:w-[100px]
-            bg-red-100
           ">
             {sidebar}
           </div>
         )}
-
       </div>
-
       {/* FOOTER */}
       {(footerLeft || footerRight) && (
         <div
@@ -84,18 +77,15 @@ export default function BookLayout({
             mt-auto
           "
         >
-
           <div>
             {footerLeft}
           </div>
-
           <div>
             {footerRight}
           </div>
 
         </div>
       )}
-
     </BookFrame>
   )
 }

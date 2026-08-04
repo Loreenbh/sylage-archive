@@ -6,6 +6,7 @@ import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
 /* STYLE */
 import { spacing } from "@/styles/spacing"
+import { layout } from "@/styles/layout"
 import { typography } from "@/styles/typography"
 import SimpleGrid from "@/components/ui/grids/SimpleGrid"
 /* TYPES */
@@ -18,37 +19,43 @@ export default function Cover({ onNavigate }: Props) {
   return (
     <BookLayout
       header={
-        <div className={spacing.header}>
-          <h1 className={`${spacing.title} ${typography.title}`}>WEAVE</h1>
+        <div className={`${layout.coverHeader} ${spacing.coverHeader}`}>
+          <h1 className={typography.title}>
+            SYLAGE
+          </h1>
           <p className={`${typography.subtitle} ${spacing.subtitle}`}>
             TRENDBOOK
           </p>
         </div>
       }
       sidebar={
-        <Sidebar text="↓   26|27" clickable={true} onNavigate={onNavigate} />
+        <Sidebar 
+          text="↓   26|27"
+          clickable={true} 
+          onNavigate={onNavigate} 
+        />
       }
       actionsBar={
-        <p className={`${typography.body} ${spacing.body}`}>
-          a collective visual mood system
+        <p className={`${typography.actionBar} ${spacing.actionBar}`}>
+          A visual archive of moods
         </p>
       }
     >
-      {/* BODY */}
       <div className="flex flex-col">
         <SimpleGrid
           square={
-            <div className="relative w-[280px] sm:w-[500px] md:w-[550px] lg:w-[750px] aspect-square mx-auto">
+            <div className={`${layout.coverImage}`}>
               <Image
                 src="/texture.jpg"
                 alt=""
                 fill
+                priority
                 className="object-contain"
               />
             </div>
           }
         />
-      </div>
+    </div>
     </BookLayout>
   )
 }

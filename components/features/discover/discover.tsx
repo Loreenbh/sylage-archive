@@ -89,9 +89,6 @@ export default function Discover({ onNavigate, params }: Props) {
                 onNavigate?.({
                   to: "create",
                   direction: "next",
-                  // params:{
-                  //   from: "discover",
-                  // }
                 })
              },
           ]}
@@ -101,7 +98,7 @@ export default function Discover({ onNavigate, params }: Props) {
         <Sidebar text={sidebarTitle} clickable={false}/>
       }
       actionsBar={
-        <div className="flex items-center gap-1 sm:gap-6">
+        <div className="flex items-center gap-2 sm:gap-6">
           <button
             onClick={() => setTab("latest")}
             className={typography.buttonBody}>latest</button>
@@ -117,8 +114,8 @@ export default function Discover({ onNavigate, params }: Props) {
         </div>
       }
       footerRight={
-          <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.35em] uppercase text-black/30">
+          <div className="flex items-center gap-1">
+            <span className={typography.username}>
               {user?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
@@ -147,19 +144,27 @@ export default function Discover({ onNavigate, params }: Props) {
                 to: "moodDetails",
                 direction: "next",
                 params: {
-                  // from: "discover",
                   moodboardId: board.id,
-                  // fromTab: tab,
                   isOwner: user?.id === board.user_id
                 },
               })
             }}
             renderItem={(board) => (
-              <div className="relative aspect-square w-full bg-zinc-100 cursor-pointer overflow-hidden">
+              <div className="
+                relative 
+                aspect-square 
+                w-full 
+                cursor-pointer 
+                overflow-hidden">
                 <img
                   src={board.image_url}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="
+                  absolute 
+                  inset-0 
+                  w-full 
+                  h-full 
+                  object-cover"
                 />
                 <ContentOverlay
                   username={board.username}

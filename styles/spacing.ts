@@ -2,24 +2,35 @@
 padding
 gap
 position
-alignment*/
+alignment
+ou c est place */
 
 export const spacing = {
-    header: "text-center pt-2",
+coverHeader: `
+    pt-2
+    sm:pt-10
+    lg:pt-16
+  `,
 
-    sidebarTitle: {cover: `gap-8`,
-        auth: `gap-16`,
-        discover: `gap-[100px]`,
-        profile: `gap-[80px]`,
+  header: `
+    pt-5
+    sm:pt-10
+    lg:pt-16
+  `,
 
-    },
+  subtitle: `
+    mt-2
+    self-end
+    mr-6
+  `,
 
-    title: "",
+  actionBar: `
+    px-10
+    sm:px-6
+    lg:px-12
+  `,
 
-    subtitle: "ml-40 sm:ml-80 md:ml-80 lg:ml-80",
-
-    body: "pt-2 sm:pt-6",
-
-    sidebar: "gap-19 sm:gap-40 md:gap-30 lg:gap-45"
-
+    sideBarTitle: `
+    mt-40
+  `
 }

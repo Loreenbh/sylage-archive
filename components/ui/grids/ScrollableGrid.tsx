@@ -7,34 +7,29 @@ type Props = {
 }
 
 export default function ScrollableGrid({ data, renderItem, onItemClick }: Props) {
-  const rows: any[][] = []
-
-  for (let i = 0; i < data.length; i += 2) {
-    rows.push(data.slice(i, i + 2))
-  }
-
   return (
     <div className="h-full w-full flex flex-col">
 
-      {/* SCROLL AREA */}
       <div className="flex-1 min-h-0 overflow-y-auto">
 
-        <div className="flex flex-col gap-4">
-
-          {rows.map((row, rowIdx) => (
+        <div
+          className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-2
+            xl:grid-cols-4
+            gap-4
+          "
+        >
+          {data.map((item) => (
             <div
-              key={rowIdx}
-              className="grid grid-cols-2 gap-4"
+              key={item.id}
+              onClick={() => onItemClick?.(item)}
             >
-              {row.map((item) => (
-                <div key={item.id}
-                  onClick={() => onItemClick?.(item)}>
-                  {renderItem(item)}
-                </div>
-              ))}
+              {renderItem(item)}
             </div>
           ))}
-
         </div>
 
       </div>

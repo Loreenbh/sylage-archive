@@ -93,14 +93,15 @@ import type { OnNavigate } from "@/types/navigation"
 
     /* CONNEXION */
     const handleLogin = async () => {
+      console.log("click")
       setLoginError(null)
-      setIsSubmitting(true)
+      // setIsSubmitting(true)
 
       if (!loginForm.identifier || !loginForm.password) {
         setLoginError("Missing required fields")
         return
       }
-
+      setIsSubmitting(true)
       try{
         const res = await fetch("/api/auth/login",{
           method: "POST",

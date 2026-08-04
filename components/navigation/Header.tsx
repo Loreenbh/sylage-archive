@@ -50,7 +50,7 @@ export default function Header({
   }
 
   return (
-    <div className="w-full h-[70px] sm:h-[130px] md:h-[120px] lg:h-[150px] bg-green-100">
+    <div className="w-full h-[70px] sm:h-[130px] md:h-[120px] lg:h-[150px]">
 
       {/* NAVIGATION — responsive padding and margin-top */}
       <div className="flex justify-between px-4 sm:px-4 md:px-6 lg:px-10 pt-8 sm:pt-2">
@@ -60,7 +60,7 @@ export default function Header({
             onClick={() => handleItemClick(item)}
             disabled={!item.clickable}
             className={`
-              ${typography.header}
+              ${typography.nav}
               relative group
               transition-colors duration-300
 
