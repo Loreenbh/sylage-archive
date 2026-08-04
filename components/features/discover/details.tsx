@@ -34,11 +34,9 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
 
   const {
     moodboard,
-    isLoading
+    // isLoading
   } = useMoodboard(moodboardId)
 
-  const sidebarTitle = "MOODBOARD"
-  
   return (
     <BookLayout
       header={
@@ -73,65 +71,69 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
           ]}
         />
       }
-      sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
+      sidebar={<Sidebar text="FOCUS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-[60px]">
+        <div className="w-full flex items-center justify-between">
           {!isOwner && (
-            <>
-              <button
-                onClick={() =>
-                  onNavigate?.({
-                    to: "profile",
-                    direction: "next",
-                    params: {
-                      isOwner,
-                      from: "moodDetails",
-                      userId:moodboard?.user_id,
-                    },
-                  })
-                }
-                  className={`
-                    ${typography.buttonBody}
-                    transition-opacity
-                    hover:opacity-60
-                    cursor-pointer
-                  `}
-              >
-                by {moodboard?.username}
-              </button>
+            <button
+              onClick={() =>
+                onNavigate?.({
+                  to: "profile",
+                  direction: "next",
+                  params: {
+                    isOwner,
+                    from: "moodDetails",
+                    userId: moodboard?.user_id,
+                  },
+                })
+              }
+              className={`
+                ${typography.buttonBody}
+                text-black/60
+                transition-opacity
+                hover:opacity-60
+                cursor-pointer
+              `}
+            >
+              by {moodboard?.username}
+            </button>
+          )}
 
-            <div className="">
-              <button
-                onClick={() =>
-                  onNavigate?.({
-                    to: "draw",
-                    direction: "next",
-                    params: {
-                      moodboardId : moodboard?.id,
-                      // userId: moodboard?.user_id,
-                      // isOwner,
-                    },
-                  })
-                }
+          <div className="flex items-center gap-2 sm:gap-6">
+            {!isOwner && (
+              <>
+                <button
+                  onClick={() =>
+                    onNavigate?.({
+                      to: "draw",
+                      direction: "next",
+                      params: {
+                        moodboardId: moodboard?.id,
+                      },
+                    })
+                  }
+                  className={typography.buttonBody}
+                >
+                  Propose
+                </button>
+
+                <span className={typography.bullet}>•</span>
+              </>
+            )}
+
+            {moodboard && (
+              <LikeButton
+                type="moodboard"
                 className={typography.buttonBody}
-              >
-                Propose
-              </button>
-              
-            </div>
-            </>
-          )}
+                id={moodboard.id}
+                initialCount={moodboard.likes_count}
+                initialLiked={moodboard.liked_by_current_user}
+                disabled={false}
+              />
+            )}
 
-          {moodboard && (
-            <LikeButton
-              type="moodboard"
-              className={typography.buttonBody}
-              id={moodboard.id}
-              initialCount={moodboard.likes_count}
-              initialLiked={moodboard.liked_by_current_user}
-              disabled={false}
-            />
-          )}
+            <span className={typography.bullet}>•</span>
+
             <button
               onClick={() =>
                 onNavigate?.({
@@ -148,14 +150,16 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
             >
               looks
             </button>
-        </div>               
+          </div>
+
+        </div>
       }
       footerLeft={
         <BackButton onBack={onBack} />
       }
       footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className={typography.username}>
               {user?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
@@ -171,7 +175,12 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                   <img
                     src={moodboard.image_url}
                     alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="
+                    absolute 
+                    inset-0 
+                    w-full 
+                    h-full 
+                    object-cover"
                   />
                 )}
             </div>

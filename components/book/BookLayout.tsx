@@ -45,7 +45,7 @@ export default function BookLayout({
             {children}
           </div>
           {actionsBar && (
-            <div className="flex md:px-4">
+            <div className="flex w-full md:px-4">
               {actionsBar}
             </div>
           )}
@@ -73,7 +73,7 @@ export default function BookLayout({
             flex
             justify-between
             items-center
-            px-4
+            px-2
             mt-auto
           "
         >

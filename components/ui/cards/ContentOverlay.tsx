@@ -40,7 +40,7 @@ export default function ContentOverlay({
       className="
         absolute bottom-0 left-0 right-0
         flex items-center justify-between
-        px-2 py-1
+        px-1 py-1
         bg-[#1B1613]/80
         text-[#f8f3e8]
         backdrop-blur-sm
@@ -88,7 +88,7 @@ export default function ContentOverlay({
         {like && (
           <LikeButton
             type={like.type}
-            className={typography.buttonBody}
+            className={typography.buttonOverlay}
             id={like.id}
             initialCount={like.count}
             initialLiked={like.liked}
@@ -96,19 +96,17 @@ export default function ContentOverlay({
           />
         )}
 
-
         {silhouettesCount !== undefined && (
           <button
             onClick={(e) => {
               e.stopPropagation()
               onOpenLooks?.()
             }}
-            className={typography.actionButton}
+            className={typography.buttonOverlay}
           >
-            looks · {silhouettesCount}
+            looks • {silhouettesCount}
           </button>
         )}
-
 
         {!isOwner && onFollowToggle && (
           <button
@@ -131,8 +129,6 @@ export default function ContentOverlay({
 
         {isOwner && onDelete && (
           <>
-            <span className={typography.bullet}>|</span>
-
             <button
               onClick={(e) => {
                 e.stopPropagation()

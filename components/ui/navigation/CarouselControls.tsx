@@ -15,13 +15,12 @@ export default function CarouselControls({ onPrev, onNext, canPrev, canNext }: P
         onClick={onPrev}
         disabled={!canPrev}
         className={`
+          ${typography.buttonBody}
           transition-opacity
           ${canPrev ? "hover:opacity-50 cursor-pointer" : "opacity-30 cursor-default"}
         `}
       >
-        <span className={`${typography.buttonBody} ${spacing.body}`}>
-          prev
-        </span>
+        prev
       </button>
 
       <span className={typography.bullet}>•</span>
@@ -30,13 +29,12 @@ export default function CarouselControls({ onPrev, onNext, canPrev, canNext }: P
         onClick={onNext}
         disabled={!canNext}
         className={`
+          ${typography.buttonBody}
           transition-opacity
           ${canNext ? "hover:opacity-50 cursor-pointer" : "opacity-30 cursor-default"}
         `}
       >
-        <span className={`${typography.buttonBody} ${spacing.body}`}>
-          next
-        </span>
+        next
       </button>
     </div>
   )

@@ -107,14 +107,13 @@ export default function Discover({ onNavigate, params }: Props) {
             onClick={() => setTab("curated")}
             className={typography.buttonBody}>curated</button>
           <span className={typography.bullet}>•</span>
-
           <button 
             onClick={() => setTab("following")}
             className={typography.buttonBody}>following</button>
         </div>
       }
       footerRight={
-          <div className="flex items-center gap-1">
+          <div className="flex w-full items-center gap-1">
             <span className={typography.username}>
               {user?.username}
             </span>

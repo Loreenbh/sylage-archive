@@ -64,7 +64,7 @@ export const typography = {
 
 
   buttonBody: `
-    text-[7px]
+    text-[8px]
     sm:text-[10px]
     lg:text-[16px]
     tracking-[0.3em]
@@ -72,17 +72,34 @@ export const typography = {
     text-black/60
   `,
 
+    backButton: `
+    text-[10px]
+    tracking-[0.2em]
+    transition-opacity
+    hover:opacity-50
+    uppercase
+    text-black/60
+  `,
+
   bullet: `
   text-black/40 
-  text-[15px]`,
+  text-[10px]`,
 
   
     username: `
     text-[10px]
     tracking-[0.35em]
     uppercase
+    text-[#7B7660]
+    font-extralight
+  `,
+
+    buttonOverlay: `
+    text-[10px]
+    tracking-[0.25em]
     text-[#343137]
     font-extralight
+    text-white
   `,
 
 }

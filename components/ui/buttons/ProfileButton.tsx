@@ -28,7 +28,7 @@ export default function ProfileButton({ onNavigate, active = false, clickable = 
         })
       }}
       className={`
-        w-13 h-13 md:w-14 md:h-14 lg:w-18 lg:h-18
+        w-10 h-10 md:w-14 md:h-14 lg:w-18 lg:h-18
       `}
     >
       <Avatar

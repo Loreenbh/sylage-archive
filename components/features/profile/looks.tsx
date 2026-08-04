@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 
 /* COMPONENTS */
@@ -9,12 +9,12 @@ import Header from "@/components/navigation/Header"
 import ThreeColGrid from "@/components/ui/grids/ThreeColGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import CarouselControls from "@/components/ui/navigation/CarouselControls"
-import ContentOverlay from "@/components/ui/cards/ContentOverlay"
+import SilhouetteCell from "./looks/SilhouetteCell"
 
 /* TYPES */
 import { Silhouette } from "@/types/silhouette"
 
-
+import { useLooksCarousel } from "@/hooks/useLooksCarousel"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 import BackButton from "@/components/ui/buttons/BackButton"
 
@@ -41,51 +41,63 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
     user: profileUser,
     setSilhouettes,
   } = useSilhouettes(userId, moodboardId, from)
+
+  
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const { user: currentUser } = useCurrentUser()
   
-const carouselLabel =
+  const carouselLabel =
   from === "references"
-    ? "LIKED LOOKS"
-    : isOwner
-      ? `BY ${currentUser?.username}`
-      : moodboardId
-        ? `FOR ${profileUser?.username}`
-        : `BY ${profileUser?.username}`
-
+  ? "LIKED LOOKS"
+  : isOwner
+  ? `BY ${currentUser?.username}`
+  : moodboardId
+  ? `FOR ${profileUser?.username}`
+  : `BY ${profileUser?.username}`
+  
   const filteredSilhouettes =
-    moodboardId || selectedFilters.length === 0
-      ? silhouettes
-      : silhouettes.filter((silhouette) =>
-          silhouette.tags?.some(tag =>
-            selectedFilters.includes(tag)
-          )
-        )
-
-  const [index, setIndex] = useState(0)
-  const left = filteredSilhouettes[index]
-  const center = filteredSilhouettes[index + 1]
-  const right = filteredSilhouettes[index + 2]
-
-  const currentItem = Math.min(
-    index + 3,
-    filteredSilhouettes.length
-  )
-
-  const handleNext = () => {
-    setIndex((i) =>
-      Math.min(i + 3, Math.max(filteredSilhouettes.length - 3, 0))
+  moodboardId || selectedFilters.length === 0
+  ? silhouettes
+  : silhouettes.filter((silhouette) =>
+    silhouette.tags?.some(tag =>
+      selectedFilters.includes(tag)
     )
-  }
+  )
+  
+  const {
+    left,
+    center,
+    right,
+    currentItem,
+    canPrev,
+    canNext,
+    handlePrev,
+    handleNext
+  } = useLooksCarousel(filteredSilhouettes)
+  // const [index, setIndex] = useState(0)
+  // const left = filteredSilhouettes[index]
+  // const center = filteredSilhouettes[index + 1]
+  // const right = filteredSilhouettes[index + 2]
 
-  const canPrev = index > 0
+  // const currentItem = Math.min(
+  //   index + 3,
+  //   filteredSilhouettes.length
+  // )
 
-  const canNext =
-    index + 3 < filteredSilhouettes.length
+  // const handleNext = () => {
+  //   setIndex((i) =>
+  //     Math.min(i + 3, Math.max(filteredSilhouettes.length - 3, 0))
+  //   )
+  // }
 
-  const handlePrev = () => {
-    setIndex((i) => Math.max(i - 3, 0))
-  }
+  // const canPrev = index > 0
+
+  // const canNext =
+  //   index + 3 < filteredSilhouettes.length
+
+  // const handlePrev = () => {
+  //   setIndex((i) => Math.max(i - 3, 0))
+  // }
 
   const handleDelete = async (id:number) => {
 
@@ -100,65 +112,72 @@ const carouselLabel =
     }
   }
 
-const renderCell = (silhouette?: Silhouette) => (
-  <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
+  //   <SilhouetteCell
+  //   silhouette={left}
+  //   currentUser={currentUser?.id}
+  //   moodboardId={moodboardId}
+  //   from={from}
+  //   onNavigate={onNavigate}
+  //   onDelete={handleDelete}
+  // />
 
-    {silhouette && (
-      <>
-        <img
-          src={silhouette.image_url}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      <ContentOverlay
-                username={
-                  moodboardId || from === "references"
-                    ? silhouette.username
-                    : silhouette.target_username
-                }
+  // const renderCell = (silhouette?: Silhouette) => (
+  //   <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
+  //     {silhouette && (
+  //       <>
+  //         <img
+  //           src={silhouette.image_url}
+  //           alt=""
+  //           className="absolute inset-0 w-full h-full object-cover"
+  //         />
+  //       <ContentOverlay
+  //           username={
+  //             moodboardId || from === "references"
+  //               ? silhouette.username
+  //               : silhouette.target_username
+  //           }
 
-                prefix={
-                  moodboardId || from === "references"
-                    ? "BY"
-                    : "FOR"
-                }
+  //           prefix={
+  //             moodboardId || from === "references"
+  //               ? "BY"
+  //               : "FOR"
+  //           }
 
-                isOwner={
-                  moodboardId
-                    ? silhouette.user_id === currentUser?.id
-                    : silhouette.target_user_id === currentUser?.id
-                }
+  //           isOwner={
+  //             moodboardId
+  //               ? silhouette.user_id === currentUser?.id
+  //               : silhouette.target_user_id === currentUser?.id
+  //           }
 
-                onOpenProfile={() =>
-                  onNavigate?.({
-                    to: "profile",
-                    direction: "next",
-                    params: {
-                      userId: moodboardId || from === "references"
-                        ? silhouette.user_id
-                        : silhouette.target_user_id,
-                      isOwner: moodboardId
-                        ? silhouette.user_id === currentUser?.id
-                        : silhouette.target_user_id === currentUser?.id,
-                      from: "looks"
-                    }
-                  })
-                }
+  //           onOpenProfile={() =>
+  //             onNavigate?.({
+  //               to: "profile",
+  //               direction: "next",
+  //               params: {
+  //                 userId: moodboardId || from === "references"
+  //                   ? silhouette.user_id
+  //                   : silhouette.target_user_id,
+  //                 isOwner: moodboardId
+  //                   ? silhouette.user_id === currentUser?.id
+  //                   : silhouette.target_user_id === currentUser?.id,
+  //                 from: "looks"
+  //               }
+  //             })
+  //           }
 
-                like={{
-                  type:"silhouette",
-                  id:silhouette.id,
-                  count:silhouette.likes_count,
-                  liked:silhouette.liked_by_current_user
-                }}
+  //           like={{
+  //             type:"silhouette",
+  //             id:silhouette.id,
+  //             count:silhouette.likes_count,
+  //             liked:silhouette.liked_by_current_user
+  //           }}
 
-                onDelete={() => handleDelete(silhouette.id)}
-              />
-            </>
-    )}
-  </div>
-)
-
+  //           onDelete={() => handleDelete(silhouette.id)}
+  //         />
+  //       </>
+  //     )}
+  //   </div>
+  // )
   return (
     <BookLayout
       header={
@@ -218,13 +237,13 @@ const renderCell = (silhouette?: Silhouette) => (
       footerLeft={ <BackButton onBack={onBack} /> }
       footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className={typography.username}>
               {currentUser?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
-        >   
+        >    
       <div className="flex flex-col h-full min-h-0 gap-1">
 
       {isLoading ? (
@@ -241,12 +260,40 @@ const renderCell = (silhouette?: Silhouette) => (
         </div>
       ) : (
         <ThreeColGrid
-          left={renderCell(left)}
-          center={renderCell(center)}
-          right={renderCell(right)}
+          left={
+            <SilhouetteCell
+              silhouette={left}
+              currentUser={currentUser?.id}
+              moodboardId={moodboardId}
+              from={from}
+              onNavigate={onNavigate}
+              onDelete={handleDelete}
+            />
+          }
+
+          center={
+            <SilhouetteCell
+              silhouette={center}
+              currentUser={currentUser?.id}
+              moodboardId={moodboardId}
+              from={from}
+              onNavigate={onNavigate}
+              onDelete={handleDelete}
+            />
+          }
+
+          right={
+            <SilhouetteCell
+              silhouette={right}
+              currentUser={currentUser?.id}
+              moodboardId={moodboardId}
+              from={from}
+              onNavigate={onNavigate}
+              onDelete={handleDelete}
+            />
+          }
         />
       )}
-
       </div>
     </BookLayout>
   )
