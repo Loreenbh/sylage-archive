@@ -126,7 +126,6 @@ export default function ContentOverlay({
           </button>
         )}
 
-
         {isOwner && onDelete && (
           <>
             <button

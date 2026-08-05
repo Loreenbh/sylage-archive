@@ -102,4 +102,10 @@ export const typography = {
     text-white
   `,
 
+    follow:`
+    text-[8px]
+    tracking-[0.20em]
+    font-extralight
+    `
+
 }

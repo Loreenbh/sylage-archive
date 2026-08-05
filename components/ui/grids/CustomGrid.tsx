@@ -10,21 +10,26 @@ export default function CustomGrid({
   bottomRight,
 }: Props) {
   return (
-    <div className="grid grid-cols-2 h-full w-full gap-0.5">
+    <div className="grid grid-cols-2 h-full min-h-0 w-full gap-0.5">
 
-      {/* LEFT */}
       <div className="h-full min-h-0 overflow-hidden">
         {left}
       </div>
 
-      {/* RIGHT */}
-      <div className="grid grid-rows-2 h-full min-h-0 gap-0.5 bg-purple-500">
+      <div className="
+        grid 
+        grid-rows-[0.35fr_1.65fr]
+        md:grid-rows-2
+        h-full 
+        min-h-0 
+        gap-0.5
+      ">
 
-        <div className="min-h-0 overflow-hidden aspect-square">
+        <div className="min-h-0 overflow-hidden">
           {topRight}
         </div>
 
-        <div className="min-h-0 overflow-hidden aspect-square">
+        <div className="min-h-0 overflow-hidden">
           {bottomRight}
         </div>
 

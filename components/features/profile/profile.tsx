@@ -234,14 +234,14 @@ const handleFollowToggle = async () => {
       }
       footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className={typography.username}>
               {currentUser?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
-        >   
-    <div className="flex flex-col h-full "> 
+        >  
+    <div className="flex flex-col h-full min-h-0"> 
       <CustomGrid
         left={
           <GridButton
@@ -264,7 +264,7 @@ const handleFollowToggle = async () => {
                 className="absolute inset-0 w-full h-full object-cover"
               />
             )}
-            <p className={`${typography.body} relative z-10 ${lastSilhouette ? "text-white drop-shadow" : ""}`}>
+            <p className={`${typography.buttonBody} relative z-10 ${lastSilhouette ? "text-white drop-shadow" : ""}`}>
               looks
             </p>
           </GridButton>
@@ -291,45 +291,44 @@ const handleFollowToggle = async () => {
                 className="absolute inset-0 w-full h-full object-cover"
               />
             )}
-            <p className={`${typography.body} relative z-10 ${lastMoodboard ? "text-white drop-shadow" : ""}`}>
+            <p className={`${typography.buttonBody} relative z-10 ${lastMoodboard ? "text-white drop-shadow" : ""}`}>
               moods
             </p>
           </GridButton>
         }
-        bottomRight={
-          <div className="bg-zinc-400 h-full w-full flex flex-col">
+bottomRight={
+  <div className="bg-[#946953] h-full min-h-0 w-full flex flex-col overflow-hidden">
 
-            <div className="flex-1 min-h-0">
-              <ScrollFollow
-                followingTitle="Inspired by"
-                followersTitle="Inspiring"
-                following={following}
-                followers={followers}
-                canManageFollow={profileUser?.id === currentUser?.id}
-                onOpenProfile={(item)=>{
-                  onNavigate?.({
-                    to:"profile",
-                    direction:"next",
-                    params:{
-                      userId:item.id,
-                      isOwner:item.id === currentUser?.id,
-                      from:"profile"
-                    }
-                  })
-                }}
+    <div className="flex-1 min-h-0">
+      <ScrollFollow
+        followingTitle="Inspired by"
+        followersTitle="Inspiring"
+        following={following}
+        followers={followers}
+        canManageFollow={profileUser?.id === currentUser?.id}
+        onOpenProfile={(item)=>{
+          onNavigate?.({
+            to:"profile",
+            direction:"next",
+            params:{
+              userId:item.id,
+              isOwner:item.id === currentUser?.id,
+              from:"profile"
+            }
+          })
+        }}
+        onUnfollow={(item) => handleUnfollow(item.id)}
+      />
+    </div>
 
-                onUnfollow={(item) => handleUnfollow(item.id)}
-              />
-            </div>
+    <div className="flex p-4 h-12 shrink-0">
+      <p className={typography.buttonBody}>
+        CONNECTIONS
+      </p>
+    </div>
 
-            <div className="flex items-end p-4 h-12">
-              <p className={typography.body}>
-                CONNECTIONS
-              </p>
-            </div>
-
-          </div>
-        }
+  </div>
+}
       />
       </div>
     </BookLayout>
