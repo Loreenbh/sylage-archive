@@ -12,7 +12,6 @@ import BookLayout from "@/components/book/BookLayout"
 import Header from "@/components/navigation/Header"
 import Sidebar from "@/components/navigation/SideBar"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
-// import CurrentUserName from "@/components/ui/pagination/CurrentUsername"
 import BackButton from "@/components/ui/buttons/BackButton"
 
 /* LAYOUTS */
@@ -23,6 +22,7 @@ import LayoutD from "./layouts/LayoutD"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
+import { colors } from "@/styles/colors"
 
 /* SERVICES */
 import { uploadImage } from "@/lib/services/upload"
@@ -124,8 +124,13 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
     try {
       layoutRef.current.classList.add("export-mode")
       const imageData = await toPng(layoutRef.current)
+      console.log(
+        layoutRef.current?.offsetWidth,
+        layoutRef.current?.offsetHeight
+      )
       layoutRef.current.classList.remove("export-mode")
       const imgUrl = await uploadImage(imageData)
+      console.log("IMAGE UPLOADED :", imgUrl)
       await createMoodboard(
         imgUrl,
         allSelectedTags
@@ -194,7 +199,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
           ]}
         />
       }
-      sidebar={<Sidebar text="EDITOR" clickable={false} />}
+      sidebar={<Sidebar text="COMPOSE" clickable={false} />}
 
       actionsBar={
         <div className="flex w-full items-center justify-between">
@@ -210,32 +215,50 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       footerLeft={ <BackButton onBack={onBack} /> }
       footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className={typography.username}>
               {currentUser?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
-        >   
-        <div className="flex flex-col h-full w-full gap-2 min-h-0">
+        >       
+        <div className="flex flex-col h-full w-full min-h-0">
 
-        <div className="flex-1 min-h-0 flex justify-center">
+          {/* MOODBOARD VISIBLE POUR L'UTILISATEUR */}
+          <div className="flex-1 min-h-0 flex justify-center">
+            <div
+              className="
+                aspect-square
+                h-full
+                max-w-full
+                overflow-hidden
+                relative
+              "
+            >
+              {renderLayout()}
+            </div>
+          </div>
+
+
+          {/* EXPORT CACHE POUR LA CAPTURE PNG */}
           <div
             ref={layoutRef}
             className="
-              aspect-square
-              h-full
-              max-w-full
+              fixed
+              left-[-9999px]
+              top-0
+              w-[1200px]
+              h-[1200px]
               overflow-hidden
-              relative
+              pointer-events-none
             "
           >
             {renderLayout()}
           </div>
-        </div>
 
-        {/* PICKER DE TAGS : 3 catégories dépliables */}
-        <div className="flex flex-col items-center gap-2 pb-2 px-4">
+
+          {/* FILTRES / TAGS */}
+          <div className="flex flex-col items-center px-4">
 
           <TagPicker
             styleTags={styleTags}
@@ -246,12 +269,14 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
             onChangeColor={setColorTags}
           />
 
-          <p className="text-[9px] text-black/30 tracking-[0.15em]">
+          <p className="text-[7px] text-black/50 tracking-[0.15em]">
             {allSelectedTags.length} tag{allSelectedTags.length > 1 ? "s" : ""} sélectionné{allSelectedTags.length > 1 ? "s" : ""} (min {MIN_TAGS_TOTAL})
           </p>
 
           {publishError && (
-            <p className="text-[10px] text-red-600 tracking-[0.1em] mt-1">
+            <p className={`
+              text-[10px] ${colors.feedback.error} tracking-[0.1em] mt-1
+              `}>
               {publishError}
             </p>
           )}
@@ -259,7 +284,6 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
 
       </div>
 
-      {/* INPUT FILE HIDDEN */}
       <input
         ref={fileInputRef}
         type="file"

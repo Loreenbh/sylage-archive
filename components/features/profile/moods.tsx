@@ -153,6 +153,7 @@ const {
               <div className="relative aspect-square w-full bg-zinc-100 cursor-pointer overflow-hidden">
                 <img
                   src={board.image_url}
+                  
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
                 />

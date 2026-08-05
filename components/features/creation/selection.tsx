@@ -27,7 +27,6 @@ type Props = {
 }
 
 export default function Create({ onNavigate, params, onBack }: Props) {
-// const { from } = params ?? {}
 const { user: currentUser } = useCurrentUser()
 
   return (
@@ -56,23 +55,26 @@ const { user: currentUser } = useCurrentUser()
           ]}
         />
       }
-      sidebar={<Sidebar text="CREATE" clickable={false} />}
-      // actionsBar={
-      //     <div>
-  
-      //     </div>
-      //   )
-      // }
+      sidebar={<Sidebar text="EDITION" clickable={false} />}
+      actionsBar={
+        <div className="flex items-center gap-2 sm:gap-6">
+          <p
+            className={typography.buttonBody}>layout</p>
+          <span className={typography.bullet}>•</span>
+          <p
+            className={typography.buttonBody}>foundation</p>
+        </div>
+      }
       footerLeft={ <BackButton onBack={onBack} /> }
       footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className={typography.username}>
               {currentUser?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
-        >    
+        >     
       <FourSquaresGrid
         topLeft={
           <div
@@ -83,7 +85,6 @@ const { user: currentUser } = useCurrentUser()
                 direction: "next",
                 params: {
                   layout: "A",
-                  // from: "create",
                 },
               })
             }
@@ -103,7 +104,6 @@ const { user: currentUser } = useCurrentUser()
                 direction: "next",
                 params: {
                   layout: "B",
-                  // from: "create",
                 },
               })
             }
@@ -123,7 +123,6 @@ const { user: currentUser } = useCurrentUser()
                 direction: "next",
                 params: {
                   layout: "C",
-                  // from: "create",
                 },
               })
             }
@@ -142,7 +141,6 @@ const { user: currentUser } = useCurrentUser()
                 direction:"next",
                 params:{
                   layout:"D",
-                  // from:"create"
                 }
               })
             }

@@ -58,7 +58,7 @@ function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
 }
 
 
-export default function Draw({ onNavigate, params, onBack }: Props) {
+export default function EditLook({ onNavigate, params, onBack }: Props) {
 const { user: currentUser } = useCurrentUser()
 
     const {
@@ -134,9 +134,11 @@ const { user: currentUser } = useCurrentUser()
 
     try {
    slotRef.current.classList.add("export-mode")
-
+      console.log("test")
     const imageData = await toPng(slotRef.current)
 
+console.log("imageData size", imageData.length)
+console.log(imageData.slice(0, 50))
     slotRef.current.classList.remove("export-mode")
 
 
@@ -160,18 +162,18 @@ const { user: currentUser } = useCurrentUser()
         }
       })
 
-    } catch {
-      setPublishError("Erreur réseau")
-    } finally {
-      setIsPublishing(false)
-    }
+} catch (error) {
+  console.error(error)
+  setPublishError(
+    error instanceof Error 
+      ? error.message 
+      : "Erreur inconnue"
+  )
+}
   }
-
-
 
   return (
     <BookLayout
-
       header={
         <Header
           items={[
@@ -187,12 +189,10 @@ const { user: currentUser } = useCurrentUser()
                   }
                 })
             },
-
             {
               section:"FILTER",
               clickable:false,
             },
-
             {
               section:"CREATE",
               clickable:true,
@@ -208,44 +208,16 @@ const { user: currentUser } = useCurrentUser()
           ]}
         />
       }
-
-
       sidebar={
         <Sidebar
-          text={"PROPOSE"}
+          text={"CONTRIBUTE"}
           clickable={false}
         />
       }
-
-
       actionsBar={
-        <div className="flex items-center gap-5">
-
-          <button
-            onClick={() =>
-              onNavigate?.({
-                to:"moodDetails",
-                direction:"prev",
-                params:{
-                  isOwner,
-                  // moodboard,
-                  fromTab,
-                }
-              })
-            }
-            className={typography.buttonBody}
-          >
-            back
-          </button>
-
-
+        <div className="flex items-center gap-3">
           {!isOwner && (
             <>
-              <span className={typography.bullet}>
-                •
-              </span>
-
-
               <button
                 onClick={() =>
                   onNavigate?.({
@@ -258,15 +230,13 @@ const { user: currentUser } = useCurrentUser()
                 }
                 className={typography.buttonBody}
               >
-                profile
+                profile 
               </button>
+              <span className={typography.bullet}> • </span>
             </>
           )}
 
-
-
-          <div className="ml-[200px] flex items-center gap-3">
-
+          <div className="flex items-center gap-3">
             <button
               onClick={handlePublish}
               disabled={isPublishing}
@@ -274,22 +244,18 @@ const { user: currentUser } = useCurrentUser()
             >
               Publish
             </button>
-
             {publishError && (
               <p className="text-[10px] text-red-600 tracking-[0.1em]">
                 {publishError}
               </p>
             )}
-
           </div>
-
-
         </div>
       }
       footerLeft={ <BackButton onBack={onBack} /> }
       footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className={typography.username}>
               {currentUser?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
@@ -297,80 +263,52 @@ const { user: currentUser } = useCurrentUser()
           }
         >   
       <div className="
-        flex 
-        items-stretch 
-        w-full 
-        h-full 
+        flex
+        items-stretch
+        w-full
+        h-full
         gap-1
+        bg-blue-200
       ">
-
-
         <div className="
-          relative 
-          overflow-hidden 
-          flex-1
+          relative
+          overflow-hidden
+          w-1/4
         ">
-          <SilhouetteGhost
-            slot={silhouette}
-          />
+          <SilhouetteGhost slot={silhouette} />
         </div>
 
-
-
-        <div ref={slotRef} className="
-          relative 
-          overflow-hidden 
-          flex-1
-        ">
-
+        <div
+          ref={slotRef}
+          className="
+            relative
+            overflow-hidden
+            w-1/2
+          "
+        >
           <ImageSlot
-
             slot={silhouette}
-
             onSelect={handleSelectSlot}
-
-            onChangeTransform={
-              handleChangeTransform
-            }
-
+            onChangeTransform={handleChangeTransform}
             className="bg-zinc-100"
-
           />
-
         </div>
-
-
 
         <div className="
-          relative 
-          overflow-hidden 
-          flex-1
+          relative
+          overflow-hidden
+          w-1/4
         ">
-          <SilhouetteGhost
-            slot={silhouette}
-          />
+          <SilhouetteGhost slot={silhouette} />
         </div>
-
-
       </div>
-
-
-
       <input
-
         ref={fileInputRef}
-
         type="file"
-
         accept="image/*"
-
         onChange={handleFileChange}
-
         className="hidden"
-
       />
-
-
     </BookLayout>
   )
 }

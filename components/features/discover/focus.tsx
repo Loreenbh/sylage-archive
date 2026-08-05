@@ -114,7 +114,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                   }
                   className={typography.buttonBody}
                 >
-                  Propose
+                  Contribute
                 </button>
 
                 <span className={typography.bullet}>•</span>

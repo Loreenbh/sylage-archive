@@ -31,6 +31,6 @@ coverHeader: `
   `,
 
     sideBarTitle: `
-    mt-40
+    mt-26
   `
 }

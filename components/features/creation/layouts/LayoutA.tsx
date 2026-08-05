@@ -20,7 +20,7 @@ export default function LayoutA({ images = [], onSelectSlot, onUpdateSlot }: Pro
           slot={images[index] ?? null}
           onSelect={() => onSelectSlot?.(index)}
           onChangeTransform={(patch) => onUpdateSlot?.(index, patch)}
-          className="bg-pink-300 hover:bg-zinc-300"
+          className="bg-[#CDCAC1] hover:bg-[#BDB7A3]"
         />
       ))}
 

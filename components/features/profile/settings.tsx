@@ -388,7 +388,7 @@ const handlePasswordChange = async () => {
             </div>
 
 
-            <span className={typography.body}>
+            <span className={typography.buttonBody}>
               Change password
             </span>
 
@@ -444,7 +444,7 @@ const handlePasswordChange = async () => {
 
 
 
-            <span className={typography.body}>
+            <span className={typography.buttonBody}>
               Change username
             </span>
 
@@ -466,7 +466,7 @@ const handlePasswordChange = async () => {
 
               <button
                 onClick={() => setDeleteConfirm(true)}
-                className={typography.body}
+                className={typography.buttonBody}
               >
                 Delete account
               </button>

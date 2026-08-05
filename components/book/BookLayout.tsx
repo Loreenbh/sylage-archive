@@ -22,24 +22,25 @@ export default function BookLayout({
   return (
     <BookFrame>
       {header && (
-        <div className="w-full">
+        <div className="w-full bg-red-200">
           {header}
         </div>
       )}
       {/* BODY */}
-      <div className="flex mt-5 items-stretch justify-center flex-1 min-h-0">
+      <div className="flex items-stretch justify-center flex-1 min-h-0">
         {/* LEFT COLUMN */}
-        <div className="flex flex-col ml-6">
+        <div className="flex flex-col">
           {/* IMAGE */}
           <div
             className="
-              w-[270px]
+              w-[280px]
               sm:w-[550px]
               md:w-[540px]
-              lg:w-[700px]
+              lg:w-[670px]
               xl:w-[780px]
               aspect-square
               shrink-0
+              mx-auto
             "
           >
             {children}
@@ -50,16 +51,15 @@ export default function BookLayout({
             </div>
           )}
         </div>
-        {/* SIDEBAR */}
         {sidebar && (
           <div className="
             flex 
             flex-col
             self-stretch
-            w-[40px]
-            sm:w-[60px]
-            md:w-[80px]
-            lg:w-[100px]
+            w-[20px]
+            sm:w-[35px]
+            md:w-[45px]
+            lg:w-[50px]
           ">
             {sidebar}
           </div>

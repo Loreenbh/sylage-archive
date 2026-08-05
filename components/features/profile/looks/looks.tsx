@@ -9,7 +9,7 @@ import Header from "@/components/navigation/Header"
 import ThreeColGrid from "@/components/ui/grids/ThreeColGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import CarouselControls from "@/components/ui/navigation/CarouselControls"
-import SilhouetteCell from "./looks/SilhouetteCell"
+import SilhouetteCell from "./SilhouetteCell"
 
 /* TYPES */
 import { Silhouette } from "@/types/silhouette"
@@ -244,7 +244,13 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
           </div>
           }
         >    
-      <div className="flex flex-col h-full min-h-0 gap-1">
+      <div className="
+          flex 
+          flex-col 
+          h-full 
+          min-h-0 
+          gap-1"
+        >
 
       {isLoading ? (
         <div className="h-full flex items-center justify-center">
@@ -253,7 +259,14 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
           </p>
         </div>
       ) : filteredSilhouettes.length === 0 ? (
-        <div className="h-full flex items-center justify-center">
+        <div className="
+            h-full 
+            flex 
+            items-center 
+            justify-center 
+            border -b 
+            border-black/30"
+          >
           <p className="text-black/30 text-xs tracking-[0.2em]">
             NO LOOKS
           </p>
