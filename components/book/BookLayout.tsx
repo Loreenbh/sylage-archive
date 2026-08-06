@@ -22,7 +22,7 @@ export default function BookLayout({
   return (
     <BookFrame>
       {header && (
-        <div className="w-full bg-red-200">
+        <div className="w-full">
           {header}
         </div>
       )}
@@ -33,13 +33,14 @@ export default function BookLayout({
           {/* IMAGE */}
           <div
             className="
-              w-[280px]
+              w-[260px]
               sm:w-[550px]
               md:w-[540px]
               lg:w-[670px]
               xl:w-[780px]
               aspect-square
               shrink-0
+              mt-7
               mx-auto
             "
           >
@@ -74,7 +75,6 @@ export default function BookLayout({
             justify-between
             items-center
             px-2
-            mt-auto
           "
         >
           <div>

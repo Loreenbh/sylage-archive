@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-// import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 
@@ -8,29 +7,7 @@ export async function POST(request: Request){
     const body = await request.json()
     const { imageUrl, moodboardId } = body
 
-
-    // /* AUTHENTIFICATION */
-    // const cookieStore = await cookies()
-    // const token = cookieStore.get("session_token")?.value
-
-    // if (!token){
-    //     return NextResponse.json(
-    //         {error:"Non connecte"},
-    //         {status:401}
-    //     )
-    // }
-
-    // const session = await pool.query(
-    //     `SELECT user_id
-    //     FROM sessions
-    //     WHERE token=$1
-    //     AND expires_at > NOW()
-    //     `,
-    //     [token]
-    // )
-
     const user = await getCurrentSessionUser()
-
     if (!user){
         return NextResponse.json(
             {error:"Session invalide"},
@@ -39,14 +16,12 @@ export async function POST(request: Request){
     }
 
     /* VALIDATION */
-
     if (!imageUrl || !moodboardId){
         return NextResponse.json(
             {error:'Champs manquants'},
             {status: 400}
         )
     }
-
     try{
         const result = await pool.query(
             `
@@ -88,22 +63,7 @@ export async function GET(request: Request) {
   const moodboardId = searchParams.get("moodboardId")
   const liked = searchParams.get("liked")
 
-  // // SESSION
-  // const cookieStore = await cookies()
-  // const token = cookieStore.get("session_token")?.value
-
-  // const session = await pool.query(
-  //   `
-  //   SELECT user_id
-  //   FROM sessions
-  //   WHERE token=$1
-  //   AND expires_at > NOW()
-  //   `,
-  //   [token]
-  // )
-
   const currentSession = await getCurrentSessionUser()
-
   if (!currentSession) {
     return NextResponse.json(
       {error:"Non connecté"},
@@ -114,7 +74,6 @@ export async function GET(request: Request) {
  // CAS 0 : SILHOUETTES LIKEES PAR L'UTILISATEUR
 
 if (liked === "true") {
-
   try {
 
     const silhouettes = await pool.query(
@@ -184,11 +143,8 @@ if (liked === "true") {
   }
 }
 
-
-
   // CAS 1 : PROPOSITIONS D'UN MOODBOARD
   if (moodboardId) {
-
     const moodboard = await pool.query(
       `
       SELECT 
@@ -204,14 +160,12 @@ if (liked === "true") {
       [moodboardId]
     )
 
-
     if (!moodboard.rows[0]) {
       return NextResponse.json(
         {error:"Moodboard introuvable"},
         {status:404}
       )
     }
-
 
     const silhouettes = await pool.query(
       `
@@ -247,8 +201,6 @@ if (liked === "true") {
         currentSession.user_id
       ]
     )
-
-
     return NextResponse.json({
       user: moodboard.rows[0],
       silhouettes: silhouettes.rows
@@ -258,11 +210,9 @@ if (liked === "true") {
 
 
   // CAS 2 : PROFIL
-
   const userId = userIdParam
     ? Number(userIdParam)
     : currentSession.user_id
-
 
   const user = await pool.query(
     `
@@ -273,14 +223,12 @@ if (liked === "true") {
     [userId]
   )
 
-
   if (!user.rows[0]) {
     return NextResponse.json(
       {error:"Utilisateur introuvable"},
       {status:404}
     )
   }
-
 
   const silhouettes = await pool.query(
     `
@@ -330,8 +278,6 @@ if (liked === "true") {
       currentSession.user_id
     ]
   )
-
-
   return NextResponse.json({
     user:user.rows[0],
     silhouettes:silhouettes.rows
@@ -352,34 +298,13 @@ export async function DELETE(request: Request){
     )
   }
 
-    //   /* AUTHENTIFICATION */
-    // const cookieStore = await cookies()
-    // const token = cookieStore.get("session_token")?.value
-
-    // if (!token){
-    //     return NextResponse.json(
-    //         {error:"Non connecte"},
-    //         {status:401}
-    //     )
-    // }
-
-    // const session = await pool.query(
-    //     `SELECT user_id
-    //     FROM sessions
-    //     WHERE token=$1
-    //     AND expires_at > NOW()
-    //     `,
-    //     [token]
-    // )
-
-    const user = await getCurrentSessionUser()
-    if (!user){
-        return NextResponse.json(
-            {error:"Session invalide"},
-            {status:401}
-        )
-    }
-
+  const user = await getCurrentSessionUser()
+  if (!user){
+      return NextResponse.json(
+          {error:"Session invalide"},
+          {status:401}
+      )
+  }
 
   await pool.query(
     `
@@ -391,8 +316,6 @@ export async function DELETE(request: Request){
       user.user_id
     ]
   )
-
-
   return NextResponse.json({
     success:true
   })

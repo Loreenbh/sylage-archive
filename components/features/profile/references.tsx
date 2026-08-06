@@ -58,13 +58,18 @@ export default function References({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="REFERENCES" clickable={false} />}
       actionsBar={
-        <div className="flex w-full items-center justify-between">
+        <div className="flex items-center gap-2 sm:gap-6">
+          <p
+            className={typography.buttonBody}>Your Inspirations</p>
+          <span className={typography.bullet}>•</span>
+          <p
+            className={typography.buttonBody}>Favourites</p>
         </div>
       }
       footerLeft={ <BackButton onBack={onBack} /> }
       footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className={typography.username}>
               {currentUser?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
@@ -118,14 +123,6 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 <p className={typography.buttonBody}>
                   LOOKS
                 </p>
-
-                <p className="
-                  text-[10px]
-                  tracking-[0.2em]
-                  text-white/70
-                ">
-                  LIKED SILHOUETTES
-                </p>
               </div>
 
             </button>
@@ -175,14 +172,6 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 <p className={typography.buttonBody}>
                   MOODS
                 </p>
-
-                <p className="
-                  text-[10px]
-                  tracking-[0.2em]
-                  text-white/70
-                ">
-                  LIKED MOODBOARDS
-                </p>
               </div>
 
             </button>
@@ -228,8 +217,10 @@ export default function References({ onNavigate, onBack, params }: Props) {
                     src={featuredCreator.avatar_url}
                     alt=""
                     className="
-                      w-35
-                      h-35
+                      w-20
+                      h-20
+                      sm:w-35
+                      sm:h-35
                       rounded-full
                       object-cover
                     "
@@ -237,8 +228,8 @@ export default function References({ onNavigate, onBack, params }: Props) {
 
                   <p
                     className="
-                      mt-3
-                      text-sm
+                      
+                      text-xs
                       tracking-[0.2em]
                     "
                   >
@@ -252,10 +243,10 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   absolute
                   bottom-0
                   left-0
-                  p-4
+                  p-1
                 "
               >
-                <p className={typography.buttonBody}>
+                <p className="text-[10px] tracking-[0.1em]">
                   FEATURED CREATOR
                 </p>
               </div>

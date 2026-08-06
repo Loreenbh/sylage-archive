@@ -23,23 +23,17 @@ type Props = {
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
-
     const reader = new FileReader()
-
     reader.readAsDataURL(file)
-
     reader.onload = () => {
       resolve(reader.result as string)
     }
-
     reader.onerror = reject
-
   })
 }
 
 export default function Settings({ onNavigate}: Props) {
-   const { user } = useCurrentUser()
-
+  const { user } = useCurrentUser()
   const [avatar, setAvatar] = useState<string | null>(null)
 
   const [oldPassword, setOldPassword] = useState("")
@@ -52,160 +46,110 @@ export default function Settings({ onNavigate}: Props) {
   const [deleteConfirm, setDeleteConfirm] = useState(false)
   const [deleteMessage, setDeleteMessage] = useState("")
 
-const handleDeleteAccount = async () => {
+  const handleDeleteAccount = async () => {
 
-  try {
+    try {
 
-    await deleteUser()
+      await deleteUser()
+      setDeleteMessage("Account deleted")
+      onNavigate?.({
+        to:"cover",
+        direction:"prev"
+      })
 
-    setDeleteMessage("Account deleted")
+    } catch(error) {
 
+      if(error instanceof Error){
+        setDeleteMessage(error.message)
+      } else {
+        setDeleteMessage("Delete failed")
+      }
+    }
+  }
 
-    // après suppression tu peux renvoyer vers login/home
-    onNavigate?.({
-      to:"cover",
-      direction:"prev"
-    })
+  useEffect(() => {
+    if (user) {
+      setAvatar(user.avatar_url ?? null)
+      setUsername(user.username)
+    }
+  }, [user])
 
-
-  } catch(error) {
-
-    if(error instanceof Error){
-      setDeleteMessage(error.message)
-    } else {
-      setDeleteMessage("Delete failed")
+  const handleUsernameChange = async () => {
+    setUsernameMessage("")
+    if (!username) {
+      setUsernameMessage("Missing username")
+      return
+    }
+    if (username.length < 3) {
+      setUsernameMessage("Username must be at least 3 characters")
+      return
+    }
+    if (username.length > 20) {
+      setUsernameMessage("Username must be less than 20 characters")
+      return
     }
 
-  }
-
-}
-
-
-
-
-useEffect(() => {
-  if (user) {
-    setAvatar(user.avatar_url ?? null)
-    setUsername(user.username)
-  }
-}, [user])
-
-const handleUsernameChange = async () => {
-
-  setUsernameMessage("")
-
-
-  if (!username) {
-    setUsernameMessage("Missing username")
-    return
-  }
-
-
-  if (username.length < 3) {
-    setUsernameMessage("Username must be at least 3 characters")
-    return
-  }
-
-
-  if (username.length > 20) {
-    setUsernameMessage("Username must be less than 20 characters")
-    return
-  }
-
-
-  try {
-
-    await updateUser({
-      username
-    })
-
-    setUsernameMessage("Username updated")
-
-
-  } catch(error) {
-
-    if(error instanceof Error){
-      setUsernameMessage(error.message)
+    try {
+      await updateUser({
+        username
+      })
+      setUsernameMessage("Username updated")
+    } catch(error) {
+      if(error instanceof Error){
+        setUsernameMessage(error.message)
+      }
     }
-
   }
-}
 
 
 
   const handleAvatarChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-
     const file = e.target.files?.[0]
-
     if (!file) return
-
-
     try {
-
       const imageData = await fileToBase64(file)
-
       const imageUrl = await uploadImage(imageData)
-
       await updateUser({
         avatar_url: imageUrl
       })
-
       setAvatar(imageUrl)
-
     } catch(error) {
-
       console.error(
         "Erreur changement avatar",
         error
       )
-
     }
   }
 
-const handlePasswordChange = async () => {
-
-  setMessage("")
-
-
-  if (!oldPassword || !newPassword || !confirmPassword) {
-    setMessage("Missing fields")
-    return
-  }
-
-
-  if (newPassword !== confirmPassword) {
-    setMessage("Passwords don't match")
-    return
-  }
-
-
-  try {
-
-    await updateUser({
-      oldPassword,
-      password: newPassword
-    })
-
-
-    setOldPassword("")
-    setNewPassword("")
-    setConfirmPassword("")
-
-    setMessage("Password updated")
-
-
-  } catch (error) {
-
-    if (error instanceof Error) {
-      setMessage(error.message)
-    } else {
-      setMessage("Password update failed")
+  const handlePasswordChange = async () => {
+    setMessage("")
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      setMessage("Missing fields")
+      return
     }
-
+    if (newPassword !== confirmPassword) {
+      setMessage("Passwords don't match")
+      return
+    }
+    try {
+      await updateUser({
+        oldPassword,
+        password: newPassword
+      })
+      setOldPassword("")
+      setNewPassword("")
+      setConfirmPassword("")
+      setMessage("Password updated")
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message)
+      } else {
+        setMessage("Password update failed")
+      }
+    }
   }
-}
   return (
     <BookLayout
       header={
@@ -271,7 +215,6 @@ const handlePasswordChange = async () => {
               overflow-hidden
             "
           >
-
            {user && (
               <Avatar
                 user={{
@@ -287,27 +230,23 @@ const handlePasswordChange = async () => {
                 "
               />
             )}
-
-
             <span
-              className="
+              className={`
+                ${typography.buttonBody}
                 relative
                 z-10
                 text-white
                 drop-shadow
-              "
+              `}
             >
               Change avatar
             </span>
-
-
             <input
               type="file"
               accept="image/*"
               className="hidden"
               onChange={handleAvatarChange}
             />
-
           </label>
         }
         topRight={
@@ -320,9 +259,7 @@ const handlePasswordChange = async () => {
               p-4
             "
           >
-
             <div className="flex flex-col gap-4">
-
               <input
                 type="password"
                 value={oldPassword}
@@ -337,8 +274,6 @@ const handlePasswordChange = async () => {
                   tracking-wide
                 "
               />
-
-
               <input
                 type="password"
                 value={newPassword}
@@ -353,8 +288,6 @@ const handlePasswordChange = async () => {
                   tracking-wide
                 "
               />
-
-
               <input
                 type="password"
                 value={confirmPassword}
@@ -369,16 +302,12 @@ const handlePasswordChange = async () => {
                   tracking-wide
                 "
               />
-
-
               <button
                 className={typography.buttonBody}
                 onClick={handlePasswordChange}
               >
                 save
               </button>
-
-
               {message && (
                 <span className="text-xs opacity-60 tracking-wide">
                   {message}
@@ -386,8 +315,6 @@ const handlePasswordChange = async () => {
               )}
 
             </div>
-
-
             <span className={typography.buttonBody}>
               Change password
             </span>
@@ -404,10 +331,7 @@ const handlePasswordChange = async () => {
               p-4
             "
           >
-
             <div className="flex flex-col gap-4">
-
-
               <input
                 type="text"
                 value={username}
@@ -422,33 +346,21 @@ const handlePasswordChange = async () => {
                   tracking-wide
                 "
               />
-
-
               <button
                 className={typography.buttonBody}
                 onClick={handleUsernameChange}
               >
                 save
               </button>
-
-
-
               {usernameMessage && (
                 <span className="text-xs opacity-60 tracking-wide">
                   {usernameMessage}
                 </span>
               )}
-
-
             </div>
-
-
-
             <span className={typography.buttonBody}>
               Change username
             </span>
-
-
           </div>
         }
         bottomRight={
@@ -461,56 +373,39 @@ const handlePasswordChange = async () => {
               p-4
             "
           >
-
             {!deleteConfirm ? (
-
               <button
                 onClick={() => setDeleteConfirm(true)}
                 className={typography.buttonBody}
               >
                 Delete account
               </button>
-
             ) : (
-
               <div className="flex flex-col gap-4">
-
                 <span className="text-sm">
                   Delete your account permanently?
                 </span>
-
-
                 <div className="flex gap-4">
-
                   <button
                     onClick={handleDeleteAccount}
                     className={typography.buttonBody}
                   >
                     confirm
                   </button>
-
-
                   <button
                     onClick={() => setDeleteConfirm(false)}
                     className={typography.buttonBody}
                   >
                     cancel
                   </button>
-
                 </div>
-
               </div>
-
             )}
-
-
             {deleteMessage && (
               <span className="text-xs opacity-60">
                 {deleteMessage}
               </span>
             )}
-
-
           </div>
         }
       />

@@ -1,11 +1,4 @@
-/*
-/api/moodboards
-    GET     → feed discover (tous les moodboards)
-    POST    → publier un moodboard
-*/
-
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 
@@ -21,22 +14,7 @@ export async function POST(request: Request) {
       )
    }
 
-  //  const cookieStore = await cookies()
-  //  const token = cookieStore.get("session_token")?.value
-
-  //  const session = await pool.query(
-  //    `
-  //    SELECT user_id
-  //    FROM sessions
-  //    WHERE token=$1
-  //    AND expires_at > NOW()
-  //    `,
-  //    [token]
-  //  )
-
-  //  const user = session.rows[0]
   const user = await getCurrentSessionUser()
-
    if (!user) {
       return NextResponse.json(
         { error: "Non connecté" },
@@ -68,7 +46,6 @@ export async function POST(request: Request) {
 }
 
 
-
 export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url)
@@ -76,35 +53,17 @@ export async function GET(request: Request) {
   const userIdParam = searchParams.get("userId")
   const liked = searchParams.get("liked")
 
-    // /* RECUPERATION DE LA SESSION */
-    // const cookieStore = await cookies()
-    // const token = cookieStore.get("session_token")?.value
+  const currentSession = await getCurrentSessionUser()
+  if (!currentSession) {
+      return NextResponse.json(
+      { error: "Non connecté" },
+      { status: 401 }
+      )
+  }
 
-    // const session = await pool.query(
-    //     `SELECT user_id
-    //     FROM sessions
-    //     WHERE token=$1
-    //     AND expires_at > NOW()
-    //     `,
-    //     [token]
-    // )
-    const currentSession = await getCurrentSessionUser()
-
-
-    if (!currentSession) {
-        return NextResponse.json(
-        { error: "Non connecté" },
-        { status: 401 }
-        )
-    }
-
-
-   // CAS 0 : MOODBOARDS LIKEES PAR L'UTILISATEUR
-
+   // CAS 0 : MOODBOARDS LIKES PAR L'UTILISATEUR
   if (liked === "true") {
-
     try {
-
       const moodboards = await pool.query(
         `
         SELECT 
@@ -123,8 +82,6 @@ export async function GET(request: Request) {
 
 
         FROM likes l
-  const res = await fetch(url)
-
 
         JOIN moodboards
         ON moodboards.id = l.moodboard_id
@@ -243,4 +200,97 @@ export async function GET(request: Request) {
       user: user.rows[0],
       moodboards: result.rows
   })
+}
+
+
+export async function DELETE(request: Request) {
+
+  const { searchParams } = new URL(request.url)
+
+  const id = searchParams.get("id")
+
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "ID manquant" },
+      { status: 400 }
+    )
+  }
+
+
+  const currentSession = await getCurrentSessionUser()
+
+
+  if (!currentSession) {
+    return NextResponse.json(
+      { error: "Non connecté" },
+      { status: 401 }
+    )
+  }
+
+
+  try {
+    const moodboard = await pool.query(
+      `
+      SELECT user_id
+      FROM moodboards
+      WHERE id=$1
+      `,
+      [id]
+    )
+
+    if (moodboard.rows.length === 0) {
+      return NextResponse.json(
+        { error:"Moodboard introuvable" },
+        { status:404 }
+      )
+    }
+
+
+    if (moodboard.rows[0].user_id !== currentSession.user_id) {
+      return NextResponse.json(
+        { error:"Non autorisé" },
+        { status:403 }
+      )
+    }
+
+
+    // await pool.query(
+    //   `
+    //   DELETE FROM silhouettes
+    //   WHERE moodboard_id=$1
+    //   `,
+    //   [id]
+    // )
+
+
+    await pool.query(
+      `
+      DELETE FROM likes
+      WHERE moodboard_id=$1
+      `,
+      [id]
+    )
+
+    // Supprime le moodboard
+    await pool.query(
+      `
+      DELETE FROM moodboards
+      WHERE id=$1
+      `,
+      [id]
+    )
+    return NextResponse.json({
+      success:true
+    })
+  } catch(error) {
+    console.error(
+      "DELETE MOODBOARD ERROR:",
+      error
+    )
+    return NextResponse.json(
+      { error:"Erreur suppression" },
+      { status:500 }
+    )
+  }
 }

@@ -76,7 +76,8 @@ export default function ScrollFollow({
                 </span>
               )}
             </button>
-          <div className="flex flex-col w-24">
+          {/* <div className="flex flex-col w-24">*/}
+          <div className="flex flex-col w-24 items-center"> 
               <button
                 className={`${typography.follow} text-left`}
               >

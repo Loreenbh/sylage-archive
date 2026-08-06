@@ -43,247 +43,337 @@ const LAYOUT_SLOT_COUNT = {
   D: 6,
 } as const
 
+const EXPORT_SIZE = 1200
+
 export default function Editor({ onNavigate, params, onBack }: Props) {
   const { user: currentUser } = useCurrentUser()
-  const layout = params?.layout as keyof typeof LAYOUT_SLOT_COUNT
 
+  const layout = params?.layout as keyof typeof LAYOUT_SLOT_COUNT
   const slotCount = LAYOUT_SLOT_COUNT[layout] ?? 9
 
+
   /* ---------------- STATE ---------------- */
+
   const [slots, setSlots] = useState<MoodboardSlot[]>(
     Array(slotCount).fill(null)
   )
+
   const [styleTags, setStyleTags] = useState<string[]>([])
   const [ambianceTags, setAmbianceTags] = useState<string[]>([])
   const [colorTags, setColorTags] = useState<string[]>([])
+
+  const [step, setStep] = useState<"compose" | "filters">("compose")
+
+  const [exportedImage, setExportedImage] = useState<string | null>(null)
+
   const [publishError, setPublishError] = useState<string | null>(null)
   const [isPublishing, setIsPublishing] = useState(false)
 
+
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const activeSlotRef = useRef<number | null>(null)
+
+  // élément réellement affiché à l'écran
   const layoutRef = useRef<HTMLDivElement | null>(null)
 
-  /* ---------------- SLOT CLICK (upload / changer image) ---------------- */
-  const handleSlotClick = (index: number) => {
+
+
+  /* ---------------- SLOT CLICK ---------------- */
+
+  const handleSlotClick = (index:number) => {
     activeSlotRef.current = index
     fileInputRef.current?.click()
   }
 
   /* ---------------- FILE CHANGE ---------------- */
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+
     const file = e.target.files?.[0]
     const slot = activeSlotRef.current
 
     if (!file || slot === null) return
 
-    const url = URL.createObjectURL(file)
+    const reader = new FileReader()
+    reader.onload = () => {
+      const url = reader.result as string
+      setSlots(prev => {
+        const copy = [...prev]
+        copy[slot] = {
+          url,
+          scale:1,
+          offsetX:0,
+          offsetY:0
+        }
+        return copy
+      })
+    }
 
-    setSlots((prev) => {
-      const copy = [...prev]
-      copy[slot] = { url, scale: 1, offsetX: 0, offsetY: 0 }
-      return copy
-    })
-
+    reader.readAsDataURL(file)
     activeSlotRef.current = null
     e.target.value = ""
+
   }
 
-  /* ---------------- TRANSFORM UPDATE (pan/zoom) ---------------- */
-  const handleUpdateSlot = (index: number, patch: MoodboardSlotPatch) => {
-    setSlots((prev) => {
-      const current = prev[index]
-      if (!current) return prev
+  /* ---------------- TRANSFORM ---------------- */
 
-      const copy = [...prev]
-      copy[index] = { ...current, ...patch }
+  const handleUpdateSlot = (
+    index:number,
+    patch:MoodboardSlotPatch
+  ) => {
+
+    setSlots(prev => {
+      const current = prev[index]
+      if(!current) return prev
+      const copy=[...prev]
+      copy[index]={
+        ...current,
+        ...patch
+      }
       return copy
     })
   }
+  /* ---------------- TAGS ---------------- */
 
-  /* ---------------- TAGS (3 catégories, plafonds distincts) ---------------- */
-  const allSelectedTags = [...styleTags, ...ambianceTags, ...colorTags]
+  const allSelectedTags = [
+    ...styleTags,
+    ...ambianceTags,
+    ...colorTags
+  ]
 
-  const canPublish = allSelectedTags.length >= MIN_TAGS_TOTAL
+  const canPublish =
+    allSelectedTags.length >= MIN_TAGS_TOTAL
 
-  /* ---------------- PUBLISH ---------------- */
-  const handlePublish = async () => {
+
+  /* ---------------- CONFIRM EXPORT ---------------- */
+
+  const handleConfirm = async()=>{
     setPublishError(null)
 
-    if (!canPublish) {
-      setPublishError(`Choisis au moins ${MIN_TAGS_TOTAL} tags au total`)
+    const isComplete = slots.every(slot => slot !== null)
+    if (!isComplete) {
+      setPublishError("Complète tous les emplacements avant de confirmer")
       return
     }
 
-    if (!layoutRef.current) {
-      setPublishError("Erreur interne : layout introuvable")
+    if(!layoutRef.current){
+      setPublishError("Moodboard introuvable")
       return
     }
-
-    setIsPublishing(true)
-
-    try {
-      layoutRef.current.classList.add("export-mode")
-      const imageData = await toPng(layoutRef.current)
-      console.log(
-        layoutRef.current?.offsetWidth,
-        layoutRef.current?.offsetHeight
+    try{
+      setIsPublishing(true)
+      layoutRef.current.classList.add(
+        "export-mode"
       )
-      layoutRef.current.classList.remove("export-mode")
-      const imgUrl = await uploadImage(imageData)
-      console.log("IMAGE UPLOADED :", imgUrl)
-      await createMoodboard(
-        imgUrl,
-        allSelectedTags
+      await new Promise<void>(resolve =>
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => resolve())
+        )
       )
-     
-      onNavigate({
-        to: "discover",
-        direction: "prev",
-      })
-    } catch {
-      setPublishError("Erreur réseau")
-    } finally {
+
+      const imageData = await toPng(
+        layoutRef.current,
+        {
+          cacheBust:true
+        }
+      )
+
+      layoutRef.current.classList.remove(
+        "export-mode"
+      )
+
+      const imgUrl = await uploadImage(
+        imageData
+      )
+      setExportedImage(imgUrl)
+      setStep("filters")
+    }catch(error){
+      console.error(error)
+      setPublishError(
+        "Erreur export"
+      )
+    }
+    finally{
       setIsPublishing(false)
     }
   }
 
-  /* ---------------- RENDER LAYOUT ---------------- */
-  const renderLayout = () => {
-    const layoutProps = {
-      images: slots,
-      onSelectSlot: handleSlotClick,
-      onUpdateSlot: handleUpdateSlot,
+  /* ---------------- PUBLISH ---------------- */
+
+
+  const handlePublish = async()=>{
+    setPublishError(null)
+    if(!canPublish){
+      setPublishError(
+        `Choisis au moins ${MIN_TAGS_TOTAL} tags`
+      )
+      return
     }
 
-    switch (layout) {
-      case "A":
-        return <LayoutA {...layoutProps} />
-      case "B":
-        return <LayoutB {...layoutProps} />
-      case "C":
-        return <LayoutC {...layoutProps} />
-      case "D":
-        return <LayoutD {...layoutProps} />
-      default:
-        return (
-          <div className="flex items-center justify-center h-full text-black/40">
-            No layout selected
-          </div>
-        )
+    if(!exportedImage){
+      setPublishError(
+        "Confirme d'abord le moodboard"
+      )
+      return
+
+    }
+
+    try{
+      setIsPublishing(true)
+      await createMoodboard(
+        exportedImage,
+        allSelectedTags
+      )
+
+      onNavigate({
+        to:"discover",
+        direction:"prev"
+      })
+    }catch(error){
+      console.error(error)
+      setPublishError(
+        "Erreur réseau"
+      )
+    }
+    finally{
+      setIsPublishing(false)
     }
   }
 
+  /* ---------------- LAYOUT ---------------- */
+
+
+  const renderLayout =()=>{
+    const props={
+      images:slots,
+      onSelectSlot:handleSlotClick,
+      onUpdateSlot:handleUpdateSlot
+    }
+
+    switch(layout){
+      case "A":
+        return <LayoutA {...props}/>
+      case "B":
+        return <LayoutB {...props}/>
+      case "C":
+        return <LayoutC {...props}/>
+      case "D":
+        return <LayoutD {...props}/>
+      default:
+        return null
+    }
+  }
   return (
     <BookLayout
       header={
         <Header
-          items={[
-            {
-              section: "HOME",
-              clickable: true,
-              onClick: () =>
-                onNavigate({
-                  to: "discover",
-                  direction: "prev",
-                }),
-            },
-            {
-              section: "FILTER",
-              clickable: false,
-            },
-            {
-              section: "CREATE",
-              clickable: true,
-              active: true,
-            },
-          ]}
+        items={[
+        {
+          section:"HOME",
+          clickable:true,
+          onClick:()=>onNavigate({
+            to:"discover",
+            direction:"prev"
+          })
+          },
+          {
+            section:"FILTER",
+            clickable:false
+          },
+          {
+            section:"CREATE",
+            clickable:true,
+            active:true
+          }
+        ]}
         />
       }
-      sidebar={<Sidebar text="COMPOSE" clickable={false} />}
-
-      actionsBar={
-        <div className="flex w-full items-center justify-between">
-          <button
-            onClick={handlePublish}
-            disabled={!canPublish || isPublishing}
-            className={`${typography.buttonBody} disabled:opacity-40`}
-          >
-            publish
-          </button>
-        </div>
+      sidebar={
+        <Sidebar
+          text="COMPOSE"
+          clickable={false}
+        />
       }
-      footerLeft={ <BackButton onBack={onBack} /> }
-      footerRight={
-          <div className="flex items-center gap-4">
-            <span className={typography.username}>
-              {currentUser?.username}
-            </span>
-            <ProfileButton onNavigate={onNavigate}/>
-          </div>
-          }
-        >       
-        <div className="flex flex-col h-full w-full min-h-0">
+    actionsBar={
+      <div className="flex w-full items-center justify-between">
+      {
+        step==="compose" ?
+        <button
+        onClick={handleConfirm}
+        className={typography.buttonBody}
+        >
+        confirm
+        </button>
+        :
+        <button
+        onClick={handlePublish}
+        disabled={!canPublish || isPublishing}
+        className={`${typography.buttonBody} disabled:opacity-40`}
+        >
+        publish
+        </button>
+      }
+    </div>
+    }
 
-          {/* MOODBOARD VISIBLE POUR L'UTILISATEUR */}
-          <div className="flex-1 min-h-0 flex justify-center">
-            <div
-              className="
-                aspect-square
-                h-full
-                max-w-full
-                overflow-hidden
-                relative
-              "
-            >
-              {renderLayout()}
-            </div>
-          </div>
+    footerLeft={
+      <BackButton onBack={onBack}/>
+    }
+    footerRight={
+      <div className="flex items-center gap-4">
+      <span className={typography.username}>
+      {currentUser?.username}
+      </span>
+      <ProfileButton onNavigate={onNavigate}/>
+      </div>
+    }
+    >
 
+    <div className="flex flex-col h-full w-full min-h-0">
+      <div
+        ref={layoutRef}
+        className="
+        aspect-square
+        h-full
+        max-w-full
+        overflow-hidden
+        relative
+        "
+        >
+        {renderLayout()}
+      </div>
+      {publishError && (
+        <p className={`${colors.feedback.error} text-[10px]`}>
+          {publishError}
+        </p>
+      )}
+      {
+        step==="filters" &&
 
-          {/* EXPORT CACHE POUR LA CAPTURE PNG */}
-          <div
-            ref={layoutRef}
-            className="
-              fixed
-              left-[-9999px]
-              top-0
-              w-[1200px]
-              h-[1200px]
-              overflow-hidden
-              pointer-events-none
-            "
-          >
-            {renderLayout()}
-          </div>
-
-
-          {/* FILTRES / TAGS */}
-          <div className="flex flex-col items-center px-4">
+        <div className="
+          flex
+          flex-col
+          items-center
+          px-4
+          ">
 
           <TagPicker
-            styleTags={styleTags}
-            ambianceTags={ambianceTags}
-            colorTags={colorTags}
-            onChangeStyle={setStyleTags}
-            onChangeAmbiance={setAmbianceTags}
-            onChangeColor={setColorTags}
+          styleTags={styleTags}
+          ambianceTags={ambianceTags}
+          colorTags={colorTags}
+          onChangeStyle={setStyleTags}
+          onChangeAmbiance={setAmbianceTags}
+          onChangeColor={setColorTags}
           />
 
-          <p className="text-[7px] text-black/50 tracking-[0.15em]">
-            {allSelectedTags.length} tag{allSelectedTags.length > 1 ? "s" : ""} sélectionné{allSelectedTags.length > 1 ? "s" : ""} (min {MIN_TAGS_TOTAL})
-          </p>
-
-          {publishError && (
-            <p className={`
-              text-[10px] ${colors.feedback.error} tracking-[0.1em] mt-1
-              `}>
-              {publishError}
+            <p className="text-[7px] text-black/50">
+              {allSelectedTags.length} tags sélectionnés
             </p>
-          )}
-        </div>
-
+          </div>
+        }
       </div>
-
       <input
         ref={fileInputRef}
         type="file"
@@ -292,5 +382,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
         className="hidden"
       />
     </BookLayout>
+
   )
+
 }

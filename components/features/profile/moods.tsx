@@ -7,6 +7,7 @@ import Header from "@/components/navigation/Header"
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import ContentOverlay from "@/components/ui/cards/ContentOverlay"
+import StatusMessage from "@/components/ui/messages/StatusMessage"
 /*STYLE*/
 import { typography } from "@/styles/typography"
 /* TYPES */
@@ -114,27 +115,24 @@ const {
       }
       footerRight={
           <div className="flex items-center gap-4">
-            <span className="text-sm tracking-[0.2em]">
+            <span className={typography.username}>
               {user?.username}
             </span>
             <ProfileButton onNavigate={onNavigate}/>
           </div>
           }
-        >    
+        >   
         <div className="flex flex-col h-full "> 
-
           {isLoading ? (
-            <div className="h-full flex items-center justify-center">
-              <p className="text-black/30 text-xs tracking-[0.2em]">
-                CHARGEMENT...
-              </p>
-            </div>
+            <StatusMessage message="LOADING ARCHIVE..." />
           ) : filteredMoodboards.length === 0 ? (
-            <div className="h-full flex items-center justify-center">
-              <p className="text-black/30 text-xs tracking-[0.2em]">
-                AUCUN MOODBOARD POUR L'INSTANT
-              </p>
-            </div>
+            <StatusMessage 
+            message={
+              from === "references"
+                ? "NO LIKED MOODS."
+                : "NO MOODS."
+            }
+          />
           ) : (
             <ScrollableGrid
             data={filteredMoodboards}

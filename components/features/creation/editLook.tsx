@@ -78,6 +78,11 @@ const { user: currentUser } = useCurrentUser()
     fileInputRef.current?.click()
   }
 
+  // data URL (base64) plutôt que URL.createObjectURL : html-to-image doit
+  // re-fetch chaque <img src> pour l'inliner en base64 au moment de la
+  // capture, et les URLs blob: échouent souvent silencieusement dans ce
+  // processus (erreur de chargement sur l'<img> cloné). Les data URLs
+  // n'ont besoin d'aucun fetch supplémentaire.
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -86,13 +91,20 @@ const { user: currentUser } = useCurrentUser()
 
     if (!file) return
 
-    const url = URL.createObjectURL(file)
-    setSilhouette({
-      url,
-      scale: 1,
-      offsetX: 0,
-      offsetY: 0,
-    })
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      const url = reader.result as string
+      setSilhouette({
+        url,
+        scale: 1,
+        offsetX: 0,
+        offsetY: 0,
+      })
+    }
+
+    reader.readAsDataURL(file)
+
     e.target.value = ""
   }
 
@@ -133,12 +145,18 @@ const { user: currentUser } = useCurrentUser()
     setIsPublishing(true)
 
     try {
-   slotRef.current.classList.add("export-mode")
-      console.log("test")
-    const imageData = await toPng(slotRef.current)
+    slotRef.current.classList.add("export-mode")
 
-console.log("imageData size", imageData.length)
-console.log(imageData.slice(0, 50))
+    // on laisse le temps au navigateur de peindre l'état "export-mode"
+    // (icônes masquées, etc.) avant de capturer
+    await new Promise<void>(resolve =>
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => resolve())
+      )
+    )
+
+    const imageData = await toPng(slotRef.current, { cacheBust: true })
+
     slotRef.current.classList.remove("export-mode")
 
 

@@ -50,10 +50,18 @@ export default function Header({
   }
 
   return (
-    <div className="w-full h-[70px] sm:h-[130px] md:h-[120px] lg:h-[150px]">
-
+      <div
+        className={`
+          w-full
+          transition-all duration-300
+          ${isFilterOpen
+            ? "h-[92px] sm:h-[160px] bg-red-200"
+            : "h-[45px] sm:h-[60px] bg-green-200"
+          }
+        `}
+      >
       {/* NAVIGATION — responsive padding and margin-top */}
-      <div className="flex justify-between px-4 sm:px-4 md:px-6 lg:px-10 pt-8 sm:pt-2">
+      <div className="flex justify-between px-5 sm:px-6 pt-7">
         {items.map((item) => (
           <button
             key={item.section}
@@ -92,16 +100,14 @@ export default function Header({
           </button>
         ))}
       </div>
-
-      {/* FILTER BAR — responsive, même TagPicker que l'éditeur */}
       <div
         className={`
           overflow-hidden
-          transition-all duration-500
-          ${isFilterOpen ? "max-h-[100px] opacity-100 mt-3 sm:mt-4 md:mt-2" : "max-h-0 opacity-0"}
+          transition-all duration-300
+          ${isFilterOpen ? "max-h-[100px] opacity-100 mt-2" : "max-h-0 opacity-0"}
         `}
       >
-        <div className="border-y border-black/10 py-3 px-2 sm:px-4 md:px-6 lg:px-10">
+        <div className="border-y border-black/10 py-1 px-2 sm:px-4 md:px-6 lg:px-10">
           <TagPicker
             styleTags={styleTags}
             ambianceTags={ambianceTags}

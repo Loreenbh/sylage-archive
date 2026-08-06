@@ -1,34 +1,12 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const sort = searchParams.get("sort") ?? "latest"
-    /* RECUPERATION DE LA SESSION */
-    // const cookieStore = await cookies()
-    // const token = cookieStore.get("session_token")?.value
 
-    // if (!token) {
-    // return NextResponse.json(
-    //     { error: "Non connecté" },
-    //     { status: 401 }
-    // )
-    // }
-
-    // const session = await pool.query(
-    //     `SELECT user_id
-    //     FROM sessions
-    //     WHERE token=$1
-    //     AND expires_at > NOW()
-    //     `,
-    //     [token]
-    // )
-
-    // const currentSession = session.rows[0]
     const currentSession = await getCurrentSessionUser()
-
     if (!currentSession) {
         return NextResponse.json(
             { error: "Session invalide" },
@@ -36,13 +14,10 @@ export async function GET(request: Request) {
         )
     }
 
-    /* TRI */
-      /* TRI */
     let orderBy = `
         ORDER BY moodboards.created_at DESC
     `
     if (sort === "curated") {
-
         orderBy = `
         ORDER BY (
             COUNT(DISTINCT likes.id) * 2
@@ -50,7 +25,6 @@ export async function GET(request: Request) {
             COUNT(DISTINCT silhouettes.id)
         ) DESC
         `
-
     }
 
 
@@ -58,8 +32,6 @@ export async function GET(request: Request) {
     let whereCondition = `
         WHERE moodboards.user_id != $1
     `
-
-
     if (sort === "following") {
 
         whereCondition = `
@@ -69,7 +41,6 @@ export async function GET(request: Request) {
             WHERE follower_id = $1
         )
         `
-
     }
 
     const res =  await pool.query(

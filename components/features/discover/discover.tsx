@@ -23,6 +23,7 @@ type Props = {
 /* HOOKS */
 import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods"
 import { followUser , unfollowUser } from "@/lib/services/follows"
+import StatusMessage from "@/components/ui/messages/StatusMessage"
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
@@ -122,20 +123,19 @@ export default function Discover({ onNavigate, params }: Props) {
           }
         >     
       <div className="flex flex-col h-full "> 
-
-        {isLoading ? (
-          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
-            LOADING ARCHIVE...
-          </p>
-        ) : filteredMoodboards.length === 0 ? (
-          <p className="text-center text-black/30 text-xs mt-10 tracking-[0.2em]">
-            {tab === "following"
-              ? "FOLLOW CREATORS TO BUILD YOUR FEED"
-              : tab === "curated"
-              ? "NO CURATED PIECES YET"
-              : "THE ARCHIVE IS EMPTY"}
-          </p>
-        ) : (
+      {isLoading ? (
+        <StatusMessage message="LOADING ARCHIVE..." />
+      ) : filteredMoodboards.length === 0 ? (
+        <StatusMessage
+              message={
+                tab === "following"
+                  ? "FOLLOW CREATORS TO BUILD YOUR FEED"
+                  : tab === "curated"
+                  ? "NO CURATED PIECES YET"
+                  : "THE ARCHIVE IS EMPTY"
+              }
+            />
+      ) : (
           <ScrollableGrid
             data={filteredMoodboards}
             onItemClick={(board) => {

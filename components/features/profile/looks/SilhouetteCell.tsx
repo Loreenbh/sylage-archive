@@ -61,38 +61,35 @@ export default function SilhouetteCell({
       />
 
       <ContentOverlay
+        username={
+            moodboardId || from === "references"
+              ? silhouette.username
+              : silhouette.target_username
+          }
 
-        username={username}
+          prefix={
+            moodboardId || from === "references"
+              ? "BY"
+              : "FOR"
+          }
 
-        prefix={prefix}
+          isOwner={
+            silhouette.user_id === currentUser
+          }
 
-        isOwner={isOwner}
+          onDelete={
+            silhouette.user_id === currentUser
+              ? () => onDelete?.(silhouette.id)
+              : undefined
+          }
 
-        onOpenProfile={() =>
-          onNavigate?.({
-            to:"profile",
-            direction:"next",
-            params:{
-              userId: profileId,
-              isOwner,
-              from:"looks"
-            }
-          })
-        }
-
-        like={{
-          type:"silhouette",
-          id:silhouette.id,
-          count:silhouette.likes_count,
-          liked:silhouette.liked_by_current_user
-        }}
-
-        onDelete={() =>
-          onDelete?.(silhouette.id)
-        }
-
-      />
-
+          like={{
+            type:"silhouette",
+            id:silhouette.id,
+            count:silhouette.likes_count,
+            liked:silhouette.liked_by_current_user
+          }}
+        />
     </div>
   )
 }

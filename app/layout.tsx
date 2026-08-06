@@ -18,13 +18,23 @@ export default function RootLayout({
         className={`
           ${roboto.className}
           w-screen
+          min-h-screen
           flex
           items-center
           justify-center
           overflow-y-auto
         `}
       >
-        <div className="w-[90vw] sm:w-[85vw] md:w-[80vw] lg:w-[75vw] max-w-[900px] aspect-[220/280] my-4">
+        <div className="
+          w-[90vw] 
+          sm:w-[85vw] 
+          md:w-[80vw] 
+          lg:w-[75vw] 
+          max-w-[900px] 
+          aspect-[220/280] 
+            my-6
+            sm:my-10
+            md:my-14">
           {children}
         </div>
       </body>

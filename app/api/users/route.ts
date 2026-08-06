@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
 import bcrypt from "bcrypt"
 import { pool } from "@/lib/db"
 import { getCurrentSessionUser } from "@/lib/services/session"
@@ -15,23 +14,7 @@ const MAX_PASSWORD_LENGTH = 20
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const userIdParam = searchParams.get("userId")
-    // /* SESSION */
-    // const cookieStore = await cookies()
 
-    // const token = cookieStore
-    //     .get("session_token")
-    //     ?.value
-
-
-    // const session = await pool.query(
-    //     `
-    //     SELECT user_id
-    //     FROM sessions
-    //     WHERE token=$1
-    //     AND expires_at > NOW()
-    //     `,
-    //     [token]
-    // )
     const currentSession = await getCurrentSessionUser()
     if (!currentSession) {
         return NextResponse.json(
@@ -156,29 +139,6 @@ export async function PATCH(request: Request) {
         oldPassword
     } = await request.json()
 
-
-
-    // /* SESSION */
-
-    // const cookieStore = await cookies()
-
-    // const token = cookieStore
-    //     .get("session_token")
-    //     ?.value
-
-
-
-    // const session = await pool.query(
-    //     `
-    //     SELECT user_id
-    //     FROM sessions
-    //     WHERE token=$1
-    //     AND expires_at > NOW()
-    //     `,
-    //     [token]
-    // )
-
-
     const currentSession = await getCurrentSessionUser()
     if (!currentSession) {
         return NextResponse.json(
@@ -186,7 +146,6 @@ export async function PATCH(request: Request) {
             { status:401 }
         )
     }
-
 
     let updatedUser = null
 
@@ -319,26 +278,7 @@ export async function PATCH(request: Request) {
     })
 }
 
-
 export async function DELETE(){
-
-//   const cookieStore = await cookies()
-
-//   const token = cookieStore
-//     .get("session_token")
-//     ?.value
-
-
-
-//   const session = await pool.query(
-//     `
-//     SELECT user_id
-//     FROM sessions
-//     WHERE token=$1
-//     AND expires_at > NOW()
-//     `,
-//     [token]
-//   )
   const currentSession = await getCurrentSessionUser()
   if(!currentSession){
     return NextResponse.json(
