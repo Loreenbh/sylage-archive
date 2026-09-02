@@ -156,7 +156,7 @@ const handleFollowToggle = async () => {
             <>
               <button
                 className={`
-                  ${typography.buttonBody}
+                  ${typography.buttonAction}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -176,7 +176,7 @@ const handleFollowToggle = async () => {
               <span className={typography.bullet}>•</span>
               <button
                 className={`
-                  ${typography.buttonBody}
+                  ${typography.buttonAction}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -196,7 +196,7 @@ const handleFollowToggle = async () => {
               <span className={typography.bullet}>•</span>
               <button
                 className={`
-                  ${typography.buttonBody}
+                  ${typography.buttonAction}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -241,96 +241,223 @@ const handleFollowToggle = async () => {
           </div>
           }
         >  
-    <div className="flex flex-col h-full min-h-0"> 
-      <CustomGrid
-        left={
-          <GridButton
-            className="relative overflow-hidden bg-zinc-200 hover:bg-zinc-300"
-            onClick={() => 
-              onNavigate?.({ 
-                to: "looks", 
-                direction: "next",
-                params:{
-                  userId: profileUser?.id,
-                  from: "profile",
-                  isOwner : profileUser?.id === currentUser?.id,
-                }
-                 })}>
+<div className="flex flex-col h-full min-h-0">
+  <CustomGrid
+    left={
+        <GridButton
+          disabled={!lastSilhouette}
+          className="
+            relative
+            overflow-hidden
+            border
+            border-black/10
+            disabled:cursor-default
+          "
+          onClick={() =>
+            lastSilhouette &&
+            onNavigate?.({
+              to: "looks",
+              direction: "next",
+              params: {
+                userId: profileUser?.id,
+                from: "profile",
+                isOwner: profileUser?.id === currentUser?.id,
+              },
+            })
+          }
+        >
+        {lastSilhouette && (
+          <img
+            src={lastSilhouette.image_url}
+            alt=""
+            className="
+              absolute
+              inset-0
+              w-full
+              h-full
+              object-cover
+            "
+          />
+        )}
 
-            {lastSilhouette && (
-              <img
-                src={lastSilhouette.image_url}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            )}
-            <p className={`${typography.buttonBody} relative z-10 ${lastSilhouette ? "text-white drop-shadow" : ""}`}>
-              looks
+        {!lastSilhouette && (
+          <div className="
+            absolute
+            inset-0
+            flex
+            items-center
+            justify-center
+          ">
+            <p className="
+              text-[10px]
+              tracking-[0.2em]
+              text-black/30
+            ">
+              NO LOOKS.
             </p>
-          </GridButton>
-        }
+          </div>
+        )}
 
-        topRight={
-          <GridButton
-            className="relative overflow-hidden bg-zinc-200 hover:bg-zinc-300"
-            onClick={() => 
-              onNavigate?.({ 
-                to:"moods", 
-                direction: "next", 
-                params:{
-                  isOwner: isOwner,
-                  userId: profileUser?.id,
-                }, 
-              })
-            }
+        <div className="
+          absolute
+          bottom-0
+          left-0
+          p-4
+          z-10
+        ">
+          <p
+            className={`
+              ${typography.buttonBody}
+              ${lastSilhouette ? "text-white drop-shadow" : ""}
+            `}
           >
-            {lastMoodboard && (
-              <img
-                src={lastMoodboard.image_url}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            )}
-            <p className={`${typography.buttonBody} relative z-10 ${lastMoodboard ? "text-white drop-shadow" : ""}`}>
-              moods
-            </p>
-          </GridButton>
-        }
-bottomRight={
-  <div className="bg-[#946953] h-full min-h-0 w-full flex flex-col overflow-hidden">
+            looks
+          </p>
+        </div>
+      </GridButton>
+    }
 
-    <div className="flex-1 min-h-0">
-      <ScrollFollow
-        followingTitle="Inspired by"
-        followersTitle="Inspiring"
-        following={following}
-        followers={followers}
-        canManageFollow={profileUser?.id === currentUser?.id}
-        onOpenProfile={(item)=>{
+    topRight={
+      <GridButton
+        disabled={!lastMoodboard}
+        className="
+          relative
+          overflow-hidden
+          border
+          border-black/10
+          disabled:cursor-default
+        "
+        onClick={() =>
+          lastMoodboard &&
           onNavigate?.({
-            to:"profile",
-            direction:"next",
-            params:{
-              userId:item.id,
-              isOwner:item.id === currentUser?.id,
-              from:"profile"
-            }
+            to: "moods",
+            direction: "next",
+            params: {
+              isOwner: isOwner,
+              userId: profileUser?.id,
+            },
           })
-        }}
-        onUnfollow={(item) => handleUnfollow(item.id)}
-      />
-    </div>
+        }
+      >
+        {lastMoodboard && (
+          <img
+            src={lastMoodboard.image_url}
+            alt=""
+            className="
+              absolute
+              inset-0
+              w-full
+              h-full
+              object-cover
+            "
+          />
+        )}
 
-    <div className="flex p-4 h-12 shrink-0">
-      <p className={typography.buttonBody}>
-        CONNECTIONS
-      </p>
-    </div>
+        {!lastMoodboard && (
+          <div className="
+            absolute
+            inset-0
+            flex
+            items-center
+            justify-center
+          ">
+            <p className="
+              text-[10px]
+              tracking-[0.2em]
+              text-black/30
+            ">
+              NO MOODS.
+            </p>
+          </div>
+        )}
 
-  </div>
-}
-      />
+        <div className="
+          absolute
+          bottom-0
+          left-0
+          p-4
+          z-10
+        ">
+          <p
+            className={`
+              ${typography.buttonBody}
+              ${lastMoodboard ? "text-white drop-shadow" : ""}
+            `}
+          >
+            moods
+          </p>
+        </div>
+      </GridButton>
+    }
+
+    bottomRight={
+      <div
+        className="
+          relative
+          h-full
+          min-h-0
+          w-full
+          overflow-hidden
+          border
+          border-black/10
+        "
+      >
+        {following.length > 0 || followers.length > 0 ? (
+         <div className="absolute inset-0 bottom-[48px] min-h-0 overflow-y-auto">
+          <ScrollFollow
+            followingTitle="Inspired by"
+            followersTitle="Inspiring"
+            following={following}
+            followers={followers}
+            canManageFollow={profileUser?.id === currentUser?.id}
+            onOpenProfile={(item) => {
+              onNavigate?.({
+                to: "profile",
+                direction: "next",
+                params: {
+                  userId: item.id,
+                  isOwner: item.id === currentUser?.id,
+                  from: "profile",
+                },
+              })
+            }}
+            onUnfollow={(item) => handleUnfollow(item.id)}
+          />
+        </div>
+        ) : (
+          <div className="
+            absolute
+            inset-0
+            flex
+            items-center
+            justify-center
+          ">
+            <p className="
+              text-[10px]
+              tracking-[0.2em]
+              text-black/30
+            ">
+              NO CONNECTIONS.
+            </p>
+          </div>
+        )}
+
+        <div className="
+          absolute
+          bottom-0
+          left-0
+          p-4
+          z-10
+        ">
+          <p className={typography.buttonBody}>
+            CONNECTIONS
+          </p>
+        </div>
       </div>
+    }
+  />
+</div>
+  
     </BookLayout>
   )
 }

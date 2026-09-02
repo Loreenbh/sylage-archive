@@ -62,6 +62,12 @@ export const typography = {
     text-black/50
   `,
 
+  buttonAction: `
+    text-[8px]
+    tracking-[0.4em]
+    uppercase
+    text-black/50
+  `,
 
   buttonBody: `
     text-[8px]
@@ -103,8 +109,9 @@ export const typography = {
   `,
 
     follow:`
-    text-[8px]
-    tracking-[0.20em]
+    text-[7px]
+    uppercase
+    tracking-[0.25em]
     font-extralight
     `
 

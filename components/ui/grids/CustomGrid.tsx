@@ -18,7 +18,7 @@ export default function CustomGrid({
 
       <div className="
         grid 
-        grid-rows-[0.35fr_1.65fr]
+        grid-rows-[0.9fr_1.1fr]
         md:grid-rows-2
         h-full 
         min-h-0 

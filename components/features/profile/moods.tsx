@@ -135,21 +135,22 @@ const {
           />
           ) : (
             <ScrollableGrid
-            data={filteredMoodboards}
-            onItemClick={(board) => {
-              onNavigate?.({
-                to: "moodDetails",
-                direction: "next",
-                params: {
-                  from: "moods",
-                  moodboardId: board.id,
-                  isOwner,
-                },
-              })
-            }}
-            renderItem={(board) => (
-              <div className="relative aspect-square w-full bg-zinc-100 cursor-pointer overflow-hidden">
-                <img
+            // data={filteredMoodboards}
+            // onItemClick={(board) => {
+            //   onNavigate?.({
+            //     to: "moodDetails",
+            //     direction: "next",
+            //     params: {
+            //       from: "moods",
+            //       moodboardId: board.id,
+            //       isOwner,
+            //     },
+            //   })
+            // }}
+            // renderItem={(board) => (
+                data={filteredMoodboards}
+                renderItem={(board) => (
+                <div className="relative aspect-square w-full bg-zinc-100 overflow-hidden">                <img
                   src={board.image_url}
                   
                   alt=""

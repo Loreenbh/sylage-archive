@@ -46,6 +46,9 @@ export default function Settings({ onNavigate}: Props) {
   const [deleteConfirm, setDeleteConfirm] = useState(false)
   const [deleteMessage, setDeleteMessage] = useState("")
 
+  const [passwordOpen, setPasswordOpen] = useState(false)
+  const [usernameOpen, setUsernameOpen] = useState(false)
+
   const handleDeleteAccount = async () => {
 
     try {
@@ -93,7 +96,7 @@ export default function Settings({ onNavigate}: Props) {
       await updateUser({
         username
       })
-      setUsernameMessage("Username updated")
+      setUsernameMessage("Updated.")
     } catch(error) {
       if(error instanceof Error){
         setUsernameMessage(error.message)
@@ -205,7 +208,6 @@ export default function Settings({ onNavigate}: Props) {
               relative
               h-full
               w-full
-              bg-pink-200
               flex
               items-end
               p-4
@@ -235,7 +237,6 @@ export default function Settings({ onNavigate}: Props) {
                 ${typography.buttonBody}
                 relative
                 z-10
-                text-white
                 drop-shadow
               `}
             >
@@ -253,161 +254,205 @@ export default function Settings({ onNavigate}: Props) {
           <div
             className="
               h-full w-full
-              bg-zinc-300
+              bg-[#E8E1D5]
               flex flex-col
               justify-between
-              p-4
+              p-2
+              cursor-pointer
             "
+            onClick={() => !passwordOpen && setPasswordOpen(true)}
           >
-            <div className="flex flex-col gap-4">
-              <input
-                type="password"
-                value={oldPassword}
-                onChange={(e)=>setOldPassword(e.target.value)}
-                placeholder="current password"
-                className="
-                  bg-transparent
-                  border-b
-                  border-black/30
-                  outline-none
-                  text-sm
-                  tracking-wide
-                "
-              />
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e)=>setNewPassword(e.target.value)}
-                placeholder="new password"
-                className="
-                  bg-transparent
-                  border-b
-                  border-black/30
-                  outline-none
-                  text-sm
-                  tracking-wide
-                "
-              />
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e)=>setConfirmPassword(e.target.value)}
-                placeholder="confirm password"
-                className="
-                  bg-transparent
-                  border-b
-                  border-black/30
-                  outline-none
-                  text-sm
-                  tracking-wide
-                "
-              />
-              <button
-                className={typography.buttonBody}
-                onClick={handlePasswordChange}
-              >
-                save
-              </button>
-              {message && (
-                <span className="text-xs opacity-60 tracking-wide">
-                  {message}
-                </span>
-              )}
+            {!passwordOpen ? (
+              <div />
 
-            </div>
-            <span className={typography.buttonBody}>
-              Change password
-            </span>
-
-          </div>
-        }
-        bottomLeft={
-          <div
-            className="
-              h-full w-full
-              bg-zinc-400
-              flex flex-col
-              justify-between
-              p-4
-            "
-          >
-            <div className="flex flex-col gap-4">
-              <input
-                type="text"
-                value={username}
-                onChange={(e)=>setUsername(e.target.value)}
-                placeholder="new username"
-                className="
-                  bg-transparent
-                  border-b
-                  border-black/30
-                  outline-none
-                  text-sm
-                  tracking-wide
-                "
-              />
-              <button
-                className={typography.buttonBody}
-                onClick={handleUsernameChange}
-              >
-                save
-              </button>
-              {usernameMessage && (
-                <span className="text-xs opacity-60 tracking-wide">
-                  {usernameMessage}
-                </span>
-              )}
-            </div>
-            <span className={typography.buttonBody}>
-              Change username
-            </span>
-          </div>
-        }
-        bottomRight={
-          <div
-            className="
-              h-full w-full
-              bg-zinc-500
-              flex flex-col
-              justify-between
-              p-4
-            "
-          >
-            {!deleteConfirm ? (
-              <button
-                onClick={() => setDeleteConfirm(true)}
-                className={typography.buttonBody}
-              >
-                Delete account
-              </button>
             ) : (
-              <div className="flex flex-col gap-4">
-                <span className="text-sm">
-                  Delete your account permanently?
-                </span>
-                <div className="flex gap-4">
-                  <button
-                    onClick={handleDeleteAccount}
-                    className={typography.buttonBody}
-                  >
-                    confirm
-                  </button>
-                  <button
-                    onClick={() => setDeleteConfirm(false)}
-                    className={typography.buttonBody}
-                  >
-                    cancel
-                  </button>
-                </div>
+              <div
+                className="flex flex-col gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <input
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  placeholder="current password"
+                  className="
+                    bg-transparent
+                    border-b
+                    border-black/30
+                    outline-none
+                    text-[10px]
+                    tracking-wide
+                  "
+                />
+
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="new password"
+                  className="
+                    bg-transparent
+                    border-b
+                    border-black/30
+                    outline-none
+                    text-[10px]
+                    tracking-wide
+                  "
+                />
+
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="confirm password"
+                  className="
+                    bg-transparent
+                    border-b
+                    border-black/30
+                    outline-none
+                    text-[10px]
+                    tracking-wide
+                  "
+                />
+
+                <button
+                  className={typography.buttonBody}
+                  onClick={handlePasswordChange}
+                >
+                  save
+                </button>
+
+                {message && (
+                  <span className="text-[9px] opacity-60 tracking-wide text-center">
+                    {message}
+                  </span>
+                )}
               </div>
             )}
-            {deleteMessage && (
-              <span className="text-xs opacity-60">
-                {deleteMessage}
+
+            {!passwordOpen && (
+              <span className={typography.buttonBody}>
+                Change password
               </span>
             )}
           </div>
         }
+        bottomLeft={
+          <div
+            className={`
+              h-full w-full
+              bg-[#B8A99A]
+              flex flex-col
+              p-4
+              cursor-pointer
+              ${usernameOpen ? "items-center justify-center" : "justify-end"}
+            `}
+            onClick={() => !usernameOpen && setUsernameOpen(true)}
+          >
+            {!usernameOpen ? (
+              <span className={typography.buttonBody}>
+                Change username
+              </span>
+            ) : (
+              <div
+                className="
+                  w-full
+                  max-w-[220px]
+                  flex flex-col
+                  items-center
+                  gap-5
+                "
+                onClick={(e) => e.stopPropagation()}
+              >
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="new username"
+                  className="
+                    w-full
+                    bg-transparent
+                    border-b
+                    border-black/30
+                    outline-none
+                    text-[10px]
+                    tracking-wide
+                    text-center
+                  "
+                />
+
+                <button
+                  className={typography.buttonBody}
+                  onClick={handleUsernameChange}
+                >
+                  save
+                </button>
+
+                {usernameMessage && (
+                  <span className="text-[9px] opacity-60 tracking-wide text-center">
+                    {usernameMessage}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        }
+      bottomRight={
+        <div
+          className={`
+            h-full w-full
+            bg-[#804930]
+            flex flex-col
+            p-4
+            cursor-pointer
+            ${deleteConfirm ? "items-center justify-center" : "justify-end"}
+          `}
+          onClick={() => !deleteConfirm && setDeleteConfirm(true)}
+        >
+          {!deleteConfirm ? (
+            <span className={typography.buttonBody}>
+              Delete account
+            </span>
+          ) : (
+            <div
+              className="
+                flex flex-col
+                items-center
+                justify-center
+                gap-6
+                text-center
+              "
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className={typography.buttonBody}>
+                Remove account?
+              </span>
+
+              <div className="flex gap-6">
+                <button
+                  onClick={handleDeleteAccount}
+                  className={typography.buttonBody}
+                >
+                  ✓
+                </button>
+
+                <button
+                  onClick={() => setDeleteConfirm(false)}
+                  className={typography.buttonBody}
+                >
+                  x
+                </button>
+              </div>
+
+              {deleteMessage && (
+                <span className="text-xs opacity-60 tracking-wide">
+                  {deleteMessage}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+      }
       />
     </BookLayout>
   )

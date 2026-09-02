@@ -37,9 +37,9 @@ export default function ScrollFollow({
     items:Follow[],
     showUnfollow:boolean
   ) => (
-    <div className="h-full flex flex-col p-4 min-h-0">
+    <div className="h-full flex flex-col min-h-0">
 
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-4 mt-3">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-1 mt-5">
 
         {items.map((item)=>(
           <div 
@@ -76,10 +76,9 @@ export default function ScrollFollow({
                 </span>
               )}
             </button>
-          {/* <div className="flex flex-col w-24">*/}
-          <div className="flex flex-col w-24 items-center"> 
+            <div className="flex items-center justify-center gap-2 w-24">
               <button
-                className={`${typography.follow} text-left`}
+                className={`${typography.follow} text-center`}
               >
                 {item.username}
               </button>
@@ -87,13 +86,9 @@ export default function ScrollFollow({
               {showUnfollow && (
                 <button
                   onClick={() => onUnfollow?.(item)}
-                  className="
-                    text-[10px]
-                    text-left
-                    opacity-40
-                  "
+                  className="text-[11px] opacity-40 shrink-0"
                 >
-                  X
+                  x
                 </button>
               )}
             </div>
@@ -116,7 +111,7 @@ export default function ScrollFollow({
                 : "opacity-40"}
             `}
           >
-            <span className={typography.buttonBody}>
+            <span className="text-[7px] tracking-[0.2em] uppercase text-black/50" >
               {followingTitle}
             </span>
           </button>
@@ -130,7 +125,7 @@ export default function ScrollFollow({
                 : "opacity-40"}
             `}
           >
-            <span className={typography.buttonBody}>
+            <span className="text-[7px] tracking-[0.2em] uppercase text-black/50">
               {followersTitle}
             </span>
           </button>

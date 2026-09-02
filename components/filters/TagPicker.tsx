@@ -87,7 +87,7 @@ export default function TagPicker({
               setOpenCategory((prev) => (prev === category.key ? null : category.key))
             }
             className={`
-              text-[9px] tracking-[0.2em] uppercase pb-1 border-b transition
+              text-[8px] tracking-[0.2em] uppercase pb-1 border-b transition
               ${openCategory === category.key
                 ? "border-black text-black"
                 : "border-transparent text-black/40 hover:text-black/70"}
@@ -108,7 +108,7 @@ export default function TagPicker({
                 ? `
                   flex
                   flex-nowrap
-                  gap-2
+                  gap-1
                   overflow-x-auto
                   w-full
                   pb-1
@@ -136,7 +136,7 @@ export default function TagPicker({
                   disabled={isDisabled}
                   className={`
                     flex items-center gap-1.5 whitespace-nowrap
-                    text-[9px] tracking-[0.15em] uppercase px-2 py-1 border transition
+                    text-[7px] tracking-[0.15em] uppercase px-2 py-1 border transition
 
                     ${isSelected
                       ? "bg-black text-white border-black"

@@ -80,13 +80,15 @@ export default function References({ onNavigate, onBack, params }: Props) {
         <LovesGrid
           left={
             <button
+              disabled={!latestLooks?.[0]}
               onClick={() =>
+                latestLooks?.[0] &&
                 onNavigate?.({
-                  to:"looks",
-                  direction:"next",
-                  params:{
-                    from:"references",
-                    isOwner:true
+                  to: "looks",
+                  direction: "next",
+                  params: {
+                    from: "references",
+                    isOwner: true
                   }
                 })
               }
@@ -95,11 +97,11 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 h-full
                 w-full
                 overflow-hidden
-                bg-zinc-200
                 text-left
+                border
+                border-black/10
               "
             >
-
               {latestLooks?.[0] && (
                 <img
                   src={latestLooks[0].image_url}
@@ -113,6 +115,20 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 />
               )}
 
+              {!latestLooks?.[0] && (
+                <div className="
+                  absolute
+                  inset-0
+                  flex
+                  items-center
+                  justify-center
+                ">
+                  <p className="text-[10px] tracking-[0.2em] text-black/30">
+                    NO LOOKS YET
+                  </p>
+                </div>
+              )}
+
               <div className="
                 absolute
                 bottom-0
@@ -124,18 +140,19 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   LOOKS
                 </p>
               </div>
-
             </button>
           }
           topRight={
             <button
+              disabled={!latestMoods?.[0]}
               onClick={() =>
+                latestMoods?.[0] &&
                 onNavigate?.({
-                  to:"moods",
-                  direction:"next",
-                  params:{
-                    from:"references",
-                    isOwner:true
+                  to: "moods",
+                  direction: "next",
+                  params: {
+                    from: "references",
+                    isOwner: true
                   }
                 })
               }
@@ -144,11 +161,11 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 h-full
                 w-full
                 overflow-hidden
-                bg-zinc-300
                 text-left
+                border
+                border-black/10
               "
             >
-
               {latestMoods?.[0] && (
                 <img
                   src={latestMoods[0].image_url}
@@ -162,6 +179,20 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 />
               )}
 
+              {!latestMoods?.[0] && (
+                <div className="
+                  absolute
+                  inset-0
+                  flex
+                  items-center
+                  justify-center
+                ">
+                  <p className="text-[10px] tracking-[0.2em] text-black/30">
+                    NO MOODS YET
+                  </p>
+                </div>
+              )}
+
               <div className="
                 absolute
                 bottom-0
@@ -173,90 +204,95 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   MOODS
                 </p>
               </div>
-
             </button>
           }
           bottomRight={
-            <div
+            <button
+              disabled={!featuredCreator}
+              onClick={() => {
+                if (featuredCreator) {
+                  onNavigate?.({
+                    to: "profile",
+                    direction: "next",
+                    params: {
+                      userId: featuredCreator.id,
+                      isOwner: false,
+                      from: "references"
+                    }
+                  })
+                }
+              }}
               className="
                 relative
                 h-full
                 w-full
                 overflow-hidden
-                bg-zinc-400
-                flex
-                flex-col
-                items-center
-                justify-center
-                text-white
+                text-left
+                border
+                border-black/10
               "
             >
-
-              {featuredCreator && (
-                <button
-                  onClick={() =>
-                    onNavigate?.({
-                      to: "profile",
-                      direction: "next",
-                      params: {
-                        userId: featuredCreator.id,
-                        isOwner: false,
-                        from: "references"
-                      }
-                    })
-                  }
-                  className="
+                {featuredCreator ? (
+                  <div className="
+                    absolute
+                    inset-0
                     flex
                     flex-col
                     items-center
-                    hover:opacity-70
-                    transition-opacity
-                  "
-                >
-                  <img
-                    src={featuredCreator.avatar_url}
-                    alt=""
-                    className="
-                      w-20
-                      h-20
-                      sm:w-35
-                      sm:h-35
-                      rounded-full
-                      object-cover
-                    "
-                  />
-
-                  <p
-                    className="
-                      
-                      text-xs
+                    justify-center
+                    -translate-y-4
+                  ">
+                    <p className="
+                      text-[9px]
                       tracking-[0.2em]
-                    "
-                  >
-                    {featuredCreator.username}
+                      uppercase
+                      text-black/30
+                      mb-1
+                    ">
+                      {featuredCreator.username}
+                    </p>
+
+                    <img
+                      src={featuredCreator.avatar_url}
+                      alt=""
+                      className="
+                        w-16
+                        h-16
+                        sm:w-35
+                        sm:h-35
+                        rounded-full
+                        object-cover
+                      "
+                    />
+                  </div>
+                ) : (
+                <div className="
+                  absolute
+                  inset-0
+                  flex
+                  items-center
+                  justify-center
+                ">
+                  <p className="text-[10px] tracking-[0.2em] text-black/30">
+                    NO CREATOR YET
                   </p>
-                </button>
+                </div>
               )}
 
-              <div
-                className="
-                  absolute
-                  bottom-0
-                  left-0
-                  p-1
-                "
-              >
-                <p className="text-[10px] tracking-[0.1em]">
-                  FEATURED CREATOR
+              <div className="
+                absolute
+                bottom-0
+                left-0
+                p-4
+              ">
+                <p className={`${typography.buttonBody}`}>
+                  CREATOR
                 </p>
               </div>
-
-            </div>
+            </button>
           }
-              />
-
-            </div>
-
-          </BookLayout>
-        )
-      }
+        />
+      </div>
+    </BookLayout>
+  )
+}

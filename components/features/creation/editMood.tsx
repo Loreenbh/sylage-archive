@@ -152,14 +152,14 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
   const handleConfirm = async()=>{
     setPublishError(null)
 
-    const isComplete = slots.every(slot => slot !== null)
-    if (!isComplete) {
-      setPublishError("Complète tous les emplacements avant de confirmer")
-      return
-    }
+    // const isComplete = slots.every(slot => slot !== null)
+    // if (!isComplete) {
+    //   setPublishError("Complete the composition before confirming")
+    //   return
+    // }
 
     if(!layoutRef.current){
-      setPublishError("Moodboard introuvable")
+      setPublishError("Moodboard unavailable")
       return
     }
     try{
@@ -180,19 +180,14 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
         }
       )
 
-      layoutRef.current.classList.remove(
-        "export-mode"
-      )
-
-      const imgUrl = await uploadImage(
-        imageData
-      )
+      layoutRef.current.classList.remove("export-mode")
+      const imgUrl = await uploadImage(imageData)
       setExportedImage(imgUrl)
       setStep("filters")
     }catch(error){
       console.error(error)
       setPublishError(
-        "Erreur export"
+        "Export error"
       )
     }
     finally{
@@ -298,25 +293,25 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       }
     actionsBar={
       <div className="flex w-full items-center justify-between">
-      {
-        step==="compose" ?
-        <button
-        onClick={handleConfirm}
-        className={typography.buttonBody}
-        >
-        confirm
-        </button>
-        :
-        <button
-        onClick={handlePublish}
-        disabled={!canPublish || isPublishing}
-        className={`${typography.buttonBody} disabled:opacity-40`}
-        >
-        publish
-        </button>
+          {step === "compose" ? (
+            <button
+              onClick={handleConfirm}
+              disabled={!slots.every(slot => slot !== null) || isPublishing}
+              className={`${typography.buttonBody} disabled:opacity-40`}
+            >
+              confirm
+            </button>
+          ) : (
+            <button
+              onClick={handlePublish}
+              disabled={!canPublish || isPublishing}
+              className={`${typography.buttonBody} disabled:opacity-40`}
+            >
+              publish
+            </button>
+          )}
+        </div>
       }
-    </div>
-    }
 
     footerLeft={
       <BackButton onBack={onBack}/>
@@ -368,8 +363,8 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
           onChangeColor={setColorTags}
           />
 
-            <p className="text-[7px] text-black/50">
-              {allSelectedTags.length} tags sélectionnés
+            <p className="text-[10px] uppercase text-black/50">
+              {allSelectedTags.length} tags selected
             </p>
           </div>
         }

@@ -50,16 +50,36 @@ export default function Header({
   }
 
   return (
-      <div
-        className={`
-          w-full
-          transition-all duration-300
-          ${isFilterOpen
-            ? "h-[92px] sm:h-[160px] bg-red-200"
-            : "h-[45px] sm:h-[60px] bg-green-200"
-          }
-        `}
+    <div
+      className={`
+        w-full
+        transition-all duration-300
+        ${isFilterOpen
+          ? "h-[92px] sm:h-[160px]"
+          : "h-[45px] sm:h-[60px]"
+        }
+      `}
+    >
+
+      {/* PORTFOLIO */}
+      <button
+        onClick={() => {
+          window.location.href = "TON_URL_PORTFOLIO"
+        }}
+        className="
+          absolute
+          top-1
+          left-5 sm:left-6
+          text-[8px]
+          tracking-[0.18em]
+          text-black/15
+          hover:text-black/50
+          transition-colors duration-300
+          cursor-pointer
+        "
       >
+        ← PORTFOLIO
+      </button>
       {/* NAVIGATION — responsive padding and margin-top */}
       <div className="flex justify-between px-5 sm:px-6 pt-7">
         {items.map((item) => (
@@ -76,8 +96,8 @@ export default function Header({
                 item.active || (item.section === "FILTER" && isFilterOpen)
                   ? "text-black cursor-default"
                   : item.clickable
-                  ? "text-black/40 hover:text-black/80 cursor-pointer"
-                  : "text-black/20 cursor-default"
+                  ? "text-black/90 hover:text-black/80 cursor-pointer"
+                  : "text-black/10 cursor-default"
               }
             `}
           >
