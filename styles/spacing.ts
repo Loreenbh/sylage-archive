@@ -27,7 +27,7 @@ coverHeader: `
 
   actionBar: `
     pt-2
-    px-8
+    px-4
     sm:px-24
     lg:px-38
     lg:pt-4

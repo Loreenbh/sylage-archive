@@ -1,5 +1,8 @@
 "use client"
+import { useState } from "react"
 import type { OnNavigate } from "@/types/navigation"
+import { supabase } from "@/lib/supabase"
+import Link from "next/link"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
@@ -9,6 +12,7 @@ import Header from "@/components/navigation/Header"
 import { typography } from "@/styles/typography"
 import { useAuthForm } from "@/hooks/useAuthForm"
 import { colors } from "@/styles/colors"
+import { spacing } from "@/styles/spacing"
 /*TYPES*/
 type Props = {
   onNavigate: OnNavigate
@@ -37,7 +41,7 @@ function MagazineInput({ placeholder, type = "text", index, value, onChange } : 
             border-b
             ${colors.input.border}
             bg-transparent
-            text-[10px] sm:text-[20px] md:text-base lg:text-[20px] 
+            text-[9px] sm:text-[20px] md:text-base lg:text-[20px] 
             font-light 
             outline-none
             ${colors.input.placeholder}
@@ -73,7 +77,6 @@ export default function Authentification({ onNavigate }: Props) {
     handleRegister,
     handleLogin
   } = useAuthForm(onNavigate)
-
   return (
 
     <BookLayout
@@ -93,16 +96,26 @@ export default function Authentification({ onNavigate }: Props) {
         />
       }
       sidebar={<Sidebar text="ACCESS" clickable={false} />}
-      actionsBar={        
-          <div className="flex items-center">
-            <button className={typography.buttonBody}>Forget password →</button>
-          </div>
-        }
+      actionsBar={
+        <div className="flex items-center">
+          <button
+            onClick={() =>
+              onNavigate({
+                to: "forgot",
+                direction: "next",
+              })
+            }
+            className={`${typography.buttonBody} ${spacing.actionBar} ${colors.text.charcoal}`}
+          >
+            Forget password →
+          </button>
+        </div>
+      }
     >
     <div className="flex flex-col h-full "> 
       <TwoColGrid
         left={
-          <div className={`${colors.authLeft} flex flex-col justify-between h-full`}>
+          <div className={`${colors.bg.stone} flex flex-col justify-between h-full`}>
             <div className="pt-7 sm:pt-35 lg:pt-50">
               <MagazineInput 
                 placeholder="Pseudo" 
@@ -154,14 +167,14 @@ export default function Authentification({ onNavigate }: Props) {
 
             <button
               onClick={handleRegister}
-              className={`${typography.buttonAuth} pb-6`}>
+              className={`${typography.buttonAuth} ${colors.text.charcoal} pb-6`}>
               Join →
             </button>
           </div>
         }
         right={
-          <div className={`${colors.authRight} flex flex-col justify-between h-full`}>
-            <div className="pt-[50px] sm:pt-35 lg:pt-50">
+          <div className={`${colors.bg.earth} flex flex-col justify-between h-full`}>
+            <div className="pt-[70px] sm:pt-35 lg:pt-50">
               <MagazineInput 
                 placeholder="Email/username" 
                 type="text"
@@ -191,9 +204,7 @@ export default function Authentification({ onNavigate }: Props) {
               onClick={handleLogin}
               disabled={isSubmitting}
               className={`
-                ${typography.buttonAuth} 
-                pb-6
-                `}
+                ${typography.buttonAuth} ${colors.text.charcoal} pb-6 `}
               >
               Enter →
             </button>

@@ -27,12 +27,12 @@ export const colors = {
 
   input: {
     border: "border-black/30",
-    placeholder: "placeholder:text-[#EAE3D8]",
-    number: "text-[#EAE3D8]/50",
+    placeholder: "placeholder:text-[#211C19]",
+    number: "text-[#EAE3D8]",
   },
 
   feedback: {
-    error: "text-[#600c03]",
-    success: "text-[#353927]",
+    error: "text-[#806054]",
+    success: "text-[#7B786C]",
   },
 }

@@ -17,6 +17,7 @@ import MoodDetails from "../features/discover/focus"
 import Create from "../features/creation/selection"
 import Editor from "../features/creation/editMood"
 import Draw from "../features/creation/editLook"
+import ForgotPassword from "../features/forgot-pswd/forgotPassword"
 
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 
@@ -38,6 +39,7 @@ const PAGES = {
   create: Create,
   editor: Editor,
   draw: Draw,
+  forgot: ForgotPassword
 } as const
 
 

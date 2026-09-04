@@ -37,7 +37,13 @@ export default function Cover({ onNavigate }: Props) {
         />
       }
       actionsBar={
-        <p className={`${typography.actionBar} ${spacing.actionBar} ${colors.text.charcoal}`}>
+        <p className={`${typography.actionBar}
+          pt-2
+          px-10
+          sm:px-24
+          lg:px-38
+          lg:pt-4
+          ${colors.text.charcoal}`}>
           A visual archive of moods
         </p>
       }

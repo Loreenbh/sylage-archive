@@ -41,13 +41,14 @@ export const layout = {
     mx-auto
   `,
 
-sideBarLine: `
-  block
-  flex-1
-  min-h-0
-  w-[1px]
-  bg-black/40
-`,
+  sideBarLine: `
+    block
+    flex-1
+    min-h-0
+    w-[1px]
+    bg-black/40
+  `,
+  
   sidebarButton: `
     flex
     flex-col

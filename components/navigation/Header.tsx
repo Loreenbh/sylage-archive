@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
 import { typography } from "@/styles/typography"
+import { colors } from "@/styles/colors"
 import TagPicker from "@/components/filters/TagPicker"
 
 /* TYPES */
@@ -68,7 +69,7 @@ export default function Header({
         }}
         className="
           absolute
-          top-1
+          top-2
           left-5 sm:left-6
           text-[8px]
           tracking-[0.18em]
@@ -81,7 +82,7 @@ export default function Header({
         ← PORTFOLIO
       </button>
       {/* NAVIGATION — responsive padding and margin-top */}
-      <div className="flex justify-between px-5 sm:px-6 pt-7">
+      <div className="flex justify-between sm:px-6 pt-7">
         {items.map((item) => (
           <button
             key={item.section}
@@ -94,10 +95,10 @@ export default function Header({
 
               ${
                 item.active || (item.section === "FILTER" && isFilterOpen)
-                  ? "text-black cursor-default"
+                  ? `${colors.text.charcoal} cursor-default`
                   : item.clickable
-                  ? "text-black/90 hover:text-black/80 cursor-pointer"
-                  : "text-black/10 cursor-default"
+                  ? `${colors.text.charcoal} cursor-pointer opacity-90 hover:opacity-80`
+                  : `${colors.text.charcoal} cursor-default opacity-50`
               }
             `}
           >

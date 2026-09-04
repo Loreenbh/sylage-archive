@@ -11,6 +11,7 @@ export const typography = {
 
   nav: `
     text-[10px]
+    px-6
     sm:text-[18px]
     md:text-[20px]
     lg:text-[24px]

@@ -42,6 +42,8 @@ export default function BookLayout({
               mt-6
               lg:mt-12
               mx-auto
+              ml-4
+              sm:ml-6
               bg-green-200
             "
           >
