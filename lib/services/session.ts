@@ -1,20 +1,25 @@
-import { cookies } from "next/headers"
+import { createClient } from "@/lib/server"
 import { pool } from "@/lib/db"
 
 export async function getCurrentSessionUser() {
-  const cookieStore = await cookies()
-  const token = cookieStore.get("session_token")?.value
-  if (!token) {
-    return null
-  }
-  const result = await pool.query(
-    `
-    SELECT user_id
-    FROM sessions
-    WHERE token=$1
-    AND expires_at > NOW()
-    `,
-    [token]
-  )
-  return result.rows[0] ?? null
+    const supabase = await createClient()
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+        return null
+    }
+
+    const result = await pool.query(
+        `
+        SELECT id, username, email
+        FROM users
+        WHERE auth_id = $1
+        `,
+        [user.id]
+    )
+
+    return result.rows[0] ?? null
 }

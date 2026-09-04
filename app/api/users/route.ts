@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
-import bcrypt from "bcrypt"
 import { pool } from "@/lib/db"
 import { getCurrentSessionUser } from "@/lib/services/session"
-
+import { createClient } from "@/lib/server"
 
 const MIN_USERNAME_LENGTH = 3
 const MAX_USERNAME_LENGTH = 15
@@ -135,8 +134,7 @@ export async function PATCH(request: Request) {
     const {
         avatar_url,
         username,
-        password,
-        oldPassword
+        password
     } = await request.json()
 
     const currentSession = await getCurrentSessionUser()
@@ -183,7 +181,41 @@ export async function PATCH(request: Request) {
         }
     }
 
+    /* PASSWORD UPDATE */
+    if (password) {
+        if (password.length < MIN_PASSWORD_LENGTH) {
+            return NextResponse.json(
+                {
+                    error: `Le mot de passe doit faire au moins ${MIN_PASSWORD_LENGTH} caractères`
+                },
+                { status: 400 }
+            )
+        }
 
+        if (password.length > MAX_PASSWORD_LENGTH) {
+            return NextResponse.json(
+                {
+                    error: "Le mot de passe est trop long"
+                },
+                { status: 400 }
+            )
+        }
+
+        const supabase = await createClient()
+
+        const { error } = await supabase.auth.updateUser({
+            password
+        })
+
+        if (error) {
+            console.error(error)
+
+            return NextResponse.json(
+                { error: "Impossible de modifier le mot de passe" },
+                { status: 500 }
+            )
+        }
+    }
     /*AVATAR / USERNAME UPDATE*/
     if (avatar_url || username) {
         updatedUser = await pool.query(
@@ -207,57 +239,6 @@ export async function PATCH(request: Request) {
     }
 
     /*PASSWORD UPDATE*/
-    if (password) {
-        if (!oldPassword) {
-            return NextResponse.json(
-                {error:"Ancien mot de passe manquant"},
-                {status:400}
-            )
-        }
-
-        const result = await pool.query(
-            `
-            SELECT password_hash
-            FROM users
-            WHERE id=$1
-            `,
-            [currentSession.user_id]
-        )
-
-        const valid = await bcrypt.compare(
-            oldPassword,
-            result.rows[0].password_hash
-        )
-
-        if (!valid) {
-            return NextResponse.json(
-                {error:"Ancien mot de passe incorrect"},
-                {status:400}
-            )
-        }
-
-        if (password.length < MIN_PASSWORD_LENGTH) {
-            return NextResponse.json(
-                {error:`Le mot de passe doit faire au moins ${MIN_PASSWORD_LENGTH} caractères`},
-                {status:400}
-            )
-        }
-
-
-        const newHash = await bcrypt.hash(password,10)
-            await pool.query(
-                `
-                UPDATE users
-                SET password_hash=$1
-                WHERE id=$2
-                `,
-                [
-                    newHash,
-                    currentSession.user_id
-                ]
-            )
-    }
-
     if (updatedUser) {
         return NextResponse.json({
             user:updatedUser.rows[0]

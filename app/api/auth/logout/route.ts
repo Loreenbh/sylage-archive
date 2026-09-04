@@ -1,22 +1,19 @@
-import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-import { pool } from '@/lib/db'
+import { NextResponse } from "next/server"
+import { createClient } from "@/lib/server"
 
-//
-export async function POST(){
-    const cookieStore = await cookies()
-    const token = cookieStore.get('session_token')?.value
+export async function POST() {
+    const supabase = await createClient()
 
-    if (token){
-        await pool.query(
-            `DELETE FROM sessions
-            WHERE token = $1`,
-            [token]
+    const { error } = await supabase.auth.signOut()
+
+    if (error) {
+        console.error(error)
+
+        return NextResponse.json(
+            { error: "Internal server error" },
+            { status: 500 }
         )
     }
 
-    const response = NextResponse.json({success: true})
-    response.cookies.delete('session_token')
-
-    return response
+    return NextResponse.json({ success: true })
 }

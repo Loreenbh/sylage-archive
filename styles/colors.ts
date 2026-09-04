@@ -33,6 +33,6 @@ export const colors = {
 
   feedback: {
     error: "text-[#806054]",
-    success: "text-[#7B786C]",
+    success: "text-[#EAE3D8]",
   },
 }

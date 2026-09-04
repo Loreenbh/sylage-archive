@@ -1,59 +1,77 @@
-import { NextResponse } from 'next/server'
-import bcrypt from 'bcrypt'
-import crypto from 'crypto'
-import { pool } from '@/lib/db'
+import { NextResponse } from "next/server"
+import { createClient } from "@/lib/server"
 
-const SESSION_DURATION_DAYS = 7
-
-export async function POST (request: Request){
+export async function POST(request: Request) {
     const body = await request.json()
-    const {identifier, password } = body
-    
-    if (!identifier || !password){
+    const { identifier, password } = body
+
+    if (!identifier || !password) {
         return NextResponse.json(
-            { error: "Missing required fields" }, 
+            { error: "Missing required fields" },
             { status: 400 }
         )
     }
 
     const cleanIdentifier = identifier.trim().toLowerCase()
-    const userResult = await pool.query(
-        `SELECT id, username, password_hash
-        FROM users
-        WHERE email = $1 OR username = $1`,
-        [cleanIdentifier]
-    )
+    const supabase = await createClient()
 
-    const user = userResult.rows[0]
-    if (!user){
+    let email = cleanIdentifier
+
+    // Si l'utilisateur entre un username,
+    // on retrouve son email dans public.users.
+    if (!cleanIdentifier.includes("@")) {
+        const { data: profile, error: profileError } = await supabase
+            .from("users")
+            .select("email")
+            .eq("username", cleanIdentifier)
+            .maybeSingle()
+
+        if (profileError || !profile) {
+            return NextResponse.json(
+                { error: "Invalid email/username or password" },
+                { status: 401 }
+            )
+        }
+
+        email = profile.email
+    }
+
+    // Supabase Auth vérifie le mot de passe.
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    })
+
+    console.log("LOGIN DEBUG:", {
+    email,
+    hasUser: !!data.user,
+    error: error?.message,
+})
+
+    if (error || !data.user) {
         return NextResponse.json(
-            { error: "Invalid email/username or password" }, 
+            { error: "Invalid email/username or password" },
             { status: 401 }
         )
     }
 
-    const passwordMatches = await bcrypt.compare(password, user.password_hash)
-    if (!passwordMatches){
+    // Récupère le profil SYLAGE correspondant au compte Auth.
+    const { data: profile } = await supabase
+        .from("users")
+        .select("id, username, email")
+        .eq("auth_id", data.user.id)
+        .single()
+
+    if (!profile) {
         return NextResponse.json(
-            {error: "Invalid email/username or password"},
-            {status: 401}
+            { error: "User profile not found" },
+            { status: 500 }
         )
     }
 
-    const token = crypto.randomBytes(32).toString('hex')
-    const expiresAt = new Date(Date.now() + SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000)
-    await pool.query(
-        'INSERT INTO sessions (token, user_id, expires_at) VALUES ($1, $2, $3)',
-        [token, user.id, expiresAt]
-    )
- 
-    const response = NextResponse.json({ id: user.id, username: user.username })
-    response.cookies.set('session_token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        expires: expiresAt,
-        path: '/',
+    return NextResponse.json({
+        id: profile.id,
+        username: profile.username,
+        email: profile.email,
     })
-    return response
 }

@@ -1,31 +1,28 @@
-import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-import { pool } from '@/lib/db'
+import { NextResponse } from "next/server"
+import { createClient } from "@/lib/server"
 
 export async function GET() {
-    const cookieStore = await cookies()
-    const token = cookieStore.get('session_token')?.value
+    const supabase = await createClient()
 
-    if (!token)
-        return NextResponse.json({user: null})
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
 
-
-    const result = pool.query(
-        `SELECT 
-            users.id, 
-            users.email, 
-            users.username,
-            users.avatar_url
-        FROM sessions
-        JOIN users ON users.id = sessions.user_id
-        WHERE sessions.token= $1 AND sessions.expires_at > NOW()`,
-        [token]
-    )
-
-    const user = (await result).rows[0]
-
-    if (!user){
-        return NextResponse.json({user: null})
+    if (!user) {
+        return NextResponse.json({ user: null })
     }
-    return NextResponse.json({user})
+
+    const { data: profile, error } = await supabase
+        .from("users")
+        .select("id, email, username, avatar_url")
+        .eq("auth_id", user.id)
+        .single()
+
+    if (error || !profile) {
+        return NextResponse.json({ user: null })
+    }
+
+    return NextResponse.json({
+        user: profile,
+    })
 }
