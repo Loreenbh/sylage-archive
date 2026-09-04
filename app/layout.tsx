@@ -32,9 +32,9 @@ export default function RootLayout({
           lg:w-[75vw] 
           max-w-[900px] 
           aspect-[220/280] 
-            my-6
-            sm:my-10
-            md:my-14">
+          my-6
+          sm:my-10
+          md:my-14">
           {children}
         </div>
       </body>

@@ -20,7 +20,7 @@ export const layout = {
     flex
     flex-col
     self-stretch
-    w-10
+    w-7
     sm:w-16
     md:w-20
     lg:w-24
@@ -35,22 +35,19 @@ export const layout = {
 
   coverImage: `
     relative
-    w-[75vw]
+    w-[65vw]
     max-w-[750px]
     aspect-square
     mx-auto
   `,
 
-  sideBarLine: `
-    hidden
-    sm:block
-    sm:flex-1
-    sm:min-h-0
-    w-[1px]
-    lg:w-[1.5px]
-    bg-black/40
-  `,
-  
+sideBarLine: `
+  block
+  flex-1
+  min-h-0
+  w-[1px]
+  bg-black/40
+`,
   sidebarButton: `
     flex
     flex-col

@@ -9,6 +9,7 @@ import { spacing } from "@/styles/spacing"
 import { layout } from "@/styles/layout"
 import { typography } from "@/styles/typography"
 import SimpleGrid from "@/components/ui/grids/SimpleGrid"
+import { colors } from "@/styles/colors"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
@@ -20,10 +21,10 @@ export default function Cover({ onNavigate }: Props) {
     <BookLayout
       header={
         <div className={`${layout.coverHeader} ${spacing.coverHeader}`}>
-          <h1 className={typography.title}>
+          <h1 className={`${typography.title} ${colors.text.charcoal}`}>
             SYLAGE
           </h1>
-          <p className={`${typography.subtitle} ${spacing.subtitle}`}>
+          <p className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}>
             TRENDBOOK
           </p>
         </div>
@@ -36,7 +37,7 @@ export default function Cover({ onNavigate }: Props) {
         />
       }
       actionsBar={
-        <p className={`${typography.actionBar} ${spacing.actionBar}`}>
+        <p className={`${typography.actionBar} ${spacing.actionBar} ${colors.text.charcoal}`}>
           A visual archive of moods
         </p>
       }
@@ -46,7 +47,7 @@ export default function Cover({ onNavigate }: Props) {
           square={
             <div className={`${layout.coverImage}`}>
               <Image
-                src="/texture.jpg"
+                src="/cover.png"
                 alt=""
                 fill
                 priority

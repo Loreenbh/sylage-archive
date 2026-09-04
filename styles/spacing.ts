@@ -7,7 +7,7 @@ ou c est place */
 
 export const spacing = {
 coverHeader: `
-    pt-2
+    pt-6
     sm:pt-10
     lg:pt-16
   `,
@@ -22,15 +22,18 @@ coverHeader: `
     mt-2
     self-end
     mr-6
+    lg:mr-18
   `,
 
   actionBar: `
-    px-10
-    sm:px-6
-    lg:px-12
+    pt-2
+    px-8
+    sm:px-24
+    lg:px-38
+    lg:pt-4
   `,
 
     sideBarTitle: `
-    mt-26
+    mt-6
   `
 }

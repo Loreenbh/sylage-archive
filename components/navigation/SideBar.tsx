@@ -4,6 +4,7 @@ import type { OnNavigate } from "@/types/navigation"
 import { typography } from "@/styles/typography"
 import { layout } from "@/styles/layout"
 import { spacing } from "@/styles/spacing"
+import { colors } from "@/styles/colors"
 
 /* TYPES */
 type Props = {
@@ -43,6 +44,7 @@ export default function Sidebar({
       <p
         className={`
           ${typography.sidebarTitle}
+          ${colors.text.charcoal}
           ${layout.verticalText}
           ${spacing.sideBarTitle}
         `}

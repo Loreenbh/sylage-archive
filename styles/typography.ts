@@ -1,13 +1,12 @@
 export const typography = {
   title: `
     text-5xl
-    sm:text-[100px]
+    sm:text-[90px]
     lg:text-7xl
     xl:text-8xl
     font-light
     tracking-[0.3em]
     xl:tracking-[0.4em]
-    text-black/60
   `,
 
   nav: `
@@ -18,7 +17,6 @@ export const typography = {
     font-light
     tracking-[0.35em]
     uppercase
-    text-black/60
   `,
 
   subtitle: `
@@ -28,29 +26,26 @@ export const typography = {
     tracking-[0.4em]
     uppercase
     font-extralight
-    text-black/70
   `,
 
 
   actionBar: `
-    text-[10px]
+    text-[9px]
     sm:text-[12px]
     md:text-[13px]
     lg:text-[15px]
-    tracking-[0.25em]
+    tracking-[0.3em]
     sm:tracking-[0.5em]
     uppercase
-    text-black/50
   `,
 
   sidebarTitle: `
-  text-[20px]
-  sm:text-4xl
-  lg:text-[50px]
+  text-[18px]
+  sm:text-[30px]
+  lg:text-[45px]
   font-light
   whitespace-nowrap
   tracking-[0.3em]
-  text-black/60
 `,
 
   buttonAuth: `
@@ -59,14 +54,12 @@ export const typography = {
     lg:text-[35px]
     tracking-[0.4em]
     uppercase
-    text-black/50
   `,
 
   buttonAction: `
     text-[8px]
     tracking-[0.4em]
     uppercase
-    text-black/50
   `,
 
   buttonBody: `
@@ -75,7 +68,6 @@ export const typography = {
     lg:text-[16px]
     tracking-[0.3em]
     uppercase
-    text-black/60
   `,
 
     backButton: `
@@ -84,19 +76,16 @@ export const typography = {
     transition-opacity
     hover:opacity-50
     uppercase
-    text-black/60
   `,
 
-  bullet: `
-  text-black/40 
-  text-[10px]`,
+    bullet: `
+    text-[10px]
+    `,
 
-  
     username: `
     text-[10px]
     tracking-[0.35em]
     uppercase
-    text-[#7B7660]
     font-extralight
   `,
 
