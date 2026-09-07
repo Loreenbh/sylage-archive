@@ -51,7 +51,7 @@ export async function GET(
     `,
     [
       id,
-      currentSession.user_id
+      currentSession.id
     ]
   )
   return NextResponse.json(result.rows[0])

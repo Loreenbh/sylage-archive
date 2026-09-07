@@ -101,7 +101,12 @@ export async function POST(request: Request) {
             },
         },
     })
-
+    console.log("SIGNUP DEBUG:", {
+        data,
+        error: error?.message,
+        code: error?.code,
+        status: error?.status,
+    })
     if (error) {
         console.error(error)
 

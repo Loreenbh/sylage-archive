@@ -1,19 +1,18 @@
 export const typography = {
   title: `
-    text-5xl
-    sm:text-[90px]
-    lg:text-7xl
-    xl:text-8xl
+    text-[50px]
+    sm:text-[80px]
+    md:text-[90px]
+    lg:text-[100px]
     font-light
     tracking-[0.3em]
-    xl:tracking-[0.4em]
   `,
 
   nav: `
     text-[10px]
     px-6
-    sm:text-[18px]
-    md:text-[20px]
+    sm:text-[16px]
+    md:text-[18px]
     lg:text-[24px]
     font-light
     tracking-[0.35em]
@@ -22,8 +21,8 @@ export const typography = {
 
   subtitle: `
     text-[11px]
-    sm:text-[17px]
-    lg:text-[20px]
+    sm:text-[18px]
+    lg:text-[24px]
     tracking-[0.4em]
     uppercase
     font-extralight
@@ -52,7 +51,7 @@ export const typography = {
   buttonAuth: `
     text-[10px]
     sm:text-[20px]
-    lg:text-[35px]
+    lg:text-[30px]
     tracking-[0.4em]
     uppercase
   `,
@@ -65,7 +64,7 @@ export const typography = {
 
   buttonBody: `
     text-[8px]
-    sm:text-[10px]
+    sm:text-[12px]
     lg:text-[16px]
     tracking-[0.3em]
     uppercase
@@ -103,6 +102,23 @@ export const typography = {
     uppercase
     tracking-[0.25em]
     font-extralight
-    `
+    `,
 
+    feedbackError:`
+    text-[8px]
+    sm:text-[12px]
+    md:text-[13px]
+    lg:text-[16px]
+    tracking-[0.2em]
+    `,
+
+    coverLabel:`
+    text-[8px]
+    sm:text-[12px]
+    md:text-[12px]
+    lg:text-[16px]
+    uppercase
+    tracking-[0.25em]
+    font-extralight
+    `
 }

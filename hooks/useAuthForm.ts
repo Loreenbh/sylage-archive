@@ -109,6 +109,7 @@ import type { OnNavigate } from "@/types/navigation"
           body: JSON.stringify(loginForm),
         })
         const data = await res.json()
+        console.log("LOGIN RESPONSE:", res.status, data)
         if (!res.ok){
           setLoginError(data.error ?? "Login failed")
           return

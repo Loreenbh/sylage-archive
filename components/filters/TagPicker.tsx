@@ -76,9 +76,9 @@ export default function TagPicker({
   }
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-1 md:gap-2 lg:gap-6">
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-10">
         {categories.map((category) => (
           <button
             key={category.key}
@@ -87,7 +87,15 @@ export default function TagPicker({
               setOpenCategory((prev) => (prev === category.key ? null : category.key))
             }
             className={`
-              text-[8px] tracking-[0.2em] uppercase pb-1 border-b transition
+              text-[8px]
+              sm:text-[10px]
+              md:text-[11px]
+              lg:text-[14px]
+              tracking-[0.2em] 
+              uppercase 
+              pb-1 
+              border-b 
+              transition
               ${openCategory === category.key
                 ? "border-black text-black"
                 : "border-transparent text-black/40 hover:text-black/70"}
@@ -135,8 +143,19 @@ export default function TagPicker({
                   onClick={() => category.onToggle(tag)}
                   disabled={isDisabled}
                   className={`
-                    flex items-center gap-1.5 whitespace-nowrap
-                    text-[7px] tracking-[0.15em] uppercase px-2 py-1 border transition
+                    flex 
+                    items-center 
+                    gap-1.5 
+                    whitespace-nowrap
+                    text-[7px] 
+                    tracking-[0.15em] 
+                    uppercase 
+                    px-2 
+                    py-1 
+                    sm:text-[10px]
+                    md:text-[10px]
+                    lg:text-[13px]
+                    border transition
 
                     ${isSelected
                       ? "bg-black text-white border-black"

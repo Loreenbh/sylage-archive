@@ -56,8 +56,8 @@ export default function Header({
         w-full
         transition-all duration-300
         ${isFilterOpen
-          ? "h-[92px] sm:h-[160px]"
-          : "h-[45px] sm:h-[60px]"
+          ? "h-[74px] sm:h-[105px] md:h-[70px] lg:h-[95px]"
+          : "h-[45px] sm:h-[60px] md:h-[60px] lg:h-[60px]"
         }
       `}
     >
@@ -65,15 +65,18 @@ export default function Header({
       {/* PORTFOLIO */}
       <button
         onClick={() => {
-          window.location.href = "TON_URL_PORTFOLIO"
+          window.location.href = "TON_URL_PORTFOLIO" //A CHANGER ICI
         }}
         className="
           absolute
           top-2
+          sm:top-4
+          md:top-4
+          lg:top-6
           left-5 sm:left-6
-          text-[8px]
+          text-[10px] sm:text-[11px] md:text-[13px] lg:text-[18px]
           tracking-[0.18em]
-          text-black/15
+          text-black/20
           hover:text-black/50
           transition-colors duration-300
           cursor-pointer
@@ -82,7 +85,7 @@ export default function Header({
         ← PORTFOLIO
       </button>
       {/* NAVIGATION — responsive padding and margin-top */}
-      <div className="flex justify-between sm:px-6 pt-7">
+      <div className="flex justify-between sm:px-6 pt-10 sm:pt-20 md:pt-16 lg:pt-26">
         {items.map((item) => (
           <button
             key={item.section}
@@ -123,12 +126,14 @@ export default function Header({
       </div>
       <div
         className={`
-          overflow-hidden
+          overflow-visible
           transition-all duration-300
-          ${isFilterOpen ? "max-h-[100px] opacity-100 mt-2" : "max-h-0 opacity-0"}
+          relative
+          z-50
+          ${isFilterOpen ? "max-h-[200px] opacity-100 mt-2" : "max-h-0 opacity-0"}
         `}
       >
-        <div className="border-y border-black/10 py-1 px-2 sm:px-4 md:px-6 lg:px-10">
+        <div className="border-y border-black/10 py-3 px-2 sm:px-4 md:px-6 lg:px-10">
           <TagPicker
             styleTags={styleTags}
             ambianceTags={ambianceTags}

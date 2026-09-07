@@ -123,7 +123,7 @@ if (liked === "true") {
       ORDER BY MAX(l.created_at) DESC
       `,
       [
-        currentSession.user_id
+        currentSession.id
       ]
     )
     return NextResponse.json({
@@ -198,7 +198,7 @@ if (liked === "true") {
       `,
       [
         moodboardId,
-        currentSession.user_id
+        currentSession.id
       ]
     )
     return NextResponse.json({
@@ -212,7 +212,7 @@ if (liked === "true") {
   // CAS 2 : PROFIL
   const userId = userIdParam
     ? Number(userIdParam)
-    : currentSession.user_id
+    : currentSession.id
 
   const user = await pool.query(
     `
@@ -275,7 +275,7 @@ if (liked === "true") {
     `,
     [
       userId,
-      currentSession.user_id
+      currentSession.id
     ]
   )
   return NextResponse.json({

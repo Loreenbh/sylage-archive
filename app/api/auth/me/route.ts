@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/server"
+import { supabaseAdmin } from "@/lib/supabase-admin"
 
 export async function GET() {
     const supabase = await createClient()
@@ -12,7 +13,7 @@ export async function GET() {
         return NextResponse.json({ user: null })
     }
 
-    const { data: profile, error } = await supabase
+    const { data: profile, error } = await supabaseAdmin
         .from("users")
         .select("id, email, username, avatar_url")
         .eq("auth_id", user.id)

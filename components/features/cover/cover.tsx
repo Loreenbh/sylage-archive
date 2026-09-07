@@ -19,6 +19,8 @@ type Props = {
 export default function Cover({ onNavigate }: Props) {
   return (
     <BookLayout
+      imageClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10"
+      sidebarClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10 lg:!ml-10"
       header={
         <div className={`${layout.coverHeader} ${spacing.coverHeader}`}>
           <h1 className={`${typography.title} ${colors.text.charcoal}`}>
@@ -37,12 +39,8 @@ export default function Cover({ onNavigate }: Props) {
         />
       }
       actionsBar={
-        <p className={`${typography.actionBar}
-          pt-2
-          px-10
-          sm:px-24
-          lg:px-38
-          lg:pt-4
+        <p className={`${typography.coverLabel}
+          ${spacing.coverLabel}
           ${colors.text.charcoal}`}>
           A visual archive of moods
         </p>

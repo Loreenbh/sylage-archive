@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 
     const userId = userIdParam
         ? Number(userIdParam)
-        : currentSession.user_id
+        : currentSession.id
 
 
     const user = await pool.query(
@@ -80,7 +80,7 @@ export async function GET(request: Request) {
         `,
         [
             userId,
-            currentSession.user_id
+            currentSession.id
         ]
     )
 
@@ -118,7 +118,7 @@ export async function GET(request: Request) {
         `,
         [
             userId,
-            currentSession.user_id
+            currentSession.id
         ]
     )
     return NextResponse.json({
@@ -170,7 +170,7 @@ export async function PATCH(request: Request) {
             WHERE username=$1
             AND id != $2
             `,
-            [ username, currentSession.user_id ]
+            [ username, currentSession.id ]
         )
 
         if(existing.rows[0]) {
@@ -233,7 +233,7 @@ export async function PATCH(request: Request) {
             [
                 avatar_url ?? null,
                 username ?? null,
-                currentSession.user_id
+                currentSession.id
             ]
         )
     }
@@ -252,7 +252,7 @@ export async function PATCH(request: Request) {
         FROM users
         WHERE id=$1
         `,
-        [currentSession.user_id]
+        [currentSession.id]
     )
     return NextResponse.json({
         user:user.rows[0]
@@ -272,7 +272,7 @@ export async function DELETE(){
     DELETE FROM users
     WHERE id=$1
     `,
-    [currentSession.user_id]
+    [currentSession.id]
   )
   return NextResponse.json({
     success:true

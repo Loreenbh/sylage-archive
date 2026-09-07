@@ -73,7 +73,7 @@ export async function GET(request: Request) {
         GROUP BY moodboards.id, users.id, users.username
         ${orderBy}
         `,
-        [currentSession.user_id]
+        [currentSession.id]
     )
     return NextResponse.json(res.rows)
 }

@@ -29,7 +29,7 @@ type Props1 = {
 
 function MagazineInput({ placeholder, type = "text", index, value, onChange } : Props1) {
   return (
-    <div className="w-full flex space-y-6 px-3 sm:px-6 lg:px-12">
+    <div className="w-full flex space-y-3 sm:space-y-8 px-3 sm:px-6 lg:px-8">
         <input
           type={type}
           placeholder={placeholder}
@@ -41,7 +41,7 @@ function MagazineInput({ placeholder, type = "text", index, value, onChange } : 
             border-b
             ${colors.input.border}
             bg-transparent
-            text-[9px] sm:text-[20px] md:text-base lg:text-[20px] 
+            text-[9px] sm:text-[16px] md:text-base lg:text-[18px] 
             font-light 
             outline-none
             ${colors.input.placeholder}
@@ -51,7 +51,7 @@ function MagazineInput({ placeholder, type = "text", index, value, onChange } : 
         />
         <span
           className={`
-            text-[35px] sm:text-[55px] md:text-[60px] lg:text-[85px] 
+            text-[35px] pl-2 sm:text-[55px] md:text-[63px] lg:text-[90px] 
             font-light 
             ${colors.input.number}
             shrink-0 
@@ -118,7 +118,7 @@ export default function Authentification({ onNavigate }: Props) {
           <div className={`${colors.bg.stone} flex flex-col justify-between h-full`}>
             <div className="pt-7 sm:pt-35 lg:pt-50">
               <MagazineInput 
-                placeholder="Pseudo" 
+                placeholder="Username" 
                 index={1}
                 value = {registerForm.username}
                 onChange={updateRegisterField("username")}
@@ -137,7 +137,7 @@ export default function Authentification({ onNavigate }: Props) {
                 onChange={updateRegisterField("password")}
               />
               <MagazineInput 
-                placeholder="Confirm password" 
+                placeholder="Password again" 
                 index={4}
                 type="password"
                 value={registerForm.confirmPassword}
@@ -145,9 +145,9 @@ export default function Authentification({ onNavigate }: Props) {
               />
               {registerError &&(
                 <p className={`
-                  px-3
-                  text-[9.5px] sm:px-6 lg:px-12 
+                  ${typography.feedbackError} 
                   ${colors.feedback.error}
+                  ${spacing.feedbackError}
                   `}
                   >
                   {registerError}
@@ -167,14 +167,14 @@ export default function Authentification({ onNavigate }: Props) {
 
             <button
               onClick={handleRegister}
-              className={`${typography.buttonAuth} ${colors.text.charcoal} pb-6`}>
+              className={`${typography.buttonAuth} ${colors.text.charcoal} pb-10`}>
               Join →
             </button>
           </div>
         }
         right={
           <div className={`${colors.bg.earth} flex flex-col justify-between h-full`}>
-            <div className="pt-[70px] sm:pt-35 lg:pt-50">
+            <div className="pt-[70px] sm:pt-51 md:pt-51 lg:pt-75">
               <MagazineInput 
                 placeholder="Email/username" 
                 type="text"
@@ -190,9 +190,9 @@ export default function Authentification({ onNavigate }: Props) {
 
                 {loginError &&(
                 <p className={`
-                  px-3 
-                  text-[9.5px] sm:px-6 lg:px-12 
+                  ${typography.feedbackError} 
                   ${colors.feedback.error}
+                  ${spacing.feedbackError}  
                   `}
                   >
                   {loginError}
@@ -204,7 +204,8 @@ export default function Authentification({ onNavigate }: Props) {
               onClick={handleLogin}
               disabled={isSubmitting}
               className={`
-                ${typography.buttonAuth} ${colors.text.charcoal} pb-6 `}
+                ${typography.buttonAuth} 
+                ${colors.text.charcoal} pb-10 `}
               >
               Enter →
             </button>

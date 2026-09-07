@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 
   const userId = userIdParam
     ? Number(userIdParam)
-    : currentSession.user_id
+    : currentSession.id
 
   const user = await pool.query(
     `
@@ -59,7 +59,7 @@ export async function GET(request: Request) {
     `,
     [
       userId,
-      currentSession.user_id
+      currentSession.id
     ]
   )
 
@@ -87,7 +87,7 @@ export async function GET(request: Request) {
     `,
     [
       userId,
-      currentSession.user_id
+      currentSession.id
     ]
   )
   return NextResponse.json({
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
     ON CONFLICT DO NOTHING
     `,
     [
-      currentUser.user_id,
+      currentUser.id,
       userId
     ]
   )
@@ -158,7 +158,7 @@ export async function DELETE(request: Request) {
     AND following_id=$2
     `,
     [
-      currentUser.user_id,
+      currentUser.id,
       userId
     ]
   )

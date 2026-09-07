@@ -24,6 +24,7 @@ type Props = {
 import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods"
 import { followUser , unfollowUser } from "@/lib/services/follows"
 import StatusMessage from "@/components/ui/messages/StatusMessage"
+import { spacing } from "@/styles/spacing"
 /*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
@@ -99,7 +100,14 @@ export default function Discover({ onNavigate, params }: Props) {
         <Sidebar text={sidebarTitle} clickable={false}/>
       }
       actionsBar={
-        <div className="flex items-center gap-2 sm:gap-6">
+        <div className={`
+              flex 
+              items-center 
+              gap-2 
+              sm:gap-6
+              ${spacing.buttonBody}
+          `}
+          >
           <button
             onClick={() => setTab("latest")}
             className={typography.buttonBody}>latest</button>

@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       RETURNING *
       `,
       [
-        user.user_id,
+        user.id,
         imageUrl,
         tags
       ]
@@ -110,7 +110,7 @@ export async function GET(request: Request) {
         ORDER BY MAX(l.created_at) DESC
         `,
         [
-          currentSession.user_id
+          currentSession.id
         ]
       )
 
@@ -139,7 +139,7 @@ export async function GET(request: Request) {
 
     const userId = userIdParam
       ? Number(userIdParam)
-      : currentSession.user_id
+      : currentSession.id
 
     const user = await pool.query(
       `
@@ -193,7 +193,7 @@ export async function GET(request: Request) {
     `,
     [
       userId,
-      currentSession.user_id
+      currentSession.id
     ]
   )
     return NextResponse.json({
@@ -247,7 +247,7 @@ export async function DELETE(request: Request) {
     }
 
 
-    if (moodboard.rows[0].user_id !== currentSession.user_id) {
+    if (moodboard.rows[0].user_id !== currentSession.id) {
       return NextResponse.json(
         { error:"Non autorisé" },
         { status:403 }

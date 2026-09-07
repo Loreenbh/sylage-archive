@@ -7,33 +7,53 @@ ou c est place */
 
 export const spacing = {
 coverHeader: `
-    pt-6
-    sm:pt-10
-    lg:pt-16
-  `,
-
-  header: `
-    pt-5
-    sm:pt-10
-    lg:pt-16
+    pt-2
   `,
 
   subtitle: `
-    mt-2
-    self-end
     mr-6
-    lg:mr-18
+    sm:mt-2
+    sm:mr-10
+    md:mr-10
+    lg:mr-16
+    self-end 
   `,
 
   actionBar: `
     pt-2
-    px-4
-    sm:px-24
-    lg:px-38
+    px-6
+    sm:px-6
+    lg:px-6
     lg:pt-4
   `,
 
-    sideBarTitle: `
+  sideBarTitle: `
     mt-6
-  `
+  `,
+
+  feedbackError:`
+  px-3
+  pt-2
+  sm:px-6
+  sm:pt-8
+  md:px-6
+  md:pt-8
+  lg:px-8
+  lg:pt-10
+  `,
+
+  coverLabel:`
+  pt-1
+  px-6
+  sm:px-6
+  sm: pt-4
+  md:px-6
+  lg:px-6
+  lg:pt-4
+  `,
+
+  buttonBody: `
+  px-6
+  sm:pt-3
+  `,
 }

@@ -16,15 +16,15 @@ export const layout = {
     min-h-0
   `,
 
-  sidebar: `
-    flex
-    flex-col
-    self-stretch
-    w-7
-    sm:w-16
-    md:w-20
-    lg:w-24
-  `,
+  // sidebar: `
+  //   flex
+  //   flex-col
+  //   self-stretch
+  //   w-10
+  //   sm:w-16
+  //   md:w-20
+  //   lg:w-24
+  // `,
 
   coverHeader: `
     flex
@@ -35,7 +35,7 @@ export const layout = {
 
   coverImage: `
     relative
-    w-[65vw]
+    w-[70vw]
     max-w-[750px]
     aspect-square
     mx-auto

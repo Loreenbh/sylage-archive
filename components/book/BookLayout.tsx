@@ -5,7 +5,8 @@ type Props = {
   children: React.ReactNode
   sidebar?: React.ReactNode
   actionsBar?: React.ReactNode
-
+  imageClassName?: string
+  sidebarClassName?: string
   footerLeft?: React.ReactNode
   footerRight?: React.ReactNode
 
@@ -17,7 +18,9 @@ export default function BookLayout({
   sidebar,
   actionsBar,
   footerLeft,
-  footerRight
+  footerRight,
+  imageClassName,
+  sidebarClassName
   }: Props) {
   return (
     <BookFrame>
@@ -32,20 +35,23 @@ export default function BookLayout({
         <div className="flex flex-col">
           {/* IMAGE */}
           <div
-            className="
-              w-[255px]
-              sm:w-[490px]
-              md:w-[520px]
-              lg:w-[680px]
+            className={`
+              w-[270px]
+              mt-16
+              sm:mt-26
+              sm:w-[500px]
+              md:w-[540px]
+              md:mt-30
+              lg:w-[730px]
+              lg:mt-46
               aspect-square
               shrink-0
-              mt-6
-              lg:mt-12
               mx-auto
-              ml-4
+              ml-6
               sm:ml-6
+              ${imageClassName ?? ""}
               bg-green-200
-            "
+            `}
           >
             {children}
           </div>
@@ -57,21 +63,25 @@ export default function BookLayout({
         </div>
         {sidebar && (
           <div
-            className="
+            className={`
               flex
               flex-col
               self-start
-              w-[30px]
+              w-[40px]
               sm:w-[35px]
               md:w-[50px]
               lg:w-[50px]
-              mt-6
-              lg:mt-12
-              h-[248px]
+              mt-16
+              sm:mt-26
+              h-[260px]
               sm:h-[490px]
-              md:h-[530px]
-              lg:h-[690px]
-            "
+              md:h-[540px]
+              md:mt-30
+              lg:h-[730px]
+              lg:ml-6
+              lg:mt-46
+              ${sidebarClassName ?? ""}
+            `}
           >
             {sidebar}
           </div>

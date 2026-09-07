@@ -31,7 +31,7 @@ export async function GET(request: Request) {
 
     ORDER BY likes.created_at DESC
     `,
-    [currentSession.user_id]
+    [currentSession.id]
     )
 
     const likedMoods = await pool.query(
@@ -51,7 +51,7 @@ export async function GET(request: Request) {
 
     ORDER BY likes.created_at DESC
     `,
-    [currentSession.user_id]
+    [currentSession.id]
     )
 
     const muse = await pool.query(
@@ -84,7 +84,7 @@ export async function GET(request: Request) {
 
     LIMIT 1
     `,
-    [currentSession.user_id]
+    [currentSession.id]
     )
 
     return NextResponse.json({
