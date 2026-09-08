@@ -2,6 +2,7 @@
 import type { OnNavigate } from "@/types/navigation"
 import Avatar from "../pagination/Avatar"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { colors } from "@/styles/colors"
 
 /* TYPES */
 type Props = {
@@ -28,16 +29,24 @@ export default function ProfileButton({ onNavigate, active = false, clickable = 
         })
       }}
       className={`
-        w-8 h-8 md:w-14 md:h-14 lg:w-18 lg:h-18
+          w-8 h-8 
+          sm:w-14 
+          sm:h-14 
+          lg:w-20 
+          lg:h-20
+          text-[10px]
+          sm:text-[16px]
+          lg:text-[25px]
+          
       `}
     >
       <Avatar
         user={user}
-        className="
+        className={`
           w-full
           h-full
           rounded-full
-        "
+        `}
       />
     </button>
   )

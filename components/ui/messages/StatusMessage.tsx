@@ -1,4 +1,4 @@
-// components/ui/StateMessage.tsx
+import { colors } from "@/styles/colors"
 
 type Props = {
   message: string
@@ -12,16 +12,18 @@ export default function StatusMessage({ message }: Props) {
         items-center
         justify-center
         h-full
-        border
-        border-black/10
+
       "
     >
-      <p className="
+      <p className={`
         text-center
-        text-black/30
-        text-xs
+        ${colors.text.charcoal70}
+        text-[11px]
+        sm:text-[14px]
+        md:text-[16px]
+        lg:text-[18px]
         tracking-[0.2em]
-      ">
+      `}>
         {message}
       </p>
     </div>

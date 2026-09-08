@@ -9,6 +9,8 @@ export const colors = {
     stone: "bg-[#7B786C]",
     earth: "bg-[#806054]",
     charcoal: "bg-[#211C19]",
+    charcoal70: "bg-[#211C19]/70",
+    empty: "bg-[#D9CEBD]/30"
   },
 
   text: {
@@ -16,6 +18,7 @@ export const colors = {
     stone: "text-[#7B786C]",
     earth: "text-[#806054]",
     charcoal: "text-[#211C19]",
+    charcoal70: "text-[#211C19]/60"
   },
 
   border: {

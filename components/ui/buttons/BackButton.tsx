@@ -1,6 +1,6 @@
-import { typography
+import { typography} from "@/styles/typography"
+import { spacing } from "@/styles/spacing"
 
- } from "@/styles/typography"
 type Props = {
   onBack?: () => void
 }
@@ -13,7 +13,7 @@ export default function BackButton({
   return (
     <button
       onClick={onBack}
-      className={typography.backButton}
+      className={`${typography.backButton} ${spacing.backButton}`}
       
     >
       back

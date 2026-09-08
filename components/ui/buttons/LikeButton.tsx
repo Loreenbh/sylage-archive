@@ -63,18 +63,13 @@ export default function LikeButton({
     }
     onLike?.()
   }
-
   return (
     <button
       onClick={handleClick}
-      className={className}
+      className={`${className} text-white hover:text-white/70 transition-colors duration-300`}
       disabled={disabled}
     >
-      {type === "moodboard" ? (
-        liked ? "♥" : "♡"
-      ) : (
-        liked ? "♥" : "♡"
-      )}
+      {liked ? "♥" : "♡"}
       {" "}
       {count}
     </button>

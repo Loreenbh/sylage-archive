@@ -1,4 +1,5 @@
 import type { User } from "@/types/user"
+import { colors } from "@/styles/colors"
 
 type Props = {
   user?: User | null
@@ -16,7 +17,7 @@ export default function Avatar({
         rounded-full
         flex items-center justify-center
         overflow-hidden
-        bg-black
+        ${colors.bg.charcoal}
         text-white
         font-serif
         tracking-[0.2em]

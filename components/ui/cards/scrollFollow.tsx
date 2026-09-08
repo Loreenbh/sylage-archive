@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Follow } from "@/types/follow"
 import { typography } from "@/styles/typography"
+import { colors } from "@/styles/colors"
 
 type Props = {
   followingTitle: string
@@ -54,16 +55,16 @@ export default function ScrollFollow({
           >
           <button
             onClick={() => onOpenProfile?.(item)}
-            className="
+            className={`
               hidden sm:flex
-              w-10 h-10
+              lg:w-14 h-14
               shrink-0
               rounded-full
               bg-zinc-300
               overflow-hidden
               items-center
               justify-center
-            "
+            `}
           >
               {item.avatar_url ? (
                 <img
@@ -86,7 +87,7 @@ export default function ScrollFollow({
               {showUnfollow && (
                 <button
                   onClick={() => onUnfollow?.(item)}
-                  className="text-[11px] opacity-40 shrink-0"
+                  className="lg:text-[18px] opacity-40 shrink-0"
                 >
                   x
                 </button>
@@ -98,9 +99,9 @@ export default function ScrollFollow({
     </div>
   )
     return (
-      <div className="h-full min-h-0 w-full flex flex-col overflow-hidden">
+      <div className={`h-full min-h-0 w-full flex flex-col overflow-hidden`}>
 
-        <div className="flex border-b border-black/10 shrink-0">
+        <div className="flex border-b border-black/10 shrink-0 lg:py-3">
 
           <button
             onClick={() => setActiveTab("following")}
@@ -111,7 +112,7 @@ export default function ScrollFollow({
                 : "opacity-40"}
             `}
           >
-            <span className="text-[7px] tracking-[0.2em] uppercase text-black/50" >
+            <span className="lg:text-[16px] tracking-[0.2em] uppercase text-black/50" >
               {followingTitle}
             </span>
           </button>
@@ -125,7 +126,7 @@ export default function ScrollFollow({
                 : "opacity-40"}
             `}
           >
-            <span className="text-[7px] tracking-[0.2em] uppercase text-black/50">
+            <span className="lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
               {followersTitle}
             </span>
           </button>

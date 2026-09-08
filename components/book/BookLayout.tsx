@@ -36,10 +36,10 @@ export default function BookLayout({
           {/* IMAGE */}
           <div
             className={`
-              w-[270px]
+              w-[250px]
               mt-16
               sm:mt-26
-              sm:w-[500px]
+              sm:w-[490px]
               md:w-[540px]
               md:mt-30
               lg:w-[730px]
@@ -50,7 +50,6 @@ export default function BookLayout({
               ml-6
               sm:ml-6
               ${imageClassName ?? ""}
-              bg-green-200
             `}
           >
             {children}
@@ -73,7 +72,7 @@ export default function BookLayout({
               lg:w-[50px]
               mt-16
               sm:mt-26
-              h-[260px]
+              h-[250px]
               sm:h-[490px]
               md:h-[540px]
               md:mt-30
@@ -95,7 +94,7 @@ export default function BookLayout({
             flex
             justify-between
             items-center
-            px-2
+            px-6
           "
         >
           <div>

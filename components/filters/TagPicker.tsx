@@ -10,6 +10,7 @@ import {
   MAX_AMBIANCE_TAGS,
   MAX_COLOR_TAGS,
 } from "@/constants/tags"
+import { colors } from "@/styles/colors"
 
 type Category = "style" | "ambiance" | "couleurs"
 
@@ -69,14 +70,14 @@ export default function TagPicker({
 
   const allSelected = [...styleTags, ...ambianceTags, ...colorTags]
 
-  const removeTag = (tag: string) => {
-    if (styleTags.includes(tag)) onChangeStyle(styleTags.filter((t) => t !== tag))
-    else if (ambianceTags.includes(tag)) onChangeAmbiance(ambianceTags.filter((t) => t !== tag))
-    else if (colorTags.includes(tag)) onChangeColor(colorTags.filter((t) => t !== tag))
-  }
+  // const removeTag = (tag: string) => {
+  //   if (styleTags.includes(tag)) onChangeStyle(styleTags.filter((t) => t !== tag))
+  //   else if (ambianceTags.includes(tag)) onChangeAmbiance(ambianceTags.filter((t) => t !== tag))
+  //   else if (colorTags.includes(tag)) onChangeColor(colorTags.filter((t) => t !== tag))
+  // }
 
   return (
-    <div className="flex flex-col items-center gap-1 md:gap-2 lg:gap-6">
+    <div className="flex flex-col items-center gap-1 sm:gap-3 lg:gap-4">
 
       <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-10">
         {categories.map((category) => (
@@ -158,7 +159,7 @@ export default function TagPicker({
                     border transition
 
                     ${isSelected
-                      ? "bg-black text-white border-black"
+                      ? `${colors.bg.charcoal} text-white border-black`
                       : isDisabled
                       ? "border-black/10 text-black/20 cursor-not-allowed"
                       : "border-black/20 text-black/40 hover:text-black/70"}

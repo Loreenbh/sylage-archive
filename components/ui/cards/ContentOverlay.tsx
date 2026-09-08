@@ -1,5 +1,6 @@
 import LikeButton from "@/components/ui/buttons/LikeButton"
 import { typography } from "@/styles/typography"
+import { colors } from "@/styles/colors"
 
 type Props = {
   username?: string
@@ -32,25 +33,30 @@ export default function ContentOverlay({
   silhouettesCount,
   onDelete,
   onOpenLooks,
-  onOpenProfile
+  onOpenProfile,
 }: Props) {
-
   return (
     <div
-      className="
+      className={`
         absolute bottom-0 left-0 right-0
         flex items-center justify-between
-        px-1 py-1
-        bg-[#1B1613]/80
-        text-[#f8f3e8]
+        px-2 py-1
+        ${colors.bg.charcoal70}
+        ${colors.text.ivory}
         backdrop-blur-sm
-      "
+      `}
     >
       <div className="flex flex-col">
-
         {showUsername && username && (
-          <div className="text-[10px] tracking-[0.2em] drop-shadow">
-
+          <div
+            className="
+              text-[10px]
+              tracking-[0.2em]
+              drop-shadow
+              md:text-[10px]
+              lg:text-[12px]
+            "
+          >
             {prefix && (
               <span className="text-white/70">
                 {prefix}{" "}
@@ -58,9 +64,7 @@ export default function ContentOverlay({
             )}
 
             {isOwner ? (
-              <span>
-                {username}
-              </span>
+              <span>{username}</span>
             ) : (
               <button
                 onClick={(e) => {
@@ -69,22 +73,20 @@ export default function ContentOverlay({
                 }}
                 className="
                   cursor-pointer
-                  hover:opacity-60
-                  transition-opacity
+                  text-white
+                  hover:text-white/50
+                  transition-colors
+                  duration-300
                 "
               >
                 {username}
               </button>
             )}
-
           </div>
         )}
+      </div>
 
-    </div>
-
-
-      <div className="flex items-center gap-3">
-
+      <div className="flex items-center gap-3 md:gap-4 lg:gap-6">
         {like && (
           <LikeButton
             type={like.type}
@@ -102,7 +104,13 @@ export default function ContentOverlay({
               e.stopPropagation()
               onOpenLooks?.()
             }}
-            className={typography.buttonOverlay}
+            className={`
+              ${typography.buttonOverlay}
+              text-white
+              hover:text-white/50
+              transition-colors
+              duration-300
+            `}
           >
             looks • {silhouettesCount}
           </button>
@@ -115,11 +123,13 @@ export default function ContentOverlay({
               onFollowToggle()
             }}
             className="
-              text-[12px]
+              md:text-[12px]
+              lg:text-[15px]
               tracking-[0.2em]
               drop-shadow
-              hover:opacity-60
-              transition-opacity
+              hover:text-white/50
+              transition-colors
+              duration-300
             "
           >
             {isFollowed ? "✓" : "+"}
@@ -127,26 +137,25 @@ export default function ContentOverlay({
         )}
 
         {isOwner && onDelete && (
-          <>
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                onDelete()
-              }}
-              className="
-                text-white
-                text-[10px]
-                hover:opacity-60
-                transition-opacity
-              "
-            >
-              x
-            </button>
-          </>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete()
+            }}
+            className="
+              text-white
+              md:text-[10px]
+              text-[10px]
+              hover:text-white/50
+              transition-colors
+              duration-300
+            "
+          >
+            x
+          </button>
         )}
-
       </div>
-
     </div>
   )
 }
+

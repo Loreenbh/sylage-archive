@@ -122,7 +122,12 @@ const {
           </div>
           }
         >   
-        <div className="flex flex-col h-full "> 
+        <div className="flex 
+                        flex-col 
+                        h-full   
+                        bg-black/[0.02]
+                        border
+                        border-black/10"> 
           {isLoading ? (
             <StatusMessage message="LOADING ARCHIVE..." />
           ) : filteredMoodboards.length === 0 ? (

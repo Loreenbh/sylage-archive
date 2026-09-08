@@ -13,6 +13,7 @@ import ContentOverlay from "@/components/ui/cards/ContentOverlay"
 
 /*STYLE*/
 import { typography } from "@/styles/typography"
+import { colors } from "@/styles/colors"
 
 /* TYPES */
 type Props = {
@@ -100,25 +101,73 @@ export default function Discover({ onNavigate, params }: Props) {
         <Sidebar text={sidebarTitle} clickable={false}/>
       }
       actionsBar={
-        <div className={`
-              flex 
-              items-center 
-              gap-2 
-              sm:gap-6
-              ${spacing.buttonBody}
+        <div
+          className={`
+            flex
+            items-center
+            gap-2
+            sm:gap-6
+            ${spacing.buttonBody}
+            ${colors.text.charcoal}
           `}
-          >
+        >
           <button
             onClick={() => setTab("latest")}
-            className={typography.buttonBody}>latest</button>
+            className={`
+              ${typography.buttonBody}
+              pb-1
+              border-b
+              transition-colors
+              duration-300
+              ${
+                tab === "latest"
+                  ? "border-black"
+                  : "border-transparent hover:border-black"
+              }
+            `}
+          >
+            latest
+          </button>
+
           <span className={typography.bullet}>•</span>
+
           <button
             onClick={() => setTab("curated")}
-            className={typography.buttonBody}>curated</button>
+            className={`
+              ${typography.buttonBody}
+              pb-1
+              border-b
+              transition-colors
+              duration-300
+              ${
+                tab === "curated"
+                  ? "border-black"
+                  : "border-transparent hover:border-black"
+              }
+            `}
+          >
+            curated
+          </button>
+
           <span className={typography.bullet}>•</span>
-          <button 
+
+          <button
             onClick={() => setTab("following")}
-            className={typography.buttonBody}>following</button>
+            className={`
+              ${typography.buttonBody}
+              pb-1
+              border-b
+              transition-colors
+              duration-300
+              ${
+                tab === "following"
+                  ? "border-black"
+                  : "border-transparent hover:border-black"
+              }
+            `}
+          >
+            following
+          </button>
         </div>
       }
       footerRight={
@@ -134,15 +183,26 @@ export default function Discover({ onNavigate, params }: Props) {
       {isLoading ? (
         <StatusMessage message="LOADING ARCHIVE..." />
       ) : filteredMoodboards.length === 0 ? (
+          <div className={`
+            aspect-square
+            w-full
+            flex
+            items-center
+            justify-center
+            ${colors.bg.empty}
+            border
+            border-black/10
+          `}>
         <StatusMessage
               message={
                 tab === "following"
-                  ? "FOLLOW CREATORS TO BUILD YOUR FEED"
+                  ? "BUILD YOUR ARCHIVE."
                   : tab === "curated"
-                  ? "NO CURATED PIECES YET"
-                  : "THE ARCHIVE IS EMPTY"
+                  ? "NO CURATED PIECES YET."
+                  : "THE ARCHIVE IS EMPTY."
               }
             />
+            </div>
       ) : (
           <ScrollableGrid
             data={filteredMoodboards}
@@ -162,7 +222,8 @@ export default function Discover({ onNavigate, params }: Props) {
                 aspect-square 
                 w-full 
                 cursor-pointer 
-                overflow-hidden">
+                overflow-hidden
+                ">
                 <img
                   src={board.image_url}
                   alt=""

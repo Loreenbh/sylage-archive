@@ -1,3 +1,5 @@
+import { colors } from "@/styles/colors"
+
 type Props = {
   left: React.ReactNode
   topRight: React.ReactNode
@@ -29,7 +31,7 @@ export default function CustomGrid({
           {topRight}
         </div>
 
-        <div className="min-h-0 overflow-hidden">
+        <div className={`min-h-0 overflow-hidden`}>
           {bottomRight}
         </div>
 

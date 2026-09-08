@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from "react"
 import { typography } from "@/styles/typography"
 import { colors } from "@/styles/colors"
@@ -14,7 +15,8 @@ type HeaderItem = {
 
 type HeaderProps = {
   items: HeaderItem[]
-  onFiltersChange?: (tags: string[]) => void}
+  onFiltersChange?: (tags: string[]) => void
+}
 /*-------------------------------------------------*/
 
 export default function Header({
@@ -41,10 +43,12 @@ export default function Header({
     setStyleTags(tags)
     onFiltersChange?.([...tags, ...ambianceTags, ...colorTags])
   }
+
   const updateAmbiance = (tags: string[]) => {
     setAmbianceTags(tags)
     onFiltersChange?.([...styleTags, ...tags, ...colorTags])
   }
+
   const updateColor = (tags: string[]) => {
     setColorTags(tags)
     onFiltersChange?.([...styleTags, ...ambianceTags, ...tags])
@@ -54,10 +58,12 @@ export default function Header({
     <div
       className={`
         w-full
-        transition-all duration-300
-        ${isFilterOpen
-          ? "h-[74px] sm:h-[105px] md:h-[70px] lg:h-[95px]"
-          : "h-[45px] sm:h-[60px] md:h-[60px] lg:h-[60px]"
+        transition-all
+        duration-300
+        ${
+          isFilterOpen
+            ? "h-[74px] sm:h-[105px] md:h-[70px] lg:h-[75px]"
+            : "h-[45px] sm:h-[60px] md:h-[60px] lg:h-[60px]"
         }
       `}
     >
@@ -65,7 +71,7 @@ export default function Header({
       {/* PORTFOLIO */}
       <button
         onClick={() => {
-          window.location.href = "TON_URL_PORTFOLIO" //A CHANGER ICI
+          window.location.href = "TON_URL_PORTFOLIO"
         }}
         className="
           absolute
@@ -73,19 +79,38 @@ export default function Header({
           sm:top-4
           md:top-4
           lg:top-6
-          left-5 sm:left-6
-          text-[10px] sm:text-[11px] md:text-[13px] lg:text-[18px]
+          left-5
+          sm:left-6
+          text-[10px]
+          sm:text-[13px]
+          md:text-[13px]
+          lg:text-[18px]
           tracking-[0.18em]
           text-black/20
           hover:text-black/50
-          transition-colors duration-300
+          transition-colors
+          duration-300
           cursor-pointer
         "
       >
         ← PORTFOLIO
       </button>
-      {/* NAVIGATION — responsive padding and margin-top */}
-      <div className="flex justify-between sm:px-6 pt-10 sm:pt-20 md:pt-16 lg:pt-26">
+
+      {/* NAVIGATION */}
+      <div
+        className="
+          relative
+          z-[60]
+          flex
+          justify-between
+          px-4
+          sm:px-6
+          pt-10
+          sm:pt-20
+          md:pt-16
+          lg:pt-26
+        "
+      >
         {items.map((item) => (
           <button
             key={item.section}
@@ -93,47 +118,53 @@ export default function Header({
             disabled={!item.clickable}
             className={`
               ${typography.nav}
-              relative group
-              transition-colors duration-300
+              pb-1
+              border-b
+              transition-colors
+              duration-300
 
               ${
-                item.active || (item.section === "FILTER" && isFilterOpen)
-                  ? `${colors.text.charcoal} cursor-default`
+                item.active ||
+                (item.section === "FILTER" && isFilterOpen)
+                  ? `${colors.text.charcoal} border-black cursor-default`
                   : item.clickable
-                  ? `${colors.text.charcoal} cursor-pointer opacity-90 hover:opacity-80`
-                  : `${colors.text.charcoal} cursor-default opacity-50`
+                  ? `${colors.text.charcoal} border-transparent cursor-pointer hover:border-black opacity-90`
+                  : `${colors.text.charcoal} border-transparent cursor-default opacity-50`
               }
             `}
           >
             {item.section}
-
-            <span
-              className={`
-                absolute -bottom-1 left-0 h-px bg-black
-                transition-all duration-300
-
-                ${
-                  item.active || (item.section === "FILTER" && isFilterOpen)
-                    ? "w-full"
-                    : item.clickable
-                    ? "w-0 group-hover:w-full"
-                    : "w-0"
-                }
-              `}
-            />
           </button>
         ))}
       </div>
+
+      {/* FILTER PANEL */}
       <div
         className={`
           overflow-visible
-          transition-all duration-300
+          transition-all
+          duration-300
           relative
           z-50
-          ${isFilterOpen ? "max-h-[200px] opacity-100 mt-2" : "max-h-0 opacity-0"}
+          ${
+            isFilterOpen
+              ? "max-h-[200px] opacity-100 mt-2"
+              : "max-h-0 opacity-0"
+          }
         `}
       >
-        <div className="border-y border-black/10 py-3 px-2 sm:px-4 md:px-6 lg:px-10">
+        <div
+          className="
+            border-b
+            border-black/10
+            pt-2
+            pb-2
+            px-2
+            sm:px-4
+            md:px-6
+            lg:px-10
+          "
+        >
           <TagPicker
             styleTags={styleTags}
             ambianceTags={ambianceTags}

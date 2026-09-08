@@ -56,11 +56,11 @@ export const typography = {
     uppercase
   `,
 
-  buttonAction: `
-    text-[8px]
-    tracking-[0.4em]
-    uppercase
-  `,
+  // buttonAction: `
+  //   lg:text-[8px]
+  //   tracking-[0.4em]
+  //   uppercase
+  // `,
 
   buttonBody: `
     text-[8px]
@@ -72,6 +72,9 @@ export const typography = {
 
     backButton: `
     text-[10px]
+    sm:text-[12px]
+    md:text-[14px]
+    lg:text-[17px]
     tracking-[0.2em]
     transition-opacity
     hover:opacity-50
@@ -79,11 +82,16 @@ export const typography = {
   `,
 
     bullet: `
-    text-[10px]
+      text-[10px]
+      md:text-[14px]
     `,
 
     username: `
     text-[10px]
+    sm:text-[12px]
+    md:text-[12px]
+    lg:text-[15px]
+    opacity-30
     tracking-[0.35em]
     uppercase
     font-extralight
@@ -91,6 +99,7 @@ export const typography = {
 
     buttonOverlay: `
     text-[10px]
+    lg:text-[12px]
     tracking-[0.25em]
     text-[#343137]
     font-extralight
@@ -98,7 +107,7 @@ export const typography = {
   `,
 
     follow:`
-    text-[7px]
+    lg:text-[17px]
     uppercase
     tracking-[0.25em]
     font-extralight

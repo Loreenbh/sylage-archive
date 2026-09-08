@@ -56,4 +56,11 @@ coverHeader: `
   px-6
   sm:pt-3
   `,
+
+  backButton:`
+  ml-3
+  sm:ml-7
+  md:ml-2
+  lg:ml-3
+  `
 }

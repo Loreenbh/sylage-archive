@@ -12,6 +12,8 @@ import ScrollFollow from "@/components/ui/cards/scrollFollow"
 
 /* STYLE */
 import { typography } from "@/styles/typography"
+import { colors } from "@/styles/colors"
+import { spacing } from "@/styles/spacing"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
@@ -151,12 +153,12 @@ const handleFollowToggle = async () => {
       }
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 md:gap-4 ml-6 md:mt-1 lg:mt-3">
           {isOwner ? (
             <>
               <button
                 className={`
-                  ${typography.buttonAction}
+                  ${typography.buttonBody}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -176,7 +178,7 @@ const handleFollowToggle = async () => {
               <span className={typography.bullet}>•</span>
               <button
                 className={`
-                  ${typography.buttonAction}
+                  ${typography.buttonBody}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -196,7 +198,7 @@ const handleFollowToggle = async () => {
               <span className={typography.bullet}>•</span>
               <button
                 className={`
-                  ${typography.buttonAction}
+                  ${typography.buttonBody}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -208,7 +210,11 @@ const handleFollowToggle = async () => {
             </>
           ) : (
             <>
-              <p className={typography.buttonBody}>
+              <p className={`
+                ${typography.buttonBody}
+                ml-6
+                `
+              }>
                 {profileUser?.username}'S ARCHIVE
               </p>
 
@@ -233,7 +239,7 @@ const handleFollowToggle = async () => {
         <BackButton onBack={onBack} />
       }
       footerRight={
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 ">
             <span className={typography.username}>
               {currentUser?.username}
             </span>
@@ -281,15 +287,18 @@ const handleFollowToggle = async () => {
         )}
 
         {!lastSilhouette && (
-          <div className="
+          <div className={`
             absolute
             inset-0
             flex
             items-center
             justify-center
-          ">
+            ${colors.bg.empty}
+            `}>
             <p className="
-              text-[10px]
+              text-[8px]
+              sm:text-[12px]
+              lg:text-[14px]
               tracking-[0.2em]
               text-black/30
             ">
@@ -354,15 +363,18 @@ const handleFollowToggle = async () => {
         )}
 
         {!lastMoodboard && (
-          <div className="
+          <div className={`
             absolute
             inset-0
             flex
             items-center
             justify-center
-          ">
+            ${colors.bg.empty}
+          `}>
             <p className="
-              text-[10px]
+              text-[8px]
+              sm:text-[12px]
+              lg:text-[14px]
               tracking-[0.2em]
               text-black/30
             ">
@@ -425,15 +437,18 @@ const handleFollowToggle = async () => {
           />
         </div>
         ) : (
-          <div className="
+          <div className={`
             absolute
             inset-0
             flex
             items-center
             justify-center
-          ">
+            ${colors.bg.empty}
+          `}>
             <p className="
-              text-[10px]
+              text-[8px]
+              sm:text-[12px]
+              lg:text-[14px]
               tracking-[0.2em]
               text-black/30
             ">
