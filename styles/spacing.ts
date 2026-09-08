@@ -31,15 +31,15 @@ coverHeader: `
     mt-6
   `,
 
-  feedbackError:`
+  feedback:`
   px-3
   pt-2
   sm:px-6
-  sm:pt-8
+  sm:pt-2
   md:px-6
-  md:pt-8
+  md:pt-4
   lg:px-8
-  lg:pt-10
+  lg:pt-6
   `,
 
   coverLabel:`

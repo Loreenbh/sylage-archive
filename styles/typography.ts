@@ -104,7 +104,7 @@ export const typography = {
     font-extralight
     `,
 
-    feedbackError:`
+    feedback:`
     text-[8px]
     sm:text-[12px]
     md:text-[13px]

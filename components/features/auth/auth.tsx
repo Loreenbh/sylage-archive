@@ -116,7 +116,7 @@ export default function Authentification({ onNavigate }: Props) {
       <TwoColGrid
         left={
           <div className={`${colors.bg.stone} flex flex-col justify-between h-full`}>
-            <div className="pt-7 sm:pt-35 lg:pt-50">
+            <div className="pt-7 sm:pt-35 lg:pt-43">
               <MagazineInput 
                 placeholder="Username" 
                 index={1}
@@ -145,9 +145,9 @@ export default function Authentification({ onNavigate }: Props) {
               />
               {registerError &&(
                 <p className={`
-                  ${typography.feedbackError} 
+                  ${typography.feedback} 
                   ${colors.feedback.error}
-                  ${spacing.feedbackError}
+                  ${spacing.feedback}
                   `}
                   >
                   {registerError}
@@ -155,10 +155,9 @@ export default function Authentification({ onNavigate }: Props) {
               )}
               {registerSuccess &&(
                 <p className={`
-                  px-3
-                  text-[9.5px] sm:px-6 lg:px-12 
+                  ${typography.feedback} 
                   ${colors.feedback.success} 
-                  
+                  ${spacing.feedback}
                   `}>
                   {registerSuccess}
                 </p>
@@ -174,7 +173,7 @@ export default function Authentification({ onNavigate }: Props) {
         }
         right={
           <div className={`${colors.bg.earth} flex flex-col justify-between h-full`}>
-            <div className="pt-[70px] sm:pt-51 md:pt-51 lg:pt-75">
+            <div className="pt-[70px] sm:pt-51 md:pt-51 lg:pt-65">
               <MagazineInput 
                 placeholder="Email/username" 
                 type="text"
@@ -190,9 +189,9 @@ export default function Authentification({ onNavigate }: Props) {
 
                 {loginError &&(
                 <p className={`
-                  ${typography.feedbackError} 
+                  ${typography.feedback} 
                   ${colors.feedback.error}
-                  ${spacing.feedbackError}  
+                  ${spacing.feedback}  
                   `}
                   >
                   {loginError}
