@@ -31,6 +31,8 @@ import { createSilhouette } from "@/lib/services/silhouette"
 
 /* HOOKS */
 import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { useMoodboard } from "@/hooks/useMoodboard"
+import { colors } from "@/styles/colors"
 
 function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
   if (!slot) return null
@@ -64,7 +66,7 @@ const { user: currentUser } = useCurrentUser()
     const {
     moodboardId,
     fromTab,
-    isOwner
+    isOwner,
   } = params ?? {}
 
   const [silhouette, setSilhouette] = useState<MoodboardSlot>(null)
@@ -73,16 +75,11 @@ const { user: currentUser } = useCurrentUser()
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const slotRef = useRef<HTMLDivElement | null>(null)
-
+  const { moodboard } = useMoodboard(moodboardId)
   const handleSelectSlot = () => {
     fileInputRef.current?.click()
   }
 
-  // data URL (base64) plutôt que URL.createObjectURL : html-to-image doit
-  // re-fetch chaque <img src> pour l'inliner en base64 au moment de la
-  // capture, et les URLs blob: échouent souvent silencieusement dans ce
-  // processus (erreur de chargement sur l'<img> cloné). Les data URLs
-  // n'ont besoin d'aucun fetch supplémentaire.
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -233,35 +230,28 @@ const { user: currentUser } = useCurrentUser()
         />
       }
       actionsBar={
-        <div className="flex items-center gap-3">
-          {!isOwner && (
-            <>
-              <button
-                onClick={() =>
-                  onNavigate?.({
-                    to:"profile",
-                    direction:"next",
-                    params:{
-                      isOwner
-                    }
-                  })
-                }
-                className={typography.buttonBody}
-              >
-                profile 
-              </button>
-              <span className={typography.bullet}> • </span>
-            </>
-          )}
+        <div className="flex items-center gap-3 ml-6 md:mt-2 mt-1">
+          <span className={typography.buttonBody}>
+            {moodboard?.silhouettes_count ?? 0} LOOKS
+          </span>
+
+          <span className={typography.bullet}>•</span>
 
           <div className="flex items-center gap-3">
             <button
               onClick={handlePublish}
               disabled={isPublishing}
-              className={`${typography.buttonBody} disabled:opacity-40`}
+              className={`
+                ${typography.buttonBody}
+                transition-opacity
+                hover:opacity-40
+                disabled:opacity-40
+                cursor-pointer
+              `}
             >
               Publish
             </button>
+
             {publishError && (
               <p className="text-[10px] text-red-600 tracking-[0.1em]">
                 {publishError}
@@ -280,14 +270,16 @@ const { user: currentUser } = useCurrentUser()
           </div>
           }
         >   
-      <div className="
+      <div className={`
         flex
         items-stretch
         w-full
         h-full
         gap-1
-        bg-blue-200
-      ">
+        ${colors.bg.empty}
+        border
+        border-black/10
+      `}>
         <div className="
           relative
           overflow-hidden
@@ -308,7 +300,7 @@ const { user: currentUser } = useCurrentUser()
             slot={silhouette}
             onSelect={handleSelectSlot}
             onChangeTransform={handleChangeTransform}
-            className="bg-zinc-100"
+            className={`${colors.bg.ivory}`}
           />
         </div>
 

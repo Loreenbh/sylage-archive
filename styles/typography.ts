@@ -99,7 +99,8 @@ export const typography = {
 
     buttonOverlay: `
     text-[10px]
-    lg:text-[12px]
+    sm:text-[12px]
+    lg:text-[14px]
     tracking-[0.25em]
     text-[#343137]
     font-extralight
@@ -107,6 +108,9 @@ export const typography = {
   `,
 
     follow:`
+    text-[9px]
+    sm:text-[12px]
+    md:text-[13px]
     lg:text-[17px]
     uppercase
     tracking-[0.25em]

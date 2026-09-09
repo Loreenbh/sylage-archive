@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { colors } from "@/styles/colors"
 
 type Props = {
   type: "moodboard" | "silhouette"
@@ -66,7 +67,7 @@ export default function LikeButton({
   return (
     <button
       onClick={handleClick}
-      className={`${className} text-white hover:text-white/70 transition-colors duration-300`}
+      className={`${className} ${colors.text.charcoal} hover:text-white/40 transition-colors duration-300`}
       disabled={disabled}
     >
       {liked ? "♥" : "♡"}

@@ -31,7 +31,7 @@ export async function POST(request: Request){
             RETURNING *
             `,
             [
-                user.user_id,
+                user.id,
                 moodboardId,
                 imageUrl
             ]
@@ -40,20 +40,21 @@ export async function POST(request: Request){
     return NextResponse.json(
         result.rows[0],
         {status:201}
-    )}catch (err:any) {
-        if (err.code === '23514'){
-            return NextResponse.json(
-                {error: 'Il faut entre 3 et 5 tags'},
-                {status: 400}
-            )
-        }
-        console.error(err)
-        return NextResponse.json(
-            {error: 'Erreur serveur'},
-            {status: 500}
-        )
+    )} catch (err: any) {
+    console.error("ERROR CREATE SILHOUETTE:", err)
+
+    return NextResponse.json(
+        {
+            error: err.message,
+            code: err.code,
+            detail: err.detail,
+            constraint: err.constraint,
+        },
+        { status: 500 }
+    )
     }
 }
+
 
 export async function GET(request: Request) {
 

@@ -13,12 +13,15 @@ import { updateUser, deleteUser} from "@/lib/services/profile"
 /* STYLE */
 import { typography } from "@/styles/typography"
 import Avatar from "@/components/ui/pagination/Avatar"
+import BackButton from "@/components/ui/buttons/BackButton"
+import { colors } from "@/styles/colors"
 
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null
-  
+  onBack?: () => void
+
 }
 
 function fileToBase64(file: File): Promise<string> {
@@ -32,7 +35,7 @@ function fileToBase64(file: File): Promise<string> {
   })
 }
 
-export default function Settings({ onNavigate}: Props) {
+export default function Settings({ onNavigate, onBack}: Props) {
   const { user } = useCurrentUser()
   const [avatar, setAvatar] = useState<string | null>(null)
 
@@ -185,21 +188,36 @@ export default function Settings({ onNavigate}: Props) {
       }
       sidebar={<Sidebar text="SETTINGS" clickable={false} />}
       actionsBar={
-        <button
-          onClick={() =>
-            onNavigate?.({
-              to: "profile",
-              direction: "prev",
-              params:{
-                isOwner:true
-              }
-            })
-          }
-          className={typography.buttonBody}
-        >
-          back
-        </button>
+        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
+          <button
+            onClick={() =>
+              onNavigate?.({
+                to: "about",
+                direction: "next",
+              })
+            }
+            className={typography.buttonBody}
+          >
+            ABOUT
+          </button>
+
+          <span className={typography.bullet}>•</span>
+
+          <button
+            onClick={() =>
+              onNavigate?.({
+                to: "privacy",
+                direction: "next",
+              })
+            }
+            className={typography.buttonBody}
+          >
+            privacy & terms
+          </button>
+        </div>
       }
+      footerLeft={ <BackButton onBack={onBack} /> }
+      
     >
       <FourSquaresGrid
        topLeft={
@@ -240,7 +258,7 @@ export default function Settings({ onNavigate}: Props) {
                 drop-shadow
               `}
             >
-              Change avatar
+              Portrait
             </span>
             <input
               type="file"
@@ -252,87 +270,146 @@ export default function Settings({ onNavigate}: Props) {
         }
         topRight={
           <div
-            className="
-              h-full w-full
-              bg-[#E8E1D5]
-              flex flex-col
+            className={`
+              h-full
+              w-full
+              ${colors.bg.stone}
+              flex
+              flex-col
               justify-between
               p-2
+              sm:p-3
+              md:p-4
+              lg:p-5
               cursor-pointer
-            "
+            `}
             onClick={() => !passwordOpen && setPasswordOpen(true)}
           >
             {!passwordOpen ? (
               <div />
-
             ) : (
               <div
-                className="flex flex-col gap-2"
+                className="
+                  w-full
+                  h-full
+                  flex
+                  flex-col
+                  items-center
+                  justify-center
+                "
                 onClick={(e) => e.stopPropagation()}
               >
-                <input
-                  type="password"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                  placeholder="current password"
+                <div
                   className="
-                    bg-transparent
-                    border-b
-                    border-black/30
-                    outline-none
-                    text-[10px]
-                    tracking-wide
+                    w-full
+                    max-w-[140px]
+                    sm:max-w-[180px]
+                    md:max-w-[200px]
+                    lg:max-w-[300px]
+                    flex
+                    flex-col
+                    items-center
+                    gap-1
+                    sm:gap-2
+                    md:gap-2
+                    lg:gap-6
                   "
-                />
-
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="new password"
-                  className="
-                    bg-transparent
-                    border-b
-                    border-black/30
-                    outline-none
-                    text-[10px]
-                    tracking-wide
-                  "
-                />
-
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="confirm password"
-                  className="
-                    bg-transparent
-                    border-b
-                    border-black/30
-                    outline-none
-                    text-[10px]
-                    tracking-wide
-                  "
-                />
-
-                <button
-                  className={typography.buttonBody}
-                  onClick={handlePasswordChange}
                 >
-                  save
-                </button>
+                  <input
+                    type="password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    placeholder="current password"
+                    className="
+                      w-full
+                      bg-transparent
+                      border-b
+                      border-black/30
+                      outline-none
+                      text-[8px]
+                      sm:text-[14px]
+                      md:text-[16px]
+                      lg:text-[18px]
+                      lg:pt-8
+                      tracking-wide
+                      text-center
+                    "
+                  />
 
-                {message && (
-                  <span className="text-[9px] opacity-60 tracking-wide text-center">
-                    {message}
-                  </span>
-                )}
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="new password"
+                    className="
+                      w-full
+                      bg-transparent
+                      border-b
+                      border-black/30
+                      outline-none
+                      text-[8px]
+                      sm:text-[14px]
+                      md:text-[16px]
+                      lg:text-[18px]
+                      tracking-wide
+                      text-center
+                    "
+                  />
+
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="confirm password"
+                    className="
+                      w-full
+                      bg-transparent
+                      border-b
+                      border-black/30
+                      outline-none
+                      text-[8px]
+                      sm:text-[14px]
+                      md:text-[16px]
+                      lg:text-[18px]
+                      tracking-wide
+                      text-center
+                    "
+                  />
+
+                  <button
+                    className={`
+                      ${typography.buttonBody}
+                      mt-1
+                      sm:mt-2
+                      lg:mt-3
+                    `}
+                    onClick={handlePasswordChange}
+                  >
+                    save
+                  </button>
+
+                  {message && (
+                    <span
+                      className="
+                        text-[7px]
+                        sm:text-[8px]
+                        md:text-[9px]
+                        lg:text-[10px]
+                        opacity-60
+                        tracking-wide
+                        text-center
+                      "
+                    >
+                      {message}
+                    </span>
+                  )}
+                </div>
               </div>
             )}
 
             {!passwordOpen && (
               <span className={typography.buttonBody}>
-                Change password
+                Password
               </span>
             )}
           </div>
@@ -341,7 +418,7 @@ export default function Settings({ onNavigate}: Props) {
           <div
             className={`
               h-full w-full
-              bg-[#B8A99A]
+              ${colors.bg.earth}
               flex flex-col
               p-4
               cursor-pointer
@@ -351,13 +428,16 @@ export default function Settings({ onNavigate}: Props) {
           >
             {!usernameOpen ? (
               <span className={typography.buttonBody}>
-                Change username
+                Name
               </span>
             ) : (
               <div
                 className="
                   w-full
-                  max-w-[220px]
+                  max-w-[140px]
+                  sm:max-w-[180px]
+                  md:max-w-[200px]
+                  lg:max-w-[300px]
                   flex flex-col
                   items-center
                   gap-5
@@ -376,6 +456,8 @@ export default function Settings({ onNavigate}: Props) {
                     border-black/30
                     outline-none
                     text-[10px]
+                    sm:text-[16px]
+                    lg:text-[18px]
                     tracking-wide
                     text-center
                   "
@@ -401,7 +483,7 @@ export default function Settings({ onNavigate}: Props) {
         <div
           className={`
             h-full w-full
-            bg-[#804930]
+            ${colors.bg.empty}
             flex flex-col
             p-4
             cursor-pointer
@@ -411,7 +493,7 @@ export default function Settings({ onNavigate}: Props) {
         >
           {!deleteConfirm ? (
             <span className={typography.buttonBody}>
-              Delete account
+              Account
             </span>
           ) : (
             <div
@@ -419,7 +501,7 @@ export default function Settings({ onNavigate}: Props) {
                 flex flex-col
                 items-center
                 justify-center
-                gap-6
+                gap-12
                 text-center
               "
               onClick={(e) => e.stopPropagation()}
@@ -428,7 +510,7 @@ export default function Settings({ onNavigate}: Props) {
                 Remove account?
               </span>
 
-              <div className="flex gap-6">
+              <div className="flex gap-[30px] sm:gap-[50px] md:gap-[60px] lg:gap-[80px]">
                 <button
                   onClick={handleDeleteAccount}
                   className={typography.buttonBody}

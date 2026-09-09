@@ -11,13 +11,15 @@ import Discover from "../features/discover/discover"
 import ProfilePage from "../features/profile/profile"
 import Looks from "../features/profile/looks/looks"
 import References from "../features/profile/references"
-import Settings from "../features/profile/settings"
+import Settings from "../features/profile/settings/settings"
 import Moods from "../features/profile/moods"
 import MoodDetails from "../features/discover/focus"
 import Create from "../features/creation/selection"
 import Editor from "../features/creation/editMood"
 import Draw from "../features/creation/editLook"
 import ForgotPassword from "../features/forgot-pswd/forgotPassword"
+import About from "../features/profile/settings/about"
+import Privacy from "../features/profile/settings/privacy"
 
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 
@@ -39,7 +41,9 @@ const PAGES = {
   create: Create,
   editor: Editor,
   draw: Draw,
-  forgot: ForgotPassword
+  forgot: ForgotPassword,
+  about: About,
+  privacy: Privacy
 } as const
 
 

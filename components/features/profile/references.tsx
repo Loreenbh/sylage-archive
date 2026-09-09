@@ -13,6 +13,7 @@ import { NavigationParams } from "@/types/navigation"
 import { useReferences } from "@/hooks/useReferences"
 /* STYLE */
 import { typography } from "@/styles/typography"
+import Avatar from "@/components/ui/pagination/Avatar"
 
 type Props = {
   params?: NavigationParams["params"] | null
@@ -58,9 +59,9 @@ export default function References({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="REFERENCES" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 sm:gap-6">
+        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
           <p
-            className={typography.buttonBody}>Your Inspirations</p>
+            className={typography.buttonBody}>Your references</p>
           <span className={typography.bullet}>•</span>
           <p
             className={typography.buttonBody}>Favourites</p>
@@ -243,25 +244,30 @@ export default function References({ onNavigate, onBack, params }: Props) {
                     -translate-y-4
                   ">
                     <p className="
-                      text-[9px]
-                      tracking-[0.2em]
+                      text-[7px]
+                      mb-2
+                      tracking-[0.4em]
                       uppercase
                       text-black/30
-                      mb-1
+                      sm:text-[12px]
+                      sm:mb-4
+                      lg:text-[15px]
                     ">
                       {featuredCreator.username}
                     </p>
 
-                    <img
-                      src={featuredCreator.avatar_url}
-                      alt=""
+                    <Avatar
+                      user={featuredCreator}
                       className="
                         w-16
                         h-16
-                        sm:w-35
-                        sm:h-35
-                        rounded-full
-                        object-cover
+                        sm:w-[140px]
+                        sm:h-[140px]
+                        lg:w-[220px]
+                        lg:h-[220px]
+                        text-[12px]
+                        md:text-[25px]
+                        lg:text-[40px]
                       "
                     />
                   </div>

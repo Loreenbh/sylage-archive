@@ -153,7 +153,7 @@ const handleFollowToggle = async () => {
       }
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-6 md:mt-1 lg:mt-3">
+        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
           {isOwner ? (
             <>
               <button
@@ -212,7 +212,6 @@ const handleFollowToggle = async () => {
             <>
               <p className={`
                 ${typography.buttonBody}
-                ml-6
                 `
               }>
                 {profileUser?.username}'S ARCHIVE
@@ -401,7 +400,6 @@ const handleFollowToggle = async () => {
         </div>
       </GridButton>
     }
-
     bottomRight={
       <div
         className="
@@ -415,62 +413,77 @@ const handleFollowToggle = async () => {
         "
       >
         {following.length > 0 || followers.length > 0 ? (
-         <div className="absolute inset-0 bottom-[48px] min-h-0 overflow-y-auto">
-          <ScrollFollow
-            followingTitle="Inspired by"
-            followersTitle="Inspiring"
-            following={following}
-            followers={followers}
-            canManageFollow={profileUser?.id === currentUser?.id}
-            onOpenProfile={(item) => {
-              onNavigate?.({
-                to: "profile",
-                direction: "next",
-                params: {
-                  userId: item.id,
-                  isOwner: item.id === currentUser?.id,
-                  from: "profile",
-                },
-              })
-            }}
-            onUnfollow={(item) => handleUnfollow(item.id)}
-          />
-        </div>
+          <div
+            className="
+              absolute
+              inset-x-0
+              top-0
+              bottom-12
+              min-h-0
+              overflow-hidden
+            "
+          >
+            <ScrollFollow
+              followingTitle="Inspired by"
+              followersTitle="Inspiring"
+              following={following}
+              followers={followers}
+              canManageFollow={profileUser?.id === currentUser?.id}
+              onOpenProfile={(item) => {
+                onNavigate?.({
+                  to: "profile",
+                  direction: "next",
+                  params: {
+                    userId: item.id,
+                    isOwner: item.id === currentUser?.id,
+                    from: "profile",
+                  },
+                })
+              }}
+              onUnfollow={(item) => handleUnfollow(item.id)}
+            />
+          </div>
         ) : (
-          <div className={`
-            absolute
-            inset-0
-            flex
-            items-center
-            justify-center
-            ${colors.bg.empty}
-          `}>
-            <p className="
-              text-[8px]
-              sm:text-[12px]
-              lg:text-[14px]
-              tracking-[0.2em]
-              text-black/30
-            ">
+          <div
+            className={`
+              absolute
+              inset-0
+              flex
+              items-center
+              justify-center
+              ${colors.bg.empty}
+            `}
+          >
+            <p
+              className="
+                text-[8px]
+                sm:text-[12px]
+                lg:text-[14px]
+                tracking-[0.2em]
+                text-black/30
+              "
+            >
               NO CONNECTIONS.
             </p>
           </div>
         )}
 
-        <div className="
-          absolute
-          bottom-0
-          left-0
-          p-4
-          z-10
-        ">
+        <div
+          className="
+            absolute
+            bottom-0
+            left-0
+            p-4
+            z-10
+          "
+        >
           <p className={typography.buttonBody}>
             CONNECTIONS
           </p>
         </div>
       </div>
     }
-  />
+    />
 </div>
   
     </BookLayout>

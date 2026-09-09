@@ -73,7 +73,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="FOCUS" clickable={false} />}
       actionsBar={
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex items-center justify-between ml-6">
           {!isOwner && (
             <button
               onClick={() =>
@@ -91,7 +91,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 ${typography.buttonBody}
                 text-black/60
                 transition-opacity
-                hover:opacity-60
+                hover:opacity-40
                 cursor-pointer
               `}
             >
@@ -99,7 +99,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
             </button>
           )}
 
-          <div className="flex items-center gap-2 sm:gap-6">
+          <div className="flex items-center gap-1 mt-1 sm:gap-6">
             {!isOwner && (
               <>
                 <button
@@ -112,7 +112,12 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                       },
                     })
                   }
-                  className={typography.buttonBody}
+                  className={`
+                    ${typography.buttonBody}
+                    transition-opacity
+                    hover:opacity-40
+                    cursor-pointer
+                  `}
                 >
                   Contribute
                 </button>
@@ -146,7 +151,12 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                   },
                 })
               }
-              className={typography.buttonBody}
+              className={`
+                ${typography.buttonBody}
+                transition-opacity
+                hover:opacity-60
+                cursor-pointer
+              `}
             >
               looks
             </button>

@@ -50,11 +50,11 @@ export default function ContentOverlay({
         {showUsername && username && (
           <div
             className="
-              text-[10px]
+              text-[8px]
+              sm:text-[12px]
               tracking-[0.2em]
               drop-shadow
-              md:text-[10px]
-              lg:text-[12px]
+              lg:text-[16px]
             "
           >
             {prefix && (
@@ -63,30 +63,29 @@ export default function ContentOverlay({
               </span>
             )}
 
-            {isOwner ? (
-              <span>{username}</span>
-            ) : (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onOpenProfile?.()
-                }}
-                className="
-                  cursor-pointer
-                  text-white
-                  hover:text-white/50
-                  transition-colors
-                  duration-300
-                "
-              >
-                {username}
-              </button>
-            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                onOpenProfile?.()
+              }}
+              className="
+                cursor-pointer
+                text-white
+                text-[7px]
+                sm:text-[12px]
+                lg:text-[14px]
+                hover:text-white/50
+                transition-colors
+                duration-300
+              "
+            >
+              {username}
+            </button>
           </div>
         )}
       </div>
 
-      <div className="flex items-center gap-3 md:gap-4 lg:gap-6">
+      <div className="flex items-center gap-1 md:gap-4 lg:gap-6">
         {like && (
           <LikeButton
             type={like.type}
@@ -123,8 +122,6 @@ export default function ContentOverlay({
               onFollowToggle()
             }}
             className="
-              md:text-[12px]
-              lg:text-[15px]
               tracking-[0.2em]
               drop-shadow
               hover:text-white/50
@@ -144,7 +141,8 @@ export default function ContentOverlay({
             }}
             className="
               text-white
-              md:text-[10px]
+              sm:text-[10px]
+              lg:text-[13px]
               text-[10px]
               hover:text-white/50
               transition-colors

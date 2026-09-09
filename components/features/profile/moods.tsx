@@ -100,7 +100,7 @@ const {
         <Sidebar text="MOODS" clickable={false}/>
       }
       actionsBar={
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4 ml-6 md:mt-1 lg:mt-3">
           <span className={typography.buttonBody}>
             {from === "references"
               ? "LIKED MOODS"
@@ -108,6 +108,12 @@ const {
                 ? "MY MOODS"
                 : `${profileUser?.username.toUpperCase()}'S MOODS`
             }
+          </span>
+
+          <span className={typography.bullet}>•</span>
+
+          <span className={typography.buttonBody}>
+            {filteredMoodboards.length} MOODS
           </span>
         </div>
       }
@@ -140,19 +146,6 @@ const {
           />
           ) : (
             <ScrollableGrid
-            // data={filteredMoodboards}
-            // onItemClick={(board) => {
-            //   onNavigate?.({
-            //     to: "moodDetails",
-            //     direction: "next",
-            //     params: {
-            //       from: "moods",
-            //       moodboardId: board.id,
-            //       isOwner,
-            //     },
-            //   })
-            // }}
-            // renderItem={(board) => (
                 data={filteredMoodboards}
                 renderItem={(board) => (
                 <div className="relative aspect-square w-full bg-zinc-100 overflow-hidden">                <img

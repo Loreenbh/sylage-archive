@@ -395,6 +395,9 @@ export default function ImageSlot({
             justify-center
             text-black/30
             text-xs
+            sm:text-[14px]
+            md:text-[14px]
+            lg:text-[20px]
           "
         >
           +

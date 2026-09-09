@@ -13,6 +13,7 @@ import SilhouetteCell from "./SilhouetteCell"
 
 /* TYPES */
 import { Silhouette } from "@/types/silhouette"
+import { colors } from "@/styles/colors"
 
 import { useLooksCarousel } from "@/hooks/useLooksCarousel"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
@@ -125,7 +126,7 @@ const carouselLabel =
       }
       sidebar={<Sidebar text="LOOKS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between w-full gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
 
           <span className={typography.buttonBody}>
             {carouselLabel}
@@ -169,16 +170,23 @@ const carouselLabel =
           </p>
         </div>
       ) : filteredSilhouettes.length === 0 ? (
-        <div className="
+        <div className={`
             h-full 
             flex 
             items-center 
-            justify-center 
+            justify-center
+            ${colors.bg.empty}
             border -b 
-            border-black/30"
+            border-black/30`}
           >
-          <p className="text-black/30 text-xs tracking-[0.2em]">
-            NO LOOKS
+          <p className="
+            text-black/30 
+            text-[11px]
+            sm:text-[14px]
+            md:text-[16px]
+            lg:text-[18px]
+            tracking-[0.2em]">
+            NO LOOKS.
           </p>
         </div>
       ) : (

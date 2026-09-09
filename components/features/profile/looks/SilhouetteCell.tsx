@@ -1,6 +1,7 @@
 import ContentOverlay from "@/components/ui/cards/ContentOverlay"
 import type { Silhouette } from "@/types/silhouette"
 import type { OnNavigate } from "@/types/navigation"
+import { colors } from "@/styles/colors"
 
 type Props = {
   silhouette?: Silhouette
@@ -22,8 +23,16 @@ export default function SilhouetteCell({
 
   if (!silhouette) {
     return (
-      <div className="relative h-full w-full bg-zinc-100 border border-black/10" />
-    )
+      <div className={`
+          relative 
+          h-full 
+          w-full 
+          ${colors.bg.empty} 
+          border 
+          border-black/10
+          `}
+          />
+      )
   }
 
 
@@ -59,37 +68,48 @@ export default function SilhouetteCell({
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
       />
-
       <ContentOverlay
         username={
-            moodboardId || from === "references"
-              ? silhouette.username
-              : silhouette.target_username
-          }
+          moodboardId || from === "references"
+            ? silhouette.username
+            : silhouette.target_username
+        }
 
-          prefix={
-            moodboardId || from === "references"
-              ? "BY"
-              : "FOR"
-          }
+        prefix={
+          moodboardId || from === "references"
+            ? "BY"
+            : "FOR"
+        }
 
-          isOwner={
-            silhouette.user_id === currentUser
-          }
+        isOwner={
+          silhouette.user_id === currentUser
+        }
 
-          onDelete={
-            silhouette.user_id === currentUser
-              ? () => onDelete?.(silhouette.id)
-              : undefined
-          }
+        onOpenProfile={() =>
+          onNavigate?.({
+            to: "profile",
+            direction: "next",
+            params: {
+              userId: profileId,
+              isOwner: profileId === currentUser,
+              from: "looks",
+            },
+          })
+        }
 
-          like={{
-            type:"silhouette",
-            id:silhouette.id,
-            count:silhouette.likes_count,
-            liked:silhouette.liked_by_current_user
-          }}
-        />
+        onDelete={
+          silhouette.user_id === currentUser
+            ? () => onDelete?.(silhouette.id)
+            : undefined
+        }
+
+        like={{
+          type: "silhouette",
+          id: silhouette.id,
+          count: silhouette.likes_count,
+          liked: silhouette.liked_by_current_user
+        }}
+      />
     </div>
   )
 }
