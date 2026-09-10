@@ -3,7 +3,6 @@ export async function getUserMoodboards(userId?: number, from?:string){
   let url = "/api/moodboards"
 
   if(from === "references"){
-    console.log("entree dans api getusermoodboards ref")
     url += "?liked=true"
   }
   else if(userId){

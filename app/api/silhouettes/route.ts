@@ -288,36 +288,85 @@ if (liked === "true") {
 
 
 
-export async function DELETE(request: Request){
+export async function DELETE(request: Request) {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get("id")
 
-  if(!id){
+  if (!id) {
     return NextResponse.json(
-      {error:"Missing id"},
-      {status:400}
+      { error: "ID manquant" },
+      { status: 400 }
     )
   }
 
-  const user = await getCurrentSessionUser()
-  if (!user){
-      return NextResponse.json(
-          {error:"Session invalide"},
-          {status:401}
-      )
+  const currentSession = await getCurrentSessionUser()
+
+  if (!currentSession) {
+    return NextResponse.json(
+      { error: "Non connecté" },
+      { status: 401 }
+    )
   }
 
-  await pool.query(
-    `
-    DELETE FROM silhouettes
-    WHERE id=$1
-    AND user_id=$2
-    `,
-    [id,
-      user.user_id
-    ]
-  )
-  return NextResponse.json({
-    success:true
-  })
+  try {
+    const silhouette = await pool.query(
+      `
+      SELECT user_id
+      FROM silhouettes
+      WHERE id=$1
+      `,
+      [id]
+    )
+
+    if (silhouette.rows.length === 0) {
+      return NextResponse.json(
+        { error: "Look introuvable" },
+        { status: 404 }
+      )
+    }
+
+    const isOwner =
+      silhouette.rows[0].user_id === currentSession.id
+
+    const isAdmin =
+      currentSession.role === "admin"
+
+    if (!isOwner && !isAdmin) {
+      return NextResponse.json(
+        { error: "Non autorisé" },
+        { status: 403 }
+      )
+    }
+
+    await pool.query(
+      `
+      DELETE FROM likes
+      WHERE silhouette_id=$1
+      `,
+      [id]
+    )
+
+    await pool.query(
+      `
+      DELETE FROM silhouettes
+      WHERE id=$1
+      `,
+      [id]
+    )
+
+    return NextResponse.json({
+      success: true
+    })
+
+  } catch (error) {
+    console.error(
+      "DELETE SILHOUETTE ERROR:",
+      error
+    )
+
+    return NextResponse.json(
+      { error: "Erreur suppression" },
+      { status: 500 }
+    )
+  }
 }

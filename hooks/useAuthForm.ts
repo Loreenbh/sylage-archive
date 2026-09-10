@@ -93,9 +93,7 @@ import type { OnNavigate } from "@/types/navigation"
 
     /* CONNEXION */
     const handleLogin = async () => {
-      console.log("click")
       setLoginError(null)
-      // setIsSubmitting(true)
 
       if (!loginForm.identifier || !loginForm.password) {
         setLoginError("Missing required fields")
@@ -109,7 +107,6 @@ import type { OnNavigate } from "@/types/navigation"
           body: JSON.stringify(loginForm),
         })
         const data = await res.json()
-        console.log("LOGIN RESPONSE:", res.status, data)
         if (!res.ok){
           setLoginError(data.error ?? "Login failed")
           return

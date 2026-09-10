@@ -81,19 +81,10 @@ export default function ForgotPassword({
 
   setStatus("sending")
 
-  console.log("RESET → email:", email)
-  console.log(
-    "RESET → redirect:",
-    `${window.location.origin}/update-pswd`
-  )
 
   const result = await supabaseBrowser.auth.resetPasswordForEmail(email, {
     redirectTo: `${window.location.origin}/update-password`,
   })
-
-  console.log("RESET → RESULT:", result)
-  console.log("RESET → ERROR:", result.error)
-  console.log("RESET → DATA:", result.data)
 
   if (result.error) {
     setStatus("error")

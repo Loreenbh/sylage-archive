@@ -199,6 +199,7 @@ const carouselLabel =
               from={from}
               onNavigate={onNavigate}
               onDelete={handleDelete}
+              currentUserRole={currentUser?.role}
             />
           }
 
@@ -210,6 +211,7 @@ const carouselLabel =
               from={from}
               onNavigate={onNavigate}
               onDelete={handleDelete}
+              currentUserRole={currentUser?.role}
             />
           }
 
@@ -221,6 +223,7 @@ const carouselLabel =
               from={from}
               onNavigate={onNavigate}
               onDelete={handleDelete}
+              currentUserRole={currentUser?.role}
             />
           }
         />

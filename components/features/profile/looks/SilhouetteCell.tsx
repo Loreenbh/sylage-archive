@@ -6,6 +6,7 @@ import { colors } from "@/styles/colors"
 type Props = {
   silhouette?: Silhouette
   currentUser?: number
+  currentUserRole?: "user" | "admin"
   moodboardId?: number
   from?: string
   onNavigate?: OnNavigate
@@ -15,6 +16,7 @@ type Props = {
 export default function SilhouetteCell({
   silhouette,
   currentUser,
+  currentUserRole,
   moodboardId,
   from,
   onNavigate,
@@ -68,6 +70,31 @@ export default function SilhouetteCell({
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
       />
+
+      {currentUserRole === "admin" && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            onDelete?.(silhouette.id)
+          }}
+          className="
+            absolute
+            top-2
+            right-2
+            z-20
+            text-black
+            text-xl
+            leading-none
+            drop-shadow
+            hover:text-white/50
+            transition-colors
+            duration-300
+          "
+        >
+          ×
+        </button>
+      )}
+
       <ContentOverlay
         username={
           moodboardId || from === "references"

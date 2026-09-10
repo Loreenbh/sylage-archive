@@ -123,8 +123,6 @@ export default function UpdatePassword({
 
     setStatus("updating")
 
-    console.log("[UPDATE PASSWORD] Updating password")
-
     const { error } = await supabaseBrowser.auth.updateUser({
       password,
     })
@@ -136,8 +134,6 @@ export default function UpdatePassword({
       setStatus("error")
       return
     }
-
-    console.log("[UPDATE PASSWORD] Password updated successfully")
 
     setStatus("success")
 
