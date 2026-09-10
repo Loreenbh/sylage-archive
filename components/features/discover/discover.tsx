@@ -62,6 +62,19 @@ export default function Discover({ onNavigate, params }: Props) {
     )
   }
 
+const handleDelete = async (id: number) => {
+  const res = await fetch(`/api/moodboards?id=${id}`, {
+    method: "DELETE",
+  })
+
+  if (res.ok) {
+    setMoodboards((prev) =>
+      prev.filter((board) => board.id !== id)
+    )
+  }
+}
+
+
   const filteredMoodboards =
     selectedFilters.length === 0
       ? moodboards
@@ -216,65 +229,88 @@ export default function Discover({ onNavigate, params }: Props) {
                 },
               })
             }}
-            renderItem={(board) => (
-              <div className="
-                relative 
-                aspect-square 
-                w-full 
-                cursor-pointer 
+          renderItem={(board) => (
+            <div
+              className="
+                relative
+                aspect-square
+                w-full
+                cursor-pointer
                 overflow-hidden
-                ">
-                <img
-                  src={board.image_url}
-                  alt=""
-                  className="
-                  absolute 
-                  inset-0 
-                  w-full 
-                  h-full 
-                  object-cover"
-                />
-                <ContentOverlay
-                  username={board.username}
-                  isOwner={user?.id === board.user_id}
-                  isFollowed={board.is_followed}
-                  onFollowToggle={() => 
-                    handleFollowToggle(
-                      board.user_id,
-                      board.is_followed
-                    )
-                  }
-                  like={{
-                    type: "moodboard",
-                    id: board.id,
-                    count: board.likes_count,
-                    liked: board.liked_by_current_user
+              "
+            >
+              <img
+                src={board.image_url}
+                alt=""
+                className="
+                  absolute
+                  inset-0
+                  w-full
+                  h-full
+                  object-cover
+                "
+              />
+
+              {user?.role === "admin" && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleDelete(board.id)
                   }}
-                  silhouettesCount={board.silhouettes_count}
-                    onOpenLooks={() =>
-                      onNavigate?.({
-                        to: "looks",
-                        direction: "next",
-                        params: {
-                          from: "discover",
-                          moodboardId: board.id,
-                          isOwner: user?.id === board.user_id
-                        }
-                      })
+                  className="
+                    absolute
+                    top-2
+                    right-2
+                    z-20
+                    text-xl
+                    leading-none
+                  "
+                >
+                  ×
+                </button>
+              )}
+
+              <ContentOverlay
+                username={board.username}
+                isOwner={user?.id === board.user_id}
+                isFollowed={board.is_followed}
+                onFollowToggle={() =>
+                  handleFollowToggle(
+                    board.user_id,
+                    board.is_followed
+                  )
+                }
+                like={{
+                  type: "moodboard",
+                  id: board.id,
+                  count: board.likes_count,
+                  liked: board.liked_by_current_user
+                }}
+                silhouettesCount={board.silhouettes_count}
+                onOpenLooks={() =>
+                  onNavigate?.({
+                    to: "looks",
+                    direction: "next",
+                    params: {
+                      from: "discover",
+                      moodboardId: board.id,
+                      isOwner: user?.id === board.user_id
                     }
-                    onOpenProfile={() =>
-                      onNavigate?.({
-                        to: "profile",
-                        direction: "next",
-                        params: {
-                          userId: board.user_id,
-                          isOwner: user?.id === board.user_id,
-                        }
-                      })
+                  })
+                }
+                onOpenProfile={() =>
+                  onNavigate?.({
+                    to: "profile",
+                    direction: "next",
+                    params: {
+                      userId: board.user_id,
+                      isOwner: user?.id === board.user_id,
                     }
-                />
-              </div>
-            )}
+                  })
+                }
+              />
+            </div>
+          )}
           />
         )}
       </div>

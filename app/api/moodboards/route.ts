@@ -247,7 +247,13 @@ export async function DELETE(request: Request) {
     }
 
 
-    if (moodboard.rows[0].user_id !== currentSession.id) {
+    const isOwner =
+      moodboard.rows[0].user_id === currentSession.id
+
+    const isAdmin =
+      currentSession.role === "admin"
+
+    if (!isOwner && !isAdmin) {
       return NextResponse.json(
         { error:"Non autorisé" },
         { status:403 }

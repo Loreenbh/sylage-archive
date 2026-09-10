@@ -15,7 +15,7 @@ export async function GET() {
 
     const { data: profile, error } = await supabaseAdmin
         .from("users")
-        .select("id, email, username, avatar_url")
+        .select("id, email, username, avatar_url, role")
         .eq("auth_id", user.id)
         .single()
 

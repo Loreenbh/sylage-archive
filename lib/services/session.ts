@@ -14,7 +14,7 @@ export async function getCurrentSessionUser() {
 
     const result = await pool.query(
         `
-        SELECT id, username, email
+        SELECT id, username, email, role
         FROM users
         WHERE auth_id = $1
         `,

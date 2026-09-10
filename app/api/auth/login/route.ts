@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     // On récupère le profil correspondant à l'utilisateur Auth.
     const { data: profile, error: profileError } = await supabaseAdmin
         .from("users")
-        .select("id, username, email")
+        .select("id, username, email, role")
         .eq("auth_id", data.user.id)
         .single()
 
@@ -68,5 +68,6 @@ export async function POST(request: Request) {
         id: profile.id,
         username: profile.username,
         email: profile.email,
+        role: profile.role
     })
 }
