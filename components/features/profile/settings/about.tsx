@@ -78,8 +78,12 @@ export default function About({ onNavigate, onBack }: Props) {
       <div className="max-w-[600px] text-center">
         <p
           className={`
-            ${typography.buttonBody}
+            ${typography.about}
             leading-[1.5]
+            mt-2
+            sm:mt-4
+            md:mt-6
+            lg:mt-8
             ${colors.text.charcoal}
           `}
         >
@@ -88,8 +92,11 @@ export default function About({ onNavigate, onBack }: Props) {
 
         <p
           className={`
-            ${typography.buttonBody}
-            mt-3
+            ${typography.about}
+            mt-2
+            sm:mt-4
+            md:mt-6
+            lg:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -105,8 +112,11 @@ export default function About({ onNavigate, onBack }: Props) {
 
         <p
           className={`
-            ${typography.buttonBody}
-            mt-3
+            ${typography.about}
+            mt-2
+            sm:mt-4
+            md:mt-6
+            lg:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -116,8 +126,11 @@ export default function About({ onNavigate, onBack }: Props) {
 
         <p
           className={`
-            ${typography.buttonBody}
-            mt-3
+            ${typography.about}
+            mt-2
+            sm:mt-4
+            md:mt-6
+            lg:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -127,8 +140,11 @@ export default function About({ onNavigate, onBack }: Props) {
 
         <p
           className={`
-            ${typography.buttonBody}
-            mt-3
+            ${typography.about}
+            mt-2
+            sm:mt-4
+            md:mt-6
+            lg:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -140,8 +156,11 @@ export default function About({ onNavigate, onBack }: Props) {
 
         <p
           className={`
-            ${typography.buttonBody}
-            mt-3
+            ${typography.about}
+            mt-2
+            sm:mt-4
+            md:mt-6
+            lg:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -151,8 +170,11 @@ export default function About({ onNavigate, onBack }: Props) {
 
         <p
           className={`
-            ${typography.buttonBody}
-            mt-3
+            ${typography.about}
+            mt-2
+            sm:mt-4
+            md:mt-6
+            lg:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}

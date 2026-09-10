@@ -501,7 +501,7 @@ export default function Settings({ onNavigate, onBack}: Props) {
                 flex flex-col
                 items-center
                 justify-center
-                gap-12
+                gap-6
                 text-center
               "
               onClick={(e) => e.stopPropagation()}
@@ -510,7 +510,7 @@ export default function Settings({ onNavigate, onBack}: Props) {
                 Remove account?
               </span>
 
-              <div className="flex gap-[30px] sm:gap-[50px] md:gap-[60px] lg:gap-[80px]">
+              <div className="flex gap-[40px] sm:gap-[50px] md:gap-[60px] lg:gap-[80px]">
                 <button
                   onClick={handleDeleteAccount}
                   className={typography.buttonBody}

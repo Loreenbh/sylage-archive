@@ -1,5 +1,6 @@
 "use client"
 
+import { colors } from "@/styles/colors"
 import ImageSlot from "./ImageSlot"
 import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
 
@@ -20,7 +21,7 @@ export default function LayoutA({ images = [], onSelectSlot, onUpdateSlot }: Pro
           slot={images[index] ?? null}
           onSelect={() => onSelectSlot?.(index)}
           onChangeTransform={(patch) => onUpdateSlot?.(index, patch)}
-          className="bg-[#CDCAC1] hover:bg-[#BDB7A3]"
+          className={`${colors.bg.empty70} hover:opacity-50`}
         />
       ))}
 

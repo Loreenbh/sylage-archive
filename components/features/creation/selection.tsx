@@ -18,6 +18,7 @@ import LayoutDPreview from "./layouts/previews/LayoutDPreview"
 import { typography } from "@/styles/typography"
 import BackButton from "@/components/ui/buttons/BackButton"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { colors } from "@/styles/colors"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
@@ -57,7 +58,7 @@ const { user: currentUser } = useCurrentUser()
       }
       sidebar={<Sidebar text="EDITION" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 sm:gap-6">
+        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
           <p
             className={typography.buttonBody}>layout</p>
           <span className={typography.bullet}>•</span>
@@ -89,7 +90,7 @@ const { user: currentUser } = useCurrentUser()
               })
             }
           >
-            <div className="w-full h-full overflow-hidden bg-zinc-100">
+            <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
               <LayoutAPreview />
             </div>
           </div>
@@ -108,7 +109,7 @@ const { user: currentUser } = useCurrentUser()
               })
             }
           >
-            <div className="w-full h-full overflow-hidden bg-zinc-100">
+            <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
                 <LayoutBPreview />
             </div>
           </div>
@@ -127,7 +128,7 @@ const { user: currentUser } = useCurrentUser()
               })
             }
           >
-            <div className="w-full h-full overflow-hidden bg-zinc-100">
+            <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
                 <LayoutCPreview />
             </div>
           </div>

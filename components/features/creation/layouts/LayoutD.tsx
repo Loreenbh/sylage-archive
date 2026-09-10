@@ -2,6 +2,7 @@
 
 import ImageSlot from "./ImageSlot"
 import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
+import { colors } from "@/styles/colors"
 
 type Props = {
   images?: MoodboardSlot[]
@@ -33,7 +34,7 @@ export default function LayoutD({ images = [], onSelectSlot, onUpdateSlot }: Pro
       slot={images[0] ?? null}
       onSelect={() => select(0)}
       onChangeTransform={update(0)}
-      className="row-start-1 col-start-1 bg-zinc-200 hover:bg-zinc-300"
+      className={`${colors.bg.empty70} hover:opacity-50`}
     />
 
     {/* LEFT MIDDLE */}
@@ -41,7 +42,7 @@ export default function LayoutD({ images = [], onSelectSlot, onUpdateSlot }: Pro
       slot={images[1] ?? null}
       onSelect={() => select(1)}
       onChangeTransform={update(1)}
-      className="row-start-2 col-start-1 bg-zinc-200 hover:bg-zinc-300"
+      className={`"row-start-2 col-start-1 ${colors.bg.empty70} hover:opacity-50`}
     />
 
     {/* LEFT BOTTOM */}
@@ -49,7 +50,7 @@ export default function LayoutD({ images = [], onSelectSlot, onUpdateSlot }: Pro
       slot={images[3] ?? null}
       onSelect={() => select(3)}
       onChangeTransform={update(3)}
-      className="row-start-3 col-start-1 bg-zinc-200 hover:bg-zinc-300"
+      className={`"row-start-3 col-start-1 ${colors.bg.empty70} hover:opacity-50`}
     />
 
 
@@ -58,33 +59,19 @@ export default function LayoutD({ images = [], onSelectSlot, onUpdateSlot }: Pro
       slot={images[2] ?? null}
       onSelect={() => select(2)}
       onChangeTransform={update(2)}
-      className="
-        row-start-1
-        row-span-3
-        col-start-2
-        bg-zinc-300
-        hover:bg-zinc-400
-      "
+      className={`row-start-1 row-span-3 col-start-2 ${colors.bg.empty70} hover:opacity-50`}
     />
 
 
     {/* BOTTOM STRIP */}
-    <div
-      className="
-        row-start-4
-        col-span-2
-        grid
-        grid-cols-3
-        gap-[2px]
-      "
-    >
+    <div className="row-start-4 col-span-2 grid grid-cols-3 gap-[2px]">
       {[4,5,6].map(index => (
         <ImageSlot
           key={index}
           slot={images[index] ?? null}
           onSelect={() => select(index)}
           onChangeTransform={update(index)}
-          className="bg-zinc-400 hover:bg-zinc-500"
+          className={`${colors.bg.empty70} hover:opacity-50`}
         />
       ))}
     </div>

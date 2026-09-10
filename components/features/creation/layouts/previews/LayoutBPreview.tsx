@@ -1,3 +1,5 @@
+import { colors } from "@/styles/colors"
+
 export default function LayoutBPreview() {
   return (
     <div className="
@@ -9,7 +11,7 @@ export default function LayoutBPreview() {
     ">
 
       {/* LEFT BIG */}
-      <div className="bg-zinc-200"/>
+      <div className={`${colors.bg.empty70}`}/>
 
 
       {/* RIGHT COLUMN */}
@@ -20,7 +22,7 @@ export default function LayoutBPreview() {
       ">
 
         {/* TOP */}
-        <div className="bg-zinc-300"/>
+        <div className={`${colors.bg.empty70}`}/>
 
 
         {/* MIDDLE 4 */}
@@ -31,20 +33,20 @@ export default function LayoutBPreview() {
         ">
 
           <div className="grid grid-rows-2 gap-[2px]">
-            <div className="bg-zinc-400"/>
-            <div className="bg-zinc-400"/>
+            <div className={`${colors.bg.empty70}`}/>
+            <div className={`${colors.bg.empty70}`}/>
           </div>
 
           <div className="grid grid-rows-2 gap-[2px]">
-            <div className="bg-zinc-400"/>
-            <div className="bg-zinc-400"/>
+            <div className={`${colors.bg.empty70}`}/>
+            <div className={`${colors.bg.empty70}`}/>
           </div>
 
         </div>
 
 
         {/* BOTTOM */}
-        <div className="bg-zinc-300"/>
+        <div className={`${colors.bg.empty70}`}/>
 
       </div>
 

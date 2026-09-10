@@ -69,17 +69,21 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               flex
               items-center
               justify-center
-              p-4
-              sm:p-8
-              md:p-10
-              lg:p-12
+              p-2
+              sm:p-4
+              md:p-6
+              lg:p-8
             `}
           >
-            <div className="max-w-[600px] text-center">
+            <div className="w-full max-w-[600px] text-center">
               <p
                 className={`
-                  ${typography.buttonBody}
-                  leading-[1.5]
+                  ${typography.privacy}
+                  mt-2
+                  sm:mt-4
+                  md:mt-6
+                  lg:mt-8
+                  leading-[1.35]
                   text-black/70
                 `}
               >
@@ -88,22 +92,30 @@ export default function Privacy({ onNavigate, onBack }: Props) {
 
               <p
                 className={`
-                  ${typography.buttonBody}
-                  mt-3
-                  leading-[1.5]
+                  ${typography.privacy}
+                  mt-2
+                  sm:mt-4
+                  md:mt-6
+                  lg:mt-8
+                  mt-2
+                  leading-[1.35]
                   text-black/70
                 `}
               >
                 Profiles are open.
                 <br />
-                What is shared can be seen by others.
+                What you share can be seen by others.
               </p>
 
               <p
                 className={`
-                  ${typography.buttonBody}
-                  mt-3
-                  leading-[1.5]
+                  ${typography.privacy}
+                  mt-2
+                  sm:mt-4
+                  md:mt-6
+                  lg:mt-8
+                  mt-2
+                  leading-[1.35]
                   text-black/70
                 `}
               >
@@ -112,9 +124,13 @@ export default function Privacy({ onNavigate, onBack }: Props) {
 
               <p
                 className={`
-                  ${typography.buttonBody}
-                  mt-3
-                  leading-[1.5]
+                  ${typography.privacy}
+                  mt-2
+                  sm:mt-4
+                  md:mt-6
+                  lg:mt-8
+                  mt-2
+                  leading-[1.35]
                   text-black/70
                 `}
               >
@@ -127,48 +143,47 @@ export default function Privacy({ onNavigate, onBack }: Props) {
 
               <p
                 className={`
-                  ${typography.buttonBody}
-                  mt-3
-                  leading-[1.5]
+                  ${typography.privacy}
+                  mt-2
+                  sm:mt-4
+                  md:mt-6
+                  lg:mt-8
+                  mt-2
+                  leading-[1.35]
                   text-black/70
                 `}
               >
-                Images carry a story of their own.
-                <br />
                 Share only what you have the right to share.
                 <br />
-                Choose references that are free to use or properly licensed.
+                Use images that are free to use or properly licensed.
               </p>
 
               <p
                 className={`
-                  ${typography.buttonBody}
-                  mt-3
-                  leading-[1.5]
+                  ${typography.privacy}
+                  mt-2
+                  sm:mt-4
+                  md:mt-6
+                  lg:mt-8
+                  mt-2
+                  leading-[1.35]
                   text-black/70
                 `}
               >
-                What enters SYLAGE should belong here.
-              </p>
-
-              <p
-                className={`
-                  ${typography.buttonBody}
-                  mt-3
-                  leading-[1.5]
-                  text-black/70
-                `}
-              >
-                Content that does not respect this space may be removed.
+                Content that does not belong here may be removed.
                 <br />
                 Accounts may be removed when necessary.
               </p>
 
               <p
                 className={`
-                  ${typography.buttonBody}
-                  mt-3
-                  leading-[1.5]
+                  ${typography.privacy}
+                  mt-2
+                  sm:mt-4
+                  md:mt-6
+                  lg:mt-8
+                  mt-2
+                  leading-[1.35]
                   text-black/70
                 `}
               >

@@ -158,10 +158,9 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 cursor-pointer
               `}
             >
-              looks
+              {moodboard?.silhouettes_count ?? 0} looks
             </button>
           </div>
-
         </div>
       }
       footerLeft={

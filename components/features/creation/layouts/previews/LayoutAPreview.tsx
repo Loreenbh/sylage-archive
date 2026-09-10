@@ -1,3 +1,5 @@
+import { colors } from "@/styles/colors"
+
 export default function LayoutAPreview() {
   return (
     <div className="
@@ -11,7 +13,7 @@ export default function LayoutAPreview() {
       {Array.from({ length: 9 }).map((_, index) => (
         <div
           key={index}
-          className="bg-zinc-200"
+          className={`${colors.bg.empty70}`}
         />
       ))}
     </div>

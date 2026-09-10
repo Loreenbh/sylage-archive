@@ -145,15 +145,42 @@ const {
             }
           />
           ) : (
-            <ScrollableGrid
-                data={filteredMoodboards}
-                renderItem={(board) => (
-                <div className="relative aspect-square w-full bg-zinc-100 overflow-hidden">                <img
+          <ScrollableGrid
+            data={filteredMoodboards}
+            renderItem={(board) => (
+              <div
+                className="
+                  relative
+                  aspect-square
+                  w-full
+                  bg-zinc-100
+                  overflow-hidden
+                  cursor-pointer
+                "
+                onClick={() =>
+                  onNavigate?.({
+                    to: "moodDetails",
+                    direction: "next",
+                    params: {
+                      moodboardId: board.id,
+                      from: "moods",
+                      isOwner: board.user_id === user?.id,
+                    },
+                  })
+                }
+              >
+                <img
                   src={board.image_url}
-                  
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="
+                    absolute
+                    inset-0
+                    w-full
+                    h-full
+                    object-cover
+                  "
                 />
+
                 <ContentOverlay
                   username={board.username}
                   isOwner={board.user_id === user?.id}
@@ -161,7 +188,7 @@ const {
                     type: "moodboard",
                     id: board.id,
                     count: board.likes_count,
-                    liked: board.liked_by_current_user
+                    liked: board.liked_by_current_user,
                   }}
                   silhouettesCount={board.silhouettes_count}
                   onOpenLooks={() =>
@@ -171,8 +198,8 @@ const {
                       params: {
                         from: "moods",
                         moodboardId: board.id,
-                        isOwner: user?.id === board.user_id
-                      }
+                        isOwner: user?.id === board.user_id,
+                      },
                     })
                   }
                   onDelete={

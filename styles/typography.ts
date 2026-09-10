@@ -133,5 +133,25 @@ export const typography = {
     uppercase
     tracking-[0.25em]
     font-extralight
-    `
+    `,
+
+    about:`
+    text-[8px]
+    sm:text-[12px]
+    md:text-[14px]
+    lg:text-[16px]
+    uppercase
+    tracking-[0.25em]
+    font-extralight
+    `,
+
+    privacy:`
+    text-[7px]
+    sm:text-[12px]
+    md:text-[14px]
+    lg:text-[16px]
+    uppercase
+    tracking-[0.25em]
+    font-extralight
+    `,
 }

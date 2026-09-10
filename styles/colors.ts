@@ -10,7 +10,8 @@ export const colors = {
     earth: "bg-[#806054]",
     charcoal: "bg-[#211C19]",
     charcoal70: "bg-[#211C19]/70",
-    empty: "bg-[#D9CEBD]/30"
+    empty: "bg-[#D9CEBD]/30",
+    empty70: "bg-[#D9CEBD]/70"
   },
 
   text: {

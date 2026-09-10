@@ -292,7 +292,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
         />
       }
     actionsBar={
-      <div className="flex w-full items-center justify-between">
+      <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
           {step === "compose" ? (
             <button
               onClick={handleConfirm}

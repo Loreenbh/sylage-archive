@@ -19,8 +19,9 @@ export default function Avatar({
         overflow-hidden
         ${colors.bg.charcoal}
         text-white
-        sm:text-[30px]
-        lg:text-[56px]
+        sm:text-[20px]
+        md:text-[20px]
+        lg:text-[30px]
         font-serif
         tracking-[0.2em]
         ${className}
