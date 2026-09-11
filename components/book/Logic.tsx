@@ -18,6 +18,7 @@ import Create from "../features/creation/selection"
 import Editor from "../features/creation/editMood"
 import Draw from "../features/creation/editLook"
 import ForgotPassword from "../features/forgot-pswd/forgotPassword"
+import UpdatePassword from "../features/update-pswd/page"
 import About from "../features/profile/settings/about"
 import Privacy from "../features/profile/settings/privacy"
 
@@ -43,7 +44,8 @@ const PAGES = {
   draw: Draw,
   forgot: ForgotPassword,
   about: About,
-  privacy: Privacy
+  privacy: Privacy,
+  update: UpdatePassword
 } as const
 
 
@@ -64,10 +66,30 @@ export default function Book() {
   const [direction, setDirection] = useState<"next" | "prev">("next")
 
 
+  // const { user, isLoading } = useCurrentUser()
+
+  // useEffect(() => {
+  //   if (isLoading) return
+
+  //   if (user) {
+  //     setCurrent("discover")
+  //   } else {
+  //     setCurrent("cover")
+  //   }
+  // }, [user, isLoading])
+
   const { user, isLoading } = useCurrentUser()
 
   useEffect(() => {
     if (isLoading) return
+
+    const params = new URLSearchParams(window.location.search)
+    const auth = params.get("auth")
+
+    if (auth === "update") {
+      setCurrent("update")
+      return
+    }
 
     if (user) {
       setCurrent("discover")
@@ -75,7 +97,7 @@ export default function Book() {
       setCurrent("cover")
     }
   }, [user, isLoading])
-
+  
   function navigate({ to, direction = "next", params }: NavigationParams) {
     if (animating) return
 

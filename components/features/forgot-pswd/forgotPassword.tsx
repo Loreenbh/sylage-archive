@@ -83,7 +83,7 @@ export default function ForgotPassword({
 
 
   const result = await supabaseBrowser.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/update-password`,
+    redirectTo: `${window.location.origin}/auth/callback?next=update`,
   })
 
   if (result.error) {
@@ -114,7 +114,7 @@ export default function ForgotPassword({
       }
 
 actionsBar={
-  <div className="flex items-center justify-between w-full">
+  <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
     <button
       onClick={onBack}
       className={`
@@ -181,7 +181,16 @@ actionsBar={
             h-full
           `}
         >
-          <div className="pt-7 sm:pt-35 lg:pt-50">
+          <div className="pt-7 
+                          sm:pt-35
+                          sm:pl-20 
+                          sm:w-[450px]
+                          md:pt-40 
+                          md:pl-20 
+                          md:w-[500px]
+                          lg:pt-50 
+                          lg:pl-30 
+                          lg:w-[700px]">
             <MagazineInput
               placeholder="Email"
               type="email"
@@ -195,6 +204,9 @@ actionsBar={
             className={`
               px-3
               sm:px-6
+              sm:text-[12px]
+              md:text-[14px]
+              lg:text-[16px]
               lg:px-12
               pb-6
               text-[8px]
