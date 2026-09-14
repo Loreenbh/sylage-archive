@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Follow } from "@/types/follow"
 import { typography } from "@/styles/typography"
-import { colors } from "@/styles/colors"
 
 type Props = {
   followingTitle: string
@@ -56,8 +55,6 @@ export default function ScrollFollow({
               lg:h-20
             "
           >
-
-            {/* Avatar */}
             <button
               onClick={() => onOpenProfile?.(item)}
               className="
@@ -89,7 +86,6 @@ export default function ScrollFollow({
               )}
             </button>
 
-            {/* Username + X */}
             <div
               className="
                 flex

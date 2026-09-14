@@ -1,5 +1,3 @@
-// hooks/useReferences.ts
-
 import { useEffect, useState } from "react"
 import { getReferences } from "@/lib/services/references"
 

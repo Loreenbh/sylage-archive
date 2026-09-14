@@ -27,8 +27,6 @@ export async function GET(request: Request) {
         `
     }
 
-
-    /* FILTRE */
     let whereCondition = `
         WHERE moodboards.user_id != $1
     `

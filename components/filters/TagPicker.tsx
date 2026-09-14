@@ -70,12 +70,6 @@ export default function TagPicker({
 
   const allSelected = [...styleTags, ...ambianceTags, ...colorTags]
 
-  // const removeTag = (tag: string) => {
-  //   if (styleTags.includes(tag)) onChangeStyle(styleTags.filter((t) => t !== tag))
-  //   else if (ambianceTags.includes(tag)) onChangeAmbiance(ambianceTags.filter((t) => t !== tag))
-  //   else if (colorTags.includes(tag)) onChangeColor(colorTags.filter((t) => t !== tag))
-  // }
-
   return (
     <div className="flex flex-col items-center gap-1 sm:gap-3 lg:gap-4">
 
@@ -107,7 +101,6 @@ export default function TagPicker({
         ))}
       </div>
 
-      {/* liste dépliée de la catégorie active */}
       {categories.map((category) =>
         openCategory === category.key ? (
           <div

@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useRef, ReactNode } from "react"
-/* TYPES */
+
 type Props = {
   current: ReactNode
   next: ReactNode | null
@@ -8,7 +8,6 @@ type Props = {
   direction: "next" | "prev"
   onDone: () => void
 }
-/*-----------------------------------------*/
 
 export default function PageFlip({
   current,
@@ -64,7 +63,6 @@ export default function PageFlip({
   return (
     <div className="relative w-full h-full">
 
-      {/* page de fond */}
       <div className="absolute inset-0">
         {animating ? next : current}
       </div>

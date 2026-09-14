@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react"
 import type { OnNavigate, NavigationParams } from "@/types/navigation"
 
-/* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
@@ -10,13 +9,12 @@ import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { uploadImage } from "@/lib/services/upload"
 import { updateUser, deleteUser} from "@/lib/services/profile"
-/* STYLE */
+
 import { typography } from "@/styles/typography"
 import Avatar from "@/components/ui/pagination/Avatar"
 import BackButton from "@/components/ui/buttons/BackButton"
 import { colors } from "@/styles/colors"
 
-/* TYPES */
 type Props = {
   onNavigate: OnNavigate
   params?: NavigationParams["params"] | null

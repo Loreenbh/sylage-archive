@@ -6,13 +6,11 @@ import { layout } from "@/styles/layout"
 import { spacing } from "@/styles/spacing"
 import { colors } from "@/styles/colors"
 
-/* TYPES */
 type Props = {
   text: string
   onNavigate?: OnNavigate
   clickable?: boolean
 }
-/*-------------------------------------------- */
 
 export default function Sidebar({
   text,

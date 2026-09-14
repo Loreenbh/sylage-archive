@@ -7,24 +7,20 @@ import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
 import { MIN_TAGS_TOTAL } from "@/constants/tags"
 import TagPicker from "@/components/filters/TagPicker"
 
-/* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Header from "@/components/navigation/Header"
 import Sidebar from "@/components/navigation/SideBar"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import BackButton from "@/components/ui/buttons/BackButton"
 
-/* LAYOUTS */
 import LayoutA from "./layouts/LayoutA"
 import LayoutB from "./layouts/LayoutB"
 import LayoutC from "./layouts/LayoutC"
 import LayoutD from "./layouts/LayoutD"
 
-/* STYLE */
 import { typography } from "@/styles/typography"
 import { colors } from "@/styles/colors"
 
-/* SERVICES */
 import { uploadImage } from "@/lib/services/upload"
 import { createMoodboard } from "@/lib/services/moodboard"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
@@ -51,9 +47,6 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
   const layout = params?.layout as keyof typeof LAYOUT_SLOT_COUNT
   const slotCount = LAYOUT_SLOT_COUNT[layout] ?? 9
 
-
-  /* ---------------- STATE ---------------- */
-
   const [slots, setSlots] = useState<MoodboardSlot[]>(
     Array(slotCount).fill(null)
   )
@@ -73,19 +66,12 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const activeSlotRef = useRef<number | null>(null)
 
-  // élément réellement affiché à l'écran
   const layoutRef = useRef<HTMLDivElement | null>(null)
-
-
-
-  /* ---------------- SLOT CLICK ---------------- */
 
   const handleSlotClick = (index:number) => {
     activeSlotRef.current = index
     fileInputRef.current?.click()
   }
-
-  /* ---------------- FILE CHANGE ---------------- */
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -117,8 +103,6 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
 
   }
 
-  /* ---------------- TRANSFORM ---------------- */
-
   const handleUpdateSlot = (
     index:number,
     patch:MoodboardSlotPatch
@@ -135,7 +119,6 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       return copy
     })
   }
-  /* ---------------- TAGS ---------------- */
 
   const allSelectedTags = [
     ...styleTags,
@@ -146,17 +129,8 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
   const canPublish =
     allSelectedTags.length >= MIN_TAGS_TOTAL
 
-
-  /* ---------------- CONFIRM EXPORT ---------------- */
-
   const handleConfirm = async()=>{
     setPublishError(null)
-
-    // const isComplete = slots.every(slot => slot !== null)
-    // if (!isComplete) {
-    //   setPublishError("Complete the composition before confirming")
-    //   return
-    // }
 
     if(!layoutRef.current){
       setPublishError("Moodboard unavailable")
@@ -194,9 +168,6 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       setIsPublishing(false)
     }
   }
-
-  /* ---------------- PUBLISH ---------------- */
-
 
   const handlePublish = async()=>{
     setPublishError(null)
@@ -236,9 +207,6 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       setIsPublishing(false)
     }
   }
-
-  /* ---------------- LAYOUT ---------------- */
-
 
   const renderLayout =()=>{
     const props={

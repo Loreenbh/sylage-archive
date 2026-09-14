@@ -25,7 +25,6 @@ type Props1 = {
   value: string,
   onChange: (value: string) => void
 }
-/*------------------------------------------------- */
 
 function MagazineInput({ placeholder, type = "text", index, value, onChange } : Props1) {
   return (

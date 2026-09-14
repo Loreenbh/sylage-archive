@@ -15,7 +15,6 @@ export async function POST(request: Request){
         )
     }
 
-    /* VALIDATION */
     if (!imageUrl || !moodboardId){
         return NextResponse.json(
             {error:'Champs manquants'},

@@ -1,7 +1,6 @@
 "use client"
 import type { OnNavigate } from "@/types/navigation"
 
-/* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
@@ -11,7 +10,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser"
 import BackButton from "@/components/ui/buttons/BackButton"
 import { NavigationParams } from "@/types/navigation"
 import { useReferences } from "@/hooks/useReferences"
-/* STYLE */
+
 import { typography } from "@/styles/typography"
 import Avatar from "@/components/ui/pagination/Avatar"
 

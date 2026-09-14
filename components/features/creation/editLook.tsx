@@ -3,27 +3,17 @@
 import { useRef, useState } from "react"
 import { toPng } from "html-to-image"
 
-/* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
 import Header from "@/components/navigation/Header"
 import ProfileButton from "@/components/ui/buttons/ProfileButton"
 import ImageSlot from "./layouts/ImageSlot"
-
-/* STYLE */
-import { typography } from "@/styles/typography"
-
-/* TYPES */
-import type { OnNavigate, NavigationParams } from "@/types/navigation"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
 import BackButton from "@/components/ui/buttons/BackButton"
 
-type Props = {
-  onNavigate: OnNavigate
-  params?: NavigationParams["params"] | null
-  onBack?: () => void
+import { typography } from "@/styles/typography"
 
-}
+import type { OnNavigate, NavigationParams } from "@/types/navigation"
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
 
 /*SERVICES*/
 import { uploadImage } from "@/lib/services/upload"
@@ -33,6 +23,14 @@ import { createSilhouette } from "@/lib/services/silhouette"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { useMoodboard } from "@/hooks/useMoodboard"
 import { colors } from "@/styles/colors"
+
+type Props = {
+  onNavigate: OnNavigate
+  params?: NavigationParams["params"] | null
+  onBack?: () => void
+
+}
+
 
 function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
   if (!slot) return null
@@ -144,8 +142,6 @@ const { user: currentUser } = useCurrentUser()
     try {
     slotRef.current.classList.add("export-mode")
 
-    // on laisse le temps au navigateur de peindre l'état "export-mode"
-    // (icônes masquées, etc.) avant de capturer
     await new Promise<void>(resolve =>
       requestAnimationFrame(() =>
         requestAnimationFrame(() => resolve())
@@ -157,11 +153,9 @@ const { user: currentUser } = useCurrentUser()
     slotRef.current.classList.remove("export-mode")
 
 
-    // 1. upload image
     const imageUrl = await uploadImage(imageData)
 
 
-    // 2. créer silhouette en base
     await createSilhouette(
       imageUrl,
       moodboardId

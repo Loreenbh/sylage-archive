@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
@@ -25,7 +25,6 @@ import { useUserMoodboards } from "@/hooks/useUserMoodboards"
 
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 
-/*---------------------------------------------------- */
 
 export default function Moods({ onNavigate, params, onBack }: Props) {
   const { user } = useCurrentUser()

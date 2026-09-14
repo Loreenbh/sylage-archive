@@ -13,7 +13,6 @@ import ScrollFollow from "@/components/ui/cards/scrollFollow"
 /* STYLE */
 import { typography } from "@/styles/typography"
 import { colors } from "@/styles/colors"
-import { spacing } from "@/styles/spacing"
 /* TYPES */
 type Props = {
   onNavigate: OnNavigate
@@ -28,7 +27,6 @@ import { useFollows } from "@/hooks/useFollows"
 import { getFollows, unfollowUser, followUser } from "@/lib/services/follows"
 
 import BackButton from "@/components/ui/buttons/BackButton"
-/*------------------------------------------------- */
 
 export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   const {
@@ -41,8 +39,6 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
 
   const [isFollowed, setIsFollowed] = useState(false)
 
-
-  // Connexions du profil affiché
   const {
     following,
     followers,
@@ -59,8 +55,6 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   } = useProfile(userId, isOwner)
 
 
-
-  // Vérifie si moi je suis abonné à ce profil
 useEffect(() => {
   if (!profileUser || !currentUser) return
 

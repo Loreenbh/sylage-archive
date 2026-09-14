@@ -1,10 +1,3 @@
-/*margin
-padding
-gap
-position
-alignment
-ou c est place */
-
 export const spacing = {
 coverHeader: `
     pt-2

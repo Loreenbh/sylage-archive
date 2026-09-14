@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { OnNavigate } from "@/types/navigation"
 import BookLayout from "@/components/book/BookLayout"
 import Header from "@/components/navigation/Header"
 import Sidebar from "@/components/navigation/SideBar"

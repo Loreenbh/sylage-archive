@@ -22,7 +22,7 @@ export default function ImageSlot({
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null)
 
-  /* ---------------- DÉPLACEMENT ---------------- */
+  /* ---------------- DEPLACEMENT ---------------- */
 
   const panState = useRef<{
     startX: number
@@ -84,10 +84,6 @@ export default function ImageSlot({
     })
   }
 
-  /* =====================================================
-     DÉPLACEMENT
-     ===================================================== */
-
   const handlePanPointerDown = (
     e: React.PointerEvent<HTMLButtonElement>
   ) => {
@@ -140,10 +136,6 @@ export default function ImageSlot({
     panState.current = null
     setIsPanning(false)
   }
-
-  /* =====================================================
-     ZOOM
-     ===================================================== */
 
   const handleZoomPointerDown = (
     e: React.PointerEvent<HTMLButtonElement>
@@ -242,13 +234,6 @@ export default function ImageSlot({
             "
             alt=""
           />
-
-          {/* =================================================
-              MODIFIER L'IMAGE
-              Visible sur desktop au hover
-              TOUJOURS visible sur mobile
-              ================================================= */}
-
           <button
             type="button"
             onClick={(e) => {
@@ -280,10 +265,6 @@ export default function ImageSlot({
           >
             ✎
           </button>
-
-          {/* =================================================
-              DÉPLACER
-              ================================================= */}
 
           <button
             type="button"
@@ -331,11 +312,6 @@ export default function ImageSlot({
           >
             ⤡
           </button>
-
-          {/* =================================================
-              ZOOM
-              ================================================= */}
-
           <button
             type="button"
             onPointerDown={handleZoomPointerDown}

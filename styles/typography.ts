@@ -56,12 +56,6 @@ export const typography = {
     uppercase
   `,
 
-  // buttonAction: `
-  //   lg:text-[8px]
-  //   tracking-[0.4em]
-  //   uppercase
-  // `,
-
   buttonBody: `
     text-[8px]
     sm:text-[12px]

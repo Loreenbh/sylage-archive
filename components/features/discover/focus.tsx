@@ -34,7 +34,6 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
 
   const {
     moodboard,
-    // isLoading
   } = useMoodboard(moodboardId)
 
   return (

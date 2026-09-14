@@ -260,16 +260,6 @@ export async function DELETE(request: Request) {
       )
     }
 
-
-    // await pool.query(
-    //   `
-    //   DELETE FROM silhouettes
-    //   WHERE moodboard_id=$1
-    //   `,
-    //   [id]
-    // )
-
-
     await pool.query(
       `
       DELETE FROM likes
@@ -278,7 +268,6 @@ export async function DELETE(request: Request) {
       [id]
     )
 
-    // Supprime le moodboard
     await pool.query(
       `
       DELETE FROM moodboards

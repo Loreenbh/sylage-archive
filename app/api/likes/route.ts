@@ -13,7 +13,6 @@ export async function POST(request: Request) {
         )
     }
 
-    /* AUTHENTIFICATION */
     const user = await getCurrentSessionUser()
 
     if (!user) {
@@ -106,7 +105,6 @@ export async function DELETE(request: Request) {
         )
     }
 
-    /* AUTHENTIFICATION */
     const user = await getCurrentSessionUser()
 
     if (!user) {

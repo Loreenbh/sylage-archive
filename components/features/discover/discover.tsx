@@ -26,7 +26,6 @@ import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods"
 import { followUser , unfollowUser } from "@/lib/services/follows"
 import StatusMessage from "@/components/ui/messages/StatusMessage"
 import { spacing } from "@/styles/spacing"
-/*---------------------------------------------------- */
 
 export default function Discover({ onNavigate, params }: Props) {
   const [tab, setTab] = useState(params?.fromTab ?? "latest")

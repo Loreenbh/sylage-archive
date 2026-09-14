@@ -17,7 +17,6 @@ type HeaderProps = {
   items: HeaderItem[]
   onFiltersChange?: (tags: string[]) => void
 }
-/*-------------------------------------------------*/
 
 export default function Header({
   items,
@@ -96,7 +95,6 @@ export default function Header({
         ← PORTFOLIO
       </button>
 
-      {/* NAVIGATION */}
       <div
         className="
           relative
@@ -138,7 +136,6 @@ export default function Header({
         ))}
       </div>
 
-      {/* FILTER PANEL */}
       <div
         className={`
           overflow-visible

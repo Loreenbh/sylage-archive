@@ -147,7 +147,6 @@ export async function PATCH(request: Request) {
 
     let updatedUser = null
 
-    /*USERNAME*/
     if (username) {
         if (username.length < 3) {
             return NextResponse.json(
@@ -181,7 +180,6 @@ export async function PATCH(request: Request) {
         }
     }
 
-    /* PASSWORD UPDATE */
     if (password) {
         if (password.length < MIN_PASSWORD_LENGTH) {
             return NextResponse.json(
@@ -216,7 +214,6 @@ export async function PATCH(request: Request) {
             )
         }
     }
-    /*AVATAR / USERNAME UPDATE*/
     if (avatar_url || username) {
         updatedUser = await pool.query(
             `
@@ -238,7 +235,6 @@ export async function PATCH(request: Request) {
         )
     }
 
-    /*PASSWORD UPDATE*/
     if (updatedUser) {
         return NextResponse.json({
             user:updatedUser.rows[0]

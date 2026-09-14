@@ -17,7 +17,6 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
   return (
     <div className="grid grid-cols-2 gap-[2px] h-full w-full min-h-0 min-w-0">
 
-      {/* ================= LEFT COLUMN ================= */}
       <ImageSlot
         slot={images[0] ?? null}
         onSelect={() => select(0)}
@@ -25,10 +24,8 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
         className={`h-full w-full ${colors.bg.empty70} hover:opacity-50`}
       />
 
-      {/* ================= RIGHT COLUMN ================= */}
       <div className="grid grid-rows-[1fr_2fr_1fr] gap-[2px] h-full min-h-0 min-w-0">
 
-        {/* -------- C -------- */}
         <ImageSlot
           slot={images[1] ?? null}
           onSelect={() => select(1)}
@@ -36,10 +33,8 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
           className={`${colors.bg.empty70} hover:opacity-50`}
         />
 
-        {/* -------- D (4 small squares) -------- */}
         <div className="grid grid-cols-2 gap-[2px] min-h-0 min-w-0">
 
-          {/* D1 column */}
           <div className="grid grid-rows-2 gap-[2px] min-h-0 min-w-0">
             <ImageSlot
               slot={images[2] ?? null}
@@ -55,7 +50,6 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
             />
           </div>
 
-          {/* D2 column */}
           <div className="grid grid-rows-2 gap-[2px] min-h-0 min-w-0">
             <ImageSlot
               slot={images[4] ?? null}
@@ -73,7 +67,6 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
 
         </div>
 
-        {/* -------- E -------- */}
         <ImageSlot
           slot={images[6] ?? null}
           onSelect={() => select(6)}

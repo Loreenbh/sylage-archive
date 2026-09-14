@@ -7,6 +7,7 @@ import Sidebar from "@/components/navigation/SideBar"
 
 import { typography } from "@/styles/typography"
 import { colors } from "@/styles/colors"
+import { spacing } from "@/styles/spacing"
 
 import { supabaseBrowser } from "@/lib/supabase-browser"
 
@@ -30,7 +31,7 @@ function MagazineInput({
   onChange: (value: string) => void
 }) {
   return (
-    <div className="w-full flex space-y-4 px-8 pt-18 sm:px-6 lg:px-12">
+    <div className="w-full flex space-y-3 sm:space-y-8 px-3 sm:px-6 lg:px-8">
       <input
         type={type}
         placeholder={placeholder}
@@ -42,7 +43,7 @@ function MagazineInput({
           border-b
           ${colors.input.border}
           bg-transparent
-          text-[10px] sm:text-[20px] md:text-base lg:text-[20px]
+          text-[9px] sm:text-[16px] md:text-base lg:text-[18px]
           font-light
           outline-none
           ${colors.input.placeholder}
@@ -53,7 +54,7 @@ function MagazineInput({
 
       <span
         className={`
-          text-[35px] sm:text-[55px] md:text-[60px] lg:text-[85px]
+          text-[35px] pl-2 sm:text-[55px] md:text-[63px] lg:text-[100px]
           font-light
           ${colors.input.number}
           shrink-0
@@ -83,9 +84,11 @@ export default function UpdatePassword({
   >("idle")
 
   const [errorMessage, setErrorMessage] = useState("")
+  const [successMessage, setSuccessMessage] = useState("")
 
   const handleSubmit = async () => {
     setErrorMessage("")
+    setSuccessMessage("")
 
     if (!password || !confirmPassword) {
       setErrorMessage("Please fill in both fields")
@@ -130,12 +133,15 @@ export default function UpdatePassword({
     if (error) {
       console.error("[UPDATE PASSWORD] Error:", error)
 
-      setErrorMessage("Unable to update password")
+      setErrorMessage(
+        error.message || "Unable to update password"
+      )
       setStatus("error")
       return
     }
 
     setStatus("success")
+    setSuccessMessage("Password updated ✓")
 
     setTimeout(() => {
       onBack()
@@ -147,9 +153,18 @@ export default function UpdatePassword({
       header={
         <Header
           items={[
-            { section: "HOME", clickable: false },
-            { section: "FILTER", clickable: false },
-            { section: "CREATE", clickable: false },
+            {
+              section: "HOME",
+              clickable: false,
+            },
+            {
+              section: "FILTER",
+              clickable: false,
+            },
+            {
+              section: "CREATE",
+              clickable: false,
+            },
           ]}
         />
       }
@@ -160,67 +175,17 @@ export default function UpdatePassword({
         />
       }
       actionsBar={
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center">
           <button
             onClick={onBack}
             className={`
               ${typography.buttonBody}
-              px-4
+              ${spacing.actionBar}
               ${colors.text.charcoal}
-              cursor-pointer
-              transition-opacity
-              hover:opacity-50
             `}
           >
-            back
+            Back
           </button>
-
-          {status === "success" ? (
-            <p
-              className={`
-                ${typography.buttonBody}
-                ${colors.text.charcoal}
-              `}
-            >
-              Updated ✓
-            </p>
-          ) : (
-            <button
-              onClick={handleSubmit}
-              disabled={
-                status === "updating" ||
-                !password ||
-                !confirmPassword
-              }
-              className={`
-                ${typography.buttonBody}
-                ${colors.text.charcoal}
-                transition-opacity
-                hover:opacity-60
-                cursor-pointer
-                disabled:opacity-40
-              `}
-            >
-              {status === "updating"
-                ? "Updating..."
-                : "Update →"}
-            </button>
-          )}
-
-          {status === "error" && (
-            <>
-              <span className={typography.bullet}>•</span>
-
-              <p
-                className={`
-                  ${typography.buttonBody}
-                  ${colors.feedback.error}
-                `}
-              >
-                {errorMessage}
-              </p>
-            </>
-          )}
         </div>
       }
     >
@@ -238,47 +203,72 @@ export default function UpdatePassword({
             <div className="flex flex-col items-center justify-center h-full">
               <p
                 className={`
-                  ${typography.buttonBody}
-                  ${colors.text.charcoal}
+                  ${typography.feedback}
+                  ${colors.feedback.success}
                 `}
               >
-                Password updated ✓
+                {successMessage}
               </p>
             </div>
           ) : (
             <>
-              <div className="pt-7 sm:pt-35 lg:pt-50">
+              <div className="pt-7 sm:pt-35 lg:pt-43">
                 <MagazineInput
                   placeholder="New password"
                   type="password"
                   index={1}
                   value={password}
-                  onChange={setPassword}
+                  onChange={(value) => {
+                    setPassword(value)
+
+                    if (status === "error") {
+                      setStatus("idle")
+                      setErrorMessage("")
+                    }
+                  }}
                 />
 
                 <MagazineInput
-                  placeholder="Confirm password"
+                  placeholder="Password again"
                   type="password"
                   index={2}
                   value={confirmPassword}
-                  onChange={setConfirmPassword}
+                  onChange={(value) => {
+                    setConfirmPassword(value)
+
+                    if (status === "error") {
+                      setStatus("idle")
+                      setErrorMessage("")
+                    }
+                  }}
                 />
+
+                {errorMessage && (
+                  <p
+                    className={`
+                      ${typography.feedback}
+                      ${colors.feedback.error}
+                      ${spacing.feedback}
+                    `}
+                  >
+                    {errorMessage}
+                  </p>
+                )}
               </div>
 
-              <p
+              <button
+                onClick={handleSubmit}
+                disabled={status === "updating"}
                 className={`
-                  px-3
-                  sm:px-6
-                  lg:px-12
-                  pb-6
-                  text-[8px]
-                  sm:text-[10px]
+                  ${typography.buttonAuth}
                   ${colors.text.charcoal}
-                  opacity-50
+                  pb-10
                 `}
               >
-                PASSWORD UPDATE · NEW PASSWORD REQUIRED
-              </p>
+                {status === "updating"
+                  ? "Updating..."
+                  : "Update →"}
+              </button>
             </>
           )}
         </div>
@@ -286,3 +276,4 @@ export default function UpdatePassword({
     </BookLayout>
   )
 }
+

@@ -41,7 +41,6 @@ import type { OnNavigate } from "@/types/navigation"
       }))
 
 
-    /* INSCRIPTION */
     const handleRegister = async () =>{
       setRegisterError(null)
       setRegisterSuccess(null)
@@ -91,7 +90,6 @@ import type { OnNavigate } from "@/types/navigation"
       }
     } 
 
-    /* CONNEXION */
     const handleLogin = async () => {
       setLoginError(null)
 

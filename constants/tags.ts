@@ -1,6 +1,3 @@
-/* Chaque catégorie est une liste indépendante, triée alphabétiquement —
-   pour ajouter ou retirer un tag, modifie juste le tableau correspondant. */
-
 export const STYLE_TAGS = [
   "ATHLEISURE",
   "AVANT-GARDE",
@@ -52,8 +49,7 @@ export const COLOR_TAGS = [
   "WHITE",
 ] as const
 
-/* Couleur CSS réelle utilisée pour la pastille à côté de chaque tag couleur.
-   Pour les concepts abstraits (MONOCHROME, NEON, PASTEL), une teinte représentative. */
+
 export const COLOR_SWATCHES: Record<string, string> = {
   BEIGE: "#E8DCC8",
   BLACK: "#000000",

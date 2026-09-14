@@ -1,20 +1,18 @@
 import Image from "next/image"
 import type { OnNavigate } from "@/types/navigation"
 
-/* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout"
 import Sidebar from "@/components/navigation/SideBar"
-/* STYLE */
+
 import { spacing } from "@/styles/spacing"
 import { layout } from "@/styles/layout"
 import { typography } from "@/styles/typography"
 import SimpleGrid from "@/components/ui/grids/SimpleGrid"
 import { colors } from "@/styles/colors"
-/* TYPES */
+
 type Props = {
   onNavigate: OnNavigate
 }
-/*-----------------------------------------------*/
 
 export default function Cover({ onNavigate }: Props) {
   return (

@@ -2,15 +2,12 @@
 import type { OnNavigate } from "@/types/navigation"
 import Avatar from "../pagination/Avatar"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
-import { colors } from "@/styles/colors"
 
-/* TYPES */
 type Props = {
   onNavigate: OnNavigate
   active?: boolean
   clickable?: boolean
 }
-/*------------------------------------------ */
 export default function ProfileButton({ onNavigate, active = false, clickable = true}: Props) {
   const { user } = useCurrentUser()
 

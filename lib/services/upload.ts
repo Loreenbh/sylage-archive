@@ -15,27 +15,3 @@ export async function uploadImage(imageData: string) {
 
   return data.url
 }
-
-
-/*
-PATCH /api/users/avatar
-UPDATE users
-SET avatar_url = $1
-WHERE id = $2
-
-EDIT PROFILE
-      |
-      |
-      v
-/api/upload
-      |
-      | retourne url
-      v
-/api/users/avatar
-      |
-      | UPDATE users.avatar_url
-      v
-BDD users
-
-
-*/

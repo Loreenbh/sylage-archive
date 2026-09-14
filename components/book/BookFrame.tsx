@@ -1,11 +1,9 @@
 "use client"
 import { ReactNode } from "react"
 
-/* TYPES */
 type Props = {
   children: ReactNode
 }
-/*---------------------------------------*/
 
 export default function BookFrame({ children }: Props) {
   const layers = [
@@ -57,10 +55,8 @@ export default function BookFrame({ children }: Props) {
       style={{ perspective: "1200px" }}
     >
 
-      {/* Conteneur 3D */}
       <div className="relative flex-1 min-h-0">
 
-        {/* COUCHES — pages empilées sur la droite */}
         {layers.map((layer, i) => (
           <div
             key={i}
@@ -120,7 +116,7 @@ export default function BookFrame({ children }: Props) {
             }}
           />
 
-          {/* EFFET BOMBÉ */}
+          {/* EFFET BOMBE */}
           <div
             className="
               absolute inset-0
@@ -138,7 +134,6 @@ export default function BookFrame({ children }: Props) {
             }}
           />
 
-          {/* CONTENU */}
           <div className="relative z-10 flex flex-col h-full min-h-0">
             {children}
           </div>

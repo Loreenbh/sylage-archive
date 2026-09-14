@@ -18,8 +18,6 @@ export async function POST(request: Request) {
 
     let email = cleanIdentifier
 
-    // Si l'utilisateur entre un username,
-    // on retrouve son email dans public.users.
     if (!cleanIdentifier.includes("@")) {
         const { data: profile, error: profileError } = await supabaseAdmin
             .from("users")
@@ -37,7 +35,6 @@ export async function POST(request: Request) {
         email = profile.email
     }
 
-    // Supabase Auth vérifie le mot de passe.
     const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -50,7 +47,6 @@ export async function POST(request: Request) {
         )
     }
 
-    // On récupère le profil correspondant à l'utilisateur Auth.
     const { data: profile, error: profileError } = await supabaseAdmin
         .from("users")
         .select("id, username, email, role")

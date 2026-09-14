@@ -1,4 +1,3 @@
-/* organisation des blocs*/
 export const layout = {
     bookContent: `
     w-[75vw]
@@ -15,16 +14,6 @@ export const layout = {
     mt-7
     min-h-0
   `,
-
-  // sidebar: `
-  //   flex
-  //   flex-col
-  //   self-stretch
-  //   w-10
-  //   sm:w-16
-  //   md:w-20
-  //   lg:w-24
-  // `,
 
   coverHeader: `
     flex

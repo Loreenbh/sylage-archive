@@ -19,7 +19,6 @@ export async function POST(request: Request) {
 
     const { username, email, password } = body
 
-    // Champs obligatoires
     if (!username || !email || !password) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -30,7 +29,6 @@ export async function POST(request: Request) {
     const cleanUsername = username.trim().toLowerCase()
     const cleanEmail = email.trim().toLowerCase()
 
-    // Username
     if (
       cleanUsername.length < MIN_USERNAME_LENGTH ||
       cleanUsername.length > MAX_USERNAME_LENGTH
@@ -53,7 +51,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Email
     if (!EMAIL_REGEX.test(cleanEmail)) {
       return NextResponse.json(
         { error: "Invalid email address" },
@@ -61,7 +58,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Password
     if (password.length < MIN_PASSWORD_LENGTH) {
       return NextResponse.json(
         {
@@ -88,7 +84,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Vérifie si le username existe déjà
     const { data: existingUsername, error: usernameError } =
       await supabaseAdmin
         .from("users")
@@ -112,7 +107,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Vérifie si l'email existe déjà
     const { data: existingEmail, error: emailError } =
       await supabaseAdmin
         .from("users")
@@ -136,7 +130,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Création du compte Supabase Auth
     const supabase = await createClient()
 
     const { data, error } = await supabase.auth.signUp({
@@ -158,7 +151,6 @@ export async function POST(request: Request) {
         message: error.message,
       })
 
-      // Email déjà utilisé
       if (
         error.code === "user_already_exists" ||
         errorMessage.includes("already registered") ||
@@ -171,7 +163,6 @@ export async function POST(request: Request) {
         )
       }
 
-      // Limite d'envoi des emails
       if (error.code === "over_email_send_rate_limit") {
         return NextResponse.json(
           {
@@ -188,7 +179,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Supabase peut ne pas retourner d'erreur lorsqu'un email existe déjà
     if (data.user && data.user.identities?.length === 0) {
       return NextResponse.json(
         { error: "Username or email is already in use" },

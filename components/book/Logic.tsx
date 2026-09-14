@@ -65,19 +65,6 @@ export default function Book() {
   const [animating, setAnimating] = useState<boolean>(false)
   const [direction, setDirection] = useState<"next" | "prev">("next")
 
-
-  // const { user, isLoading } = useCurrentUser()
-
-  // useEffect(() => {
-  //   if (isLoading) return
-
-  //   if (user) {
-  //     setCurrent("discover")
-  //   } else {
-  //     setCurrent("cover")
-  //   }
-  // }, [user, isLoading])
-
   const { user, isLoading } = useCurrentUser()
 
   useEffect(() => {
@@ -176,16 +163,3 @@ export default function Book() {
     </div>
   )
 }
-
-//1. je clique sur une page onNavigate("auth")
-//ca appelle la fonction navigate avec auth en parametre
-// et ensuite setCurrent change la valeur de cover a auth
-//envoi la fonction navigate a la page Cover function Cover ({on Navigate})
-// <button onClick={9) => onNavigate("auth")}>
-//Aller a auth </button>
-//1. je clique sur une page onNavigate("auth")
-//ca appelle la fonction navigate avec auth en parametre
-// et ensuite setCurrent change la valeur de cover a auth
-//envoi la fonction navigate a la page Cover function Cover ({on Navigate})
-// <button onClick={9) => onNavigate("auth")}>
-//Aller a auth </button>
