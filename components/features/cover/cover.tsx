@@ -25,7 +25,7 @@ export default function Cover({ onNavigate }: Props) {
             SYLAGE
           </h1>
           <p className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}>
-            TRENDBOOK
+            ARCHIVE
           </p>
         </div>
       }

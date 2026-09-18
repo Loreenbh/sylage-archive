@@ -12,40 +12,40 @@ export default function BookFrame({ children }: Props) {
       y: 0,
       z: 0,
       opacity: 0.7,
-      fromColor: "from-[#D0CEC4]",
-      toColor: "to-[#B9B7AD]",
+      fromColor: "from-[#8F8173]",
+      toColor: "to-[#75685C]",
     },
     {
       x: 20,
       y: 1,
       z: 1,
       opacity: 0.8,
-      fromColor: "from-[#DAD8CE]",
-      toColor: "to-[#C4C2B8]",
+      fromColor: "from-[#A09283]",
+      toColor: "to-[#817365]",
     },
     {
       x: 16,
       y: 1,
       z: 2,
       opacity: 0.85,
-      fromColor: "from-[#E0DED4]",
-      toColor: "to-[#CAC8BE]",
+      fromColor: "from-[#B0A091]",
+      toColor: "to-[#918171]",
     },
     {
       x: 12,
       y: 0.5,
       z: 3,
       opacity: 0.9,
-      fromColor: "from-[#E5E2D8]",
-      toColor: "to-[#D1CEC3]",
+      fromColor: "from-[#BDAE9E]",
+      toColor: "to-[#9F8F7E]",
     },
     {
       x: 8,
       y: 0,
       z: 4,
       opacity: 0.92,
-      fromColor: "from-[#E8E5DB]",
-      toColor: "to-[#D8D5CA]",
+      fromColor: "from-[#C9BAA8]",
+      toColor: "to-[#AC9C8A]",
     },
   ]
 
@@ -84,7 +84,7 @@ export default function BookFrame({ children }: Props) {
           className="
             absolute inset-0 rounded-sm
             w-full h-full
-            bg-[#EAE3D8]
+            bg-[#caab92]
             p-2 sm:p-3 md:p-4 lg:p-5
             flex flex-col
             overflow-hidden
@@ -92,13 +92,32 @@ export default function BookFrame({ children }: Props) {
           style={{
             boxShadow: `
               10px 0 20px rgba(33, 28, 25, 0.6),
-              inset 0 0 40px rgba(255, 255, 255, 0.35),
-              inset 0 2px 8px rgba(255, 255, 255, 0.25),
+              inset 0 0 20px rgba(33, 28, 25, 0.08),
               inset -2px 0 6px rgba(33, 28, 25, 0.1)
             `,
           }}
         >
 
+        {/* SUNSET LIGHT */}
+        <div
+          className="
+            absolute inset-0
+            pointer-events-none
+            rounded-sm
+            z-20
+          "
+          style={{
+            background: `
+              linear-gradient(
+                to right,
+                rgba(203, 159, 115, 0.28) 0%,
+                rgba(203, 159, 115, 0.12) 2%,
+                rgba(203, 159, 115, 0.04) 5%,
+                transparent 10%
+              )
+            `,
+          }}
+        />
           {/* RELIURE GAUCHE */}
           <div
             className="
@@ -117,7 +136,7 @@ export default function BookFrame({ children }: Props) {
           />
 
           {/* EFFET BOMBE */}
-          <div
+          {/* <div
             className="
               absolute inset-0
               pointer-events-none rounded-sm
@@ -132,10 +151,11 @@ export default function BookFrame({ children }: Props) {
                 )
               `,
             }}
-          />
+          /> */}
 
           <div className="relative z-10 flex flex-col h-full min-h-0">
             {children}
+            
           </div>
 
         </main>

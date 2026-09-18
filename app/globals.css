@@ -23,10 +23,10 @@
 
 body {
   background: var(--background);
-  background-image: url("/texture.jpg");
-  background-size: cover;
+  background-image: url("/texture.png");
+  background-size: 3000px 1301px;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
 }
 
 .backface-hidden {
