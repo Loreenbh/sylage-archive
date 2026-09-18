@@ -20,13 +20,41 @@ export default function Cover({ onNavigate }: Props) {
       imageClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10"
       sidebarClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10 lg:!ml-10"
       header={
-        <div className={`${layout.coverHeader} ${spacing.coverHeader}`}>
-          <h1 className={`${typography.title} ${colors.text.charcoal}`}>
-            SYLAGE
-          </h1>
-          <p className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}>
-            ARCHIVE
-          </p>
+        <div className="relative w-full">
+
+          {/* PORTFOLIO */}
+          <button
+            onClick={() => {
+              window.location.href = "TON_URL_PORTFOLIO"
+            }}
+            className="
+              absolute
+              text-[10px]
+              sm:text-[13px]
+              md:text-[13px]
+              lg:text-[18px]
+              tracking-[0.18em]
+              text-black/20
+              hover:text-black/50
+              transition-colors
+              duration-300
+              cursor-pointer
+            "
+          >
+            ← PORTFOLIO
+          </button>
+
+          {/* TITRE */}
+          <div className={`${layout.coverHeader} ${spacing.coverHeader}`}>
+            <h1 className={`${typography.title} ${colors.text.charcoal}`}>
+              SYLAGE
+            </h1>
+
+            <p className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}>
+              ARCHIVE
+            </p>
+          </div>
+
         </div>
       }
       sidebar={

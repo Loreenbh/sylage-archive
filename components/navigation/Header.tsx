@@ -74,12 +74,6 @@ export default function Header({
         }}
         className="
           absolute
-          top-2
-          sm:top-4
-          md:top-4
-          lg:top-6
-          left-5
-          sm:left-6
           text-[10px]
           sm:text-[13px]
           md:text-[13px]
