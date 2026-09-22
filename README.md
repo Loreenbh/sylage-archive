@@ -4,7 +4,7 @@
 
 <br><br>
 
-S Y L A G E   ·   A R C H I V E S
+S Y L A G E   ·   A R C H I V E
 
 <br>
 
