@@ -25,7 +25,7 @@ export default function Cover({ onNavigate }: Props) {
           {/* PORTFOLIO */}
           <button
             onClick={() => {
-              window.location.href = "TON_URL_PORTFOLIO"
+              window.location.href = "https://sylage-world.vercel.app/"
             }}
             className="
               absolute

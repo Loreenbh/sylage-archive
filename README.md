@@ -8,7 +8,7 @@ S Y L A G E   ·   A R C H I V E S
 
 <br>
 
-<a href="https://sylage-trendbook.vercel.app/">→</a>
+<a href="https://sylage-archive.vercel.app/">→</a>
 
 </div>
 
