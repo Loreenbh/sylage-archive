@@ -1,20 +1,22 @@
-"use client"
+"use client";
 
-import { colors } from "@/styles/colors"
-import ImageSlot from "./ImageSlot"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
-
+import { colors } from "@/styles/colors";
+import ImageSlot from "./ImageSlot";
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor";
 
 type Props = {
-  images?: MoodboardSlot[]
-  onSelectSlot?: (index: number) => void
-  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void
-}
+  images?: MoodboardSlot[];
+  onSelectSlot?: (index: number) => void;
+  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void;
+};
 
-export default function LayoutA({ images = [], onSelectSlot, onUpdateSlot }: Props) {
+export default function LayoutA({
+  images = [],
+  onSelectSlot,
+  onUpdateSlot,
+}: Props) {
   return (
     <div className="grid grid-cols-3 grid-rows-3 h-full w-full gap-[2px] min-h-0 min-w-0">
-
       {Array.from({ length: 9 }).map((_, index) => (
         <ImageSlot
           key={index}
@@ -24,7 +26,6 @@ export default function LayoutA({ images = [], onSelectSlot, onUpdateSlot }: Pro
           className={`${colors.bg.empty70} hover:opacity-50`}
         />
       ))}
-
     </div>
-  )
+  );
 }

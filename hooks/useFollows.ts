@@ -1,48 +1,41 @@
-import { useEffect, useState } from "react"
-import { getFollows, unfollowUser } from "@/lib/services/follows"
-import type { Follow } from "@/types/follow"
+import { useEffect, useState } from "react";
+import { getFollows, unfollowUser } from "@/lib/services/follows";
+import type { Follow } from "@/types/follow";
 
 export function useFollows(userId?: number) {
-
-  const [following, setFollowing] = useState<Follow[]>([])
-  const [followers, setFollowers] = useState<Follow[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [following, setFollowing] = useState<Follow[]>([]);
+  const [followers, setFollowers] = useState<Follow[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function load() {
     try {
-      const data = await getFollows(userId)
+      const data = await getFollows(userId);
 
-      setFollowing(data.following)
-      setFollowers(data.followers)
-
+      setFollowing(data.following);
+      setFollowers(data.followers);
     } catch {
-      setFollowing([])
-      setFollowers([])
-
+      setFollowing([]);
+      setFollowers([]);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
-
   useEffect(() => {
-    load()
-  }, [userId])
-
+    load();
+  }, [userId]);
 
   async function handleUnfollow(targetUserId: number) {
+    await unfollowUser(targetUserId);
 
-    await unfollowUser(targetUserId)
-
-    await load()
+    await load();
   }
-
 
   return {
     following,
     followers,
     isLoading,
     handleUnfollow,
-    refreshFollows: load
-  }
+    refreshFollows: load,
+  };
 }

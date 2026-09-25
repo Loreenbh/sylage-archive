@@ -1,35 +1,32 @@
-import { useEffect, useState } from "react"
-import type { Moodboard } from "@/types/moodboard"
+import { useEffect, useState } from "react";
+import type { Moodboard } from "@/types/moodboard";
 
 export function useMoodboard(id?: number) {
-  const [moodboard, setMoodboard] = useState<Moodboard | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [moodboard, setMoodboard] = useState<Moodboard | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return
+    if (!id) return;
 
     async function loadMoodboard() {
-      setIsLoading(true)
+      setIsLoading(true);
 
       try {
-        const res = await fetch(`/api/moodboards/${id}`)
-        const data = await res.json()
+        const res = await fetch(`/api/moodboards/${id}`);
+        const data = await res.json();
 
-        setMoodboard(data)
-
+        setMoodboard(data);
       } catch {
-        setMoodboard(null)
-
+        setMoodboard(null);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    loadMoodboard()
-
-  }, [id])
+    loadMoodboard();
+  }, [id]);
   return {
     moodboard,
-    isLoading
-  }
+    isLoading,
+  };
 }

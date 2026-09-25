@@ -1,9 +1,9 @@
 export async function getDiscoverMoods() {
-  const res = await fetch("/api/discover")
+  const res = await fetch("/api/discover");
 
   if (!res.ok) {
-    throw new Error("Erreur récupération moodboards")
+    throw new Error("Erreur récupération moodboards");
   }
 
-  return res.json()
+  return res.json();
 }

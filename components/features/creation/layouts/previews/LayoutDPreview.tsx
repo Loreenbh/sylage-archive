@@ -1,4 +1,4 @@
-import { colors } from "@/styles/colors"
+import { colors } from "@/styles/colors";
 
 export default function LayoutDPreview() {
   return (
@@ -12,14 +12,12 @@ export default function LayoutDPreview() {
         w-full
       "
     >
-
       {/* LEFT COLUMN */}
       <div className={`${colors.bg.empty70}`} />
 
       <div className={`${colors.bg.empty70}`} />
 
       <div className={`${colors.bg.empty70}`} />
-
 
       {/* HERO */}
       <div
@@ -30,7 +28,6 @@ export default function LayoutDPreview() {
           ${colors.bg.empty70}
         `}
       />
-
 
       {/* BOTTOM STRIP */}
       <div
@@ -46,7 +43,6 @@ export default function LayoutDPreview() {
         <div className={`${colors.bg.empty70}`} />
         <div className={`${colors.bg.empty70}`} />
       </div>
-
     </div>
-  )
+  );
 }

@@ -1,5 +1,5 @@
 export const spacing = {
-coverHeader: `
+  coverHeader: `
     pt-2
   `,
 
@@ -24,7 +24,7 @@ coverHeader: `
     mt-6
   `,
 
-  feedback:`
+  feedback: `
   px-3
   pt-2
   sm:px-6
@@ -35,7 +35,7 @@ coverHeader: `
   lg:pt-6
   `,
 
-  coverLabel:`
+  coverLabel: `
   pt-1
   px-6
   sm:px-6
@@ -50,10 +50,10 @@ coverHeader: `
   sm:pt-3
   `,
 
-  backButton:`
+  backButton: `
   ml-3
   sm:ml-7
   md:ml-2
   lg:ml-3
-  `
-}
+  `,
+};

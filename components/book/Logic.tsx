@@ -1,33 +1,33 @@
-"use client"
-import { useState, useEffect } from "react"
-import type { PageName } from "@/types/pages"
-import type { NavigationParams } from "@/types/navigation"
+"use client";
+import { useState, useEffect } from "react";
+import type { PageName } from "@/types/pages";
+import type { NavigationParams } from "@/types/navigation";
 /*COMPONENTS*/
-import PageFlip from "./PageFlip"
+import PageFlip from "./PageFlip";
 /*PAGES*/
-import Cover from "../features/cover/cover"
-import Authentification from "../features/auth/auth"
-import Discover from "../features/discover/discover"
-import ProfilePage from "../features/profile/profile"
-import Looks from "../features/profile/looks/looks"
-import References from "../features/profile/references"
-import Settings from "../features/profile/settings/settings"
-import Moods from "../features/profile/moods"
-import MoodDetails from "../features/discover/focus"
-import Create from "../features/creation/selection"
-import Editor from "../features/creation/editMood"
-import Draw from "../features/creation/editLook"
-import ForgotPassword from "../features/forgot-pswd/forgotPassword"
-import UpdatePassword from "../features/update-pswd/page"
-import About from "../features/profile/settings/about"
-import Privacy from "../features/profile/settings/privacy"
+import Cover from "../features/cover/cover";
+import Authentification from "../features/auth/auth";
+import Discover from "../features/discover/discover";
+import ProfilePage from "../features/profile/profile";
+import Looks from "../features/profile/looks/looks";
+import References from "../features/profile/references";
+import Settings from "../features/profile/settings/settings";
+import Moods from "../features/profile/moods";
+import MoodDetails from "../features/discover/focus";
+import Create from "../features/creation/selection";
+import Editor from "../features/creation/editMood";
+import Draw from "../features/creation/editLook";
+import ForgotPassword from "../features/forgot-pswd/forgotPassword";
+import UpdatePassword from "../features/update-pswd/page";
+import About from "../features/profile/settings/about";
+import Privacy from "../features/profile/settings/privacy";
 
-import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type HistoryItem = {
-  page: PageName
-  params: NavigationParams["params"] | null
-}
+  page: PageName;
+  params: NavigationParams["params"] | null;
+};
 
 const PAGES = {
   cover: Cover,
@@ -45,97 +45,89 @@ const PAGES = {
   forgot: ForgotPassword,
   about: About,
   privacy: Privacy,
-  update: UpdatePassword
-} as const
-
+  update: UpdatePassword,
+} as const;
 
 export default function Book() {
-  const [current, setCurrent] = useState<PageName>("discover")
+  const [current, setCurrent] = useState<PageName>("discover");
 
-  const [currentParams, setCurrentParams] =
-    useState<NavigationParams["params"] | null>(null)
+  const [currentParams, setCurrentParams] = useState<
+    NavigationParams["params"] | null
+  >(null);
 
-  const [next, setNext] = useState<PageName | null>(null)
+  const [next, setNext] = useState<PageName | null>(null);
 
-  const [params, setParams] =
-    useState<NavigationParams["params"] | null>(null)
-    
-  const [history, setHistory] = useState<HistoryItem[]>([])
+  const [params, setParams] = useState<NavigationParams["params"] | null>(null);
 
-  const [animating, setAnimating] = useState<boolean>(false)
-  const [direction, setDirection] = useState<"next" | "prev">("next")
+  const [history, setHistory] = useState<HistoryItem[]>([]);
 
-  const { user, isLoading } = useCurrentUser()
+  const [animating, setAnimating] = useState<boolean>(false);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
+
+  const { user, isLoading } = useCurrentUser();
 
   useEffect(() => {
-    if (isLoading) return
+    if (isLoading) return;
 
-    const params = new URLSearchParams(window.location.search)
-    const auth = params.get("auth")
+    const params = new URLSearchParams(window.location.search);
+    const auth = params.get("auth");
 
     if (auth === "update") {
-      setCurrent("update")
-      return
+      setCurrent("update");
+      return;
     }
 
     if (user) {
-      setCurrent("discover")
+      setCurrent("discover");
     } else {
-      setCurrent("cover")
+      setCurrent("cover");
     }
-  }, [user, isLoading])
-  
-  function navigate({ to, direction = "next", params }: NavigationParams) {
-    if (animating) return
+  }, [user, isLoading]);
 
-    setHistory(prev => [
+  function navigate({ to, direction = "next", params }: NavigationParams) {
+    if (animating) return;
+
+    setHistory((prev) => [
       ...prev,
       {
         page: current,
-        params: currentParams
-      }
-    ])
+        params: currentParams,
+      },
+    ]);
 
-    setNext(to)
-    setDirection(direction)
-    setParams(params ?? null)
-    setAnimating(true)
+    setNext(to);
+    setDirection(direction);
+    setParams(params ?? null);
+    setAnimating(true);
   }
 
-   function goBack() {
+  function goBack() {
+    if (animating) return;
 
-    if (animating) return
+    const previous = history[history.length - 1];
 
+    if (!previous) return;
 
-    const previous = history[history.length - 1]
-
-    if (!previous) return
-
-    setNext(previous.page)
-    setParams(previous.params)
-    setDirection("prev")
-    setHistory(prev => prev.slice(0, -1))
-    setAnimating(true)
+    setNext(previous.page);
+    setParams(previous.params);
+    setDirection("prev");
+    setHistory((prev) => prev.slice(0, -1));
+    setAnimating(true);
   }
-
 
   function onDone() {
+    if (!next) return;
 
-    if (!next) return
+    setCurrent(next);
+    setCurrentParams(params);
 
-
-    setCurrent(next)
-    setCurrentParams(params)
-
-
-    setNext(null)
-    setParams(null)
-    setAnimating(false)
+    setNext(null);
+    setParams(null);
+    setAnimating(false);
   }
 
-
-  const CurrentPage = PAGES[current]
-  const NextPage = next ? PAGES[next] : null
+  const CurrentPage = PAGES[current];
+  const NextPage = next ? PAGES[next] : null;
 
   return (
     <div className="w-full h-full flex">
@@ -149,11 +141,7 @@ export default function Book() {
         }
         next={
           NextPage ? (
-            <NextPage
-              onNavigate={navigate}
-              onBack={goBack}
-              params={params}
-            />
+            <NextPage onNavigate={navigate} onBack={goBack} params={params} />
           ) : null
         }
         animating={animating}
@@ -161,5 +149,5 @@ export default function Book() {
         onDone={onDone}
       />
     </div>
-  )
+  );
 }

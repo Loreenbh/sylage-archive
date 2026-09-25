@@ -1,32 +1,31 @@
-import { useEffect, useState } from "react"
-import { getCurrentUser } from "@/lib/services/auth"
-import { User } from "@/types/user"
+import { useEffect, useState } from "react";
+import { getCurrentUser } from "@/lib/services/auth";
+import { User } from "@/types/user";
 
 export function useCurrentUser() {
-
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadUser() {
       try {
-        const data = await getCurrentUser()
+        const data = await getCurrentUser();
 
         if (data.user) {
-          setUser(data.user)
+          setUser(data.user);
         }
       } catch {
-        setUser(null)
+        setUser(null);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    loadUser()
-  }, [])
+    loadUser();
+  }, []);
 
   return {
     user,
-    isLoading
-  }
+    isLoading,
+  };
 }

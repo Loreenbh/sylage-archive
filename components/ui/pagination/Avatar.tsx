@@ -1,16 +1,12 @@
-import type { User } from "@/types/user"
-import { colors } from "@/styles/colors"
+import type { User } from "@/types/user";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  user?: User | null
-  className?: string
-}
+  user?: User | null;
+  className?: string;
+};
 
-export default function Avatar({
-  user,
-  className = ""
-}: Props) {
-
+export default function Avatar({ user, className = "" }: Props) {
   return (
     <div
       className={`
@@ -34,8 +30,8 @@ export default function Avatar({
           className="w-full h-full object-cover"
         />
       ) : (
-        user?.username?.[0]?.toUpperCase() ?? "U"
+        (user?.username?.[0]?.toUpperCase() ?? "G")
       )}
     </div>
-  )
+  );
 }

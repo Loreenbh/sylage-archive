@@ -3,7 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --ink: #1B1613;
+  --ink: #1b1613;
 }
 
 @theme inline {
@@ -84,9 +84,16 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,0.3) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
 }
 
 .export-mode .export-hidden {
   display: none;
+}
+
+@font-face {
+  font-family: "Bodoni Moda SC";
+  src: url("/fonts/BodoniModaSC-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
 }

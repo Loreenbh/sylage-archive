@@ -1,56 +1,41 @@
-export async function getFollows(userId?: number){
+export async function getFollows(userId?: number) {
+  const url = userId ? `/api/follows?userId=${userId}` : `/api/follows`;
 
-  const url = userId
-    ? `/api/follows?userId=${userId}`
-    : `/api/follows`
+  const res = await fetch(url);
 
-
-  const res = await fetch(url)
-
-
-  if(!res.ok){
-    throw new Error("Erreur récupération abonnements")
+  if (!res.ok) {
+    throw new Error("Erreur récupération abonnements");
   }
 
-
-  return res.json()
+  return res.json();
 }
 
-
-export async function followUser(userId: number){
-
+export async function followUser(userId: number) {
   const res = await fetch("/api/follows", {
     method: "POST",
-    headers:{
-      "Content-Type":"application/json"
+    headers: {
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      userId
-    })
-  })
+      userId,
+    }),
+  });
 
-
-  if(!res.ok){
-    throw new Error("Erreur follow")
+  if (!res.ok) {
+    throw new Error("Erreur follow");
   }
 
-
-  return res.json()
+  return res.json();
 }
 
-
-
-export async function unfollowUser(userId: number){
-
+export async function unfollowUser(userId: number) {
   const res = await fetch(`/api/follows?userId=${userId}`, {
-    method:"DELETE"
-  })
+    method: "DELETE",
+  });
 
-
-  if(!res.ok){
-    throw new Error("Erreur unfollow")
+  if (!res.ok) {
+    throw new Error("Erreur unfollow");
   }
 
-
-  return res.json()
+  return res.json();
 }

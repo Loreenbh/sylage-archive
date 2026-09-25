@@ -1,49 +1,38 @@
-import { useEffect, useState } from "react"
-import type { Moodboard } from "@/types/moodboard"
-import { getUserMoodboards } from "@/hooks/userMoodboards"
-import type { User } from "@/types/user"
+import { useEffect, useState } from "react";
+import type { Moodboard } from "@/types/moodboard";
+import { getUserMoodboards } from "@/hooks/userMoodboards";
+import type { User } from "@/types/user";
 
 export function useUserMoodboards(userId?: number, from?: string) {
-
-  const [moodboards, setMoodboards] = useState<Moodboard[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [user, setUser] = useState<User | null>(null)
+  const [moodboards, setMoodboards] = useState<Moodboard[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-
-    async function loadMoodboards(){
-
+    async function loadMoodboards() {
       try {
+        const data = await getUserMoodboards(userId, from);
 
-        const data = await getUserMoodboards(userId, from)
+        setMoodboards(data.moodboards);
 
-        setMoodboards(data.moodboards)
-
-        if(data.user){
-          setUser(data.user)
+        if (data.user) {
+          setUser(data.user);
         }
-
       } catch {
-
-        setMoodboards([])
-        setUser(null)
-
+        setMoodboards([]);
+        setUser(null);
       } finally {
-
-        setIsLoading(false)
-
+        setIsLoading(false);
       }
     }
 
-    loadMoodboards()
-
-  }, [userId, from])
-
+    loadMoodboards();
+  }, [userId, from]);
 
   return {
     moodboards,
     isLoading,
     user,
-    setMoodboards
-  }
+    setMoodboards,
+  };
 }

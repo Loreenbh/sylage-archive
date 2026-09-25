@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react"
-import { getReferences } from "@/lib/services/references"
+import { useEffect, useState } from "react";
+import { getReferences } from "@/lib/services/references";
 
 export function useReferences() {
-  const [references, setReferences] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [references, setReferences] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchReferences() {
       try {
-        const data = await getReferences()
-        setReferences(data)
+        const data = await getReferences();
+        setReferences(data);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    fetchReferences()
-  }, [])
+    fetchReferences();
+  }, []);
 
   return {
     references,
-    isLoading
-  }
+    isLoading,
+  };
 }

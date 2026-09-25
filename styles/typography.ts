@@ -28,7 +28,6 @@ export const typography = {
     font-extralight
   `,
 
-
   actionBar: `
     text-[9px]
     sm:text-[12px]
@@ -64,7 +63,7 @@ export const typography = {
     uppercase
   `,
 
-    backButton: `
+  backButton: `
     text-[10px]
     sm:text-[12px]
     md:text-[14px]
@@ -75,12 +74,12 @@ export const typography = {
     uppercase
   `,
 
-    bullet: `
+  bullet: `
       text-[10px]
       md:text-[14px]
     `,
 
-    username: `
+  username: `
     text-[10px]
     sm:text-[12px]
     md:text-[12px]
@@ -91,7 +90,7 @@ export const typography = {
     font-extralight
   `,
 
-    buttonOverlay: `
+  buttonOverlay: `
     text-[10px]
     sm:text-[12px]
     lg:text-[14px]
@@ -101,7 +100,7 @@ export const typography = {
     text-white
   `,
 
-    follow:`
+  follow: `
     text-[9px]
     sm:text-[12px]
     md:text-[13px]
@@ -111,7 +110,7 @@ export const typography = {
     font-extralight
     `,
 
-    feedback:`
+  feedback: `
     text-[8px]
     sm:text-[12px]
     md:text-[13px]
@@ -119,7 +118,7 @@ export const typography = {
     tracking-[0.2em]
     `,
 
-    coverLabel:`
+  coverLabel: `
     text-[8px]
     sm:text-[12px]
     md:text-[12px]
@@ -129,7 +128,7 @@ export const typography = {
     font-extralight
     `,
 
-    about:`
+  about: `
     text-[8px]
     sm:text-[12px]
     md:text-[14px]
@@ -139,7 +138,7 @@ export const typography = {
     font-extralight
     `,
 
-    privacy:`
+  privacy: `
     text-[7px]
     sm:text-[12px]
     md:text-[14px]
@@ -148,4 +147,4 @@ export const typography = {
     tracking-[0.25em]
     font-extralight
     `,
-}
+};

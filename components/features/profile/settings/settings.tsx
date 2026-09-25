@@ -1,186 +1,174 @@
-"use client"
-import { useState, useEffect } from "react"
-import type { OnNavigate, NavigationParams } from "@/types/navigation"
+"use client";
+import { useState, useEffect } from "react";
+import type { OnNavigate, NavigationParams } from "@/types/navigation";
 
-import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/navigation/SideBar"
-import Header from "@/components/navigation/Header"
-import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
-import { uploadImage } from "@/lib/services/upload"
-import { updateUser, deleteUser} from "@/lib/services/profile"
+import BookLayout from "@/components/book/BookLayout";
+import Sidebar from "@/components/navigation/SideBar";
+import Header from "@/components/navigation/Header";
+import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { uploadImage } from "@/lib/services/upload";
+import { updateUser, deleteUser } from "@/lib/services/profile";
 
-import { typography } from "@/styles/typography"
-import Avatar from "@/components/ui/pagination/Avatar"
-import BackButton from "@/components/ui/buttons/BackButton"
-import { colors } from "@/styles/colors"
+import { typography } from "@/styles/typography";
+import Avatar from "@/components/ui/pagination/Avatar";
+import BackButton from "@/components/ui/buttons/BackButton";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  onNavigate: OnNavigate
-  params?: NavigationParams["params"] | null
-  onBack?: () => void
-
-}
+  onNavigate: OnNavigate;
+  params?: NavigationParams["params"] | null;
+  onBack?: () => void;
+};
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
     reader.onload = () => {
-      resolve(reader.result as string)
-    }
-    reader.onerror = reject
-  })
+      resolve(reader.result as string);
+    };
+    reader.onerror = reject;
+  });
 }
 
-export default function Settings({ onNavigate, onBack}: Props) {
-  const { user } = useCurrentUser()
-  const [avatar, setAvatar] = useState<string | null>(null)
+export default function Settings({ onNavigate, onBack }: Props) {
+  const { user } = useCurrentUser();
+  const [avatar, setAvatar] = useState<string | null>(null);
 
-  const [oldPassword, setOldPassword] = useState("")
-  const [newPassword, setNewPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [message, setMessage] = useState("")
-  const [username, setUsername] = useState("")
-  const [usernameMessage, setUsernameMessage] = useState("")
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [usernameMessage, setUsernameMessage] = useState("");
 
-  const [deleteConfirm, setDeleteConfirm] = useState(false)
-  const [deleteMessage, setDeleteMessage] = useState("")
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState("");
 
-  const [passwordOpen, setPasswordOpen] = useState(false)
-  const [usernameOpen, setUsernameOpen] = useState(false)
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [usernameOpen, setUsernameOpen] = useState(false);
 
   const handleDeleteAccount = async () => {
-
     try {
-
-      await deleteUser()
-      setDeleteMessage("Account deleted")
+      await deleteUser();
+      setDeleteMessage("Account deleted");
       onNavigate?.({
-        to:"cover",
-        direction:"prev"
-      })
-
-    } catch(error) {
-
-      if(error instanceof Error){
-        setDeleteMessage(error.message)
+        to: "cover",
+        direction: "prev",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        setDeleteMessage(error.message);
       } else {
-        setDeleteMessage("Delete failed")
+        setDeleteMessage("Delete failed");
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (user) {
-      setAvatar(user.avatar_url ?? null)
-      setUsername(user.username)
+      setAvatar(user.avatar_url ?? null);
+      setUsername(user.username);
     }
-  }, [user])
+  }, [user]);
 
   const handleUsernameChange = async () => {
-    setUsernameMessage("")
+    setUsernameMessage("");
     if (!username) {
-      setUsernameMessage("Missing username")
-      return
+      setUsernameMessage("Missing username");
+      return;
     }
     if (username.length < 3) {
-      setUsernameMessage("Username must be at least 3 characters")
-      return
+      setUsernameMessage("Username must be at least 3 characters");
+      return;
     }
     if (username.length > 20) {
-      setUsernameMessage("Username must be less than 20 characters")
-      return
+      setUsernameMessage("Username must be less than 20 characters");
+      return;
     }
 
     try {
       await updateUser({
-        username
-      })
-      setUsernameMessage("Updated.")
-    } catch(error) {
-      if(error instanceof Error){
-        setUsernameMessage(error.message)
+        username,
+      });
+      setUsernameMessage("Updated.");
+    } catch (error) {
+      if (error instanceof Error) {
+        setUsernameMessage(error.message);
       }
     }
-  }
+  };
 
-
-
-  const handleAvatarChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
     try {
-      const imageData = await fileToBase64(file)
-      const imageUrl = await uploadImage(imageData)
+      const imageData = await fileToBase64(file);
+      const imageUrl = await uploadImage(imageData);
       await updateUser({
-        avatar_url: imageUrl
-      })
-      setAvatar(imageUrl)
-    } catch(error) {
-      console.error(
-        "Erreur changement avatar",
-        error
-      )
+        avatar_url: imageUrl,
+      });
+      setAvatar(imageUrl);
+    } catch (error) {
+      console.error("Erreur changement avatar", error);
     }
-  }
+  };
 
   const handlePasswordChange = async () => {
-    setMessage("")
+    setMessage("");
     if (!oldPassword || !newPassword || !confirmPassword) {
-      setMessage("Missing fields")
-      return
+      setMessage("Missing fields");
+      return;
     }
     if (newPassword !== confirmPassword) {
-      setMessage("Passwords don't match")
-      return
+      setMessage("Passwords don't match");
+      return;
     }
     try {
       await updateUser({
         oldPassword,
-        password: newPassword
-      })
-      setOldPassword("")
-      setNewPassword("")
-      setConfirmPassword("")
-      setMessage("Password updated")
+        password: newPassword,
+      });
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setMessage("Password updated");
     } catch (error) {
       if (error instanceof Error) {
-        setMessage(error.message)
+        setMessage(error.message);
       } else {
-        setMessage("Password update failed")
+        setMessage("Password update failed");
       }
     }
-  }
+  };
   return (
     <BookLayout
       header={
         <Header
           items={[
-            { section: "HOME",
+            {
+              section: "HOME",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
                   to: "discover",
                   direction: "prev",
-                })
+                }),
             },
-            { section: "FILTER",
-              clickable: false,
-             },
-            { section: "CREATE",
+            { section: "FILTER", clickable: false },
+            {
+              section: "CREATE",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
                   to: "create",
                   direction: "next",
-                  params:{
+                  params: {
                     from: "discover",
-                  }
+                  },
                 }),
-             },
+            },
           ]}
         />
       }
@@ -214,11 +202,10 @@ export default function Settings({ onNavigate, onBack}: Props) {
           </button>
         </div>
       }
-      footerLeft={ <BackButton onBack={onBack} /> }
-      
+      footerLeft={<BackButton onBack={onBack} />}
     >
       <FourSquaresGrid
-       topLeft={
+        topLeft={
           <label
             className="
               relative
@@ -233,11 +220,11 @@ export default function Settings({ onNavigate, onBack}: Props) {
               overflow-hidden
             "
           >
-           {user && (
+            {user && (
               <Avatar
                 user={{
                   ...user,
-                  avatar_url: avatar
+                  avatar_url: avatar,
                 }}
                 className="
                   absolute
@@ -406,9 +393,7 @@ export default function Settings({ onNavigate, onBack}: Props) {
             )}
 
             {!passwordOpen && (
-              <span className={typography.buttonBody}>
-                Password
-              </span>
+              <span className={typography.buttonBody}>Password</span>
             )}
           </div>
         }
@@ -425,9 +410,7 @@ export default function Settings({ onNavigate, onBack}: Props) {
             onClick={() => !usernameOpen && setUsernameOpen(true)}
           >
             {!usernameOpen ? (
-              <span className={typography.buttonBody}>
-                Name
-              </span>
+              <span className={typography.buttonBody}>Name</span>
             ) : (
               <div
                 className="
@@ -477,9 +460,9 @@ export default function Settings({ onNavigate, onBack}: Props) {
             )}
           </div>
         }
-      bottomRight={
-        <div
-          className={`
+        bottomRight={
+          <div
+            className={`
             h-full w-full
             ${colors.bg.empty}
             flex flex-col
@@ -487,53 +470,49 @@ export default function Settings({ onNavigate, onBack}: Props) {
             cursor-pointer
             ${deleteConfirm ? "items-center justify-center" : "justify-end"}
           `}
-          onClick={() => !deleteConfirm && setDeleteConfirm(true)}
-        >
-          {!deleteConfirm ? (
-            <span className={typography.buttonBody}>
-              Account
-            </span>
-          ) : (
-            <div
-              className="
+            onClick={() => !deleteConfirm && setDeleteConfirm(true)}
+          >
+            {!deleteConfirm ? (
+              <span className={typography.buttonBody}>Account</span>
+            ) : (
+              <div
+                className="
                 flex flex-col
                 items-center
                 justify-center
                 gap-6
                 text-center
               "
-              onClick={(e) => e.stopPropagation()}
-            >
-              <span className={typography.buttonBody}>
-                Remove account?
-              </span>
+                onClick={(e) => e.stopPropagation()}
+              >
+                <span className={typography.buttonBody}>Remove account?</span>
 
-              <div className="flex gap-[40px] sm:gap-[50px] md:gap-[60px] lg:gap-[80px]">
-                <button
-                  onClick={handleDeleteAccount}
-                  className={typography.buttonBody}
-                >
-                  ✓
-                </button>
+                <div className="flex gap-[40px] sm:gap-[50px] md:gap-[60px] lg:gap-[80px]">
+                  <button
+                    onClick={handleDeleteAccount}
+                    className={typography.buttonBody}
+                  >
+                    ✓
+                  </button>
 
-                <button
-                  onClick={() => setDeleteConfirm(false)}
-                  className={typography.buttonBody}
-                >
-                  x
-                </button>
+                  <button
+                    onClick={() => setDeleteConfirm(false)}
+                    className={typography.buttonBody}
+                  >
+                    x
+                  </button>
+                </div>
+
+                {deleteMessage && (
+                  <span className="text-xs opacity-60 tracking-wide">
+                    {deleteMessage}
+                  </span>
+                )}
               </div>
-
-              {deleteMessage && (
-                <span className="text-xs opacity-60 tracking-wide">
-                  {deleteMessage}
-                </span>
-              )}
-            </div>
-          )}
-        </div>
-      }
+            )}
+          </div>
+        }
       />
     </BookLayout>
-  )
+  );
 }

@@ -5,13 +5,13 @@ export async function uploadImage(imageData: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ imageData }),
-  })
+  });
 
-  const data = await res.json()
+  const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.error ?? "Erreur upload")
+    throw new Error(data.error ?? "Erreur upload");
   }
 
-  return data.url
+  return data.url;
 }

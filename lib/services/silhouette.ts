@@ -1,7 +1,4 @@
-export async function createSilhouette(
-  imageUrl: string,
-  moodboardId: number
-) {
+export async function createSilhouette(imageUrl: string, moodboardId: number) {
   const res = await fetch("/api/silhouettes", {
     method: "POST",
     headers: {
@@ -9,40 +6,36 @@ export async function createSilhouette(
     },
     body: JSON.stringify({
       imageUrl,
-      moodboardId
+      moodboardId,
     }),
-  })
+  });
 
-  const data = await res.json()
+  const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.error ?? "Erreur création silhouette")
+    throw new Error(data.error ?? "Erreur création silhouette");
   }
 
-  return data
+  return data;
 }
-
 
 export async function getSilhouetteData(
   userId?: number,
   moodboardId?: number,
-  from?:string
-){
-
-  let url = "/api/silhouettes"
+  from?: string,
+) {
+  let url = "/api/silhouettes";
 
   if (from === "references") {
-    url += "?liked=true"
+    url += "?liked=true";
+  } else if (moodboardId) {
+    url += `?moodboardId=${moodboardId}`;
+  } else if (userId) {
+    url += `?userId=${userId}`;
   }
-  else if (moodboardId) {
-    url += `?moodboardId=${moodboardId}`
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Erreur récupération silhouettes");
   }
-  else if (userId) {
-    url += `?userId=${userId}`
-  }
-  const res = await fetch(url)
-  if(!res.ok){
-    throw new Error("Erreur récupération silhouettes")
-  }
-  return res.json()
+  return res.json();
 }

@@ -1,22 +1,26 @@
-"use client"
+"use client";
 
-import ImageSlot from "./ImageSlot"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
-import { colors } from "@/styles/colors"
+import ImageSlot from "./ImageSlot";
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  images?: MoodboardSlot[]
-  onSelectSlot?: (index: number) => void
-  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void
-}
+  images?: MoodboardSlot[];
+  onSelectSlot?: (index: number) => void;
+  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void;
+};
 
-export default function LayoutC({ images = [], onSelectSlot, onUpdateSlot }: Props) {
-  const select = (index: number) => onSelectSlot?.(index)
-  const update = (index: number) => (patch: MoodboardSlotPatch) => onUpdateSlot?.(index, patch)
+export default function LayoutC({
+  images = [],
+  onSelectSlot,
+  onUpdateSlot,
+}: Props) {
+  const select = (index: number) => onSelectSlot?.(index);
+  const update = (index: number) => (patch: MoodboardSlotPatch) =>
+    onUpdateSlot?.(index, patch);
 
   return (
     <div className="grid grid-cols-2 grid-rows-3 gap-[2px] h-full w-full min-h-0 min-w-0">
-
       {/* LEFT COLUMN STACK */}
       <ImageSlot
         slot={images[0] ?? null}
@@ -60,7 +64,6 @@ export default function LayoutC({ images = [], onSelectSlot, onUpdateSlot }: Pro
           className={`${colors.bg.empty70} hover:opacity-50`}
         />
       </div>
-
     </div>
-  )
+  );
 }

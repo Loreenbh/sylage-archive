@@ -3,16 +3,13 @@ import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function GET(request: Request) {
-    const currentSession = await getCurrentSessionUser()
+  const currentSession = await getCurrentSessionUser();
 
-    if (!currentSession) {
-        return NextResponse.json(
-        {error:"Non connecté"},
-        {status:401}
-        )
-    }
+  if (!currentSession) {
+    return NextResponse.json({ error: "Non connecté" }, { status: 401 });
+  }
 
-    const likedLooks = await pool.query(
+  const likedLooks = await pool.query(
     `
     SELECT 
         silhouettes.*,
@@ -30,10 +27,10 @@ export async function GET(request: Request) {
 
     ORDER BY likes.created_at DESC
     `,
-    [currentSession.id]
-    )
+    [currentSession.id],
+  );
 
-    const likedMoods = await pool.query(
+  const likedMoods = await pool.query(
     `
     SELECT 
         moodboards.*,
@@ -50,10 +47,10 @@ export async function GET(request: Request) {
 
     ORDER BY likes.created_at DESC
     `,
-    [currentSession.id]
-    )
+    [currentSession.id],
+  );
 
-    const muse = await pool.query(
+  const muse = await pool.query(
     `
     SELECT 
         users.id,
@@ -83,13 +80,12 @@ export async function GET(request: Request) {
 
     LIMIT 1
     `,
-    [currentSession.id]
-    )
+    [currentSession.id],
+  );
 
-    return NextResponse.json({
-        looks: likedLooks.rows,
-        moods: likedMoods.rows,
-        muse: muse.rows[0] ?? null
-    })
-
+  return NextResponse.json({
+    looks: likedLooks.rows,
+    moods: likedMoods.rows,
+    muse: muse.rows[0] ?? null,
+  });
 }

@@ -1,7 +1,7 @@
-import { Pool } from "pg"
+import { Pool } from "pg";
 
 declare global {
-  var pgPool: Pool | undefined
+  var pgPool: Pool | undefined;
 }
 
 export const pool =
@@ -9,6 +9,6 @@ export const pool =
   new Pool({
     connectionString: process.env.DATABASE_URL,
     max: 5,
-  })
+  });
 
-global.pgPool = pool
+global.pgPool = pool;

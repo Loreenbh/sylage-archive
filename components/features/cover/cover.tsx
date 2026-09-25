@@ -1,18 +1,18 @@
-import Image from "next/image"
-import type { OnNavigate } from "@/types/navigation"
+import Image from "next/image";
+import type { OnNavigate } from "@/types/navigation";
 
-import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/navigation/SideBar"
+import BookLayout from "@/components/book/BookLayout";
+import Sidebar from "@/components/navigation/SideBar";
 
-import { spacing } from "@/styles/spacing"
-import { layout } from "@/styles/layout"
-import { typography } from "@/styles/typography"
-import SimpleGrid from "@/components/ui/grids/SimpleGrid"
-import { colors } from "@/styles/colors"
+import { spacing } from "@/styles/spacing";
+import { layout } from "@/styles/layout";
+import { typography } from "@/styles/typography";
+import SimpleGrid from "@/components/ui/grids/SimpleGrid";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  onNavigate: OnNavigate
-}
+  onNavigate: OnNavigate;
+};
 
 export default function Cover({ onNavigate }: Props) {
   return (
@@ -25,49 +25,61 @@ export default function Cover({ onNavigate }: Props) {
           {/* PORTFOLIO */}
           <button
             onClick={() => {
-              window.location.href = "https://sylage-world.vercel.app/"
+              window.location.href = "https://sylage-world.vercel.app/";
             }}
             className="
-              absolute
-              text-[10px]
-              sm:text-[13px]
-              md:text-[13px]
-              lg:text-[18px]
-              tracking-[0.18em]
-              text-black/20
-              hover:text-black/50
-              transition-colors
-              duration-300
-              cursor-pointer
-            "
+        absolute
+        top-0
+        left-0
+        text-[10px]
+        sm:text-[13px]
+        md:text-[13px]
+        lg:text-[18px]
+        tracking-[0.18em]
+        text-black/20
+        hover:text-black/50
+        transition-colors
+        duration-300
+        cursor-pointer
+      "
           >
             ← PORTFOLIO
           </button>
 
           {/* TITRE */}
-          <div className={`${layout.coverHeader} ${spacing.coverHeader}`}>
-            <h1 className={`${typography.title} ${colors.text.charcoal}`}>
-              SYLAGE
-            </h1>
+          <div
+            className={`${layout.coverHeader} ${spacing.coverHeader}`}
+            style={{
+              paddingTop: "clamp(35px, 6vw, 65px)",
+            }}
+          >
+            <div className="relative w-full h-[clamp(50px,10vw,100px)]">
+              <Image
+                src="/title.png"
+                alt="SYLAGE"
+                fill
+                priority
+                className="object-contain object-center"
+              />
+            </div>
 
-            <p className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}>
+            <p
+              className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}
+            >
               ARCHIVE
             </p>
           </div>
-
         </div>
       }
       sidebar={
-        <Sidebar 
-          text="↓   26|27"
-          clickable={true} 
-          onNavigate={onNavigate} 
-        />
+        <Sidebar text="↓   26|27" clickable={true} onNavigate={onNavigate} />
       }
       actionsBar={
-        <p className={`${typography.coverLabel}
+        <p
+          className={`${typography.coverLabel}
           ${spacing.coverLabel}
-          ${colors.text.charcoal}`}>
+          ${colors.text.charcoal}`}
+        >
           A visual archive of moods
         </p>
       }
@@ -86,7 +98,7 @@ export default function Cover({ onNavigate }: Props) {
             </div>
           }
         />
-    </div>
+      </div>
     </BookLayout>
-  )
+  );
 }

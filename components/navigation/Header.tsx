@@ -1,57 +1,54 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { typography } from "@/styles/typography"
-import { colors } from "@/styles/colors"
-import TagPicker from "@/components/filters/TagPicker"
+import { useState } from "react";
+import { typography } from "@/styles/typography";
+import { colors } from "@/styles/colors";
+import TagPicker from "@/components/filters/TagPicker";
 
 /* TYPES */
 type HeaderItem = {
-  section: string
-  clickable?: boolean
-  active?: boolean
-  onClick?: () => void
-}
+  section: string;
+  clickable?: boolean;
+  active?: boolean;
+  onClick?: () => void;
+};
 
 type HeaderProps = {
-  items: HeaderItem[]
-  onFiltersChange?: (tags: string[]) => void
-}
+  items: HeaderItem[];
+  onFiltersChange?: (tags: string[]) => void;
+};
 
-export default function Header({
-  items,
-  onFiltersChange,
-}: HeaderProps) {
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
+export default function Header({ items, onFiltersChange }: HeaderProps) {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const [styleTags, setStyleTags] = useState<string[]>([])
-  const [ambianceTags, setAmbianceTags] = useState<string[]>([])
-  const [colorTags, setColorTags] = useState<string[]>([])
+  const [styleTags, setStyleTags] = useState<string[]>([]);
+  const [ambianceTags, setAmbianceTags] = useState<string[]>([]);
+  const [colorTags, setColorTags] = useState<string[]>([]);
 
   const handleItemClick = (item: HeaderItem) => {
-    if (!item.clickable) return
+    if (!item.clickable) return;
 
     if (item.section === "FILTER") {
-      setIsFilterOpen((prev) => !prev)
+      setIsFilterOpen((prev) => !prev);
     }
 
-    item.onClick?.()
-  }
+    item.onClick?.();
+  };
 
   const updateStyle = (tags: string[]) => {
-    setStyleTags(tags)
-    onFiltersChange?.([...tags, ...ambianceTags, ...colorTags])
-  }
+    setStyleTags(tags);
+    onFiltersChange?.([...tags, ...ambianceTags, ...colorTags]);
+  };
 
   const updateAmbiance = (tags: string[]) => {
-    setAmbianceTags(tags)
-    onFiltersChange?.([...styleTags, ...tags, ...colorTags])
-  }
+    setAmbianceTags(tags);
+    onFiltersChange?.([...styleTags, ...tags, ...colorTags]);
+  };
 
   const updateColor = (tags: string[]) => {
-    setColorTags(tags)
-    onFiltersChange?.([...styleTags, ...ambianceTags, ...tags])
-  }
+    setColorTags(tags);
+    onFiltersChange?.([...styleTags, ...ambianceTags, ...tags]);
+  };
 
   return (
     <div
@@ -66,14 +63,14 @@ export default function Header({
         }
       `}
     >
-
       {/* PORTFOLIO */}
       <button
         onClick={() => {
-          window.location.href = "https://sylage-world.vercel.app/"
+          window.location.href = "https://sylage-world.vercel.app/";
         }}
         className="
           absolute
+          z-[70]
           text-[10px]
           sm:text-[13px]
           md:text-[13px]
@@ -116,12 +113,11 @@ export default function Header({
               duration-300
 
               ${
-                item.active ||
-                (item.section === "FILTER" && isFilterOpen)
+                item.active || (item.section === "FILTER" && isFilterOpen)
                   ? `${colors.text.charcoal} border-black cursor-default`
                   : item.clickable
-                  ? `${colors.text.charcoal} border-transparent cursor-pointer hover:border-black opacity-90`
-                  : `${colors.text.charcoal} border-transparent cursor-default opacity-50`
+                    ? `${colors.text.charcoal} border-transparent cursor-pointer hover:border-black opacity-90`
+                    : `${colors.text.charcoal} border-transparent cursor-default opacity-50`
               }
             `}
           >
@@ -167,7 +163,6 @@ export default function Header({
           />
         </div>
       </div>
-
     </div>
-  )
+  );
 }

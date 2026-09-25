@@ -1,14 +1,18 @@
-import { typography } from "@/styles/typography"
-import { spacing } from "@/styles/spacing"
+import { typography } from "@/styles/typography";
+import { spacing } from "@/styles/spacing";
 type Props = {
-  onPrev?: () => void
-  onNext?: () => void
-  canPrev?: boolean
-  canNext?: boolean
+  onPrev?: () => void;
+  onNext?: () => void;
+  canPrev?: boolean;
+  canNext?: boolean;
+};
 
-}
-
-export default function CarouselControls({ onPrev, onNext, canPrev, canNext }: Props) {
+export default function CarouselControls({
+  onPrev,
+  onNext,
+  canPrev,
+  canNext,
+}: Props) {
   return (
     <div className="flex items-center gap-4">
       <button
@@ -37,5 +41,5 @@ export default function CarouselControls({ onPrev, onNext, canPrev, canNext }: P
         next
       </button>
     </div>
-  )
+  );
 }

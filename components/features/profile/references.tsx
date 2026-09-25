@@ -1,81 +1,77 @@
-"use client"
-import type { OnNavigate } from "@/types/navigation"
+"use client";
+import type { OnNavigate } from "@/types/navigation";
 
-import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/navigation/SideBar"
-import Header from "@/components/navigation/Header"
-import LovesGrid from "@/components/ui/grids/LovesGrid"
-import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
-import BackButton from "@/components/ui/buttons/BackButton"
-import { NavigationParams } from "@/types/navigation"
-import { useReferences } from "@/hooks/useReferences"
+import BookLayout from "@/components/book/BookLayout";
+import Sidebar from "@/components/navigation/SideBar";
+import Header from "@/components/navigation/Header";
+import LovesGrid from "@/components/ui/grids/LovesGrid";
+import ProfileButton from "@/components/ui/buttons/ProfileButton";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import BackButton from "@/components/ui/buttons/BackButton";
+import { NavigationParams } from "@/types/navigation";
+import { useReferences } from "@/hooks/useReferences";
 
-import { typography } from "@/styles/typography"
-import Avatar from "@/components/ui/pagination/Avatar"
+import { typography } from "@/styles/typography";
+import Avatar from "@/components/ui/pagination/Avatar";
 
 type Props = {
-  params?: NavigationParams["params"] | null
-  onNavigate: OnNavigate
-  onBack?: () => void
-}
+  params?: NavigationParams["params"] | null;
+  onNavigate: OnNavigate;
+  onBack?: () => void;
+};
 
 export default function References({ onNavigate, onBack, params }: Props) {
-  const { user: currentUser } = useCurrentUser()
-  const { isOwner, userId, from } = params ?? {}
-  const { references, isLoading } = useReferences() 
-  
-  const latestLooks = references?.looks?.slice(0, 3)
-  const latestMoods = references?.moods?.slice(0, 3)
-  const featuredCreator = references?.muse
+  const { user: currentUser } = useCurrentUser();
+  const { isOwner, userId, from } = params ?? {};
+  const { references, isLoading } = useReferences();
+
+  const latestLooks = references?.looks?.slice(0, 3);
+  const latestMoods = references?.moods?.slice(0, 3);
+  const featuredCreator = references?.muse;
 
   return (
     <BookLayout
       header={
         <Header
           items={[
-            { section: "HOME",
+            {
+              section: "HOME",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
                   to: "discover",
                   direction: "prev",
-                })
+                }),
             },
-            { section: "FILTER",
-              clickable: false,
-             },
-            { section: "CREATE",
+            { section: "FILTER", clickable: false },
+            {
+              section: "CREATE",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
                   to: "create",
                   direction: "next",
                 }),
-             },
+            },
           ]}
         />
       }
       sidebar={<Sidebar text="REFERENCES" clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
-          <p
-            className={typography.buttonBody}>Your references</p>
+          <p className={typography.buttonBody}>Your references</p>
           <span className={typography.bullet}>•</span>
-          <p
-            className={typography.buttonBody}>Favourites</p>
+          <p className={typography.buttonBody}>Favourites</p>
         </div>
       }
-      footerLeft={ <BackButton onBack={onBack} /> }
+      footerLeft={<BackButton onBack={onBack} />}
       footerRight={
-          <div className="flex items-center gap-4">
-            <span className={typography.username}>
-              {currentUser?.username}
-            </span>
-            <ProfileButton onNavigate={onNavigate}/>
-          </div>
-          }
-        >   
+        <div className="flex items-center gap-4">
+          <span className={typography.username}>{currentUser?.username}</span>
+          <ProfileButton onNavigate={onNavigate} />
+        </div>
+      }
+    >
       <div className="flex flex-col h-full min-h-0 gap-1">
         <LovesGrid
           left={
@@ -88,8 +84,8 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   direction: "next",
                   params: {
                     from: "references",
-                    isOwner: true
-                  }
+                    isOwner: true,
+                  },
                 })
               }
               className="
@@ -116,29 +112,31 @@ export default function References({ onNavigate, onBack, params }: Props) {
               )}
 
               {!latestLooks?.[0] && (
-                <div className="
+                <div
+                  className="
                   absolute
                   inset-0
                   flex
                   items-center
                   justify-center
-                ">
+                "
+                >
                   <p className="text-[10px] tracking-[0.2em] text-black/30">
                     NO LOOKS YET
                   </p>
                 </div>
               )}
 
-              <div className="
+              <div
+                className="
                 absolute
                 bottom-0
                 left-0
                 p-4
-                text-white
-              ">
-                <p className={typography.buttonBody}>
-                  LOOKS
-                </p>
+                text-black
+              "
+              >
+                <p className={typography.buttonBody}>LOOKS</p>
               </div>
             </button>
           }
@@ -152,8 +150,8 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   direction: "next",
                   params: {
                     from: "references",
-                    isOwner: true
-                  }
+                    isOwner: true,
+                  },
                 })
               }
               className="
@@ -180,29 +178,31 @@ export default function References({ onNavigate, onBack, params }: Props) {
               )}
 
               {!latestMoods?.[0] && (
-                <div className="
+                <div
+                  className="
                   absolute
                   inset-0
                   flex
                   items-center
                   justify-center
-                ">
+                "
+                >
                   <p className="text-[10px] tracking-[0.2em] text-black/30">
                     NO MOODS YET
                   </p>
                 </div>
               )}
 
-              <div className="
+              <div
+                className="
                 absolute
                 bottom-0
                 left-0
                 p-4
-                text-white
-              ">
-                <p className={typography.buttonBody}>
-                  MOODS
-                </p>
+                text-black
+              "
+              >
+                <p className={typography.buttonBody}>MOODS</p>
               </div>
             </button>
           }
@@ -217,9 +217,9 @@ export default function References({ onNavigate, onBack, params }: Props) {
                     params: {
                       userId: featuredCreator.id,
                       isOwner: false,
-                      from: "references"
-                    }
-                  })
+                      from: "references",
+                    },
+                  });
                 }
               }}
               className="
@@ -232,8 +232,9 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 border-black/10
               "
             >
-                {featuredCreator ? (
-                  <div className="
+              {featuredCreator ? (
+                <div
+                  className="
                     absolute
                     inset-0
                     flex
@@ -241,8 +242,10 @@ export default function References({ onNavigate, onBack, params }: Props) {
                     items-center
                     justify-center
                     -translate-y-4
-                  ">
-                    <p className="
+                  "
+                >
+                  <p
+                    className="
                       text-[7px]
                       mb-2
                       tracking-[0.4em]
@@ -251,13 +254,14 @@ export default function References({ onNavigate, onBack, params }: Props) {
                       sm:text-[12px]
                       sm:mb-4
                       lg:text-[15px]
-                    ">
-                      {featuredCreator.username}
-                    </p>
+                    "
+                  >
+                    {featuredCreator.username}
+                  </p>
 
-                    <Avatar
-                      user={featuredCreator}
-                      className="
+                  <Avatar
+                    user={featuredCreator}
+                    className="
                         w-16
                         h-16
                         sm:w-[140px]
@@ -268,36 +272,38 @@ export default function References({ onNavigate, onBack, params }: Props) {
                         md:text-[25px]
                         lg:text-[40px]
                       "
-                    />
-                  </div>
-                ) : (
-                <div className="
+                  />
+                </div>
+              ) : (
+                <div
+                  className="
                   absolute
                   inset-0
                   flex
                   items-center
                   justify-center
-                ">
+                "
+                >
                   <p className="text-[10px] tracking-[0.2em] text-black/30">
                     NO CREATOR YET
                   </p>
                 </div>
               )}
 
-              <div className="
+              <div
+                className="
                 absolute
                 bottom-0
                 left-0
                 p-4
-              ">
-                <p className={`${typography.buttonBody}`}>
-                  CREATOR
-                </p>
+              "
+              >
+                <p className={`${typography.buttonBody}`}>CREATOR</p>
               </div>
             </button>
           }
         />
       </div>
     </BookLayout>
-  )
+  );
 }

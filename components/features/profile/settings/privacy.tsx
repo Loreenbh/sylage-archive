@@ -1,20 +1,20 @@
-import BookLayout from "@/components/book/BookLayout"
-import Header from "@/components/navigation/Header"
-import Sidebar from "@/components/navigation/SideBar"
-import BackButton from "@/components/ui/buttons/BackButton"
-import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import { typography } from "@/styles/typography"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
-import SimpleGrid from "@/components/ui/grids/SimpleGrid"
-import { colors } from "@/styles/colors"
+import BookLayout from "@/components/book/BookLayout";
+import Header from "@/components/navigation/Header";
+import Sidebar from "@/components/navigation/SideBar";
+import BackButton from "@/components/ui/buttons/BackButton";
+import ProfileButton from "@/components/ui/buttons/ProfileButton";
+import { typography } from "@/styles/typography";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import SimpleGrid from "@/components/ui/grids/SimpleGrid";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  onNavigate: (params: any) => void
-  onBack?: () => void
-}
+  onNavigate: (params: any) => void;
+  onBack?: () => void;
+};
 
 export default function Privacy({ onNavigate, onBack }: Props) {
-  const { user: currentUser } = useCurrentUser()
+  const { user: currentUser } = useCurrentUser();
 
   return (
     <BookLayout
@@ -50,9 +50,7 @@ export default function Privacy({ onNavigate, onBack }: Props) {
       footerLeft={<BackButton onBack={onBack} />}
       footerRight={
         <div className="flex items-center gap-4">
-          <span className={typography.username}>
-            {currentUser?.username}
-          </span>
+          <span className={typography.username}>{currentUser?.username}</span>
           <ProfileButton onNavigate={onNavigate} />
         </div>
       }
@@ -198,5 +196,5 @@ export default function Privacy({ onNavigate, onBack }: Props) {
         }
       />
     </BookLayout>
-  )
+  );
 }

@@ -1,17 +1,19 @@
-import React from "react"
+import React from "react";
 
 type Props = {
-  data: any[]
-  renderItem: (item: any) => React.ReactNode
-  onItemClick?: (item: any) => void
-}
+  data: any[];
+  renderItem: (item: any) => React.ReactNode;
+  onItemClick?: (item: any) => void;
+};
 
-export default function ScrollableGrid({ data, renderItem, onItemClick }: Props) {
+export default function ScrollableGrid({
+  data,
+  renderItem,
+  onItemClick,
+}: Props) {
   return (
     <div className="h-full w-full flex flex-col">
-
       <div className="flex-1 min-h-0 overflow-y-auto ">
-
         <div
           className="
             grid
@@ -22,17 +24,12 @@ export default function ScrollableGrid({ data, renderItem, onItemClick }: Props)
           "
         >
           {data.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => onItemClick?.(item)}
-            >
+            <div key={item.id} onClick={() => onItemClick?.(item)}>
               {renderItem(item)}
             </div>
           ))}
         </div>
-
       </div>
-
     </div>
-  )
+  );
 }

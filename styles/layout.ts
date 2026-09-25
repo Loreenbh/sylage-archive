@@ -1,5 +1,5 @@
 export const layout = {
-    bookContent: `
+  bookContent: `
     w-[75vw]
     max-w-[780px]
     aspect-square
@@ -37,7 +37,7 @@ export const layout = {
     w-[1px]
     bg-black/40
   `,
-  
+
   sidebarButton: `
     flex
     flex-col
@@ -46,9 +46,9 @@ export const layout = {
     h-full
   `,
 
-    verticalText: `
+  verticalText: `
     [writing-mode:vertical-rl]
     rotate-180
     shrink-0
   `,
-}
+};

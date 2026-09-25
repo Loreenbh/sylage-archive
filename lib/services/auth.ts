@@ -1,9 +1,9 @@
 export async function getCurrentUser() {
-  const res = await fetch("/api/auth/me")
+  const res = await fetch("/api/auth/me");
 
   if (!res.ok) {
-    throw new Error("Erreur récupération utilisateur")
+    throw new Error("Erreur récupération utilisateur");
   }
 
-  return res.json()
+  return res.json();
 }

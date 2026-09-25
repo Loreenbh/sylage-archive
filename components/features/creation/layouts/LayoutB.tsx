@@ -1,22 +1,26 @@
-"use client"
+"use client";
 
-import ImageSlot from "./ImageSlot"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
-import { colors } from "@/styles/colors"
+import ImageSlot from "./ImageSlot";
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  images?: MoodboardSlot[]
-  onSelectSlot?: (index: number) => void
-  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void
-}
+  images?: MoodboardSlot[];
+  onSelectSlot?: (index: number) => void;
+  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void;
+};
 
-export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Props) {
-  const select = (index: number) => onSelectSlot?.(index)
-  const update = (index: number) => (patch: MoodboardSlotPatch) => onUpdateSlot?.(index, patch)
+export default function LayoutB({
+  images = [],
+  onSelectSlot,
+  onUpdateSlot,
+}: Props) {
+  const select = (index: number) => onSelectSlot?.(index);
+  const update = (index: number) => (patch: MoodboardSlotPatch) =>
+    onUpdateSlot?.(index, patch);
 
   return (
     <div className="grid grid-cols-2 gap-[2px] h-full w-full min-h-0 min-w-0">
-
       <ImageSlot
         slot={images[0] ?? null}
         onSelect={() => select(0)}
@@ -25,7 +29,6 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
       />
 
       <div className="grid grid-rows-[1fr_2fr_1fr] gap-[2px] h-full min-h-0 min-w-0">
-
         <ImageSlot
           slot={images[1] ?? null}
           onSelect={() => select(1)}
@@ -34,7 +37,6 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
         />
 
         <div className="grid grid-cols-2 gap-[2px] min-h-0 min-w-0">
-
           <div className="grid grid-rows-2 gap-[2px] min-h-0 min-w-0">
             <ImageSlot
               slot={images[2] ?? null}
@@ -64,7 +66,6 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
               className={`${colors.bg.empty70} hover:opacity-50`}
             />
           </div>
-
         </div>
 
         <ImageSlot
@@ -73,8 +74,7 @@ export default function LayoutB({ images = [], onSelectSlot, onUpdateSlot }: Pro
           onChangeTransform={update(6)}
           className={`${colors.bg.empty70} hover:opacity-50`}
         />
-
       </div>
     </div>
-  )
+  );
 }

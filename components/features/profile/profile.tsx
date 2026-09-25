@@ -1,147 +1,142 @@
-"use client"
-import { useState, useEffect } from "react"
-import type { OnNavigate, NavigationParams } from "@/types/navigation"
+"use client";
+import { useState, useEffect } from "react";
+import type { OnNavigate, NavigationParams } from "@/types/navigation";
 /* COMPONENTS */
-import BookLayout from "@/components/book/BookLayout"
-import Header from "@/components/navigation/Header"
-import Sidebar from "@/components/navigation/SideBar"
-import CustomGrid from "@/components/ui/grids/CustomGrid"
-import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import GridButton from "@/components/ui/buttons/GridButton"
-import ScrollFollow from "@/components/ui/cards/scrollFollow"
+import BookLayout from "@/components/book/BookLayout";
+import Header from "@/components/navigation/Header";
+import Sidebar from "@/components/navigation/SideBar";
+import CustomGrid from "@/components/ui/grids/CustomGrid";
+import ProfileButton from "@/components/ui/buttons/ProfileButton";
+import GridButton from "@/components/ui/buttons/GridButton";
+import ScrollFollow from "@/components/ui/cards/scrollFollow";
 
 /* STYLE */
-import { typography } from "@/styles/typography"
-import { colors } from "@/styles/colors"
+import { typography } from "@/styles/typography";
+import { colors } from "@/styles/colors";
 /* TYPES */
 type Props = {
-  onNavigate: OnNavigate
-  params?: NavigationParams["params"] | null
-  onBack?: () => void
-}
+  onNavigate: OnNavigate;
+  params?: NavigationParams["params"] | null;
+  onBack?: () => void;
+};
 
-import { useCurrentUser } from "@/hooks/useCurrentUser"
-import { useProfile } from "@/hooks/useProfile"
-import { logout } from "@/lib/services/logout"
-import { useFollows } from "@/hooks/useFollows"
-import { getFollows, unfollowUser, followUser } from "@/lib/services/follows"
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useProfile } from "@/hooks/useProfile";
+import { logout } from "@/lib/services/logout";
+import { useFollows } from "@/hooks/useFollows";
+import { getFollows, unfollowUser, followUser } from "@/lib/services/follows";
 
-import BackButton from "@/components/ui/buttons/BackButton"
+import BackButton from "@/components/ui/buttons/BackButton";
 
 export default function ProfilePage({ onNavigate, onBack, params }: Props) {
-  const {
-    isOwner,
-    userId,
-    from
-  } = params ?? {}
+  const { isOwner, userId, from } = params ?? {};
 
-  const { user: currentUser } = useCurrentUser()
+  const { user: currentUser } = useCurrentUser();
 
-  const [isFollowed, setIsFollowed] = useState(false)
+  const [isFollowed, setIsFollowed] = useState(false);
 
-  const {
-    following,
-    followers,
-    handleUnfollow,
-    refreshFollows
-  } = useFollows(userId)
-
+  const { following, followers, handleUnfollow, refreshFollows } =
+    useFollows(userId);
 
   const {
     user: profileUser,
     moodboards,
     silhouettes,
-    isLoading
-  } = useProfile(userId, isOwner)
+    isLoading,
+  } = useProfile(userId, isOwner);
 
+  useEffect(() => {
+    if (!profileUser || !currentUser) return;
 
-useEffect(() => {
-  if (!profileUser || !currentUser) return
+    const currentUserId = currentUser.id;
+    const profileUserId = profileUser.id;
 
-  const currentUserId = currentUser.id
-  const profileUserId = profileUser.id
+    async function checkFollow() {
+      const res = await getFollows(currentUserId);
 
-  async function checkFollow() {
-    const res = await getFollows(currentUserId)
+      const followed = res.following.some(
+        (user: { id: number }) => user.id === profileUserId,
+      );
 
-    const followed = res.following.some(
-      (user: { id: number }) => user.id === profileUserId
-    )
+      setIsFollowed(followed);
+    }
 
-    setIsFollowed(followed)
-  }
+    checkFollow();
+  }, [profileUser, currentUser]);
 
-  checkFollow()
+  const handleFollowToggle = async () => {
+    if (!profileUser) return;
 
-}, [profileUser, currentUser])
+    if (!currentUser) {
+      onNavigate?.({
+        to: "auth",
+        direction: "next",
+      });
+      return;
+    }
 
+    if (isFollowed) {
+      await unfollowUser(profileUser.id);
+    } else {
+      await followUser(profileUser.id);
+    }
 
-const handleFollowToggle = async () => {
-  if (!profileUser) return
+    setIsFollowed((prev) => !prev);
 
-  if (isFollowed) {
-    await unfollowUser(profileUser.id)
-  } else {
-    await followUser(profileUser.id)
-  }
-
-  setIsFollowed(prev => !prev)
-
-  await refreshFollows()
-}
+    await refreshFollows();
+  };
 
   const handleLogout = async () => {
     try {
-      await logout()
+      await logout();
 
       onNavigate?.({
         to: "cover",
-        direction: "prev"
-      })
-
+        direction: "prev",
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
+  const lastMoodboard = moodboards[0] ?? null;
+  const lastSilhouette = silhouettes[0] ?? null;
 
-  const lastMoodboard = moodboards[0] ?? null
-  const lastSilhouette = silhouettes[0] ?? null
-
-
-  const sidebarTitle = "PROFILE"
+  const sidebarTitle = "PROFILE";
 
   return (
     <BookLayout
       header={
         <Header
           items={[
-            { section: "HOME",
+            {
+              section: "HOME",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
                   to: "discover",
                   direction: "prev",
-                  params:{
-                    isOwner: false
-                  }
-                })
+                  params: {
+                    isOwner: false,
+                  },
+                }),
             },
-            { section: "FILTER",
-              clickable: false,
-             },
-            { section: "CREATE",
-              clickable: true,
-                onClick: () =>
-                onNavigate?.({
-                  to: "create",
-                  direction: "next",
-                  params:{
-                    from: "discover",
-                    isOwner: isOwner
-                  }
-                })
-             },
+            { section: "FILTER", clickable: false },
+            {
+              section: "CREATE",
+              clickable: !!currentUser,
+              onClick: currentUser
+                ? () =>
+                    onNavigate?.({
+                      to: "create",
+                      direction: "next",
+                      params: {
+                        from: "discover",
+                        isOwner: isOwner,
+                      },
+                    })
+                : undefined,
+            },
           ]}
         />
       }
@@ -158,12 +153,12 @@ const handleFollowToggle = async () => {
                   cursor-pointer
                 `}
                 onClick={() =>
-                  onNavigate?.({ 
-                    to: "settings", 
+                  onNavigate?.({
+                    to: "settings",
                     direction: "next",
-                    params:{
+                    params: {
                       isOwner: isOwner,
-                    }
+                    },
                   })
                 }
               >
@@ -178,12 +173,12 @@ const handleFollowToggle = async () => {
                   cursor-pointer
                 `}
                 onClick={() =>
-                  onNavigate?.({ 
-                    to: "references", 
+                  onNavigate?.({
+                    to: "references",
                     direction: "next",
-                    params:{
+                    params: {
                       isOwner: isOwner,
-                    }
+                    },
                   })
                 }
               >
@@ -204,10 +199,11 @@ const handleFollowToggle = async () => {
             </>
           ) : (
             <>
-              <p className={`
+              <p
+                className={`
                 ${typography.buttonBody}
-                `
-              }>
+                `}
+              >
                 {profileUser?.username}'S ARCHIVE
               </p>
 
@@ -228,175 +224,183 @@ const handleFollowToggle = async () => {
           )}
         </div>
       }
-      footerLeft={
-        <BackButton onBack={onBack} />
-      }
+      footerLeft={<BackButton onBack={onBack} />}
       footerRight={
-          <div className="flex items-center gap-2 ">
-            <span className={typography.username}>
-              {currentUser?.username}
-            </span>
-            <ProfileButton onNavigate={onNavigate}/>
-          </div>
-          }
-        >  
-<div className="flex flex-col h-full min-h-0">
-  <CustomGrid
-    left={
-        <GridButton
-          disabled={!lastSilhouette}
-          className="
+        <div className="flex items-center gap-2 ">
+          <span className={typography.username}>{currentUser?.username}</span>
+          <ProfileButton onNavigate={onNavigate} />
+        </div>
+      }
+    >
+      <div className="flex flex-col h-full min-h-0">
+        <CustomGrid
+          left={
+            <GridButton
+              disabled={!lastSilhouette}
+              className="
             relative
             overflow-hidden
             border
             border-black/10
             disabled:cursor-default
           "
-          onClick={() =>
-            lastSilhouette &&
-            onNavigate?.({
-              to: "looks",
-              direction: "next",
-              params: {
-                userId: profileUser?.id,
-                from: "profile",
-                isOwner: profileUser?.id === currentUser?.id,
-              },
-            })
-          }
-        >
-        {lastSilhouette && (
-          <img
-            src={lastSilhouette.image_url}
-            alt=""
-            className="
+              onClick={() =>
+                lastSilhouette &&
+                onNavigate?.({
+                  to: "looks",
+                  direction: "next",
+                  params: {
+                    userId: profileUser?.id,
+                    from: "profile",
+                    isOwner: profileUser?.id === currentUser?.id,
+                  },
+                })
+              }
+            >
+              {lastSilhouette && (
+                <img
+                  src={lastSilhouette.image_url}
+                  alt=""
+                  className="
               absolute
               inset-0
               w-full
               h-full
               object-cover
             "
-          />
-        )}
+                />
+              )}
 
-        {!lastSilhouette && (
-          <div className={`
+              {!lastSilhouette && (
+                <div
+                  className={`
             absolute
             inset-0
             flex
             items-center
             justify-center
             ${colors.bg.empty}
-            `}>
-            <p className="
+            `}
+                >
+                  <p
+                    className="
               text-[8px]
               sm:text-[12px]
               lg:text-[14px]
               tracking-[0.2em]
               text-black/30
-            ">
-              NO LOOKS.
-            </p>
-          </div>
-        )}
+            "
+                  >
+                    NO LOOKS.
+                  </p>
+                </div>
+              )}
 
-        <div className="
+              <div
+                className="
           absolute
           bottom-0
           left-0
           p-4
           z-10
-        ">
-          <p
-            className={`
+        "
+              >
+                <p
+                  className={`
               ${typography.buttonBody}
               ${lastSilhouette ? "text-white drop-shadow" : ""}
             `}
-          >
-            looks
-          </p>
-        </div>
-      </GridButton>
-    }
+                >
+                  looks
+                </p>
+              </div>
+            </GridButton>
+          }
 
-    topRight={
-      <GridButton
-        disabled={!lastMoodboard}
-        className="
+          topRight={
+            <GridButton
+              disabled={!lastMoodboard}
+              className="
           relative
           overflow-hidden
           border
           border-black/10
           disabled:cursor-default
         "
-        onClick={() =>
-          lastMoodboard &&
-          onNavigate?.({
-            to: "moods",
-            direction: "next",
-            params: {
-              isOwner: isOwner,
-              userId: profileUser?.id,
-            },
-          })
-        }
-      >
-        {lastMoodboard && (
-          <img
-            src={lastMoodboard.image_url}
-            alt=""
-            className="
+              onClick={() =>
+                lastMoodboard &&
+                onNavigate?.({
+                  to: "moods",
+                  direction: "next",
+                  params: {
+                    isOwner: isOwner,
+                    userId: profileUser?.id,
+                  },
+                })
+              }
+            >
+              {lastMoodboard && (
+                <img
+                  src={lastMoodboard.image_url}
+                  alt=""
+                  className="
               absolute
               inset-0
               w-full
               h-full
               object-cover
             "
-          />
-        )}
+                />
+              )}
 
-        {!lastMoodboard && (
-          <div className={`
+              {!lastMoodboard && (
+                <div
+                  className={`
             absolute
             inset-0
             flex
             items-center
             justify-center
             ${colors.bg.empty}
-          `}>
-            <p className="
+          `}
+                >
+                  <p
+                    className="
               text-[8px]
               sm:text-[12px]
               lg:text-[14px]
               tracking-[0.2em]
               text-black/30
-            ">
-              NO MOODS.
-            </p>
-          </div>
-        )}
+            "
+                  >
+                    NO MOODS.
+                  </p>
+                </div>
+              )}
 
-        <div className="
+              <div
+                className="
           absolute
           bottom-0
           left-0
           p-4
           z-10
-        ">
-          <p
-            className={`
+        "
+              >
+                <p
+                  className={`
               ${typography.buttonBody}
               ${lastMoodboard ? "text-white drop-shadow" : ""}
             `}
-          >
-            moods
-          </p>
-        </div>
-      </GridButton>
-    }
-    bottomRight={
-      <div
-        className="
+                >
+                  moods
+                </p>
+              </div>
+            </GridButton>
+          }
+          bottomRight={
+            <div
+              className="
           relative
           h-full
           min-h-0
@@ -405,10 +409,10 @@ const handleFollowToggle = async () => {
           border
           border-black/10
         "
-      >
-        {following.length > 0 || followers.length > 0 ? (
-          <div
-            className="
+            >
+              {following.length > 0 || followers.length > 0 ? (
+                <div
+                  className="
               absolute
               inset-x-0
               top-0
@@ -416,30 +420,30 @@ const handleFollowToggle = async () => {
               min-h-0
               overflow-hidden
             "
-          >
-            <ScrollFollow
-              followingTitle="Inspired by"
-              followersTitle="Inspiring"
-              following={following}
-              followers={followers}
-              canManageFollow={profileUser?.id === currentUser?.id}
-              onOpenProfile={(item) => {
-                onNavigate?.({
-                  to: "profile",
-                  direction: "next",
-                  params: {
-                    userId: item.id,
-                    isOwner: item.id === currentUser?.id,
-                    from: "profile",
-                  },
-                })
-              }}
-              onUnfollow={(item) => handleUnfollow(item.id)}
-            />
-          </div>
-        ) : (
-          <div
-            className={`
+                >
+                  <ScrollFollow
+                    followingTitle="Inspired by"
+                    followersTitle="Inspiring"
+                    following={following}
+                    followers={followers}
+                    canManageFollow={profileUser?.id === currentUser?.id}
+                    onOpenProfile={(item) => {
+                      onNavigate?.({
+                        to: "profile",
+                        direction: "next",
+                        params: {
+                          userId: item.id,
+                          isOwner: item.id === currentUser?.id,
+                          from: "profile",
+                        },
+                      });
+                    }}
+                    onUnfollow={(item) => handleUnfollow(item.id)}
+                  />
+                </div>
+              ) : (
+                <div
+                  className={`
               absolute
               inset-0
               flex
@@ -447,39 +451,36 @@ const handleFollowToggle = async () => {
               justify-center
               ${colors.bg.empty}
             `}
-          >
-            <p
-              className="
+                >
+                  <p
+                    className="
                 text-[8px]
                 sm:text-[12px]
                 lg:text-[14px]
                 tracking-[0.2em]
                 text-black/30
               "
-            >
-              NO CONNECTIONS.
-            </p>
-          </div>
-        )}
+                  >
+                    NO CONNECTIONS.
+                  </p>
+                </div>
+              )}
 
-        <div
-          className="
+              <div
+                className="
             absolute
             bottom-0
             left-0
             p-4
             z-10
           "
-        >
-          <p className={typography.buttonBody}>
-            CONNECTIONS
-          </p>
-        </div>
+              >
+                <p className={typography.buttonBody}>CONNECTIONS</p>
+              </div>
+            </div>
+          }
+        />
       </div>
-    }
-    />
-</div>
-  
     </BookLayout>
-  )
+  );
 }

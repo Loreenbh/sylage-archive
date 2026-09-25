@@ -1,21 +1,20 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import BookLayout from "@/components/book/BookLayout"
-import Header from "@/components/navigation/Header"
-import Sidebar from "@/components/navigation/SideBar"
+import { useState } from "react";
+import BookLayout from "@/components/book/BookLayout";
+import Header from "@/components/navigation/Header";
+import Sidebar from "@/components/navigation/SideBar";
 
-import { typography } from "@/styles/typography"
-import { colors } from "@/styles/colors"
-import { spacing } from "@/styles/spacing"
+import { typography } from "@/styles/typography";
+import { colors } from "@/styles/colors";
+import { spacing } from "@/styles/spacing";
 
-import { supabaseBrowser } from "@/lib/supabase-browser"
+import { supabaseBrowser } from "@/lib/supabase-browser";
 
-const PASSWORD_REGEX =
-  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).+$/
+const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).+$/;
 
-const MIN_PASSWORD_LENGTH = 8
-const MAX_PASSWORD_LENGTH = 35
+const MIN_PASSWORD_LENGTH = 8;
+const MAX_PASSWORD_LENGTH = 35;
 
 function MagazineInput({
   placeholder,
@@ -24,11 +23,11 @@ function MagazineInput({
   value,
   onChange,
 }: {
-  placeholder: string
-  type?: string
-  index: number
-  value: string
-  onChange: (value: string) => void
+  placeholder: string;
+  type?: string;
+  index: number;
+  value: string;
+  onChange: (value: string) => void;
 }) {
   return (
     <div className="w-full flex space-y-3 sm:space-y-8 px-3 sm:px-6 lg:px-8">
@@ -64,89 +63,84 @@ function MagazineInput({
         {String(index).padStart(2, "0")}
       </span>
     </div>
-  )
+  );
 }
 
 type Props = {
-  onNavigate: (params: any) => void
-  onBack: () => void
-}
+  onNavigate: (params: any) => void;
+  onBack: () => void;
+};
 
-export default function UpdatePassword({
-  onNavigate,
-  onBack,
-}: Props) {
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+export default function UpdatePassword({ onNavigate, onBack }: Props) {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [status, setStatus] = useState<
     "idle" | "updating" | "success" | "error"
-  >("idle")
+  >("idle");
 
-  const [errorMessage, setErrorMessage] = useState("")
-  const [successMessage, setSuccessMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = async () => {
-    setErrorMessage("")
-    setSuccessMessage("")
+    setErrorMessage("");
+    setSuccessMessage("");
 
     if (!password || !confirmPassword) {
-      setErrorMessage("Please fill in both fields")
-      setStatus("error")
-      return
+      setErrorMessage("Please fill in both fields");
+      setStatus("error");
+      return;
     }
 
     if (password.length < MIN_PASSWORD_LENGTH) {
       setErrorMessage(
-        `Password must be at least ${MIN_PASSWORD_LENGTH} characters long`
-      )
-      setStatus("error")
-      return
+        `Password must be at least ${MIN_PASSWORD_LENGTH} characters long`,
+      );
+      setStatus("error");
+      return;
     }
 
     if (password.length > MAX_PASSWORD_LENGTH) {
-      setErrorMessage("Password is too long")
-      setStatus("error")
-      return
+      setErrorMessage("Password is too long");
+      setStatus("error");
+      return;
     }
 
     if (!PASSWORD_REGEX.test(password)) {
       setErrorMessage(
-        "Password must contain at least a letter, a number, and a special character"
-      )
-      setStatus("error")
-      return
+        "Password must contain at least a letter, a number, and a special character",
+      );
+      setStatus("error");
+      return;
     }
 
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match")
-      setStatus("error")
-      return
+      setErrorMessage("Passwords do not match");
+      setStatus("error");
+      return;
     }
 
-    setStatus("updating")
+    setStatus("updating");
 
     const { error } = await supabaseBrowser.auth.updateUser({
       password,
-    })
+    });
 
     if (error) {
-      console.error("[UPDATE PASSWORD] Error:", error)
+      console.error("[UPDATE PASSWORD] Error:", error);
 
-      setErrorMessage(
-        error.message || "Unable to update password"
-      )
-      setStatus("error")
-      return
+      setErrorMessage(error.message || "Unable to update password");
+      setStatus("error");
+      return;
     }
 
-    setStatus("success")
-    setSuccessMessage("Password updated ✓")
+    setStatus("success");
+    setSuccessMessage("Password updated ✓");
 
     setTimeout(() => {
-      onBack()
-    }, 1000)
-  }
+      onBack();
+    }, 1000);
+  };
 
   return (
     <BookLayout
@@ -168,12 +162,7 @@ export default function UpdatePassword({
           ]}
         />
       }
-      sidebar={
-        <Sidebar
-          text="ACCESS"
-          clickable={false}
-        />
-      }
+      sidebar={<Sidebar text="ACCESS" clickable={false} />}
       actionsBar={
         <div className="flex items-center">
           <button
@@ -219,11 +208,11 @@ export default function UpdatePassword({
                   index={1}
                   value={password}
                   onChange={(value) => {
-                    setPassword(value)
+                    setPassword(value);
 
                     if (status === "error") {
-                      setStatus("idle")
-                      setErrorMessage("")
+                      setStatus("idle");
+                      setErrorMessage("");
                     }
                   }}
                 />
@@ -234,11 +223,11 @@ export default function UpdatePassword({
                   index={2}
                   value={confirmPassword}
                   onChange={(value) => {
-                    setConfirmPassword(value)
+                    setConfirmPassword(value);
 
                     if (status === "error") {
-                      setStatus("idle")
-                      setErrorMessage("")
+                      setStatus("idle");
+                      setErrorMessage("");
                     }
                   }}
                 />
@@ -265,15 +254,12 @@ export default function UpdatePassword({
                   pb-10
                 `}
               >
-                {status === "updating"
-                  ? "Updating..."
-                  : "Update →"}
+                {status === "updating" ? "Updating..." : "Update →"}
               </button>
             </>
           )}
         </div>
       </div>
     </BookLayout>
-  )
+  );
 }
-

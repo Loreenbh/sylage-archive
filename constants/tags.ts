@@ -19,7 +19,7 @@ export const STYLE_TAGS = [
   "VINTAGE",
   "ECLECTIC",
   "EXTRAVAGANT",
-] as const
+] as const;
 
 export const AMBIANCE_TAGS = [
   "COZY",
@@ -45,8 +45,7 @@ export const AMBIANCE_TAGS = [
   "DARK",
   "LIGHT",
   "URBAN",
-
-] as const
+] as const;
 
 export const COLOR_TAGS = [
   "BEIGE",
@@ -70,8 +69,7 @@ export const COLOR_TAGS = [
   "TAUPE",
   "WHITE",
   "YELLOW",
-] as const
-
+] as const;
 
 export const COLOR_SWATCHES: Record<string, string> = {
   BEIGE: "#D8CBB8",
@@ -95,16 +93,16 @@ export const COLOR_SWATCHES: Record<string, string> = {
   TAUPE: "#8C8177",
   WHITE: "#F2EFE8",
   YELLOW: "#B5A56D",
+};
 
-}
+export type StyleTag = (typeof STYLE_TAGS)[number];
+export type AmbianceTag = (typeof AMBIANCE_TAGS)[number];
+export type ColorTag = (typeof COLOR_TAGS)[number];
 
-export type StyleTag = (typeof STYLE_TAGS)[number]
-export type AmbianceTag = (typeof AMBIANCE_TAGS)[number]
-export type ColorTag = (typeof COLOR_TAGS)[number]
+export const MAX_STYLE_TAGS = 2;
+export const MAX_AMBIANCE_TAGS = 2;
+export const MAX_COLOR_TAGS = 3;
 
-export const MAX_STYLE_TAGS = 2
-export const MAX_AMBIANCE_TAGS = 2
-export const MAX_COLOR_TAGS = 3
-
-export const MIN_TAGS_TOTAL = 3
-export const MAX_TAGS_TOTAL = MAX_STYLE_TAGS + MAX_AMBIANCE_TAGS + MAX_COLOR_TAGS
+export const MIN_TAGS_TOTAL = 3;
+export const MAX_TAGS_TOTAL =
+  MAX_STYLE_TAGS + MAX_AMBIANCE_TAGS + MAX_COLOR_TAGS;

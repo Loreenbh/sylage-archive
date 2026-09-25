@@ -1,17 +1,13 @@
-import "./globals.css"
-import type { ReactNode } from "react"
-import { Roboto } from "next/font/google"
+import "./globals.css";
+import type { ReactNode } from "react";
+import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
-})
+});
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
       <body
@@ -26,32 +22,26 @@ export default function RootLayout({
           relative
         `}
       >
-
-        {/* SUNSET LIGHT */}
+        {/* NATURAL DAYLIGHT */}
         <div
           className="
-            fixed
-            inset-0
-            pointer-events-none
-            z-[9999]
-          "
+    fixed
+    inset-0
+    pointer-events-none
+    z-[9999]
+  "
           style={{
             background: `
-              radial-gradient(
-                ellipse 70% 90% at 0% 50%,
-                rgba(232, 168, 120, 0.32) 0%,
-                rgba(232, 168, 120, 0.12) 40%,
-                transparent 75%
-              ),
-              radial-gradient(
-                ellipse 50% 70% at 100% 60%,
-                rgba(201, 167, 184, 0.12) 0%,
-                transparent 75%
-              )
-            `,
+      radial-gradient(
+        ellipse 70% 90% at 0% 50%,
+        rgba(255, 253, 244, 0.20) 0%,
+        rgba(255, 253, 244, 0.10) 25%,
+        rgba(255, 253, 244, 0.03) 50%,
+        transparent 75%
+      )
+    `,
           }}
         />
-
         <div
           className="
             w-[90vw]
@@ -67,8 +57,7 @@ export default function RootLayout({
         >
           {children}
         </div>
-
       </body>
     </html>
-  )
+  );
 }

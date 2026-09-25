@@ -1,9 +1,9 @@
-"use client"
-import { ReactNode } from "react"
+"use client";
+import { ReactNode } from "react";
 
 type Props = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 export default function BookFrame({ children }: Props) {
   const layers = [
@@ -47,16 +47,14 @@ export default function BookFrame({ children }: Props) {
       fromColor: "from-[#C9BAA8]",
       toColor: "to-[#AC9C8A]",
     },
-  ]
+  ];
 
   return (
     <div
       className="w-full h-full flex flex-col"
       style={{ perspective: "1200px" }}
     >
-
       <div className="relative flex-1 min-h-0">
-
         {layers.map((layer, i) => (
           <div
             key={i}
@@ -84,7 +82,7 @@ export default function BookFrame({ children }: Props) {
           className="
             absolute inset-0 rounded-sm
             w-full h-full
-            bg-[#caab92]
+            bg-[#D2BFB2]
             p-2 sm:p-3 md:p-4 lg:p-5
             flex flex-col
             overflow-hidden
@@ -97,27 +95,28 @@ export default function BookFrame({ children }: Props) {
             `,
           }}
         >
-
-        {/* SUNSET LIGHT */}
-        <div
-          className="
-            absolute inset-0
-            pointer-events-none
-            rounded-sm
-            z-20
-          "
-          style={{
-            background: `
-              linear-gradient(
-                to right,
-                rgba(203, 159, 115, 0.28) 0%,
-                rgba(203, 159, 115, 0.12) 2%,
-                rgba(203, 159, 115, 0.04) 5%,
-                transparent 10%
-              )
-            `,
-          }}
-        />
+          {/* NATURAL DAYLIGHT */}
+          <div
+            className="
+    absolute inset-0
+    pointer-events-none
+    rounded-sm
+    z-20
+  "
+            style={{
+              background: `
+      radial-gradient(
+        ellipse 70% 95% at 0% 50%,
+        rgba(255, 253, 244, 0.68) 0%,
+        rgba(255, 253, 244, 0.50) 10%,
+        rgba(255, 253, 244, 0.28) 25%,
+        rgba(255, 253, 244, 0.12) 45%,
+        rgba(255, 253, 244, 0.04) 65%,
+        transparent 80%
+      )
+    `,
+            }}
+          />
           {/* RELIURE GAUCHE */}
           <div
             className="
@@ -155,13 +154,9 @@ export default function BookFrame({ children }: Props) {
 
           <div className="relative z-10 flex flex-col h-full min-h-0">
             {children}
-            
           </div>
-
         </main>
-
       </div>
-
     </div>
-  )
+  );
 }

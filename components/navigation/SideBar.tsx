@@ -1,30 +1,26 @@
-"use client"
-import { useState } from "react"
-import type { OnNavigate } from "@/types/navigation"
-import { typography } from "@/styles/typography"
-import { layout } from "@/styles/layout"
-import { spacing } from "@/styles/spacing"
-import { colors } from "@/styles/colors"
+"use client";
+import { useState } from "react";
+import type { OnNavigate } from "@/types/navigation";
+import { typography } from "@/styles/typography";
+import { layout } from "@/styles/layout";
+import { spacing } from "@/styles/spacing";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  text: string
-  onNavigate?: OnNavigate
-  clickable?: boolean
-}
+  text: string;
+  onNavigate?: OnNavigate;
+  clickable?: boolean;
+};
 
-export default function Sidebar({
-  text,
-  onNavigate,
-  clickable = true,
-}: Props) {
-  const [isHovering, setIsHovering] = useState(false)
+export default function Sidebar({ text, onNavigate, clickable = true }: Props) {
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleClick = () => {
     if (clickable) {
-      setIsHovering(false)
-      onNavigate?.({ to: "auth", direction: "next" })
+      setIsHovering(false);
+      onNavigate?.({ to: "auth", direction: "next" });
     }
-  }
+  };
   return (
     <button
       type="button"
@@ -50,5 +46,5 @@ export default function Sidebar({
         {text}
       </p>
     </button>
-  )
+  );
 }

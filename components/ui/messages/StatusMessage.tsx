@@ -1,8 +1,8 @@
-import { colors } from "@/styles/colors"
+import { colors } from "@/styles/colors";
 
 type Props = {
-  message: string
-}
+  message: string;
+};
 
 export default function StatusMessage({ message }: Props) {
   return (
@@ -15,7 +15,8 @@ export default function StatusMessage({ message }: Props) {
 
       "
     >
-      <p className={`
+      <p
+        className={`
         text-center
         ${colors.text.charcoal70}
         text-[11px]
@@ -23,9 +24,10 @@ export default function StatusMessage({ message }: Props) {
         md:text-[16px]
         lg:text-[18px]
         tracking-[0.2em]
-      `}>
+      `}
+      >
         {message}
       </p>
     </div>
-  )
+  );
 }

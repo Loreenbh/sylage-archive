@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import BookLayout from "@/components/book/BookLayout"
-import Header from "@/components/navigation/Header"
-import Sidebar from "@/components/navigation/SideBar"
+import { useState } from "react";
+import BookLayout from "@/components/book/BookLayout";
+import Header from "@/components/navigation/Header";
+import Sidebar from "@/components/navigation/SideBar";
 
-import { typography } from "@/styles/typography"
-import { spacing } from "@/styles/spacing"
-import { colors } from "@/styles/colors"
+import { typography } from "@/styles/typography";
+import { spacing } from "@/styles/spacing";
+import { colors } from "@/styles/colors";
 
-import { supabaseBrowser } from "@/lib/supabase-browser"
+import { supabaseBrowser } from "@/lib/supabase-browser";
 
 function MagazineInput({
   placeholder,
@@ -18,11 +18,11 @@ function MagazineInput({
   value,
   onChange,
 }: {
-  placeholder: string
-  type?: string
-  index: number
-  value: string
-  onChange: (value: string) => void
+  placeholder: string;
+  type?: string;
+  index: number;
+  value: string;
+  onChange: (value: string) => void;
 }) {
   return (
     <div className="w-full flex space-y-4 px-8 pt-18 sm:px-6 lg:px-12">
@@ -58,39 +58,36 @@ function MagazineInput({
         {String(index).padStart(2, "0")}
       </span>
     </div>
-  )
+  );
 }
 
 type Props = {
-  onNavigate: (params: any) => void
-  onBack: () => void
-}
+  onNavigate: (params: any) => void;
+  onBack: () => void;
+};
 
-export default function ForgotPassword({
-  onNavigate,
-  onBack,
-}: Props) {
-  const [email, setEmail] = useState("")
-  const [status, setStatus] = useState<
-    "idle" | "sending" | "sent" | "error"
-  >("idle")
+export default function ForgotPassword({ onNavigate, onBack }: Props) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
 
   const handleSubmit = async () => {
-  if (!email) return
+    if (!email) return;
 
-  setStatus("sending")
+    setStatus("sending");
 
+    const result = await supabaseBrowser.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/api/auth/callback?next=update`,
+    });
 
-  const result = await supabaseBrowser.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/api/auth/callback?next=update`,})
+    if (result.error) {
+      setStatus("error");
+      return;
+    }
 
-  if (result.error) {
-    setStatus("error")
-    return
-  }
-
-  setStatus("sent")
-}
+    setStatus("sent");
+  };
 
   return (
     <BookLayout
@@ -104,18 +101,13 @@ export default function ForgotPassword({
         />
       }
 
-      sidebar={
-        <Sidebar
-          text="ACCESS"
-          clickable={false}
-        />
-      }
+      sidebar={<Sidebar text="ACCESS" clickable={false} />}
 
-actionsBar={
-  <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
-    <button
-      onClick={onBack}
-      className={`
+      actionsBar={
+        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
+          <button
+            onClick={onBack}
+            className={`
         ${typography.buttonBody}
         px-4
         ${colors.text.charcoal}
@@ -123,24 +115,24 @@ actionsBar={
         transition-opacity
         hover:opacity-50
       `}
-    >
-      back
-    </button>
+          >
+            back
+          </button>
 
-    {status === "sent" ? (
-      <p
-        className={`
+          {status === "sent" ? (
+            <p
+              className={`
           ${typography.buttonBody}
           ${colors.text.charcoal}
         `}
-      >
-        Sent ✓
-      </p>
-    ) : (
-      <button
-        onClick={handleSubmit}
-        disabled={!email || status === "sending"}
-        className={`
+            >
+              Sent ✓
+            </p>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              disabled={!email || status === "sending"}
+              className={`
           ${typography.buttonBody}
           ${colors.text.charcoal}
           transition-opacity
@@ -148,26 +140,26 @@ actionsBar={
           cursor-pointer
           disabled:opacity-40
         `}
-      >
-        {status === "sending" ? "Sending..." : "Send →"}
-      </button>
-    )}
+            >
+              {status === "sending" ? "Sending..." : "Send →"}
+            </button>
+          )}
 
-    {status === "error" && (
-      <>
-        <span className={typography.bullet}>•</span>
-        <p
-          className={`
+          {status === "error" && (
+            <>
+              <span className={typography.bullet}>•</span>
+              <p
+                className={`
             ${typography.buttonBody}
             ${colors.feedback.error}
           `}
-        >
-          Error
-        </p>
-      </>
-    )}
-  </div>
-}
+              >
+                Error
+              </p>
+            </>
+          )}
+        </div>
+      }
     >
       <div className="flex flex-col h-full">
         <div
@@ -179,7 +171,8 @@ actionsBar={
             h-full
           `}
         >
-          <div className="pt-7 
+          <div
+            className="pt-7 
                           sm:pt-35
                           sm:pl-20 
                           sm:w-[450px]
@@ -188,7 +181,8 @@ actionsBar={
                           md:w-[500px]
                           lg:pt-50 
                           lg:pl-30 
-                          lg:w-[700px]">
+                          lg:w-[700px]"
+          >
             <MagazineInput
               placeholder="Email"
               type="email"
@@ -218,5 +212,5 @@ actionsBar={
         </div>
       </div>
     </BookLayout>
-  )
+  );
 }

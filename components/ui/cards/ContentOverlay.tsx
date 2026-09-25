@@ -1,26 +1,28 @@
-import LikeButton from "@/components/ui/buttons/LikeButton"
-import { typography } from "@/styles/typography"
-import { colors } from "@/styles/colors"
+import LikeButton from "@/components/ui/buttons/LikeButton";
+import { typography } from "@/styles/typography";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  username?: string
-  isOwner: boolean
-  showUsername?: boolean
-  prefix?: "BY" | "FOR"
-  isFollowed?: boolean
-  onFollowToggle?: () => void
+  username?: string;
+  isOwner: boolean;
+  showUsername?: boolean;
+  prefix?: "BY" | "FOR";
+  isFollowed?: boolean;
+  isGuest?: boolean;
+  onRequireAuth?: () => void;
+  onFollowToggle?: () => void;
   like?: {
-    type: "moodboard" | "silhouette"
-    id: number
-    count: number
-    liked: boolean
-  }
+    type: "moodboard" | "silhouette";
+    id: number;
+    count: number;
+    liked: boolean;
+  };
 
-  silhouettesCount?: number
-  onDelete?: () => void
-  onOpenLooks?: () => void
-  onOpenProfile?: () => void
-}
+  silhouettesCount?: number;
+  onDelete?: () => void;
+  onOpenLooks?: () => void;
+  onOpenProfile?: () => void;
+};
 
 export default function ContentOverlay({
   username,
@@ -30,6 +32,8 @@ export default function ContentOverlay({
   isFollowed,
   onFollowToggle,
   like,
+  onRequireAuth,
+  isGuest,
   silhouettesCount,
   onDelete,
   onOpenLooks,
@@ -57,16 +61,12 @@ export default function ContentOverlay({
               lg:text-[16px]
             "
           >
-            {prefix && (
-              <span className="text-white/70">
-                {prefix}{" "}
-              </span>
-            )}
+            {prefix && <span className="text-white/70">{prefix} </span>}
 
             <button
               onClick={(e) => {
-                e.stopPropagation()
-                onOpenProfile?.()
+                e.stopPropagation();
+                onOpenProfile?.();
               }}
               className="
                 cursor-pointer
@@ -94,21 +94,30 @@ export default function ContentOverlay({
             initialCount={like.count}
             initialLiked={like.liked}
             disabled={false}
+            onRequireAuth={isGuest ? onRequireAuth : undefined}
           />
         )}
 
         {silhouettesCount !== undefined && (
           <button
+            disabled={silhouettesCount === 0}
             onClick={(e) => {
-              e.stopPropagation()
-              onOpenLooks?.()
+              e.stopPropagation();
+
+              if (silhouettesCount === 0) return;
+
+              onOpenLooks?.();
             }}
             className={`
               ${typography.buttonOverlay}
               text-white
-              hover:text-white/50
               transition-colors
               duration-300
+              ${
+                silhouettesCount === 0
+                  ? "cursor-default opacity-50"
+                  : "cursor-pointer hover:text-white/50"
+              }
             `}
           >
             looks • {silhouettesCount}
@@ -118,8 +127,14 @@ export default function ContentOverlay({
         {!isOwner && onFollowToggle && (
           <button
             onClick={(e) => {
-              e.stopPropagation()
-              onFollowToggle()
+              e.stopPropagation();
+
+              if (isGuest) {
+                onRequireAuth?.();
+                return;
+              }
+
+              onFollowToggle?.();
             }}
             className="
               tracking-[0.2em]
@@ -136,8 +151,8 @@ export default function ContentOverlay({
         {isOwner && onDelete && (
           <button
             onClick={(e) => {
-              e.stopPropagation()
-              onDelete()
+              e.stopPropagation();
+              onDelete();
             }}
             className="
               text-white
@@ -154,6 +169,5 @@ export default function ContentOverlay({
         )}
       </div>
     </div>
-  )
+  );
 }
-

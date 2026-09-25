@@ -2,148 +2,123 @@ import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 
-export async function POST(request: Request){
+export async function POST(request: Request) {
+  const body = await request.json();
+  const { imageUrl, moodboardId } = body;
 
-    const body = await request.json()
-    const { imageUrl, moodboardId } = body
+  const user = await getCurrentSessionUser();
+  if (!user) {
+    return NextResponse.json({ error: "Session invalide" }, { status: 401 });
+  }
 
-    const user = await getCurrentSessionUser()
-    if (!user){
-        return NextResponse.json(
-            {error:"Session invalide"},
-            {status:401}
-        )
-    }
-
-    if (!imageUrl || !moodboardId){
-        return NextResponse.json(
-            {error:'Champs manquants'},
-            {status: 400}
-        )
-    }
-    try{
-        const result = await pool.query(
-            `
+  if (!imageUrl || !moodboardId) {
+    return NextResponse.json({ error: "Champs manquants" }, { status: 400 });
+  }
+  try {
+    const result = await pool.query(
+      `
             INSERT INTO silhouettes
             (user_id, moodboard_id, image_url)
             VALUES ($1, $2, $3)
             RETURNING *
             `,
-            [
-                user.id,
-                moodboardId,
-                imageUrl
-            ]
-        )
+      [user.id, moodboardId, imageUrl],
+    );
+
+    return NextResponse.json(result.rows[0], { status: 201 });
+  } catch (err: any) {
+    console.error("ERROR CREATE SILHOUETTE:", err);
 
     return NextResponse.json(
-        result.rows[0],
-        {status:201}
-    )} catch (err: any) {
-    console.error("ERROR CREATE SILHOUETTE:", err)
-
-    return NextResponse.json(
-        {
-            error: err.message,
-            code: err.code,
-            detail: err.detail,
-            constraint: err.constraint,
-        },
-        { status: 500 }
-    )
-    }
+      {
+        error: err.message,
+        code: err.code,
+        detail: err.detail,
+        constraint: err.constraint,
+      },
+      { status: 500 },
+    );
+  }
 }
-
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
 
-  const { searchParams } = new URL(request.url)
+  const userIdParam = searchParams.get("userId");
+  const moodboardId = searchParams.get("moodboardId");
+  const liked = searchParams.get("liked");
 
-  const userIdParam = searchParams.get("userId")
-  const moodboardId = searchParams.get("moodboardId")
-  const liked = searchParams.get("liked")
+  const currentSession = await getCurrentSessionUser();
 
-  const currentSession = await getCurrentSessionUser()
-  if (!currentSession) {
-    return NextResponse.json(
-      {error:"Non connecté"},
-      {status:401}
-    )
+  if (liked === "true") {
+    if (!currentSession) {
+      return NextResponse.json({ error: "Non connecté" }, { status: 401 });
+    }
+
+    try {
+      const silhouettes = await pool.query(
+        `
+        SELECT 
+          silhouettes.*,
+          creator.username,
+          target_user.id AS target_user_id,
+          target_user.username AS target_username,
+          moodboards.tags,
+
+          COUNT(DISTINCT likes_all.id)::int AS likes_count,
+
+          EXISTS (
+            SELECT 1
+            FROM likes user_likes
+            WHERE user_likes.user_id = $1
+            AND user_likes.silhouette_id = silhouettes.id
+          ) AS liked_by_current_user
+
+        FROM likes l
+
+        JOIN silhouettes
+        ON silhouettes.id = l.silhouette_id
+
+        JOIN users creator
+        ON creator.id = silhouettes.user_id
+
+        JOIN moodboards
+        ON moodboards.id = silhouettes.moodboard_id
+
+        JOIN users target_user
+        ON target_user.id = moodboards.user_id
+
+        LEFT JOIN likes likes_all
+        ON likes_all.silhouette_id = silhouettes.id
+
+        WHERE l.user_id = $1
+
+        GROUP BY 
+          silhouettes.id,
+          creator.username,
+          target_user.id,
+          target_user.username,
+          moodboards.tags
+
+        ORDER BY MAX(l.created_at) DESC
+        `,
+        [currentSession.id],
+      );
+
+      return NextResponse.json({
+        user: null,
+        silhouettes: silhouettes.rows,
+      });
+    } catch (err) {
+      console.error("ERROR LIKED SILHOUETTES:", err);
+
+      return NextResponse.json(
+        { error: "Erreur récupération silhouettes likées" },
+        { status: 500 },
+      );
+    }
   }
 
- // CAS 0 : SILHOUETTES LIKEES PAR L'UTILISATEUR
-
-if (liked === "true") {
-  try {
-
-    const silhouettes = await pool.query(
-      `
-      SELECT 
-        silhouettes.*,
-        creator.username,
-        target_user.id AS target_user_id,
-        target_user.username AS target_username,
-        moodboards.tags,
-
-        COUNT(DISTINCT likes_all.id)::int AS likes_count,
-
-        EXISTS (
-          SELECT 1
-          FROM likes user_likes
-          WHERE user_likes.user_id = $1
-          AND user_likes.silhouette_id = silhouettes.id
-        ) AS liked_by_current_user
-
-      FROM likes l
-
-      JOIN silhouettes
-      ON silhouettes.id = l.silhouette_id
-
-      JOIN users creator
-      ON creator.id = silhouettes.user_id
-
-      JOIN moodboards
-      ON moodboards.id = silhouettes.moodboard_id
-
-      JOIN users target_user
-      ON target_user.id = moodboards.user_id
-
-      LEFT JOIN likes likes_all
-      ON likes_all.silhouette_id = silhouettes.id
-
-      WHERE l.user_id = $1
-
-      GROUP BY 
-        silhouettes.id,
-        creator.username,
-        target_user.id,
-        target_user.username,
-        moodboards.tags
-
-      ORDER BY MAX(l.created_at) DESC
-      `,
-      [
-        currentSession.id
-      ]
-    )
-    return NextResponse.json({
-      user: null,
-      silhouettes: silhouettes.rows
-    })
-
-  } catch (err) {
-
-    console.error("ERROR LIKED SILHOUETTES:", err)
-
-    return NextResponse.json(
-      { error: "Erreur récupération silhouettes likées" },
-      { status: 500 }
-    )
-
-  }
-}
-
-  // CAS 1 : PROPOSITIONS D'UN MOODBOARD
   if (moodboardId) {
     const moodboard = await pool.query(
       `
@@ -157,14 +132,14 @@ if (liked === "true") {
 
       WHERE moodboards.id=$1
       `,
-      [moodboardId]
-    )
+      [moodboardId],
+    );
 
     if (!moodboard.rows[0]) {
       return NextResponse.json(
-        {error:"Moodboard introuvable"},
-        {status:404}
-      )
+        { error: "Moodboard introuvable" },
+        { status: 404 },
+      );
     }
 
     const silhouettes = await pool.query(
@@ -196,23 +171,20 @@ if (liked === "true") {
 
       ORDER BY silhouettes.created_at DESC
       `,
-      [
-        moodboardId,
-        currentSession.id
-      ]
-    )
+      [moodboardId, currentSession?.id ?? null],
+    );
+
     return NextResponse.json({
       user: moodboard.rows[0],
-      silhouettes: silhouettes.rows
-    })
+      silhouettes: silhouettes.rows,
+    });
   }
 
+  if (!userIdParam && !currentSession) {
+    return NextResponse.json({ error: "Non connecté" }, { status: 401 });
+  }
 
-
-  // CAS 2 : PROFIL
-  const userId = userIdParam
-    ? Number(userIdParam)
-    : currentSession.id
+  const userId = userIdParam ? Number(userIdParam) : currentSession!.id;
 
   const user = await pool.query(
     `
@@ -220,14 +192,14 @@ if (liked === "true") {
     FROM users
     WHERE id=$1
     `,
-    [userId]
-  )
+    [userId],
+  );
 
   if (!user.rows[0]) {
     return NextResponse.json(
-      {error:"Utilisateur introuvable"},
-      {status:404}
-    )
+      { error: "Utilisateur introuvable" },
+      { status: 404 },
+    );
   }
 
   const silhouettes = await pool.query(
@@ -273,38 +245,27 @@ if (liked === "true") {
 
     ORDER BY silhouettes.created_at DESC
     `,
-    [
-      userId,
-      currentSession.id
-    ]
-  )
-  return NextResponse.json({
-    user:user.rows[0],
-    silhouettes:silhouettes.rows
-  })
+    [userId, currentSession?.id ?? null],
+  );
 
+  return NextResponse.json({
+    user: user.rows[0],
+    silhouettes: silhouettes.rows,
+  });
 }
 
-
-
 export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const id = searchParams.get("id")
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
 
   if (!id) {
-    return NextResponse.json(
-      { error: "ID manquant" },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: "ID manquant" }, { status: 400 });
   }
 
-  const currentSession = await getCurrentSessionUser()
+  const currentSession = await getCurrentSessionUser();
 
   if (!currentSession) {
-    return NextResponse.json(
-      { error: "Non connecté" },
-      { status: 401 }
-    )
+    return NextResponse.json({ error: "Non connecté" }, { status: 401 });
   }
 
   try {
@@ -314,27 +275,19 @@ export async function DELETE(request: Request) {
       FROM silhouettes
       WHERE id=$1
       `,
-      [id]
-    )
+      [id],
+    );
 
     if (silhouette.rows.length === 0) {
-      return NextResponse.json(
-        { error: "Look introuvable" },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: "Look introuvable" }, { status: 404 });
     }
 
-    const isOwner =
-      silhouette.rows[0].user_id === currentSession.id
+    const isOwner = silhouette.rows[0].user_id === currentSession.id;
 
-    const isAdmin =
-      currentSession.role === "admin"
+    const isAdmin = currentSession.role === "admin";
 
     if (!isOwner && !isAdmin) {
-      return NextResponse.json(
-        { error: "Non autorisé" },
-        { status: 403 }
-      )
+      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
     }
 
     await pool.query(
@@ -342,30 +295,23 @@ export async function DELETE(request: Request) {
       DELETE FROM likes
       WHERE silhouette_id=$1
       `,
-      [id]
-    )
+      [id],
+    );
 
     await pool.query(
       `
       DELETE FROM silhouettes
       WHERE id=$1
       `,
-      [id]
-    )
+      [id],
+    );
 
     return NextResponse.json({
-      success: true
-    })
-
+      success: true,
+    });
   } catch (error) {
-    console.error(
-      "DELETE SILHOUETTE ERROR:",
-      error
-    )
+    console.error("DELETE SILHOUETTE ERROR:", error);
 
-    return NextResponse.json(
-      { error: "Erreur suppression" },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: "Erreur suppression" }, { status: 500 });
   }
 }

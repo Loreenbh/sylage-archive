@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { useCallback, useRef, useState } from "react"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
+import { useCallback, useRef, useState } from "react";
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor";
 
 type Props = {
-  slot: MoodboardSlot
-  onSelect: () => void
-  onChangeTransform: (patch: MoodboardSlotPatch) => void
-  className?: string
-}
+  slot: MoodboardSlot;
+  onSelect: () => void;
+  onChangeTransform: (patch: MoodboardSlotPatch) => void;
+  className?: string;
+};
 
-const MIN_SCALE = 1
-const MAX_SCALE = 3
-const ZOOM_DRAG_SENSITIVITY = 0.01
+const MIN_SCALE = 1;
+const MAX_SCALE = 3;
+const ZOOM_DRAG_SENSITIVITY = 0.01;
 
 export default function ImageSlot({
   slot,
@@ -20,180 +20,162 @@ export default function ImageSlot({
   onChangeTransform,
   className = "",
 }: Props) {
-  const containerRef = useRef<HTMLDivElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   /* ---------------- DEPLACEMENT ---------------- */
 
   const panState = useRef<{
-    startX: number
-    startY: number
-    startOffsetX: number
-    startOffsetY: number
-  } | null>(null)
+    startX: number;
+    startY: number;
+    startOffsetX: number;
+    startOffsetY: number;
+  } | null>(null);
 
-  const [isPanning, setIsPanning] = useState(false)
+  const [isPanning, setIsPanning] = useState(false);
 
   /* ---------------- ZOOM ---------------- */
 
   const zoomState = useRef<{
-    startY: number
-    startScale: number
-  } | null>(null)
+    startY: number;
+    startScale: number;
+  } | null>(null);
 
-  const [isZooming, setIsZooming] = useState(false)
+  const [isZooming, setIsZooming] = useState(false);
 
   /* ---------------- LIMITES DE DÉPLACEMENT ---------------- */
 
   const clampOffset = useCallback(
     (offsetX: number, offsetY: number, scale: number) => {
-      const rect = containerRef.current?.getBoundingClientRect()
+      const rect = containerRef.current?.getBoundingClientRect();
 
       if (!rect) {
         return {
           offsetX: 0,
           offsetY: 0,
-        }
+        };
       }
 
-      const maxOffsetX = (rect.width * (scale - 1)) / 2
-      const maxOffsetY = (rect.height * (scale - 1)) / 2
+      const maxOffsetX = (rect.width * (scale - 1)) / 2;
+      const maxOffsetY = (rect.height * (scale - 1)) / 2;
 
       return {
-        offsetX: Math.min(
-          maxOffsetX,
-          Math.max(-maxOffsetX, offsetX)
-        ),
-        offsetY: Math.min(
-          maxOffsetY,
-          Math.max(-maxOffsetY, offsetY)
-        ),
-      }
+        offsetX: Math.min(maxOffsetX, Math.max(-maxOffsetX, offsetX)),
+        offsetY: Math.min(maxOffsetY, Math.max(-maxOffsetY, offsetY)),
+      };
     },
-    []
-  )
+    [],
+  );
 
   /* ---------------- DOUBLE CLICK ---------------- */
 
   const handleDoubleClick = () => {
-    if (!slot) return
+    if (!slot) return;
 
     onChangeTransform({
       scale: 1,
       offsetX: 0,
       offsetY: 0,
-    })
-  }
+    });
+  };
 
-  const handlePanPointerDown = (
-    e: React.PointerEvent<HTMLButtonElement>
-  ) => {
-    if (!slot) return
+  const handlePanPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!slot) return;
 
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
 
-    e.currentTarget.setPointerCapture(e.pointerId)
+    e.currentTarget.setPointerCapture(e.pointerId);
 
     panState.current = {
       startX: e.clientX,
       startY: e.clientY,
       startOffsetX: slot.offsetX,
       startOffsetY: slot.offsetY,
-    }
+    };
 
-    setIsPanning(true)
-  }
+    setIsPanning(true);
+  };
 
-  const handlePanPointerMove = (
-    e: React.PointerEvent<HTMLButtonElement>
-  ) => {
-    if (!slot || !panState.current) return
+  const handlePanPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!slot || !panState.current) return;
 
-    const deltaX =
-      e.clientX - panState.current.startX
+    const deltaX = e.clientX - panState.current.startX;
 
-    const deltaY =
-      e.clientY - panState.current.startY
+    const deltaY = e.clientY - panState.current.startY;
 
     const { offsetX, offsetY } = clampOffset(
       panState.current.startOffsetX + deltaX,
       panState.current.startOffsetY + deltaY,
-      slot.scale
-    )
+      slot.scale,
+    );
 
     onChangeTransform({
       offsetX,
       offsetY,
-    })
-  }
+    });
+  };
 
   const handlePanPointerUp = () => {
-    panState.current = null
-    setIsPanning(false)
-  }
+    panState.current = null;
+    setIsPanning(false);
+  };
 
   const handlePanPointerCancel = () => {
-    panState.current = null
-    setIsPanning(false)
-  }
+    panState.current = null;
+    setIsPanning(false);
+  };
 
-  const handleZoomPointerDown = (
-    e: React.PointerEvent<HTMLButtonElement>
-  ) => {
-    if (!slot) return
+  const handleZoomPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!slot) return;
 
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
 
-    e.currentTarget.setPointerCapture(e.pointerId)
+    e.currentTarget.setPointerCapture(e.pointerId);
 
     zoomState.current = {
       startY: e.clientY,
       startScale: slot.scale,
-    }
+    };
 
-    setIsZooming(true)
-  }
+    setIsZooming(true);
+  };
 
-  const handleZoomPointerMove = (
-    e: React.PointerEvent<HTMLButtonElement>
-  ) => {
-    if (!slot || !zoomState.current) return
+  const handleZoomPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!slot || !zoomState.current) return;
 
-    const deltaY =
-      zoomState.current.startY - e.clientY
+    const deltaY = zoomState.current.startY - e.clientY;
 
     const nextScale = Math.min(
       MAX_SCALE,
       Math.max(
         MIN_SCALE,
-        zoomState.current.startScale +
-          deltaY * ZOOM_DRAG_SENSITIVITY
-      )
-    )
+        zoomState.current.startScale + deltaY * ZOOM_DRAG_SENSITIVITY,
+      ),
+    );
 
     const { offsetX, offsetY } = clampOffset(
       slot.offsetX,
       slot.offsetY,
-      nextScale
-    )
+      nextScale,
+    );
 
     onChangeTransform({
       scale: nextScale,
       offsetX,
       offsetY,
-    })
-  }
+    });
+  };
 
   const handleZoomPointerUp = () => {
-    zoomState.current = null
-    setIsZooming(false)
-  }
+    zoomState.current = null;
+    setIsZooming(false);
+  };
 
   const handleZoomPointerCancel = () => {
-    zoomState.current = null
-    setIsZooming(false)
-  }
+    zoomState.current = null;
+    setIsZooming(false);
+  };
 
   return (
     <div
@@ -237,9 +219,9 @@ export default function ImageSlot({
           <button
             type="button"
             onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              onSelect()
+              e.preventDefault();
+              e.stopPropagation();
+              onSelect();
             }}
             className="
               export-hidden
@@ -273,8 +255,8 @@ export default function ImageSlot({
             onPointerUp={handlePanPointerUp}
             onPointerCancel={handlePanPointerCancel}
             onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
+              e.preventDefault();
+              e.stopPropagation();
             }}
             className={`
               export-hidden
@@ -319,8 +301,8 @@ export default function ImageSlot({
             onPointerUp={handleZoomPointerUp}
             onPointerCancel={handleZoomPointerCancel}
             onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
+              e.preventDefault();
+              e.stopPropagation();
             }}
             className={`
               export-hidden
@@ -380,5 +362,5 @@ export default function ImageSlot({
         </button>
       )}
     </div>
-  )
+  );
 }

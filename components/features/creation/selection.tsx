@@ -1,34 +1,33 @@
-"use client"
+"use client";
 
-import type { OnNavigate, NavigationParams } from "@/types/navigation"
+import type { OnNavigate, NavigationParams } from "@/types/navigation";
 
 /* COMPONENTS */
-import BookLayout from "@/components/book/BookLayout"
-import Sidebar from "@/components/navigation/SideBar"
-import Header from "@/components/navigation/Header"
-import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid"
-import ProfileButton from "@/components/ui/buttons/ProfileButton"
+import BookLayout from "@/components/book/BookLayout";
+import Sidebar from "@/components/navigation/SideBar";
+import Header from "@/components/navigation/Header";
+import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid";
+import ProfileButton from "@/components/ui/buttons/ProfileButton";
 
-import LayoutAPreview from "./layouts/previews/LayoutAPreview"
-import LayoutBPreview from "./layouts/previews/LayoutBPreview"
-import LayoutCPreview from "./layouts/previews/LayoutCPreview"
-import LayoutDPreview from "./layouts/previews/LayoutDPreview"
+import LayoutAPreview from "./layouts/previews/LayoutAPreview";
+import LayoutBPreview from "./layouts/previews/LayoutBPreview";
+import LayoutCPreview from "./layouts/previews/LayoutCPreview";
+import LayoutDPreview from "./layouts/previews/LayoutDPreview";
 
 /* STYLE */
-import { typography } from "@/styles/typography"
-import BackButton from "@/components/ui/buttons/BackButton"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
-import { colors } from "@/styles/colors"
+import { typography } from "@/styles/typography";
+import BackButton from "@/components/ui/buttons/BackButton";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { colors } from "@/styles/colors";
 /* TYPES */
 type Props = {
-  onNavigate: OnNavigate
-  params?: NavigationParams["params"] | null
-  onBack?: () => void
-
-}
+  onNavigate: OnNavigate;
+  params?: NavigationParams["params"] | null;
+  onBack?: () => void;
+};
 
 export default function Create({ onNavigate, params, onBack }: Props) {
-const { user: currentUser } = useCurrentUser()
+  const { user: currentUser } = useCurrentUser();
 
   return (
     <BookLayout
@@ -59,23 +58,19 @@ const { user: currentUser } = useCurrentUser()
       sidebar={<Sidebar text="EDITION" clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
-          <p
-            className={typography.buttonBody}>layout</p>
+          <p className={typography.buttonBody}>layout</p>
           <span className={typography.bullet}>•</span>
-          <p
-            className={typography.buttonBody}>foundation</p>
+          <p className={typography.buttonBody}>foundation</p>
         </div>
       }
-      footerLeft={ <BackButton onBack={onBack} /> }
+      footerLeft={<BackButton onBack={onBack} />}
       footerRight={
-          <div className="flex items-center gap-4">
-            <span className={typography.username}>
-              {currentUser?.username}
-            </span>
-            <ProfileButton onNavigate={onNavigate}/>
-          </div>
-          }
-        >     
+        <div className="flex items-center gap-4">
+          <span className={typography.username}>{currentUser?.username}</span>
+          <ProfileButton onNavigate={onNavigate} />
+        </div>
+      }
+    >
       <FourSquaresGrid
         topLeft={
           <div
@@ -95,7 +90,7 @@ const { user: currentUser } = useCurrentUser()
             </div>
           </div>
         }
-        
+
         topRight={
           <div
             className="h-full w-full cursor-pointer"
@@ -110,7 +105,7 @@ const { user: currentUser } = useCurrentUser()
             }
           >
             <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
-                <LayoutBPreview />
+              <LayoutBPreview />
             </div>
           </div>
         }
@@ -129,7 +124,7 @@ const { user: currentUser } = useCurrentUser()
             }
           >
             <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
-                <LayoutCPreview />
+              <LayoutCPreview />
             </div>
           </div>
         }
@@ -138,11 +133,11 @@ const { user: currentUser } = useCurrentUser()
           <div
             onClick={() =>
               onNavigate({
-                to:"editor",
-                direction:"next",
-                params:{
-                  layout:"D",
-                }
+                to: "editor",
+                direction: "next",
+                params: {
+                  layout: "D",
+                },
               })
             }
             className="h-full w-full cursor-pointer"
@@ -152,5 +147,5 @@ const { user: currentUser } = useCurrentUser()
         }
       />
     </BookLayout>
-  )
+  );
 }

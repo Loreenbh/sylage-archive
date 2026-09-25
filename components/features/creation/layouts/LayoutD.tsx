@@ -1,23 +1,27 @@
-"use client"
+"use client";
 
-import ImageSlot from "./ImageSlot"
-import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor"
-import { colors } from "@/styles/colors"
+import ImageSlot from "./ImageSlot";
+import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  images?: MoodboardSlot[]
-  onSelectSlot?: (index: number) => void
-  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void
+  images?: MoodboardSlot[];
+  onSelectSlot?: (index: number) => void;
+  onUpdateSlot?: (index: number, patch: MoodboardSlotPatch) => void;
+};
 
-}
-
-export default function LayoutD({ images = [], onSelectSlot, onUpdateSlot }: Props) {
-  const select = (index: number) => onSelectSlot?.(index)
-  const update = (index: number) => (patch: MoodboardSlotPatch) => onUpdateSlot?.(index, patch)
+export default function LayoutD({
+  images = [],
+  onSelectSlot,
+  onUpdateSlot,
+}: Props) {
+  const select = (index: number) => onSelectSlot?.(index);
+  const update = (index: number) => (patch: MoodboardSlotPatch) =>
+    onUpdateSlot?.(index, patch);
 
   return (
-  <div
-    className="
+    <div
+      className="
       grid
       grid-cols-[1fr_3fr]
       grid-rows-4
@@ -27,55 +31,51 @@ export default function LayoutD({ images = [], onSelectSlot, onUpdateSlot }: Pro
       min-h-0
       min-w-0
     "
-  >
+    >
+      {/* LEFT TOP */}
+      <ImageSlot
+        slot={images[0] ?? null}
+        onSelect={() => select(0)}
+        onChangeTransform={update(0)}
+        className={`${colors.bg.empty70} hover:opacity-50`}
+      />
 
-    {/* LEFT TOP */}
-    <ImageSlot
-      slot={images[0] ?? null}
-      onSelect={() => select(0)}
-      onChangeTransform={update(0)}
-      className={`${colors.bg.empty70} hover:opacity-50`}
-    />
+      {/* LEFT MIDDLE */}
+      <ImageSlot
+        slot={images[1] ?? null}
+        onSelect={() => select(1)}
+        onChangeTransform={update(1)}
+        className={`"row-start-2 col-start-1 ${colors.bg.empty70} hover:opacity-50`}
+      />
 
-    {/* LEFT MIDDLE */}
-    <ImageSlot
-      slot={images[1] ?? null}
-      onSelect={() => select(1)}
-      onChangeTransform={update(1)}
-      className={`"row-start-2 col-start-1 ${colors.bg.empty70} hover:opacity-50`}
-    />
+      {/* LEFT BOTTOM */}
+      <ImageSlot
+        slot={images[3] ?? null}
+        onSelect={() => select(3)}
+        onChangeTransform={update(3)}
+        className={`"row-start-3 col-start-1 ${colors.bg.empty70} hover:opacity-50`}
+      />
 
-    {/* LEFT BOTTOM */}
-    <ImageSlot
-      slot={images[3] ?? null}
-      onSelect={() => select(3)}
-      onChangeTransform={update(3)}
-      className={`"row-start-3 col-start-1 ${colors.bg.empty70} hover:opacity-50`}
-    />
+      {/* HERO */}
+      <ImageSlot
+        slot={images[2] ?? null}
+        onSelect={() => select(2)}
+        onChangeTransform={update(2)}
+        className={`row-start-1 row-span-3 col-start-2 ${colors.bg.empty70} hover:opacity-50`}
+      />
 
-
-    {/* HERO */}
-    <ImageSlot
-      slot={images[2] ?? null}
-      onSelect={() => select(2)}
-      onChangeTransform={update(2)}
-      className={`row-start-1 row-span-3 col-start-2 ${colors.bg.empty70} hover:opacity-50`}
-    />
-
-
-    {/* BOTTOM STRIP */}
-    <div className="row-start-4 col-span-2 grid grid-cols-3 gap-[2px]">
-      {[4,5,6].map(index => (
-        <ImageSlot
-          key={index}
-          slot={images[index] ?? null}
-          onSelect={() => select(index)}
-          onChangeTransform={update(index)}
-          className={`${colors.bg.empty70} hover:opacity-50`}
-        />
-      ))}
+      {/* BOTTOM STRIP */}
+      <div className="row-start-4 col-span-2 grid grid-cols-3 gap-[2px]">
+        {[4, 5, 6].map((index) => (
+          <ImageSlot
+            key={index}
+            slot={images[index] ?? null}
+            onSelect={() => select(index)}
+            onChangeTransform={update(index)}
+            className={`${colors.bg.empty70} hover:opacity-50`}
+          />
+        ))}
+      </div>
     </div>
-
-  </div>
-)
+  );
 }

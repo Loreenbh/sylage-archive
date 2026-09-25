@@ -10,8 +10,8 @@ export const colors = {
     earth: "bg-[#806054]",
     charcoal: "bg-[#211C19]",
     charcoal70: "bg-[#211C19]/70",
-    empty: "bg-[#D9CEBD]/30",
-    empty70: "bg-[#D9CEBD]/70"
+    empty: "bg-[#B3A193]/30",
+    empty70: "bg-[#B3A193]/70",
   },
 
   text: {
@@ -19,7 +19,7 @@ export const colors = {
     stone: "text-[#7B786C]",
     earth: "text-[#806054]",
     charcoal: "text-[#211C19]",
-    charcoal70: "text-[#211C19]/60"
+    charcoal70: "text-[#211C19]/60",
   },
 
   border: {
@@ -39,4 +39,4 @@ export const colors = {
     error: "text-[#5A2B2B]",
     success: "text-[#323E23]",
   },
-}
+};

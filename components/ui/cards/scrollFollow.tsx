@@ -1,17 +1,17 @@
-import { useState } from "react"
-import { Follow } from "@/types/follow"
-import { typography } from "@/styles/typography"
+import { useState } from "react";
+import { Follow } from "@/types/follow";
+import { typography } from "@/styles/typography";
 
 type Props = {
-  followingTitle: string
-  followersTitle: string
+  followingTitle: string;
+  followersTitle: string;
 
-  following: Follow[]
-  followers: Follow[]
-  onOpenProfile?: (item: Follow) => void
-  onUnfollow?: (item: Follow) => void
-  canManageFollow?: boolean
-}
+  following: Follow[];
+  followers: Follow[];
+  onOpenProfile?: (item: Follow) => void;
+  onUnfollow?: (item: Follow) => void;
+  canManageFollow?: boolean;
+};
 
 export default function ScrollFollow({
   followingTitle,
@@ -22,25 +22,21 @@ export default function ScrollFollow({
   onUnfollow,
   canManageFollow = false,
 }: Props) {
+  const sortedFollowing = [...following].sort((a, b) =>
+    a.username.localeCompare(b.username),
+  );
 
-  const sortedFollowing = [...following].sort((a,b) =>
-    a.username.localeCompare(b.username)
-  )
+  const sortedFollowers = [...followers].sort((a, b) =>
+    a.username.localeCompare(b.username),
+  );
 
-  const sortedFollowers = [...followers].sort((a,b) =>
-    a.username.localeCompare(b.username)
-  )
+  const [activeTab, setActiveTab] = useState<"following" | "followers">(
+    "following",
+  );
 
-  const [activeTab, setActiveTab] = useState<"following" | "followers">("following")
-
-  const renderList = (
-    items: Follow[],
-    showUnfollow: boolean
-  ) => (
+  const renderList = (items: Follow[], showUnfollow: boolean) => (
     <div className="h-full flex flex-col min-h-0">
-
       <div className="flex-1 min-h-0 overflow-y-auto space-y-2 lg:space-y-2 mt-4 lg:mt-3">
-
         {items.map((item) => (
           <div
             key={item.id}
@@ -129,52 +125,51 @@ export default function ScrollFollow({
                 </button>
               )}
             </div>
-
           </div>
         ))}
-
       </div>
     </div>
-  )
-    return (
-      <div className={`h-full min-h-0 w-full flex flex-col overflow-hidden`}>
-
-        <div className="flex border-b border-black/10 shrink-0 sm:pt-2 lg:pt-4">
-
-          <button
-            onClick={() => setActiveTab("following")}
-            className={`
+  );
+  return (
+    <div className={`h-full min-h-0 w-full flex flex-col overflow-hidden`}>
+      <div className="flex border-b border-black/10 shrink-0 sm:pt-2 lg:pt-4">
+        <button
+          onClick={() => setActiveTab("following")}
+          className={`
               flex-1 transition-opacity
-              ${activeTab === "following"
-                ? "opacity-100 border-b border-black"
-                : "opacity-40"}
+              ${
+                activeTab === "following"
+                  ? "opacity-100 border-b border-black"
+                  : "opacity-40"
+              }
             `}
-          >
-            <span className="text-[7px] sm:text-[12px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50" >
-              {followingTitle}
-            </span>
-          </button>
+        >
+          <span className="text-[7px] sm:text-[12px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
+            {followingTitle}
+          </span>
+        </button>
 
-          <button
-            onClick={() => setActiveTab("followers")}
-            className={`
+        <button
+          onClick={() => setActiveTab("followers")}
+          className={`
               flex-1 transition-opacity
-              ${activeTab === "followers"
-                ? "opacity-100 border-b border-black"
-                : "opacity-40"}
+              ${
+                activeTab === "followers"
+                  ? "opacity-100 border-b border-black"
+                  : "opacity-40"
+              }
             `}
-          >
-            <span className="text-[7px] sm:text-[12px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
-              {followersTitle}
-            </span>
-          </button>
-        </div>
-        <div className="flex-1 min-h-0">
-          {activeTab === "following"
-            ? renderList(sortedFollowing, canManageFollow)
-            : renderList(sortedFollowers, false)
-          }
-        </div>
+        >
+          <span className="text-[7px] sm:text-[12px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
+            {followersTitle}
+          </span>
+        </button>
       </div>
-    )
+      <div className="flex-1 min-h-0">
+        {activeTab === "following"
+          ? renderList(sortedFollowing, canManageFollow)
+          : renderList(sortedFollowers, false)}
+      </div>
+    </div>
+  );
 }

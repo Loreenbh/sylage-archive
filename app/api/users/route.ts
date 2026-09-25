@@ -1,55 +1,50 @@
-import { NextResponse } from "next/server"
-import { pool } from "@/lib/db"
-import { getCurrentSessionUser } from "@/lib/services/session"
-import { createClient } from "@/lib/server"
+import { NextResponse } from "next/server";
+import { pool } from "@/lib/db";
+import { getCurrentSessionUser } from "@/lib/services/session";
+import { createClient } from "@/lib/server";
 
-const MIN_USERNAME_LENGTH = 3
-const MAX_USERNAME_LENGTH = 15
+const MIN_USERNAME_LENGTH = 3;
+const MAX_USERNAME_LENGTH = 15;
 
-const MIN_PASSWORD_LENGTH = 4
-const MAX_PASSWORD_LENGTH = 20
-
+const MIN_PASSWORD_LENGTH = 4;
+const MAX_PASSWORD_LENGTH = 20;
 
 export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url)
-    const userIdParam = searchParams.get("userId")
+  const { searchParams } = new URL(request.url);
+  const userIdParam = searchParams.get("userId");
 
-    const currentSession = await getCurrentSessionUser()
-    if (!currentSession) {
-        return NextResponse.json(
-            { error:"Non connecté" },
-            { status:401 }
-        )
-    }
+  const currentSession = await getCurrentSessionUser();
 
-    const userId = userIdParam
-        ? Number(userIdParam)
-        : currentSession.id
+  if (!userIdParam && !currentSession) {
+    return NextResponse.json({ error: "Non connecté" }, { status: 401 });
+  }
 
+  const userId = userIdParam ? Number(userIdParam) : currentSession!.id;
 
-    const user = await pool.query(
-        `
+  const user = await pool.query(
+    `
         SELECT id, username, avatar_url
         FROM users
         WHERE id=$1
         `,
-        [userId]
-    )
+    [userId],
+  );
 
-    if (!user.rows[0]) {
-        return NextResponse.json(
-            { error:"Utilisateur introuvable" },
-            { status:404 }
-        )
-    }
+  if (!user.rows[0]) {
+    return NextResponse.json(
+      { error: "Utilisateur introuvable" },
+      { status: 404 },
+    );
+  }
 
-
-    const moodboards = await pool.query(
-        `
+  const moodboards = await pool.query(
+    `
         SELECT 
             moodboards.*,
             users.username,
+
             COUNT(DISTINCT likes.id)::int AS likes_count,
+
             COUNT(DISTINCT silhouettes.id)::int AS silhouettes_count,
 
             EXISTS (
@@ -78,15 +73,11 @@ export async function GET(request: Request) {
 
         ORDER BY moodboards.created_at DESC
         `,
-        [
-            userId,
-            currentSession.id
-        ]
-    )
+    [userId, currentSession?.id ?? null],
+  );
 
-
-    const silhouettes = await pool.query(
-        `
+  const silhouettes = await pool.query(
+    `
         SELECT
             silhouettes.*,
             users.username,
@@ -116,107 +107,100 @@ export async function GET(request: Request) {
 
         ORDER BY silhouettes.created_at DESC
         `,
-        [
-            userId,
-            currentSession.id
-        ]
-    )
-    return NextResponse.json({
-        user:user.rows[0],
-        moodboards:moodboards.rows,
-        silhouettes:silhouettes.rows
-    })
+    [userId, currentSession?.id ?? null],
+  );
 
+  return NextResponse.json({
+    user: user.rows[0],
+    moodboards: moodboards.rows,
+    silhouettes: silhouettes.rows,
+  });
 }
 
-
 export async function PATCH(request: Request) {
-    const {
-        avatar_url,
-        username,
-        password
-    } = await request.json()
+  const { avatar_url, username, password } = await request.json();
 
-    const currentSession = await getCurrentSessionUser()
-    if (!currentSession) {
-        return NextResponse.json(
-            { error:"Non connecté" },
-            { status:401 }
-        )
+  const currentSession = await getCurrentSessionUser();
+  if (!currentSession) {
+    return NextResponse.json({ error: "Non connecté" }, { status: 401 });
+  }
+
+  let updatedUser = null;
+
+  if (username) {
+    if (username.length < 3) {
+      return NextResponse.json(
+        {
+          error: `Username must be at least ${MIN_USERNAME_LENGTH} characters`,
+        },
+        { status: 400 },
+      );
     }
 
-    let updatedUser = null
+    if (username.length > MAX_USERNAME_LENGTH) {
+      return NextResponse.json(
+        {
+          error: `Username must be less than ${MAX_USERNAME_LENGTH} characters`,
+        },
+        { status: 400 },
+      );
+    }
 
-    if (username) {
-        if (username.length < 3) {
-            return NextResponse.json(
-                { error:`Username must be at least ${MIN_USERNAME_LENGTH} characters`},
-                { status:400 }
-            )
-        }
-
-        if (username.length > MAX_USERNAME_LENGTH) {
-            return NextResponse.json(
-                { error:`Username must be less than ${MAX_USERNAME_LENGTH} characters`},
-                { status:400 }
-            )
-        }
-
-        const existing = await pool.query(
-            `
+    const existing = await pool.query(
+      `
             SELECT id
             FROM users
             WHERE username=$1
             AND id != $2
             `,
-            [ username, currentSession.id ]
-        )
+      [username, currentSession.id],
+    );
 
-        if(existing.rows[0]) {
-            return NextResponse.json(
-                { error:"Username already taken"},
-                {status:409}
-            )
-        }
+    if (existing.rows[0]) {
+      return NextResponse.json(
+        { error: "Username already taken" },
+        { status: 409 },
+      );
+    }
+  }
+
+  if (password) {
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      return NextResponse.json(
+        {
+          error: `Le mot de passe doit faire au moins ${MIN_PASSWORD_LENGTH} caractères`,
+        },
+        { status: 400 },
+      );
     }
 
-    if (password) {
-        if (password.length < MIN_PASSWORD_LENGTH) {
-            return NextResponse.json(
-                {
-                    error: `Le mot de passe doit faire au moins ${MIN_PASSWORD_LENGTH} caractères`
-                },
-                { status: 400 }
-            )
-        }
-
-        if (password.length > MAX_PASSWORD_LENGTH) {
-            return NextResponse.json(
-                {
-                    error: "Le mot de passe est trop long"
-                },
-                { status: 400 }
-            )
-        }
-
-        const supabase = await createClient()
-
-        const { error } = await supabase.auth.updateUser({
-            password
-        })
-
-        if (error) {
-            console.error(error)
-
-            return NextResponse.json(
-                { error: "Impossible de modifier le mot de passe" },
-                { status: 500 }
-            )
-        }
+    if (password.length > MAX_PASSWORD_LENGTH) {
+      return NextResponse.json(
+        {
+          error: "Le mot de passe est trop long",
+        },
+        { status: 400 },
+      );
     }
-    if (avatar_url || username) {
-        updatedUser = await pool.query(
-            `
+
+    const supabase = await createClient();
+
+    const { error } = await supabase.auth.updateUser({
+      password,
+    });
+
+    if (error) {
+      console.error(error);
+
+      return NextResponse.json(
+        { error: "Impossible de modifier le mot de passe" },
+        { status: 500 },
+      );
+    }
+  }
+  if (avatar_url || username) {
+    updatedUser = await pool.query(
+      `
             UPDATE users
 
             SET
@@ -227,50 +211,42 @@ export async function PATCH(request: Request) {
 
             RETURNING id, username, avatar_url
             `,
-            [
-                avatar_url ?? null,
-                username ?? null,
-                currentSession.id
-            ]
-        )
-    }
+      [avatar_url ?? null, username ?? null, currentSession.id],
+    );
+  }
 
-    if (updatedUser) {
-        return NextResponse.json({
-            user:updatedUser.rows[0]
-        })
-    }
+  if (updatedUser) {
+    return NextResponse.json({
+      user: updatedUser.rows[0],
+    });
+  }
 
-
-    const user = await pool.query(
-        `
+  const user = await pool.query(
+    `
         SELECT id, username, avatar_url
         FROM users
         WHERE id=$1
         `,
-        [currentSession.id]
-    )
-    return NextResponse.json({
-        user:user.rows[0]
-    })
+    [currentSession.id],
+  );
+  return NextResponse.json({
+    user: user.rows[0],
+  });
 }
 
-export async function DELETE(){
-  const currentSession = await getCurrentSessionUser()
-  if(!currentSession){
-    return NextResponse.json(
-      {error:"Non connecté"},
-      {status:401}
-    )
+export async function DELETE() {
+  const currentSession = await getCurrentSessionUser();
+  if (!currentSession) {
+    return NextResponse.json({ error: "Non connecté" }, { status: 401 });
   }
   await pool.query(
     `
     DELETE FROM users
     WHERE id=$1
     `,
-    [currentSession.id]
-  )
+    [currentSession.id],
+  );
   return NextResponse.json({
-    success:true
-  })
+    success: true,
+  });
 }

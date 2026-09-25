@@ -1,20 +1,20 @@
-import BookLayout from "@/components/book/BookLayout"
-import Header from "@/components/navigation/Header"
-import Sidebar from "@/components/navigation/SideBar"
-import BackButton from "@/components/ui/buttons/BackButton"
-import ProfileButton from "@/components/ui/buttons/ProfileButton"
-import { typography } from "@/styles/typography"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
-import SimpleGrid from "@/components/ui/grids/SimpleGrid"
-import { colors } from "@/styles/colors"
+import BookLayout from "@/components/book/BookLayout";
+import Header from "@/components/navigation/Header";
+import Sidebar from "@/components/navigation/SideBar";
+import BackButton from "@/components/ui/buttons/BackButton";
+import ProfileButton from "@/components/ui/buttons/ProfileButton";
+import { typography } from "@/styles/typography";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import SimpleGrid from "@/components/ui/grids/SimpleGrid";
+import { colors } from "@/styles/colors";
 
 type Props = {
-  onNavigate: (params: any) => void
-  onBack?: () => void
-}
+  onNavigate: (params: any) => void;
+  onBack?: () => void;
+};
 
 export default function About({ onNavigate, onBack }: Props) {
-  const { user: currentUser } = useCurrentUser()
+  const { user: currentUser } = useCurrentUser();
 
   return (
     <BookLayout
@@ -50,17 +50,15 @@ export default function About({ onNavigate, onBack }: Props) {
       footerLeft={<BackButton onBack={onBack} />}
       footerRight={
         <div className="flex items-center gap-4">
-          <span className={typography.username}>
-            {currentUser?.username}
-          </span>
+          <span className={typography.username}>{currentUser?.username}</span>
           <ProfileButton onNavigate={onNavigate} />
         </div>
       }
     >
-<SimpleGrid
-  square={
-    <div
-      className={`
+      <SimpleGrid
+        square={
+          <div
+            className={`
         h-full
         w-full
         ${colors.bg.earth}
@@ -74,10 +72,10 @@ export default function About({ onNavigate, onBack }: Props) {
         md:p-10
         lg:p-12
       `}
-    >
-      <div className="max-w-[600px] text-center">
-        <p
-          className={`
+          >
+            <div className="max-w-[600px] text-center">
+              <p
+                className={`
             ${typography.about}
             leading-[1.5]
             mt-2
@@ -86,12 +84,12 @@ export default function About({ onNavigate, onBack }: Props) {
             lg:mt-8
             ${colors.text.charcoal}
           `}
-        >
-          An idea begins with a mood.
-        </p>
+              >
+                An idea begins with a mood.
+              </p>
 
-        <p
-          className={`
+              <p
+                className={`
             ${typography.about}
             mt-2
             sm:mt-4
@@ -100,18 +98,17 @@ export default function About({ onNavigate, onBack }: Props) {
             leading-[1.5]
             ${colors.text.charcoal}
           `}
-        >
-          A feeling.
-          <br />
-          A colour.
-          <br />
-          A silhouette.
-          <br />
-          A world.
-        </p>
+              >
+                A feeling.
+                <br />
+                A colour.
+                <br />
+                A silhouette.
+                <br />A world.
+              </p>
 
-        <p
-          className={`
+              <p
+                className={`
             ${typography.about}
             mt-2
             sm:mt-4
@@ -120,12 +117,12 @@ export default function About({ onNavigate, onBack }: Props) {
             leading-[1.5]
             ${colors.text.charcoal}
           `}
-        >
-          Share it.
-        </p>
+              >
+                Share it.
+              </p>
 
-        <p
-          className={`
+              <p
+                className={`
             ${typography.about}
             mt-2
             sm:mt-4
@@ -134,12 +131,12 @@ export default function About({ onNavigate, onBack }: Props) {
             leading-[1.5]
             ${colors.text.charcoal}
           `}
-        >
-          Let someone else see it differently.
-        </p>
+              >
+                Let someone else see it differently.
+              </p>
 
-        <p
-          className={`
+              <p
+                className={`
             ${typography.about}
             mt-2
             sm:mt-4
@@ -148,14 +145,14 @@ export default function About({ onNavigate, onBack }: Props) {
             leading-[1.5]
             ${colors.text.charcoal}
           `}
-        >
-          A look appears.
-          <br />
-          Then another.
-        </p>
+              >
+                A look appears.
+                <br />
+                Then another.
+              </p>
 
-        <p
-          className={`
+              <p
+                className={`
             ${typography.about}
             mt-2
             sm:mt-4
@@ -164,12 +161,12 @@ export default function About({ onNavigate, onBack }: Props) {
             leading-[1.5]
             ${colors.text.charcoal}
           `}
-        >
-          One universe meets another.
-        </p>
+              >
+                One universe meets another.
+              </p>
 
-        <p
-          className={`
+              <p
+                className={`
             ${typography.about}
             mt-2
             sm:mt-4
@@ -178,13 +175,13 @@ export default function About({ onNavigate, onBack }: Props) {
             leading-[1.5]
             ${colors.text.charcoal}
           `}
-        >
-          SYLAGE is a quiet exchange between visions.
-        </p>
-      </div>
-    </div>
-  }
-/>
+              >
+                SYLAGE is a quiet exchange between visions.
+              </p>
+            </div>
+          </div>
+        }
+      />
     </BookLayout>
-  )
+  );
 }

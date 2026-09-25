@@ -1,16 +1,15 @@
-import BookFrame from "./BookFrame"
+import BookFrame from "./BookFrame";
 
 type Props = {
-  header?: React.ReactNode
-  children: React.ReactNode
-  sidebar?: React.ReactNode
-  actionsBar?: React.ReactNode
-  imageClassName?: string
-  sidebarClassName?: string
-  footerLeft?: React.ReactNode
-  footerRight?: React.ReactNode
-
-}
+  header?: React.ReactNode;
+  children: React.ReactNode;
+  sidebar?: React.ReactNode;
+  actionsBar?: React.ReactNode;
+  imageClassName?: string;
+  sidebarClassName?: string;
+  footerLeft?: React.ReactNode;
+  footerRight?: React.ReactNode;
+};
 
 export default function BookLayout({
   header,
@@ -20,15 +19,11 @@ export default function BookLayout({
   footerLeft,
   footerRight,
   imageClassName,
-  sidebarClassName
-  }: Props) {
+  sidebarClassName,
+}: Props) {
   return (
     <BookFrame>
-      {header && (
-        <div className="w-full">
-          {header}
-        </div>
-      )}
+      {header && <div className="w-full">{header}</div>}
       {/* BODY */}
       <div className="flex justify-center items-start flex-1 min-h-0">
         {/* LEFT COLUMN */}
@@ -54,11 +49,7 @@ export default function BookLayout({
           >
             {children}
           </div>
-          {actionsBar && (
-            <div className="flex w-full">
-              {actionsBar}
-            </div>
-          )}
+          {actionsBar && <div className="flex w-full">{actionsBar}</div>}
         </div>
         {sidebar && (
           <div
@@ -97,15 +88,10 @@ export default function BookLayout({
             px-6
           "
         >
-          <div>
-            {footerLeft}
-          </div>
-          <div>
-            {footerRight}
-          </div>
-
+          <div>{footerLeft}</div>
+          <div>{footerRight}</div>
         </div>
       )}
     </BookFrame>
-  )
+  );
 }

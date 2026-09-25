@@ -1,40 +1,48 @@
-"use client"
-import type { OnNavigate } from "@/types/navigation"
-import Avatar from "../pagination/Avatar"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
+"use client";
+
+import type { OnNavigate } from "@/types/navigation";
+import Avatar from "../pagination/Avatar";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type Props = {
-  onNavigate: OnNavigate
-  active?: boolean
-  clickable?: boolean
-}
-export default function ProfileButton({ onNavigate, active = false, clickable = true}: Props) {
-  const { user } = useCurrentUser()
+  onNavigate: OnNavigate;
+  active?: boolean;
+  clickable?: boolean;
+};
+
+export default function ProfileButton({
+  onNavigate,
+  active = false,
+  clickable = true,
+}: Props) {
+  const { user } = useCurrentUser();
+
+  const isClickable = clickable && !!user;
 
   return (
     <button
-      disabled={!clickable}
+      disabled={!isClickable}
       onClick={() => {
-        if (!clickable) return
+        if (!isClickable) return;
 
         onNavigate({
-          to:"profile",
-          direction:"next",
-          params:{
-            isOwner:true
-          }
-        })
+          to: "profile",
+          direction: "next",
+          params: {
+            isOwner: true,
+          },
+        });
       }}
       className={`
-          w-8 h-8 
-          sm:w-14 
-          sm:h-14 
-          lg:w-20 
-          lg:h-20
-          text-[10px]
-          sm:text-[16px]
-          lg:text-[25px]
-          
+        w-8 h-8 
+        sm:w-14 
+        sm:h-14 
+        lg:w-20 
+        lg:h-20
+        text-[10px]
+        sm:text-[16px]
+        lg:text-[25px]
+        ${!isClickable ? "cursor-default opacity-50" : "cursor-pointer"}
       `}
     >
       <Avatar
@@ -46,5 +54,5 @@ export default function ProfileButton({ onNavigate, active = false, clickable = 
         `}
       />
     </button>
-  )
+  );
 }

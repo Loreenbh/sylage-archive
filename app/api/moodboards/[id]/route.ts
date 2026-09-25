@@ -1,21 +1,14 @@
-import { NextResponse } from "next/server"
-import { pool } from "@/lib/db"
-import { getCurrentSessionUser } from "@/lib/services/session"
+import { NextResponse } from "next/server";
+import { pool } from "@/lib/db";
+import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id:string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await params;
 
-  const { id } = await params
-  const currentSession = await getCurrentSessionUser()
-
-  if (!currentSession) {
-    return NextResponse.json(
-      { error:"Non connecté" },
-      { status:401 }
-    )
-  }
+  const currentSession = await getCurrentSessionUser();
 
   const result = await pool.query(
     `
@@ -49,10 +42,8 @@ export async function GET(
 
     GROUP BY moodboards.id, users.username
     `,
-    [
-      id,
-      currentSession.id
-    ]
-  )
-  return NextResponse.json(result.rows[0])
+    [id, currentSession?.id ?? null],
+  );
+
+  return NextResponse.json(result.rows[0]);
 }

@@ -1,21 +1,21 @@
-import type { PageName } from "./pages"
+import type { PageName } from "./pages";
 
-export type Direction = "next" | "prev"
+export type Direction = "next" | "prev";
 
 export type NavigationPayload = {
-  userId?: number
-  moodboardId?: number
-  
-  from?: PageName
+  userId?: number;
+  moodboardId?: number;
 
-  isOwner?: boolean
-  fromTab?: "latest" | "curated" | "following"
-  layout?: "A" | "B" | "C" | "D" 
-}
+  from?: PageName;
+
+  isOwner?: boolean;
+  fromTab?: "latest" | "curated" | "following";
+  layout?: "A" | "B" | "C" | "D";
+};
 
 export type NavigationParams = {
-  to: PageName
-  direction?: Direction
-  params?: NavigationPayload
-}
-export type OnNavigate = (params: NavigationParams) => void
+  to: PageName;
+  direction?: Direction;
+  params?: NavigationPayload;
+};
+export type OnNavigate = (params: NavigationParams) => void;
