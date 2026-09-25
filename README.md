@@ -3,9 +3,6 @@
 <img src="./images/sylage-archive-planche.png" width="100%" />
 
 <br><br>
-
-S Y L A G E   ·   A R C H I V E
-
 <br>
 
 <a href="https://sylage-archive.vercel.app/">→</a>
