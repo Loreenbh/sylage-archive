@@ -7,6 +7,11 @@ const roboto = Roboto({
   weight: ["300", "400", "700"],
 });
 
+export const metadata = {
+  title: "SYLAGE Archive",
+  description: "A visual archive of moods",
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
