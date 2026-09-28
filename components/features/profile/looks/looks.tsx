@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
+/* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
-
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
@@ -10,14 +10,14 @@ import ThreeColGrid from "@/components/ui/grids/ThreeColGrid";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
 import CarouselControls from "@/components/ui/navigation/CarouselControls";
 import SilhouetteCell from "./SilhouetteCell";
-
-/* TYPES */
-import { Silhouette } from "@/types/silhouette";
+import BackButton from "@/components/ui/buttons/BackButton";
+/*STYLE*/
+import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
-
+/*HOOKS*/
 import { useLooksCarousel } from "@/hooks/useLooksCarousel";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import BackButton from "@/components/ui/buttons/BackButton";
+import { useSilhouettes } from "@/hooks/useSilhouettes";
 
 type Props = {
   onNavigate: OnNavigate;
@@ -25,9 +25,6 @@ type Props = {
   onBack?: () => void;
 };
 
-/* HOOKS */
-import { useSilhouettes } from "@/hooks/useSilhouettes";
-import { typography } from "@/styles/typography";
 
 export default function Looks({ onNavigate, onBack, params }: Props) {
   const { userId, isOwner, moodboardId, from } = params ?? {};
@@ -54,8 +51,8 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
     moodboardId || selectedFilters.length === 0
       ? silhouettes
       : silhouettes.filter((silhouette) =>
-          silhouette.tags?.some((tag) => selectedFilters.includes(tag)),
-        );
+        silhouette.tags?.some((tag) => selectedFilters.includes(tag)),
+      );
 
   const {
     left,
@@ -105,13 +102,13 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
               clickable: !!currentUser,
               onClick: currentUser
                 ? () =>
-                    onNavigate?.({
-                      to: "create",
-                      direction: "next",
-                      params: {
-                        from: "discover",
-                      },
-                    })
+                  onNavigate?.({
+                    to: "create",
+                    direction: "next",
+                    params: {
+                      from: "discover",
+                    },
+                  })
                 : undefined,
             },
           ]}

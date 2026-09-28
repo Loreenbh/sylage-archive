@@ -18,13 +18,12 @@ export default function GridButton({
       className={`
         flex items-end p-4 h-full w-full text-left
         transition-all duration-300
-        ${
-          !disabled
-            ? `
+        ${!disabled
+          ? `
           hover:translate-y-[-2px]
           hover:shadow-sm
         `
-            : ""
+          : ""
         }
         ${className}
       `}

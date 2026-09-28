@@ -1,7 +1,6 @@
 "use client";
-import { useState } from "react";
+/*TYPES*/
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
-
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
@@ -9,12 +8,12 @@ import Header from "@/components/navigation/Header";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
 import SimpleGrid from "@/components/ui/grids/SimpleGrid";
 import LikeButton from "@/components/ui/buttons/LikeButton";
+import BackButton from "@/components/ui/buttons/BackButton";
+/*HOOKS*/
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-
+import { useMoodboard } from "@/hooks/useMoodboard";
 /* STYLE */
 import { typography } from "@/styles/typography";
-import { useMoodboard } from "@/hooks/useMoodboard";
-import BackButton from "@/components/ui/buttons/BackButton";
 
 type Props = {
   onNavigate: OnNavigate;
@@ -51,14 +50,14 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
               clickable: !!user,
               onClick: user
                 ? () =>
-                    onNavigate?.({
-                      to: "create",
-                      direction: "next",
-                      params: {
-                        from: "discover",
-                        isOwner,
-                      },
-                    })
+                  onNavigate?.({
+                    to: "create",
+                    direction: "next",
+                    params: {
+                      from: "discover",
+                      isOwner,
+                    },
+                  })
                 : undefined,
             },
           ]}
@@ -137,10 +136,10 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 onRequireAuth={
                   !user
                     ? () =>
-                        onNavigate?.({
-                          to: "auth",
-                          direction: "next",
-                        })
+                      onNavigate?.({
+                        to: "auth",
+                        direction: "next",
+                      })
                     : undefined
                 }
               />
@@ -167,10 +166,9 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 ${typography.buttonBody}
                 transition-opacity
                 duration-300
-                ${
-                  (moodboard?.silhouettes_count ?? 0) === 0
-                    ? "cursor-default opacity-50"
-                    : "cursor-pointer hover:opacity-60"
+                ${(moodboard?.silhouettes_count ?? 0) === 0
+                  ? "cursor-default opacity-50"
+                  : "cursor-pointer hover:opacity-60"
                 }
               `}
             >

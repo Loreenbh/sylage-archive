@@ -113,10 +113,9 @@ export default function ContentOverlay({
               text-white
               transition-colors
               duration-300
-              ${
-                silhouettesCount === 0
-                  ? "cursor-default opacity-50"
-                  : "cursor-pointer hover:text-white/50"
+              ${silhouettesCount === 0
+                ? "cursor-default opacity-50"
+                : "cursor-pointer hover:text-white/50"
               }
             `}
           >

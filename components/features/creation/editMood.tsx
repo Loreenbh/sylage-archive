@@ -1,28 +1,29 @@
 "use client";
-
 import { useRef, useState } from "react";
 import { toPng } from "html-to-image";
+import { MIN_TAGS_TOTAL } from "@/constants/tags";
+/*TYPES*/
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
 import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor";
-import { MIN_TAGS_TOTAL } from "@/constants/tags";
+/*COMPONENTS*/
 import TagPicker from "@/components/filters/TagPicker";
-
 import BookLayout from "@/components/book/BookLayout";
 import Header from "@/components/navigation/Header";
 import Sidebar from "@/components/navigation/SideBar";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
 import BackButton from "@/components/ui/buttons/BackButton";
-
+/*LAYOUT*/
 import LayoutA from "./layouts/LayoutA";
 import LayoutB from "./layouts/LayoutB";
 import LayoutC from "./layouts/LayoutC";
 import LayoutD from "./layouts/LayoutD";
-
+/*STYLE*/
 import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
-
+/*SERVICES*/
 import { uploadImage } from "@/lib/services/upload";
 import { createMoodboard } from "@/lib/services/moodboard";
+/*HOOKS*/
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type Props = {

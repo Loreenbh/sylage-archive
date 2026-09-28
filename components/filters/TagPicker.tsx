@@ -95,10 +95,9 @@ export default function TagPicker({
               pb-1 
               border-b 
               transition
-              ${
-                openCategory === category.key
-                  ? "border-black text-black"
-                  : "border-transparent text-black/40 hover:text-black/70"
+              ${openCategory === category.key
+                ? "border-black text-black"
+                : "border-transparent text-black/40 hover:text-black/70"
               }
             `}
           >
@@ -159,12 +158,11 @@ export default function TagPicker({
                     lg:text-[13px]
                     border transition
 
-                    ${
-                      isSelected
-                        ? `${colors.bg.charcoal} text-white border-black`
-                        : isDisabled
-                          ? "border-black/10 text-black/20 cursor-not-allowed"
-                          : "border-black/20 text-black/40 hover:text-black/70"
+                    ${isSelected
+                      ? `${colors.bg.charcoal} text-white border-black`
+                      : isDisabled
+                        ? "border-black/10 text-black/20 cursor-not-allowed"
+                        : "border-black/20 text-black/40 hover:text-black/70"
                     }
                   `}
                 >

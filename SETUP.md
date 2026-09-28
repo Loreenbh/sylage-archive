@@ -52,5 +52,3 @@ Pour repartir d'une base complètement vide (supprime toutes les données) :
 docker compose down -v
 docker compose up -d
 ```
-
-//docker exec -it weave-postgres psql -U postgres -d weave

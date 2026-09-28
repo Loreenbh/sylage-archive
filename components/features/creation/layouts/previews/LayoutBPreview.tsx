@@ -11,21 +11,17 @@ export default function LayoutBPreview() {
       w-full
     "
     >
-      {/* LEFT BIG */}
       <div className={`${colors.bg.empty70}`} />
 
-      {/* RIGHT COLUMN */}
       <div
         className="
-        grid
-        grid-rows-[1fr_2fr_1fr]
-        gap-[2px]
-      "
+          grid
+          grid-rows-[1fr_2fr_1fr]
+          gap-[2px]
+        "
       >
-        {/* TOP */}
         <div className={`${colors.bg.empty70}`} />
 
-        {/* MIDDLE 4 */}
         <div
           className="
           grid
@@ -44,7 +40,6 @@ export default function LayoutBPreview() {
           </div>
         </div>
 
-        {/* BOTTOM */}
         <div className={`${colors.bg.empty70}`} />
       </div>
     </div>

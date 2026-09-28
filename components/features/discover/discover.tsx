@@ -1,31 +1,29 @@
 "use client";
 import { useState } from "react";
+/* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
-
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
 import Header from "@/components/navigation/Header";
 import ScrollableGrid from "@/components/ui/grids/ScrollableGrid";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import ContentOverlay from "@/components/ui/cards/ContentOverlay";
+import StatusMessage from "@/components/ui/messages/StatusMessage";
+/*HOOKS*/
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods";
+/*SERVICES*/
+import { followUser, unfollowUser } from "@/lib/services/follows";
 
 /*STYLE*/
 import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
-
-/* TYPES */
+import { spacing } from "@/styles/spacing";
 type Props = {
   onNavigate: OnNavigate;
   params?: NavigationParams["params"] | null;
 };
-
-/* HOOKS */
-import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods";
-import { followUser, unfollowUser } from "@/lib/services/follows";
-import StatusMessage from "@/components/ui/messages/StatusMessage";
-import { spacing } from "@/styles/spacing";
 
 export default function Discover({ onNavigate, params }: Props) {
   const [tab, setTab] = useState(params?.fromTab ?? "latest");
@@ -44,9 +42,9 @@ export default function Discover({ onNavigate, params }: Props) {
       prev.map((board) =>
         board.user_id === userId
           ? {
-              ...board,
-              is_followed: !isFollowed,
-            }
+            ...board,
+            is_followed: !isFollowed,
+          }
           : board,
       ),
     );
@@ -66,8 +64,8 @@ export default function Discover({ onNavigate, params }: Props) {
     selectedFilters.length === 0
       ? moodboards
       : moodboards.filter((board) =>
-          board.tags.some((tag) => selectedFilters.includes(tag)),
-        );
+        board.tags.some((tag) => selectedFilters.includes(tag)),
+      );
 
   const sidebarTitle = tab.toUpperCase();
 
@@ -84,10 +82,10 @@ export default function Discover({ onNavigate, params }: Props) {
               clickable: !!user,
               onClick: user
                 ? () =>
-                    onNavigate?.({
-                      to: "create",
-                      direction: "next",
-                    })
+                  onNavigate?.({
+                    to: "create",
+                    direction: "next",
+                  })
                 : undefined,
             },
           ]}
@@ -113,10 +111,9 @@ export default function Discover({ onNavigate, params }: Props) {
               border-b
               transition-colors
               duration-300
-              ${
-                tab === "latest"
-                  ? "border-black"
-                  : "border-transparent hover:border-black"
+              ${tab === "latest"
+                ? "border-black"
+                : "border-transparent hover:border-black"
               }
             `}
           >
@@ -133,10 +130,9 @@ export default function Discover({ onNavigate, params }: Props) {
               border-b
               transition-colors
               duration-300
-              ${
-                tab === "curated"
-                  ? "border-black"
-                  : "border-transparent hover:border-black"
+              ${tab === "curated"
+                ? "border-black"
+                : "border-transparent hover:border-black"
               }
             `}
           >
@@ -157,12 +153,11 @@ export default function Discover({ onNavigate, params }: Props) {
               border-b
               transition-colors
               duration-300
-              ${
-                !user
-                  ? "border-transparent cursor-default opacity-50"
-                  : tab === "following"
-                    ? "border-black"
-                    : "border-transparent hover:border-black"
+              ${!user
+                ? "border-transparent cursor-default opacity-50"
+                : tab === "following"
+                  ? "border-black"
+                  : "border-transparent hover:border-black"
               }
             `}
           >

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+/*TYPES*/
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
@@ -9,24 +10,24 @@ import CustomGrid from "@/components/ui/grids/CustomGrid";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
 import GridButton from "@/components/ui/buttons/GridButton";
 import ScrollFollow from "@/components/ui/cards/scrollFollow";
-
+import BackButton from "@/components/ui/buttons/BackButton";
 /* STYLE */
 import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
-/* TYPES */
+/*HOOKS*/
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useProfile } from "@/hooks/useProfile";
+import { useFollows } from "@/hooks/useFollows";
+/*SERVICES*/
+import { logout } from "@/lib/services/logout";
+import { getFollows, unfollowUser, followUser } from "@/lib/services/follows";
+
 type Props = {
   onNavigate: OnNavigate;
   params?: NavigationParams["params"] | null;
   onBack?: () => void;
 };
 
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { useProfile } from "@/hooks/useProfile";
-import { logout } from "@/lib/services/logout";
-import { useFollows } from "@/hooks/useFollows";
-import { getFollows, unfollowUser, followUser } from "@/lib/services/follows";
-
-import BackButton from "@/components/ui/buttons/BackButton";
 
 export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   const { isOwner, userId, from } = params ?? {};
@@ -127,14 +128,14 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               clickable: !!currentUser,
               onClick: currentUser
                 ? () =>
-                    onNavigate?.({
-                      to: "create",
-                      direction: "next",
-                      params: {
-                        from: "discover",
-                        isOwner: isOwner,
-                      },
-                    })
+                  onNavigate?.({
+                    to: "create",
+                    direction: "next",
+                    params: {
+                      from: "discover",
+                      isOwner: isOwner,
+                    },
+                  })
                 : undefined,
             },
           ]}

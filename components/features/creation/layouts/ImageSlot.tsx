@@ -284,10 +284,9 @@ export default function ImageSlot({
 
               transition-opacity
 
-              ${
-                isPanning
-                  ? "cursor-grabbing opacity-100"
-                  : "cursor-grab opacity-100 sm:opacity-70 sm:group-hover:opacity-100"
+              ${isPanning
+                ? "cursor-grabbing opacity-100"
+                : "cursor-grab opacity-100 sm:opacity-70 sm:group-hover:opacity-100"
               }
             `}
             aria-label="Déplacer l'image"
@@ -330,10 +329,9 @@ export default function ImageSlot({
 
               transition-opacity
 
-              ${
-                isZooming
-                  ? "cursor-ns-resize opacity-100"
-                  : "cursor-ns-resize opacity-100 sm:opacity-70 sm:group-hover:opacity-100"
+              ${isZooming
+                ? "cursor-ns-resize opacity-100"
+                : "cursor-ns-resize opacity-100 sm:opacity-70 sm:group-hover:opacity-100"
               }
             `}
             aria-label="Zoomer l'image"

@@ -1,25 +1,23 @@
 "use client";
-
+/*TYPES*/
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
-
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
 import Header from "@/components/navigation/Header";
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
-
+/*LAYOUT*/
 import LayoutAPreview from "./layouts/previews/LayoutAPreview";
 import LayoutBPreview from "./layouts/previews/LayoutBPreview";
 import LayoutCPreview from "./layouts/previews/LayoutCPreview";
 import LayoutDPreview from "./layouts/previews/LayoutDPreview";
-
 /* STYLE */
 import { typography } from "@/styles/typography";
 import BackButton from "@/components/ui/buttons/BackButton";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { colors } from "@/styles/colors";
-/* TYPES */
+
 type Props = {
   onNavigate: OnNavigate;
   params?: NavigationParams["params"] | null;

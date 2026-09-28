@@ -74,7 +74,9 @@ export function useAuthForm(onNavigate: OnNavigate) {
         return;
       }
 
-      setRegisterSuccess("Registration successful. Please confirm your email before logging in.");
+      setRegisterSuccess(
+        "Registration successful. Please confirm your email before logging in.",
+      );
       setRegisterForm({
         username: "",
         email: "",

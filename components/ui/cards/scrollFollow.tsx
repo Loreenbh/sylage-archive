@@ -137,11 +137,10 @@ export default function ScrollFollow({
           onClick={() => setActiveTab("following")}
           className={`
               flex-1 transition-opacity
-              ${
-                activeTab === "following"
-                  ? "opacity-100 border-b border-black"
-                  : "opacity-40"
-              }
+              ${activeTab === "following"
+              ? "opacity-100 border-b border-black"
+              : "opacity-40"
+            }
             `}
         >
           <span className="text-[7px] sm:text-[12px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
@@ -153,11 +152,10 @@ export default function ScrollFollow({
           onClick={() => setActiveTab("followers")}
           className={`
               flex-1 transition-opacity
-              ${
-                activeTab === "followers"
-                  ? "opacity-100 border-b border-black"
-                  : "opacity-40"
-              }
+              ${activeTab === "followers"
+              ? "opacity-100 border-b border-black"
+              : "opacity-40"
+            }
             `}
         >
           <span className="text-[7px] sm:text-[12px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">

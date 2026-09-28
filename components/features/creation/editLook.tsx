@@ -1,24 +1,21 @@
 "use client";
-
 import { useRef, useState } from "react";
 import { toPng } from "html-to-image";
-
+/*COMPONENTS*/
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
 import Header from "@/components/navigation/Header";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
 import ImageSlot from "./layouts/ImageSlot";
 import BackButton from "@/components/ui/buttons/BackButton";
-
+/*STYLE*/
 import { typography } from "@/styles/typography";
-
+/*TYPES*/
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
 import type { MoodboardSlot, MoodboardSlotPatch } from "@/types/editor";
-
 /*SERVICES*/
 import { uploadImage } from "@/lib/services/upload";
 import { createSilhouette } from "@/lib/services/silhouette";
-
 /* HOOKS */
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useMoodboard } from "@/hooks/useMoodboard";
@@ -97,9 +94,9 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
     setSilhouette((prev) =>
       prev
         ? {
-            ...prev,
-            ...patch,
-          }
+          ...prev,
+          ...patch,
+        }
         : prev,
     );
   };

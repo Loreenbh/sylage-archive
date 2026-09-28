@@ -6,7 +6,6 @@ import Header from "@/components/navigation/Header";
 import Sidebar from "@/components/navigation/SideBar";
 
 import { typography } from "@/styles/typography";
-import { spacing } from "@/styles/spacing";
 import { colors } from "@/styles/colors";
 
 import { supabaseBrowser } from "@/lib/supabase-browser";

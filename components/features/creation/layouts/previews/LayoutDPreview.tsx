@@ -12,14 +12,10 @@ export default function LayoutDPreview() {
         w-full
       "
     >
-      {/* LEFT COLUMN */}
+      <div className={`${colors.bg.empty70}`} />
+      <div className={`${colors.bg.empty70}`} />
       <div className={`${colors.bg.empty70}`} />
 
-      <div className={`${colors.bg.empty70}`} />
-
-      <div className={`${colors.bg.empty70}`} />
-
-      {/* HERO */}
       <div
         className={`
           col-start-2
@@ -29,7 +25,6 @@ export default function LayoutDPreview() {
         `}
       />
 
-      {/* BOTTOM STRIP */}
       <div
         className="
           col-span-2

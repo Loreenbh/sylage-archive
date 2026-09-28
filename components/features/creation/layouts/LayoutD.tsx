@@ -32,7 +32,6 @@ export default function LayoutD({
       min-w-0
     "
     >
-      {/* LEFT TOP */}
       <ImageSlot
         slot={images[0] ?? null}
         onSelect={() => select(0)}
@@ -40,7 +39,6 @@ export default function LayoutD({
         className={`${colors.bg.empty70} hover:opacity-50`}
       />
 
-      {/* LEFT MIDDLE */}
       <ImageSlot
         slot={images[1] ?? null}
         onSelect={() => select(1)}
@@ -48,7 +46,6 @@ export default function LayoutD({
         className={`"row-start-2 col-start-1 ${colors.bg.empty70} hover:opacity-50`}
       />
 
-      {/* LEFT BOTTOM */}
       <ImageSlot
         slot={images[3] ?? null}
         onSelect={() => select(3)}
@@ -56,7 +53,6 @@ export default function LayoutD({
         className={`"row-start-3 col-start-1 ${colors.bg.empty70} hover:opacity-50`}
       />
 
-      {/* HERO */}
       <ImageSlot
         slot={images[2] ?? null}
         onSelect={() => select(2)}
@@ -64,7 +60,6 @@ export default function LayoutD({
         className={`row-start-1 row-span-3 col-start-2 ${colors.bg.empty70} hover:opacity-50`}
       />
 
-      {/* BOTTOM STRIP */}
       <div className="row-start-4 col-span-2 grid grid-cols-3 gap-[2px]">
         {[4, 5, 6].map((index) => (
           <ImageSlot

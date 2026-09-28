@@ -8,21 +8,20 @@ import ScrollableGrid from "@/components/ui/grids/ScrollableGrid";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
 import ContentOverlay from "@/components/ui/cards/ContentOverlay";
 import StatusMessage from "@/components/ui/messages/StatusMessage";
+import BackButton from "@/components/ui/buttons/BackButton";
 /*STYLE*/
 import { typography } from "@/styles/typography";
 /* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
-import BackButton from "@/components/ui/buttons/BackButton";
+/* SERVICES */
+import { useUserMoodboards } from "@/hooks/useUserMoodboards";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+
 type Props = {
   onNavigate: OnNavigate;
   params?: NavigationParams["params"] | null;
   onBack?: () => void;
 };
-
-/* SERVICES */
-import { useUserMoodboards } from "@/hooks/useUserMoodboards";
-
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export default function Moods({ onNavigate, params, onBack }: Props) {
   const { user } = useCurrentUser();
@@ -41,8 +40,8 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
     selectedFilters.length === 0
       ? moodboards
       : moodboards.filter((board) =>
-          board.tags.some((tag) => selectedFilters.includes(tag)),
-        );
+        board.tags.some((tag) => selectedFilters.includes(tag)),
+      );
 
   const handleDelete = async (id: number) => {
     const res = await fetch(`/api/moodboards?id=${id}`, {
@@ -78,13 +77,13 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
               clickable: !!user,
               onClick: user
                 ? () =>
-                    onNavigate?.({
-                      to: "create",
-                      direction: "next",
-                      params: {
-                        isOwner,
-                      },
-                    })
+                  onNavigate?.({
+                    to: "create",
+                    direction: "next",
+                    params: {
+                      isOwner,
+                    },
+                  })
                 : undefined,
             },
           ]}

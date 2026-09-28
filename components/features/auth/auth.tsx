@@ -1,8 +1,5 @@
 "use client";
-import { useState } from "react";
 import type { OnNavigate } from "@/types/navigation";
-import { supabase } from "@/lib/supabase";
-import Link from "next/link";
 /* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
@@ -10,9 +7,10 @@ import TwoColGrid from "@/components/ui/grids/TwoColGrid";
 import Header from "@/components/navigation/Header";
 /* STYLE */
 import { typography } from "@/styles/typography";
-import { useAuthForm } from "@/hooks/useAuthForm";
 import { colors } from "@/styles/colors";
 import { spacing } from "@/styles/spacing";
+/*HOOKS*/
+import { useAuthForm } from "@/hooks/useAuthForm";
 /*TYPES*/
 type Props = {
   onNavigate: OnNavigate;

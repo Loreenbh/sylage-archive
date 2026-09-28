@@ -1,18 +1,21 @@
 "use client";
 import { useState, useEffect } from "react";
+/*TYPES*/
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
-
+/*COMPONENTS*/
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
 import Header from "@/components/navigation/Header";
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { uploadImage } from "@/lib/services/upload";
-import { updateUser, deleteUser } from "@/lib/services/profile";
-
-import { typography } from "@/styles/typography";
 import Avatar from "@/components/ui/pagination/Avatar";
 import BackButton from "@/components/ui/buttons/BackButton";
+/*SERVICES*/
+import { updateUser, deleteUser } from "@/lib/services/profile";
+import { uploadImage } from "@/lib/services/upload";
+/*HOOKS*/
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+/*STYLE*/
+import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
 
 type Props = {

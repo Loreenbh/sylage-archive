@@ -21,7 +21,6 @@ export default function LayoutC({
 
   return (
     <div className="grid grid-cols-2 grid-rows-3 gap-[2px] h-full w-full min-h-0 min-w-0">
-      {/* LEFT COLUMN STACK */}
       <ImageSlot
         slot={images[0] ?? null}
         onSelect={() => select(0)}
@@ -41,7 +40,6 @@ export default function LayoutC({
         className={`${colors.bg.empty70} hover:opacity-50`}
       />
 
-      {/* RIGHT COLUMN */}
       <ImageSlot
         slot={images[3] ?? null}
         onSelect={() => select(3)}
@@ -49,7 +47,6 @@ export default function LayoutC({
         className={`row-span-2 ${colors.bg.empty70} hover:opacity-50`}
       />
 
-      {/* bottom right split */}
       <div className="grid grid-cols-2 gap-[2px] min-h-0 min-w-0">
         <ImageSlot
           slot={images[4] ?? null}

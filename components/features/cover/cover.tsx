@@ -1,13 +1,14 @@
 import Image from "next/image";
+/*TYPES*/
 import type { OnNavigate } from "@/types/navigation";
-
+/*COMPONENT*/
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
-
+import SimpleGrid from "@/components/ui/grids/SimpleGrid";
+/*STYLE*/
 import { spacing } from "@/styles/spacing";
 import { layout } from "@/styles/layout";
 import { typography } from "@/styles/typography";
-import SimpleGrid from "@/components/ui/grids/SimpleGrid";
 import { colors } from "@/styles/colors";
 
 type Props = {
@@ -21,27 +22,26 @@ export default function Cover({ onNavigate }: Props) {
       sidebarClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10 lg:!ml-10"
       header={
         <div className="relative w-full">
-
           {/* PORTFOLIO */}
           <button
             onClick={() => {
               window.location.href = "https://sylage-world.vercel.app/";
             }}
             className="
-        absolute
-        top-0
-        left-0
-        text-[10px]
-        sm:text-[13px]
-        md:text-[13px]
-        lg:text-[18px]
-        tracking-[0.18em]
-        text-black/20
-        hover:text-black/50
-        transition-colors
-        duration-300
-        cursor-pointer
-      "
+              absolute
+              top-0
+              left-0
+              text-[10px]
+              sm:text-[13px]
+              md:text-[13px]
+              lg:text-[18px]
+              tracking-[0.18em]
+              text-black/20
+              hover:text-black/50
+              transition-colors
+              duration-300
+              cursor-pointer
+            "
           >
             ← PORTFOLIO
           </button>
@@ -64,8 +64,7 @@ export default function Cover({ onNavigate }: Props) {
             </div>
 
             <p
-              className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}
-            >
+              className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}>
               ARCHIVE
             </p>
           </div>

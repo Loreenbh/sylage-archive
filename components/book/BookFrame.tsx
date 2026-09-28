@@ -95,26 +95,26 @@ export default function BookFrame({ children }: Props) {
             `,
           }}
         >
-          {/* NATURAL DAYLIGHT */}
+          {/* AMBIANCE */}
           <div
             className="
-    absolute inset-0
-    pointer-events-none
-    rounded-sm
-    z-20
-  "
+              absolute inset-0
+              pointer-events-none
+              rounded-sm
+              z-20
+            "
             style={{
               background: `
-      radial-gradient(
-        ellipse 70% 95% at 0% 50%,
-        rgba(255, 253, 244, 0.68) 0%,
-        rgba(255, 253, 244, 0.50) 10%,
-        rgba(255, 253, 244, 0.28) 25%,
-        rgba(255, 253, 244, 0.12) 45%,
-        rgba(255, 253, 244, 0.04) 65%,
-        transparent 80%
-      )
-    `,
+              radial-gradient(
+                ellipse 70% 95% at 0% 50%,
+                rgba(255, 253, 244, 0.68) 0%,
+                rgba(255, 253, 244, 0.50) 10%,
+                rgba(255, 253, 244, 0.28) 25%,
+                rgba(255, 253, 244, 0.12) 45%,
+                rgba(255, 253, 244, 0.04) 65%,
+                transparent 80%
+              )
+            `,
             }}
           />
           {/* RELIURE GAUCHE */}
@@ -134,8 +134,7 @@ export default function BookFrame({ children }: Props) {
             }}
           />
 
-          {/* EFFET BOMBE */}
-          {/* <div
+          <div
             className="
               absolute inset-0
               pointer-events-none rounded-sm
@@ -150,7 +149,7 @@ export default function BookFrame({ children }: Props) {
                 )
               `,
             }}
-          /> */}
+          />
 
           <div className="relative z-10 flex flex-col h-full min-h-0">
             {children}

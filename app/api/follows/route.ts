@@ -8,9 +8,6 @@ export async function GET(request: Request) {
 
   const currentSession = await getCurrentSessionUser();
 
-  // Si aucun userId n'est fourni,
-  // on demande le profil de l'utilisateur connecté.
-  // Un Guest ne peut donc pas utiliser ce mode.
   if (!userIdParam && !currentSession) {
     return NextResponse.json({ error: "Non connecté" }, { status: 401 });
   }
