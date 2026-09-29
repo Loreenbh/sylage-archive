@@ -30,7 +30,7 @@ export default function Discover({ onNavigate, params }: Props) {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const { moodboards, isLoading, setMoodboards } = useDiscoverMoodboards(tab);
 
-  const { user } = useCurrentUser();
+  const { user, isLoading: isUserLoading } = useCurrentUser();
 
   const handleFollowToggle = async (userId: number, isFollowed: boolean) => {
     if (isFollowed) {
@@ -79,7 +79,7 @@ export default function Discover({ onNavigate, params }: Props) {
             { section: "FILTER", clickable: true },
             {
               section: "CREATE",
-              clickable: !!user,
+              clickable: !isUserLoading && Boolean(user),
               onClick: user
                 ? () =>
                   onNavigate?.({
@@ -143,10 +143,10 @@ export default function Discover({ onNavigate, params }: Props) {
 
           <button
             onClick={() => {
-              if (!user) return;
+              if (isUserLoading || !user) return;
               setTab("following");
             }}
-            disabled={!user}
+            disabled={isUserLoading || !user}
             className={`
               ${typography.buttonBody}
               pb-1

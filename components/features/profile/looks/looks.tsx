@@ -25,7 +25,6 @@ type Props = {
   onBack?: () => void;
 };
 
-
 export default function Looks({ onNavigate, onBack, params }: Props) {
   const { userId, isOwner, moodboardId, from } = params ?? {};
   const {
@@ -51,8 +50,8 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
     moodboardId || selectedFilters.length === 0
       ? silhouettes
       : silhouettes.filter((silhouette) =>
-        silhouette.tags?.some((tag) => selectedFilters.includes(tag)),
-      );
+          silhouette.tags?.some((tag) => selectedFilters.includes(tag)),
+        );
 
   const {
     left,
@@ -102,13 +101,13 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
               clickable: !!currentUser,
               onClick: currentUser
                 ? () =>
-                  onNavigate?.({
-                    to: "create",
-                    direction: "next",
-                    params: {
-                      from: "discover",
-                    },
-                  })
+                    onNavigate?.({
+                      to: "create",
+                      direction: "next",
+                      params: {
+                        from: "discover",
+                      },
+                    })
                 : undefined,
             },
           ]}
@@ -188,7 +187,6 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
                 currentUserRole={currentUser?.role}
               />
             }
-
             center={
               <SilhouetteCell
                 silhouette={center}
@@ -200,7 +198,6 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
                 currentUserRole={currentUser?.role}
               />
             }
-
             right={
               <SilhouetteCell
                 silhouette={right}

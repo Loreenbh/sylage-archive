@@ -21,6 +21,7 @@ export default function ImageSlot({
   className = "",
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
 
   /* ---------------- DEPLACEMENT ---------------- */
 
@@ -32,6 +33,12 @@ export default function ImageSlot({
   } | null>(null);
 
   const [isPanning, setIsPanning] = useState(false);
+  const [panPresentation, setPanPresentation] = useState({
+    translateX: 0,
+    translateY: 0,
+    objectPositionX: 50,
+    objectPositionY: 50,
+  });
 
   /* ---------------- ZOOM ---------------- */
 
@@ -42,35 +49,99 @@ export default function ImageSlot({
 
   const [isZooming, setIsZooming] = useState(false);
 
-  /* ---------------- LIMITES DE DÉPLACEMENT ---------------- */
+  /* ---------------- LIMITES DE DEPLACEMENT ---------------- */
+
+  const getPanBounds = useCallback((scale: number) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    const image = imageRef.current;
+
+    if (!rect) {
+      return {
+        imageOffsetX: 0,
+        imageOffsetY: 0,
+        maxOffsetX: 0,
+        maxOffsetY: 0,
+        overflowX: 0,
+        overflowY: 0,
+      };
+    }
+
+    const coverScale =
+      image?.naturalWidth && image.naturalHeight
+        ? Math.max(
+            rect.width / image.naturalWidth,
+            rect.height / image.naturalHeight,
+          )
+        : 1;
+    const overflowX = image?.naturalWidth
+      ? Math.max(0, (image.naturalWidth * coverScale - rect.width) / 2)
+      : 0;
+    const overflowY = image?.naturalHeight
+      ? Math.max(0, (image.naturalHeight * coverScale - rect.height) / 2)
+      : 0;
+    const imageOffsetX = overflowX * scale;
+    const imageOffsetY = overflowY * scale;
+
+    return {
+      imageOffsetX,
+      imageOffsetY,
+      maxOffsetX: imageOffsetX + (rect.width * (scale - 1)) / 2,
+      maxOffsetY: imageOffsetY + (rect.height * (scale - 1)) / 2,
+      overflowX,
+      overflowY,
+    };
+  }, []);
 
   const clampOffset = useCallback(
     (offsetX: number, offsetY: number, scale: number) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-
-      if (!rect) {
-        return {
-          offsetX: 0,
-          offsetY: 0,
-        };
-      }
-
-      const maxOffsetX = (rect.width * (scale - 1)) / 2;
-      const maxOffsetY = (rect.height * (scale - 1)) / 2;
+      const { maxOffsetX, maxOffsetY } = getPanBounds(scale);
 
       return {
         offsetX: Math.min(maxOffsetX, Math.max(-maxOffsetX, offsetX)),
         offsetY: Math.min(maxOffsetY, Math.max(-maxOffsetY, offsetY)),
       };
     },
-    [],
+    [getPanBounds],
   );
+
+  const getPanPresentation = (
+    offsetX: number,
+    offsetY: number,
+    scale: number,
+  ) => {
+    const bounds = getPanBounds(scale);
+    const imageOffsetX = Math.max(
+      -bounds.imageOffsetX,
+      Math.min(bounds.imageOffsetX, offsetX),
+    );
+    const imageOffsetY = Math.max(
+      -bounds.imageOffsetY,
+      Math.min(bounds.imageOffsetY, offsetY),
+    );
+
+    return {
+      translateX: offsetX - imageOffsetX,
+      translateY: offsetY - imageOffsetY,
+      objectPositionX: bounds.overflowX
+        ? 50 - (imageOffsetX / scale / bounds.overflowX) * 50
+        : 50,
+      objectPositionY: bounds.overflowY
+        ? 50 - (imageOffsetY / scale / bounds.overflowY) * 50
+        : 50,
+    };
+  };
 
   /* ---------------- DOUBLE CLICK ---------------- */
 
   const handleDoubleClick = () => {
     if (!slot) return;
 
+    setPanPresentation({
+      translateX: 0,
+      translateY: 0,
+      objectPositionX: 50,
+      objectPositionY: 50,
+    });
     onChangeTransform({
       scale: 1,
       offsetX: 0,
@@ -78,7 +149,7 @@ export default function ImageSlot({
     });
   };
 
-  const handlePanPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+  const handlePanPointerDown = (e: React.PointerEvent<HTMLImageElement>) => {
     if (!slot) return;
 
     e.preventDefault();
@@ -96,7 +167,7 @@ export default function ImageSlot({
     setIsPanning(true);
   };
 
-  const handlePanPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+  const handlePanPointerMove = (e: React.PointerEvent<HTMLImageElement>) => {
     if (!slot || !panState.current) return;
 
     const deltaX = e.clientX - panState.current.startX;
@@ -109,6 +180,7 @@ export default function ImageSlot({
       slot.scale,
     );
 
+    setPanPresentation(getPanPresentation(offsetX, offsetY, slot.scale));
     onChangeTransform({
       offsetX,
       offsetY,
@@ -160,6 +232,7 @@ export default function ImageSlot({
       nextScale,
     );
 
+    setPanPresentation(getPanPresentation(offsetX, offsetY, nextScale));
     onChangeTransform({
       scale: nextScale,
       offsetX,
@@ -195,25 +268,36 @@ export default function ImageSlot({
         <>
           {/* IMAGE */}
           <img
+            ref={imageRef}
             src={slot.url}
+            onLoad={() =>
+              setPanPresentation(
+                getPanPresentation(slot.offsetX, slot.offsetY, slot.scale),
+              )
+            }
             onDoubleClick={handleDoubleClick}
+            onPointerDown={handlePanPointerDown}
+            onPointerMove={handlePanPointerMove}
+            onPointerUp={handlePanPointerUp}
+            onPointerCancel={handlePanPointerCancel}
             draggable={false}
             style={{
               transform: `
-                translate(${slot.offsetX}px, ${slot.offsetY}px)
+                translate(${panPresentation.translateX}px, ${panPresentation.translateY}px)
                 scale(${slot.scale})
               `,
+              objectPosition: `${panPresentation.objectPositionX}% ${panPresentation.objectPositionY}%`,
               touchAction: "none",
             }}
-            className="
+            className={`
               absolute
               inset-0
               w-full
               h-full
               object-cover
               select-none
-              pointer-events-none
-            "
+              ${isPanning ? "cursor-grabbing" : "cursor-grab"}
+            `}
             alt=""
           />
           <button
@@ -246,52 +330,6 @@ export default function ImageSlot({
             aria-label="Changer l'image"
           >
             ✎
-          </button>
-
-          <button
-            type="button"
-            onPointerDown={handlePanPointerDown}
-            onPointerMove={handlePanPointerMove}
-            onPointerUp={handlePanPointerUp}
-            onPointerCancel={handlePanPointerCancel}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            className={`
-              export-hidden
-              absolute
-              top-2
-              left-2
-              z-20
-
-              w-5
-              h-5
-              sm:w-6
-              sm:h-6
-
-              rounded-full
-              bg-black/60
-              text-white
-              text-xs
-
-              flex
-              items-center
-              justify-center
-
-              touch-none
-              select-none
-
-              transition-opacity
-
-              ${isPanning
-                ? "cursor-grabbing opacity-100"
-                : "cursor-grab opacity-100 sm:opacity-70 sm:group-hover:opacity-100"
-              }
-            `}
-            aria-label="Déplacer l'image"
-          >
-            ⤡
           </button>
           <button
             type="button"
@@ -329,9 +367,10 @@ export default function ImageSlot({
 
               transition-opacity
 
-              ${isZooming
-                ? "cursor-ns-resize opacity-100"
-                : "cursor-ns-resize opacity-100 sm:opacity-70 sm:group-hover:opacity-100"
+              ${
+                isZooming
+                  ? "cursor-ns-resize opacity-100"
+                  : "cursor-ns-resize opacity-100 sm:opacity-70 sm:group-hover:opacity-100"
               }
             `}
             aria-label="Zoomer l'image"

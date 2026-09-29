@@ -99,9 +99,7 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
           ]}
         />
       }
-
       sidebar={<Sidebar text="ACCESS" clickable={false} />}
-
       actionsBar={
         <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
           <button

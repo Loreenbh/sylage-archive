@@ -15,9 +15,9 @@ export default function ProfileButton({
   active = false,
   clickable = true,
 }: Props) {
-  const { user } = useCurrentUser();
+  const { user, isLoading } = useCurrentUser();
 
-  const isClickable = clickable && !!user;
+  const isClickable = clickable && !isLoading && Boolean(user);
 
   return (
     <button

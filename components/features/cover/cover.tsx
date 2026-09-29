@@ -64,7 +64,8 @@ export default function Cover({ onNavigate }: Props) {
             </div>
 
             <p
-              className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}>
+              className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}
+            >
               ARCHIVE
             </p>
           </div>

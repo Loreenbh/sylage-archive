@@ -241,7 +241,6 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
           )}
         </div>
       }
-
       footerLeft={<BackButton onBack={onBack} />}
       footerRight={
         <div className="flex items-center gap-4">

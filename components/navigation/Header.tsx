@@ -56,9 +56,10 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
         w-full
         transition-all
         duration-300
-        ${isFilterOpen
-          ? "h-[74px] sm:h-[105px] md:h-[70px] lg:h-[75px]"
-          : "h-[45px] sm:h-[60px] md:h-[60px] lg:h-[60px]"
+        ${
+          isFilterOpen
+            ? "h-[74px] sm:h-[105px] md:h-[70px] lg:h-[75px]"
+            : "h-[45px] sm:h-[60px] md:h-[60px] lg:h-[60px]"
         }
       `}
     >
@@ -103,7 +104,7 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
           <button
             key={item.section}
             onClick={() => handleItemClick(item)}
-            disabled={!item.clickable}
+            disabled={item.clickable !== true}
             className={`
               ${typography.nav}
               pb-1
@@ -111,11 +112,12 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
               transition-colors
               duration-300
 
-              ${item.active || (item.section === "FILTER" && isFilterOpen)
-                ? `${colors.text.charcoal} border-black cursor-default`
-                : item.clickable
-                  ? `${colors.text.charcoal} border-transparent cursor-pointer hover:border-black opacity-90`
-                  : `${colors.text.charcoal} border-transparent cursor-default opacity-50`
+              ${
+                item.active || (item.section === "FILTER" && isFilterOpen)
+                  ? `${colors.text.charcoal} border-black cursor-default`
+                  : item.clickable
+                    ? `${colors.text.charcoal} border-transparent cursor-pointer hover:border-black opacity-90`
+                    : `${colors.text.charcoal} border-transparent cursor-default opacity-50`
               }
             `}
           >
@@ -131,9 +133,10 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
           duration-300
           relative
           z-50
-          ${isFilterOpen
-            ? "max-h-[200px] opacity-100 mt-2"
-            : "max-h-0 opacity-0"
+          ${
+            isFilterOpen
+              ? "max-h-[200px] opacity-100 mt-2"
+              : "max-h-0 opacity-0"
           }
         `}
       >

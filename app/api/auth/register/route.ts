@@ -3,14 +3,18 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-const USERNAME_REGEX = /^[a-zA-Z0-9_]+$/;
+const USERNAME_REGEX = /^[a-zA-Z0-9._-]+$/;
+
 const MIN_USERNAME_LENGTH = 3;
+
 const MAX_USERNAME_LENGTH = 15;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).+$/;
+
 const MIN_PASSWORD_LENGTH = 8;
+
 const MAX_PASSWORD_LENGTH = 35;
 
 export async function POST(request: Request) {
@@ -44,7 +48,7 @@ export async function POST(request: Request) {
     if (!USERNAME_REGEX.test(cleanUsername)) {
       return NextResponse.json(
         {
-          error: "Username can only contain letters, numbers and underscores",
+          error: "Username can only contain letters, numbers, -, _ and .",
         },
         { status: 400 },
       );

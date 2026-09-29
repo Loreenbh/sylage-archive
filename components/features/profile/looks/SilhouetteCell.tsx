@@ -91,20 +91,15 @@ export default function SilhouetteCell({
             ? silhouette.username
             : silhouette.target_username
         }
-
         prefix={moodboardId || from === "references" ? "BY" : "FOR"}
-
         isOwner={silhouette.user_id === currentUser}
-
         isGuest={!currentUser}
-
         onRequireAuth={() =>
           onNavigate?.({
             to: "auth",
             direction: "next",
           })
         }
-
         onOpenProfile={() =>
           onNavigate?.({
             to: "profile",
@@ -116,13 +111,11 @@ export default function SilhouetteCell({
             },
           })
         }
-
         onDelete={
           silhouette.user_id === currentUser
             ? () => onDelete?.(silhouette.id)
             : undefined
         }
-
         like={{
           type: "silhouette",
           id: silhouette.id,

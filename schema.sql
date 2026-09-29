@@ -1,12 +1,41 @@
 --USERS
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
+    auth_id UUID NOT NULL UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL,
     avatar_url TEXT,
+    role TEXT NOT NULL DEFAULT 'user',
     created_at TIMESTAMP DEFAULT NOW()
 );
+
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $$
+BEGIN
+    INSERT INTO public.users (auth_id, username, email)
+    VALUES (
+        NEW.id,
+        COALESCE(
+            NULLIF(NEW.raw_user_meta_data ->> 'username', ''),
+            NEW.id::text
+        ),
+        NEW.email
+    );
+
+    RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+
+CREATE TRIGGER on_auth_user_created
+AFTER INSERT ON auth.users
+FOR EACH ROW
+EXECUTE FUNCTION public.handle_new_user();
 
 --MOODBOARD
 CREATE TABLE moodboards (
