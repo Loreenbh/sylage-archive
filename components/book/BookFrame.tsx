@@ -95,28 +95,6 @@ export default function BookFrame({ children }: Props) {
             `,
           }}
         >
-          {/* AMBIANCE */}
-          <div
-            className="
-              absolute inset-0
-              pointer-events-none
-              rounded-sm
-              z-20
-            "
-            style={{
-              background: `
-              radial-gradient(
-                ellipse 70% 95% at 0% 50%,
-                rgba(255, 253, 244, 0.68) 0%,
-                rgba(255, 253, 244, 0.50) 10%,
-                rgba(255, 253, 244, 0.28) 25%,
-                rgba(255, 253, 244, 0.12) 45%,
-                rgba(255, 253, 244, 0.04) 65%,
-                transparent 80%
-              )
-            `,
-            }}
-          />
           {/* RELIURE GAUCHE */}
           <div
             className="

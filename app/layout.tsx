@@ -27,26 +27,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           relative
         `}
       >
-        {/* ANBIANCE */}
-        <div
-          className="
-            fixed
-            inset-0
-            pointer-events-none
-            z-[9999]
-          "
-          style={{
-            background: `
-            radial-gradient(
-              ellipse 70% 90% at 0% 50%,
-              rgba(255, 253, 244, 0.20) 0%,
-              rgba(255, 253, 244, 0.10) 25%,
-              rgba(255, 253, 244, 0.03) 50%,
-              transparent 75%
-            )
-          `,
-          }}
-        />
         <div
           className="
             w-[90vw]
