@@ -50,14 +50,14 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
               clickable: !!user,
               onClick: user
                 ? () =>
-                  onNavigate?.({
-                    to: "create",
-                    direction: "next",
-                    params: {
-                      from: "discover",
-                      isOwner,
-                    },
-                  })
+                    onNavigate?.({
+                      to: "create",
+                      direction: "next",
+                      params: {
+                        from: "discover",
+                        isOwner,
+                      },
+                    })
                 : undefined,
             },
           ]}
@@ -65,7 +65,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="FOCUS" clickable={false} />}
       actionsBar={
-        <div className="w-full flex items-center justify-between ml-6">
+        <div className="w-full flex items-center justify-between ml-6 mt-1">
           {!isOwner && (
             <button
               onClick={() =>
@@ -80,18 +80,18 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 })
               }
               className={`
-                ${typography.buttonBody}
-                text-black/60
-                transition-opacity
-                hover:opacity-40
-                cursor-pointer
-              `}
+          ${typography.buttonBody}
+          text-black/60
+          transition-opacity
+          hover:opacity-40
+          cursor-pointer
+        `}
             >
               by {moodboard?.username}
             </button>
           )}
 
-          <div className="flex items-center gap-1 mt-1 sm:gap-6">
+          <div className="flex items-center gap-1 sm:gap-6">
             {!isOwner && (
               <>
                 <button
@@ -113,14 +113,15 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                     });
                   }}
                   className={`
-                  ${typography.buttonBody}
-                  transition-opacity
-                  hover:opacity-40
-                  cursor-pointer
-                `}
+              ${typography.buttonBody}
+              transition-opacity
+              hover:opacity-40
+              cursor-pointer
+            `}
                 >
                   Contribute
                 </button>
+
                 <span className={typography.bullet}>•</span>
               </>
             )}
@@ -136,10 +137,10 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 onRequireAuth={
                   !user
                     ? () =>
-                      onNavigate?.({
-                        to: "auth",
-                        direction: "next",
-                      })
+                        onNavigate?.({
+                          to: "auth",
+                          direction: "next",
+                        })
                     : undefined
                 }
               />
@@ -163,14 +164,15 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 });
               }}
               className={`
-                ${typography.buttonBody}
-                transition-opacity
-                duration-300
-                ${(moodboard?.silhouettes_count ?? 0) === 0
-                  ? "cursor-default opacity-50"
-                  : "cursor-pointer hover:opacity-60"
-                }
-              `}
+          ${typography.buttonBody}
+          transition-opacity
+          duration-300
+          ${
+            (moodboard?.silhouettes_count ?? 0) === 0
+              ? "cursor-default opacity-50"
+              : "cursor-pointer hover:opacity-60"
+          }
+        `}
             >
               {moodboard?.silhouettes_count ?? 0} looks
             </button>

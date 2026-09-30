@@ -5,7 +5,7 @@ export const colors = {
   charcoal: "#211C19",
 
   bg: {
-    ivory: "bg-[#EAE3D8]",
+    ivory: "bg-[#D2BFB2]",
     stone: "bg-[#7B786C]",
     earth: "bg-[#806054]",
     charcoal: "bg-[#211C19]",

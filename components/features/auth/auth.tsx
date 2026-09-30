@@ -97,6 +97,7 @@ export default function Authentification({ onNavigate }: Props) {
           className={`
             flex
             items-center
+            mt-1
             gap-1
             sm:gap-6
             ${spacing.buttonBody}

@@ -56,7 +56,7 @@ export const typography = {
   `,
 
   buttonBody: `
-    text-[8px]
+    text-[7px]
     sm:text-[12px]
     lg:text-[16px]
     tracking-[0.3em]
@@ -75,7 +75,7 @@ export const typography = {
   `,
 
   bullet: `
-      text-[10px]
+      text-[7px]
       md:text-[14px]
     `,
 
@@ -101,7 +101,7 @@ export const typography = {
   `,
 
   follow: `
-    text-[9px]
+    text-[7px]
     sm:text-[12px]
     md:text-[13px]
     lg:text-[17px]

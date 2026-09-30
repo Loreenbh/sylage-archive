@@ -97,6 +97,7 @@ export default function Discover({ onNavigate, params }: Props) {
           className={`
             flex
             items-center
+            mt-1
             gap-2
             sm:gap-6
             ${spacing.buttonBody}

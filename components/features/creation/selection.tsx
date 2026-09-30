@@ -88,7 +88,6 @@ export default function Create({ onNavigate, params, onBack }: Props) {
             </div>
           </div>
         }
-
         topRight={
           <div
             className="h-full w-full cursor-pointer"
@@ -107,7 +106,6 @@ export default function Create({ onNavigate, params, onBack }: Props) {
             </div>
           </div>
         }
-
         bottomLeft={
           <div
             className="h-full w-full bg-zinc-400 hover:bg-zinc-500 transition"
@@ -126,7 +124,6 @@ export default function Create({ onNavigate, params, onBack }: Props) {
             </div>
           </div>
         }
-
         bottomRight={
           <div
             onClick={() =>
@@ -140,7 +137,9 @@ export default function Create({ onNavigate, params, onBack }: Props) {
             }
             className="h-full w-full cursor-pointer"
           >
-            <LayoutDPreview />
+            <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
+              <LayoutDPreview />
+            </div>
           </div>
         }
       />
