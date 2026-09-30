@@ -86,25 +86,27 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
         ← PORTFOLIO
       </button>
 
-      <div
-        className="
-          relative
-          z-[60]
-          flex
-          justify-between
-          px-4
-          sm:px-6
-          pt-10
-          sm:pt-20
-          md:pt-16
-          lg:pt-26
-        "
-      >
+        <div
+          className="
+            relative
+            z-[60]
+            flex
+            justify-between
+            gap-3
+            px-2
+            sm:gap-0
+            sm:px-6
+            pt-10
+            sm:pt-20
+            md:pt-16
+            lg:pt-26
+          "
+        >
         {items.map((item) => (
           <button
             key={item.section}
             onClick={() => handleItemClick(item)}
-            disabled={item.clickable !== true}
+            disabled={Boolean(item.clickable !== true)}
             className={`
               ${typography.nav}
               pb-1

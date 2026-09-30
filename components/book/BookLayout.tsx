@@ -31,12 +31,12 @@ export default function BookLayout({
           {/* IMAGE */}
           <div
             className={`
-              w-[250px]
-              mt-16
-              sm:mt-26
+              w-[230px]
+              mt-15
+              sm:mt-24
               sm:w-[490px]
-              md:w-[540px]
-              md:mt-30
+              md:w-[520px]
+              md:mt-29
               lg:w-[730px]
               lg:mt-46
               aspect-square
@@ -61,12 +61,12 @@ export default function BookLayout({
               sm:w-[35px]
               md:w-[50px]
               lg:w-[50px]
-              mt-16
-              sm:mt-26
-              h-[250px]
+              mt-15
+              sm:mt-24
+              h-[230px]
               sm:h-[490px]
-              md:h-[540px]
-              md:mt-30
+              md:h-[520px]
+              md:mt-29
               lg:h-[730px]
               lg:ml-6
               lg:mt-46
@@ -86,10 +86,16 @@ export default function BookLayout({
             justify-between
             items-center
             px-6
+            min-h-[24px]
           "
         >
-          <div>{footerLeft}</div>
-          <div>{footerRight}</div>
+          <div className="flex items-center">
+            {footerLeft}
+          </div>
+
+          <div className="flex items-center">
+            {footerRight}
+          </div>
         </div>
       )}
     </BookFrame>

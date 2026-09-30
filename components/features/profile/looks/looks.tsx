@@ -116,8 +116,11 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
       sidebar={<Sidebar text="LOOKS" clickable={false} />}
       actionsBar={
         <div className="flex items-center justify-between w-full gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
-          <span className={typography.buttonBody}>{carouselLabel}</span>
-
+      <span
+        className={`${typography.buttonBody} max-w-[90px] sm:max-w-[180px] truncate`}
+      >
+        {carouselLabel}
+      </span>
           <span className={typography.buttonBody}>
             {String(currentItem).padStart(2, "0")} /{" "}
             {String(filteredSilhouettes.length).padStart(2, "0")}

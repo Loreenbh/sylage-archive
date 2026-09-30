@@ -79,7 +79,7 @@ export default function Discover({ onNavigate, params }: Props) {
             { section: "FILTER", clickable: true },
             {
               section: "CREATE",
-              clickable: !isUserLoading && Boolean(user),
+              clickable: Boolean(!isUserLoading && user),
               onClick: user
                 ? () =>
                   onNavigate?.({
@@ -147,7 +147,7 @@ export default function Discover({ onNavigate, params }: Props) {
               if (isUserLoading || !user) return;
               setTab("following");
             }}
-            disabled={isUserLoading || !user}
+            disabled={Boolean(isUserLoading || !user)}
             className={`
               ${typography.buttonBody}
               pb-1

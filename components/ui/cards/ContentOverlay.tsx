@@ -137,6 +137,7 @@ export default function ContentOverlay({
             }}
             className="
               tracking-[0.2em]
+              text-[11px]
               drop-shadow
               hover:text-white/50
               transition-colors

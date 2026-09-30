@@ -129,11 +129,17 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
         requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
       );
 
+      const layoutBounds = layoutRef.current.getBoundingClientRect();
+      if (!layoutBounds.width || !layoutBounds.height) {
+        throw new Error("Moodboard dimensions unavailable");
+      }
+
       const imageData = await toPng(layoutRef.current, {
         cacheBust: true,
+        width: layoutBounds.width,
+        height: layoutBounds.height,
       });
 
-      layoutRef.current.classList.remove("export-mode");
       const imgUrl = await uploadImage(imageData);
       setExportedImage(imgUrl);
       setStep("filters");
@@ -141,6 +147,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       console.error(error);
       setPublishError("Export error");
     } finally {
+      layoutRef.current?.classList.remove("export-mode");
       setIsPublishing(false);
     }
   };

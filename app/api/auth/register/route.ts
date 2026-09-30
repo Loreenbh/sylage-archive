@@ -7,7 +7,7 @@ const USERNAME_REGEX = /^[a-zA-Z0-9._-]+$/;
 
 const MIN_USERNAME_LENGTH = 3;
 
-const MAX_USERNAME_LENGTH = 15;
+const MAX_USERNAME_LENGTH = 12;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

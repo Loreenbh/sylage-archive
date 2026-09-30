@@ -21,7 +21,7 @@ export default function ProfileButton({
 
   return (
     <button
-      disabled={!isClickable}
+      disabled={Boolean(!isClickable)}
       onClick={() => {
         if (!isClickable) return;
 

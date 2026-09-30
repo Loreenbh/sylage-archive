@@ -80,7 +80,7 @@ export const typography = {
     `,
 
   username: `
-    text-[10px]
+    text-[9px]
     sm:text-[12px]
     md:text-[12px]
     lg:text-[15px]
