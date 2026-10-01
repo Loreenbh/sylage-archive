@@ -162,7 +162,7 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
                     inset-0
                     w-full
                     h-full
-                    object-cover
+                    object-contain
                   "
                 />
 

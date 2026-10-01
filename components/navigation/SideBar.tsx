@@ -1,9 +1,9 @@
 "use client";
+
 import { useState } from "react";
 import type { OnNavigate } from "@/types/navigation";
 import { typography } from "@/styles/typography";
 import { layout } from "@/styles/layout";
-import { spacing } from "@/styles/spacing";
 import { colors } from "@/styles/colors";
 
 type Props = {
@@ -12,7 +12,11 @@ type Props = {
   clickable?: boolean;
 };
 
-export default function Sidebar({ text, onNavigate, clickable = true }: Props) {
+export default function Sidebar({
+  text,
+  onNavigate,
+  clickable = true,
+}: Props) {
   const [isHovering, setIsHovering] = useState(false);
 
   const handleClick = () => {
@@ -21,6 +25,7 @@ export default function Sidebar({ text, onNavigate, clickable = true }: Props) {
       onNavigate?.({ to: "auth", direction: "next" });
     }
   };
+
   return (
     <button
       type="button"
@@ -30,17 +35,24 @@ export default function Sidebar({ text, onNavigate, clickable = true }: Props) {
       onMouseLeave={() => setIsHovering(false)}
       className={`
         ${layout.sidebarButton}
+        h-full
+        min-h-0
+        flex
+        flex-col
+        items-center
+        justify-center
         ${clickable ? "cursor-pointer" : "cursor-default opacity-50"}
         ${isHovering && clickable ? "opacity-70" : "opacity-100"}
       `}
     >
       <div className={layout.sideBarLine} />
+
       <p
         className={`
           ${typography.sidebarTitle}
           ${colors.text.charcoal}
           ${layout.verticalText}
-          ${spacing.sideBarTitle}
+          whitespace-nowrap
         `}
       >
         {text}

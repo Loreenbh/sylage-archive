@@ -23,21 +23,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           flex
           items-center
           justify-center
-          overflow-y-auto
+          overflow-hidden
           relative
         `}
       >
         <div
           className="
-            w-[90vw]
-            sm:w-[85vw]
-            md:w-[80vw]
-            lg:w-[75vw]
-            max-w-[900px]
-            aspect-[220/280]
-            my-6
-            sm:my-10
-            md:my-14
+            w-[96vw]
+            sm:w-[94vw]
+            md:w-[94vw]
+            lg:w-[90vw]
+            max-w-[calc((100dvh-16px)*1.571)]
+            aspect-[440/280]
+            my-0
           "
         >
           {children}

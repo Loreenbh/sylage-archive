@@ -8,16 +8,14 @@ export const typography = {
     tracking-[0.3em]
   `,
 
-  nav: `
-    text-[10px]
-    px-6
-    sm:text-[16px]
-    md:text-[18px]
-    lg:text-[24px]
-    font-light
-    tracking-[0.35em]
-    uppercase
-  `,
+nav: `
+  sm:text-[10px]
+  md:text-[12px]
+  lg:text-[24px]
+  font-light
+  tracking-[0.35em]
+  uppercase
+`,
 
   subtitle: `
     text-[11px]
@@ -39,13 +37,13 @@ export const typography = {
   `,
 
   sidebarTitle: `
-  text-[18px]
-  sm:text-[30px]
-  lg:text-[45px]
-  font-light
-  whitespace-nowrap
-  tracking-[0.3em]
-`,
+    sm:text-[12px]
+    md:text-[14px]
+    lg:text-[50px]
+    font-light
+    whitespace-nowrap
+    tracking-[0.3em]
+  `,
 
   buttonAuth: `
     text-[10px]
@@ -55,9 +53,8 @@ export const typography = {
     uppercase
   `,
 
-  buttonBody: `
-    text-[7px]
-    sm:text-[12px]
+  buttonBodyDiscover: `
+    sm:text-[7px]
     lg:text-[16px]
     tracking-[0.3em]
     uppercase
@@ -80,8 +77,7 @@ export const typography = {
     `,
 
   username: `
-    text-[9px]
-    sm:text-[12px]
+    sm:text-[8px]
     md:text-[12px]
     lg:text-[15px]
     opacity-30
@@ -91,8 +87,7 @@ export const typography = {
   `,
 
   buttonOverlay: `
-    text-[10px]
-    sm:text-[12px]
+    sm:text-[10px]
     lg:text-[14px]
     tracking-[0.25em]
     text-[#343137]

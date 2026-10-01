@@ -19,8 +19,7 @@ export default function StatusMessage({ message }: Props) {
         className={`
         text-center
         ${colors.text.charcoal70}
-        text-[11px]
-        sm:text-[14px]
+        sm:text-[8px]
         md:text-[16px]
         lg:text-[18px]
         tracking-[0.2em]

@@ -147,6 +147,7 @@ export default function Book() {
         animating={animating}
         direction={direction}
         onDone={onDone}
+        isCover={current === "cover"}
       />
     </div>
   );

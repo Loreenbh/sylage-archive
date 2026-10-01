@@ -23,79 +23,82 @@ export default function BookLayout({
 }: Props) {
   return (
     <BookFrame>
-      {header && <div className="w-full">{header}</div>}
+      {/* HEADER */}
+      {header && <div className="w-full shrink-0">{header}</div>}
+
       {/* BODY */}
-      <div className="flex justify-center items-start flex-1 min-h-0">
-        {/* LEFT COLUMN */}
-        <div className="flex flex-col">
-          {/* IMAGE */}
-          <div
-            className={`
-              w-[230px]
-              mt-15
-              sm:mt-24
-              sm:w-[490px]
-              md:w-[520px]
-              md:mt-29
-              lg:w-[730px]
-              lg:mt-46
-              aspect-square
-              shrink-0
-              mx-auto
-              ml-6
-              sm:ml-6
-              ${imageClassName ?? ""}
-            `}
-          >
-            {children}
+      <div className="flex flex-1 min-h-0 w-full overflow-hidden">
+        {/* IMAGE + SIDEBAR */}
+        <div
+          className={`
+    flex
+    items-start
+    min-w-0
+    w-full
+    sm:mt-10
+    md:mt-28
+    lg:mt-45
+  `}
+        >
+          {/* IMAGE + ACTIONS */}
+          <div className="flex flex-col min-w-0 flex-1">
+            <div
+              className={`
+        aspect-square
+        sm:ml-[4vw]
+        md:ml-0
+        sm:w-[84%]
+        md:w-[72%]
+        lg:w-[75%]
+        ${imageClassName ?? ""}
+      `}
+            >
+              {children}
+            </div>
+
+            {actionsBar && <div className="w-[75%] shrink-0">{actionsBar}</div>}
           </div>
-          {actionsBar && <div className="flex w-full">{actionsBar}</div>}
+
+          {/* SIDEBAR */}
+          {sidebar && (
+            <div
+              className={`
+      shrink-0
+      flex
+      flex-col
+      self-start
+      sm:h-[30vw]
+      md:h-[52vw]
+      lg:h-[55vw]
+      sm:w-[30px]
+      md:w-[40px]
+      lg:w-[50px]
+      ${sidebarClassName ?? ""}
+    `}
+            >
+              {sidebar}
+            </div>
+          )}
         </div>
-        {sidebar && (
-          <div
-            className={`
-              flex
-              flex-col
-              self-start
-              w-[40px]
-              sm:w-[35px]
-              md:w-[50px]
-              lg:w-[50px]
-              mt-15
-              sm:mt-24
-              h-[230px]
-              sm:h-[490px]
-              md:h-[520px]
-              md:mt-29
-              lg:h-[730px]
-              lg:ml-6
-              lg:mt-46
-              ${sidebarClassName ?? ""}
-            `}
-          >
-            {sidebar}
-          </div>
-        )}
       </div>
+
       {/* FOOTER */}
       {(footerLeft || footerRight) && (
         <div
           className="
+            shrink-0
             w-full
             flex
             justify-between
             items-center
-            px-6
-            min-h-[24px]
+            px-3
+            sm:px-4
+            min-h-[20px]
           "
         >
-          <div className="flex items-center">
-            {footerLeft}
-          </div>
+          <div className="flex items-center min-w-0">{footerLeft}</div>
 
-          <div className="flex items-center">
-            {footerRight}
-          </div>
+          <div className="flex items-center min-w-0">{footerRight}</div>
         </div>
       )}
     </BookFrame>

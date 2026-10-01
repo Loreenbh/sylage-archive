@@ -106,7 +106,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                     inset-0
                     w-full
                     h-full
-                    object-cover
+                    object-contain
                   "
                 />
               )}

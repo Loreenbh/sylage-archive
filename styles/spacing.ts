@@ -21,7 +21,7 @@ export const spacing = {
   `,
 
   sideBarTitle: `
-    mt-6
+    mt-0
   `,
 
   feedback: `
@@ -45,9 +45,10 @@ export const spacing = {
   lg:pt-4
   `,
 
-  buttonBody: `
-  px-6
-  sm:pt-3
+  buttonBodyDiscover: `
+  sm:px-7
+  sm:pt-1
+  sm:gap-2
   `,
 
   backButton: `

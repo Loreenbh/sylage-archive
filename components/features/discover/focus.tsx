@@ -190,7 +190,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
       <div className="flex flex-col h-full min-h-0 gap-1">
         <SimpleGrid
           square={
-            <div className="relative w-[280px] sm:w-[500px] md:w-[550px] lg:w-[750px] aspect-square mx-auto">
+            <div className="relative w-full h-full">
               {moodboard && (
                 <img
                   src={moodboard.image_url}
@@ -200,7 +200,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                     inset-0 
                     w-full 
                     h-full 
-                    object-cover"
+                    object-contain"
                 />
               )}
             </div>

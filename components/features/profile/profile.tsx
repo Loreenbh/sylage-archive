@@ -349,7 +349,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               inset-0
               w-full
               h-full
-              object-cover
+              object-contain
             "
                 />
               )}

@@ -17,7 +17,6 @@ type Props = {
     count: number;
     liked: boolean;
   };
-
   silhouettesCount?: number;
   onDelete?: () => void;
   onOpenLooks?: () => void;
@@ -42,50 +41,61 @@ export default function ContentOverlay({
   return (
     <div
       className={`
-        absolute bottom-0 left-0 right-0
-        flex items-center justify-between
-        px-2 py-1
+        absolute
+        inset-x-0
+        bottom-0
+        sm:h-5
+        md:h-8
+        lg:h-8
+        px-2
+        sm:px-3
+        md:px-4
+        lg:px-5
+        flex
+        items-center
+        justify-between
         ${colors.bg.charcoal70}
         ${colors.text.ivory}
         backdrop-blur-sm
       `}
     >
-      <div className="flex flex-col">
-        {showUsername && username && (
-          <div
+      {/* LEFT */}
+      {showUsername && username ? (
+        <div className="flex items-center leading-none">
+          {prefix && (
+            <span className="sm:text-[8px] lg:text-[11px] text-white/70 leading-none">
+              {prefix}&nbsp;
+            </span>
+          )}
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenProfile?.();
+            }}
             className="
-              text-[8px]
-              sm:text-[12px]
-              tracking-[0.2em]
-              drop-shadow
-              lg:text-[16px]
+              cursor-pointer
+              text-white
+              sm:text-[8px]
+              lg:text-[14px]
+              leading-none
+              tracking-[0.15em]
+              sm:tracking-[0.2em]
+              hover:text-white/50
+              transition-colors
+              duration-300
             "
           >
-            {prefix && <span className="text-white/70">{prefix} </span>}
+            {username}
+          </button>
+        </div>
+      ) : (
+        <div />
+      )}
 
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onOpenProfile?.();
-              }}
-              className="
-                cursor-pointer
-                text-white
-                text-[7px]
-                sm:text-[12px]
-                lg:text-[14px]
-                hover:text-white/50
-                transition-colors
-                duration-300
-              "
-            >
-              {username}
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-center gap-1 md:gap-4 lg:gap-6">
+      {/* RIGHT */}
+      <div className="flex items-center sm:gap-2 md:gap-4 lg:gap-6 leading-none">
         {like && (
           <LikeButton
             type={like.type}
@@ -100,6 +110,7 @@ export default function ContentOverlay({
 
         {silhouettesCount !== undefined && (
           <button
+            type="button"
             disabled={silhouettesCount === 0}
             onClick={(e) => {
               e.stopPropagation();
@@ -111,20 +122,23 @@ export default function ContentOverlay({
             className={`
               ${typography.buttonOverlay}
               text-white
+              leading-none
               transition-colors
               duration-300
-              ${silhouettesCount === 0
-                ? "cursor-default opacity-50"
-                : "cursor-pointer hover:text-white/50"
+              ${
+                silhouettesCount === 0
+                  ? "cursor-default opacity-50"
+                  : "cursor-pointer hover:text-white/50"
               }
             `}
           >
-            looks • {silhouettesCount}
+            looks:{silhouettesCount}
           </button>
         )}
 
         {!isOwner && onFollowToggle && (
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
 
@@ -136,8 +150,9 @@ export default function ContentOverlay({
               onFollowToggle?.();
             }}
             className="
+              sm:text-[10px]
+              leading-none
               tracking-[0.2em]
-              text-[11px]
               drop-shadow
               hover:text-white/50
               transition-colors
@@ -150,6 +165,7 @@ export default function ContentOverlay({
 
         {isOwner && onDelete && (
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               onDelete();
@@ -158,7 +174,7 @@ export default function ContentOverlay({
               text-white
               sm:text-[10px]
               lg:text-[13px]
-              text-[10px]
+              leading-none
               hover:text-white/50
               transition-colors
               duration-300

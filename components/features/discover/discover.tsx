@@ -97,17 +97,14 @@ export default function Discover({ onNavigate, params }: Props) {
           className={`
             flex
             items-center
-            mt-1
-            gap-2
-            sm:gap-6
-            ${spacing.buttonBody}
+            ${spacing.buttonBodyDiscover}
             ${colors.text.charcoal}
           `}
         >
           <button
             onClick={() => setTab("latest")}
             className={`
-              ${typography.buttonBody}
+              ${typography.buttonBodyDiscover}
               pb-1
               border-b
               transition-colors
@@ -126,7 +123,7 @@ export default function Discover({ onNavigate, params }: Props) {
           <button
             onClick={() => setTab("curated")}
             className={`
-              ${typography.buttonBody}
+              ${typography.buttonBodyDiscover}
               pb-1
               border-b
               transition-colors
@@ -149,7 +146,7 @@ export default function Discover({ onNavigate, params }: Props) {
             }}
             disabled={Boolean(isUserLoading || !user)}
             className={`
-              ${typography.buttonBody}
+              ${typography.buttonBodyDiscover}
               pb-1
               border-b
               transition-colors
@@ -230,7 +227,7 @@ export default function Discover({ onNavigate, params }: Props) {
                   inset-0
                   w-full
                   h-full
-                  object-cover
+                  object-contain
                 "
                 />
 

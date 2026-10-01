@@ -74,8 +74,8 @@ export default function TagPicker({
   const allSelected = [...styleTags, ...ambianceTags, ...colorTags];
 
   return (
-    <div className="flex flex-col items-center gap-1 sm:gap-3 lg:gap-4">
-      <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+    <div className="flex flex-col items-center sm:gap-2 lg:gap-4">
+      <div className="flex sm:gap-3 md:gap-8 lg:gap-10">
         {categories.map((category) => (
           <button
             key={category.key}
@@ -86,13 +86,11 @@ export default function TagPicker({
               )
             }
             className={`
-              text-[8px]
-              sm:text-[10px]
+              sm:text-[7px]
               md:text-[11px]
               lg:text-[14px]
               tracking-[0.2em] 
               uppercase 
-              pb-1 
               border-b 
               transition
               ${openCategory === category.key
@@ -125,7 +123,6 @@ export default function TagPicker({
                   flex
                   flex-wrap
                   justify-center
-                  gap-2
                   max-w-md
                 `
             }
@@ -151,9 +148,9 @@ export default function TagPicker({
                     text-[7px] 
                     tracking-[0.15em] 
                     uppercase 
-                    px-2 
-                    py-1 
-                    sm:text-[10px]
+                    px-4 
+                    lg:py-1 
+                    sm:text-[7px]
                     md:text-[10px]
                     lg:text-[13px]
                     border transition

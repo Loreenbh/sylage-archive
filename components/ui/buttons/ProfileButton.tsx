@@ -34,12 +34,10 @@ export default function ProfileButton({
         });
       }}
       className={`
-        w-8 h-8 
-        sm:w-14 
-        sm:h-14 
+        sm:w-6 
+        sm:h-6 
         lg:w-20 
         lg:h-20
-        text-[10px]
         sm:text-[16px]
         lg:text-[25px]
         ${!isClickable ? "cursor-default opacity-50" : "cursor-pointer"}

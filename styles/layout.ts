@@ -31,24 +31,26 @@ export const layout = {
   `,
 
   sideBarLine: `
-    block
-    flex-1
-    min-h-0
-    w-[1px]
-    bg-black/40
-  `,
+  w-[1px]
+  flex-1
+  min-h-0
+  bg-black/40
+`,
 
   sidebarButton: `
-    flex
-    flex-col
-    items-center
-    w-full
-    h-full
-  `,
+  flex
+  flex-col
+  items-center
+  justify-between
+  w-full
+  h-full
+  min-h-0
+`,
 
   verticalText: `
-    [writing-mode:vertical-rl]
-    rotate-180
-    shrink-0
-  `,
+  [writing-mode:vertical-rl]
+  rotate-180
+  shrink-0
+  whitespace-nowrap
+`,
 };

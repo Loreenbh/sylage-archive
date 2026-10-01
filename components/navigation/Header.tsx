@@ -58,8 +58,8 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
         duration-300
         ${
           isFilterOpen
-            ? "h-[74px] sm:h-[105px] md:h-[70px] lg:h-[75px]"
-            : "h-[45px] sm:h-[60px] md:h-[60px] lg:h-[60px]"
+            ? "sm:h-[59px] md:h-[70px] lg:h-[75px]"
+            : "sm:h-[40px] md:h-[60px] lg:h-[60px]"
         }
       `}
     >
@@ -71,8 +71,7 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
         className="
           absolute
           z-[70]
-          text-[10px]
-          sm:text-[13px]
+          sm:text-[10px]
           md:text-[13px]
           lg:text-[18px]
           tracking-[0.18em]
@@ -93,11 +92,8 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
             flex
             justify-between
             gap-3
-            px-2
-            sm:gap-0
-            sm:px-6
-            pt-10
-            sm:pt-20
+            sm:px-4
+            sm:pt-8
             md:pt-16
             lg:pt-26
           "
@@ -146,10 +142,7 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
           className="
             border-b
             border-black/10
-            pt-2
-            pb-2
-            px-2
-            sm:px-4
+            sm:px-2
             md:px-6
             lg:px-10
           "
