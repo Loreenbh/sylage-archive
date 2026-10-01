@@ -313,12 +313,12 @@ export default function ImageSlot({
               bottom-2
               right-2
               z-20
-              w-5
-              h-5
+              sm:w-4
+              sm:h-4
               rounded-full
               bg-black/60
               text-white
-              text-xs
+              sm:text-[12px]
               flex
               items-center
               justify-center
@@ -347,16 +347,13 @@ export default function ImageSlot({
               top-2
               right-2
               z-20
-
-              w-5
-              h-5
-              sm:w-6
-              sm:h-6
+              sm:w-4
+              sm:h-4
 
               rounded-full
               bg-black/60
               text-white
-              text-xs
+              sm:text-[12px]
 
               flex
               items-center

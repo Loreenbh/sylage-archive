@@ -122,6 +122,7 @@ export default function SilhouetteCell({
           count: silhouette.likes_count,
           liked: silhouette.liked_by_current_user,
         }}
+        variant="vertical"
       />
     </div>
   );

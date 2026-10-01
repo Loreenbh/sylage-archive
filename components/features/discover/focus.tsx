@@ -65,7 +65,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="FOCUS" clickable={false} />}
       actionsBar={
-        <div className="w-full flex items-center justify-between ml-6 mt-1">
+        <div className="sm: flex items-center justify-between ml-7 mt-1 gap-2 overflow-hidden">
           {!isOwner && (
             <button
               onClick={() =>
@@ -80,18 +80,22 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 })
               }
               className={`
-          ${typography.buttonBody}
+          ${typography.buttonBodyFocus}
           text-black/60
           transition-opacity
           hover:opacity-40
           cursor-pointer
+          min-w-0
+          shrink
+          truncate
+          whitespace-nowrap
         `}
             >
               by {moodboard?.username}
             </button>
           )}
 
-          <div className="flex items-center gap-1 sm:gap-6">
+          <div className="flex items-center shrink-0 whitespace-nowrap gap-1 sm:gap-2">
             {!isOwner && (
               <>
                 <button
@@ -113,13 +117,14 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                     });
                   }}
                   className={`
-              ${typography.buttonBody}
+              ${typography.buttonBodyFocus}
               transition-opacity
               hover:opacity-40
               cursor-pointer
+              whitespace-nowrap
             `}
                 >
-                  Contribute
+                  Look in
                 </button>
 
                 <span className={typography.bullet}>•</span>
@@ -129,7 +134,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
             {moodboard && (
               <LikeButton
                 type="moodboard"
-                className={typography.buttonBody}
+                className={typography.buttonBodyFocus}
                 id={moodboard.id}
                 initialCount={moodboard.likes_count}
                 initialLiked={moodboard.liked_by_current_user}
@@ -164,9 +169,10 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
                 });
               }}
               className={`
-          ${typography.buttonBody}
+          ${typography.buttonBodyFocus}
           transition-opacity
           duration-300
+          whitespace-nowrap
           ${
             (moodboard?.silhouettes_count ?? 0) === 0
               ? "cursor-default opacity-50"

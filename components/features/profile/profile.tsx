@@ -143,12 +143,12 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
+        <div className="flex items-center gap-2 sm:ml-7 md:gap-4 ml-6 mt-1 lg:mt-3">
           {isOwner ? (
             <>
               <button
                 className={`
-                  ${typography.buttonBody}
+                  ${typography.buttonBodyFocus}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -168,7 +168,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               <span className={typography.bullet}>•</span>
               <button
                 className={`
-                  ${typography.buttonBody}
+                  ${typography.buttonBodyFocus}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -188,7 +188,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               <span className={typography.bullet}>•</span>
               <button
                 className={`
-                  ${typography.buttonBody}
+                  ${typography.buttonBodyFocus}
                   transition-opacity
                   hover:opacity-60
                   cursor-pointer
@@ -202,7 +202,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
             <>
               <p
                 className={`
-                ${typography.buttonBody}
+                ${typography.buttonBodyFocus}
                 `}
               >
                 {profileUser?.username}'S ARCHIVE
@@ -213,7 +213,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               <button
                 onClick={handleFollowToggle}
                 className={`
-                    ${typography.buttonBody}
+                    ${typography.buttonBodyFocus}
                     transition-opacity
                     hover:opacity-60
                     cursor-pointer
@@ -302,13 +302,13 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
           absolute
           bottom-0
           left-0
-          p-4
+          p-3
           z-10
         "
               >
                 <p
                   className={`
-              ${typography.buttonBody}
+              ${typography.profile}
               ${lastSilhouette ? "text-white drop-shadow" : ""}
             `}
                 >
@@ -322,12 +322,12 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
             <GridButton
               disabled={!lastMoodboard}
               className="
-          relative
-          overflow-hidden
-          border
-          border-black/10
-          disabled:cursor-default
-        "
+                relative
+                overflow-hidden
+                border
+                border-black/10
+                disabled:cursor-default
+              "
               onClick={() =>
                 lastMoodboard &&
                 onNavigate?.({
@@ -384,13 +384,13 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
           absolute
           bottom-0
           left-0
-          p-4
+          p-3
           z-10
         "
               >
                 <p
                   className={`
-              ${typography.buttonBody}
+              ${typography.profile}
               ${lastMoodboard ? "text-white drop-shadow" : ""}
             `}
                 >
@@ -417,7 +417,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               absolute
               inset-x-0
               top-0
-              bottom-12
+              
               min-h-0
               overflow-hidden
             "
@@ -472,11 +472,11 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
             absolute
             bottom-0
             left-0
-            p-4
+            p-3
             z-10
           "
               >
-                <p className={typography.buttonBody}>CONNECTIONS</p>
+                <p className={typography.profile}>CONNECTIONS</p>
               </div>
             </div>
           }

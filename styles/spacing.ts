@@ -50,10 +50,8 @@ export const spacing = {
   sm:pt-1
   sm:gap-2
   `,
-
   backButton: `
-  ml-3
-  sm:ml-7
+  sm:ml-2
   md:ml-2
   lg:ml-3
   `,

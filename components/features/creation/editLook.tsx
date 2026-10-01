@@ -189,10 +189,10 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
           ]}
         />
       }
-      sidebar={<Sidebar text={"CONTRIBUTE"} clickable={false} />}
+      sidebar={<Sidebar text={"LOOK IN"} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-3 ml-6 md:mt-2 mt-1">
-          <span className={typography.buttonBody}>
+          <span className={typography.buttonBodyFocus}>
             {moodboard?.silhouettes_count ?? 0} LOOKS
           </span>
 
@@ -203,7 +203,7 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
               onClick={handlePublish}
               disabled={isPublishing}
               className={`
-                ${typography.buttonBody}
+                ${typography.buttonBodyFocus}
                 transition-opacity
                 hover:opacity-40
                 disabled:opacity-40

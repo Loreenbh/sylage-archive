@@ -91,8 +91,8 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="MOODS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-6 md:mt-1 lg:mt-3">
-          <span className={typography.buttonBody}>
+        <div className="flex items-center gap-2 md:gap-4 ml-7 mt-1 lg:mt-3">
+          <span className={typography.buttonBodyFocus}>
             {from === "references"
               ? "LIKED MOODS"
               : isOwner
@@ -102,7 +102,7 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
 
           <span className={typography.bullet}>•</span>
 
-          <span className={typography.buttonBody}>
+          <span className={typography.buttonBodyFocus}>
             {filteredMoodboards.length} MOODS
           </span>
         </div>

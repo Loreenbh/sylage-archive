@@ -60,9 +60,22 @@ nav: `
     uppercase
   `,
 
+    profile: `
+    sm:text-[8px]
+    lg:text-[16px]
+    tracking-[0.3em]
+    uppercase
+  `,
+
+    buttonBodyFocus: `
+    sm:text-[7.5px]
+    lg:text-[16px]
+    tracking-[0.3em]
+    uppercase
+  `,
+
   backButton: `
-    text-[10px]
-    sm:text-[12px]
+    sm:text-[10px]
     md:text-[14px]
     lg:text-[17px]
     tracking-[0.2em]
@@ -87,7 +100,7 @@ nav: `
   `,
 
   buttonOverlay: `
-    sm:text-[10px]
+    sm:text-[8px]
     lg:text-[14px]
     tracking-[0.25em]
     text-[#343137]
@@ -96,8 +109,7 @@ nav: `
   `,
 
   follow: `
-    text-[7px]
-    sm:text-[12px]
+    sm:text-[7px]
     md:text-[13px]
     lg:text-[17px]
     uppercase
@@ -142,4 +154,13 @@ nav: `
     tracking-[0.25em]
     font-extralight
     `,
+
+    settings: `
+    sm:text-[8px]
+    lg:text-[14px]
+    tracking-[0.25em]
+    text-[#343137]
+    font-extralight
+    uppercase
+  `,
 };

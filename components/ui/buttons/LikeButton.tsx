@@ -10,6 +10,7 @@ type Props = {
   onRequireAuth?: () => void;
   className: string;
   disabled?: boolean;
+  vertical?: boolean;
 };
 
 export default function LikeButton({
@@ -21,6 +22,7 @@ export default function LikeButton({
   onRequireAuth,
   className = "",
   disabled = false,
+  vertical = false,
 }: Props) {
   const [liked, setLiked] = useState(initialLiked);
   const [count, setCount] = useState(initialCount);
@@ -69,13 +71,23 @@ export default function LikeButton({
 
     onLike?.();
   };
+
   return (
     <button
       onClick={handleClick}
       className={`${className} ${colors.text.charcoal} hover:text-white/40 transition-colors duration-300`}
       disabled={disabled}
     >
-      {liked ? "♥" : "♡"} {count}
+      {vertical ? (
+        <span className="flex flex-col items-center gap-0.5 leading-none">
+          <span>{liked ? "♥" : "♡"}</span>
+          <span>{count}</span>
+        </span>
+      ) : (
+        <>
+          {liked ? "♥" : "♡"} {count}
+        </>
+      )}
     </button>
   );
 }

@@ -1,20 +1,26 @@
 "use client";
+
 import { useState, useEffect } from "react";
-/*TYPES*/
+
+/* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
-/*COMPONENTS*/
+
+/* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
 import Header from "@/components/navigation/Header";
 import FourSquaresGrid from "@/components/ui/grids/FourSquareGrid";
 import Avatar from "@/components/ui/pagination/Avatar";
 import BackButton from "@/components/ui/buttons/BackButton";
-/*SERVICES*/
+
+/* SERVICES */
 import { updateUser, deleteUser } from "@/lib/services/profile";
 import { uploadImage } from "@/lib/services/upload";
-/*HOOKS*/
+
+/* HOOKS */
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-/*STYLE*/
+
+/* STYLE */
 import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
 
@@ -56,6 +62,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
     try {
       await deleteUser();
       setDeleteMessage("Account deleted");
+
       onNavigate?.({
         to: "cover",
         direction: "prev",
@@ -78,14 +85,17 @@ export default function Settings({ onNavigate, onBack }: Props) {
 
   const handleUsernameChange = async () => {
     setUsernameMessage("");
+
     if (!username) {
       setUsernameMessage("Missing username");
       return;
     }
+
     if (username.length < 3) {
       setUsernameMessage("Username must be at least 3 characters");
       return;
     }
+
     if (username.length > 20) {
       setUsernameMessage("Username must be less than 20 characters");
       return;
@@ -95,6 +105,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
       await updateUser({
         username,
       });
+
       setUsernameMessage("Updated.");
     } catch (error) {
       if (error instanceof Error) {
@@ -103,15 +114,21 @@ export default function Settings({ onNavigate, onBack }: Props) {
     }
   };
 
-  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
+
     try {
       const imageData = await fileToBase64(file);
       const imageUrl = await uploadImage(imageData);
+
       await updateUser({
         avatar_url: imageUrl,
       });
+
       setAvatar(imageUrl);
     } catch (error) {
       console.error("Erreur changement avatar", error);
@@ -120,19 +137,23 @@ export default function Settings({ onNavigate, onBack }: Props) {
 
   const handlePasswordChange = async () => {
     setMessage("");
+
     if (!oldPassword || !newPassword || !confirmPassword) {
       setMessage("Missing fields");
       return;
     }
+
     if (newPassword !== confirmPassword) {
       setMessage("Passwords don't match");
       return;
     }
+
     try {
       await updateUser({
         oldPassword,
         password: newPassword,
       });
+
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -145,6 +166,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
       }
     }
   };
+
   return (
     <BookLayout
       header={
@@ -159,7 +181,10 @@ export default function Settings({ onNavigate, onBack }: Props) {
                   direction: "prev",
                 }),
             },
-            { section: "FILTER", clickable: false },
+            {
+              section: "FILTER",
+              clickable: false,
+            },
             {
               section: "CREATE",
               clickable: true,
@@ -177,7 +202,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
       }
       sidebar={<Sidebar text="SETTINGS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
+        <div className="flex items-center gap-2 md:gap-4 ml-7 mt-1 lg:mt-3 w-[105%]">
           <button
             onClick={() =>
               onNavigate?.({
@@ -185,7 +210,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                 direction: "next",
               })
             }
-            className={typography.buttonBody}
+            className={typography.buttonBodyFocus}
           >
             ABOUT
           </button>
@@ -199,7 +224,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                 direction: "next",
               })
             }
-            className={typography.buttonBody}
+            className={typography.buttonBodyFocus}
           >
             privacy & terms
           </button>
@@ -211,12 +236,13 @@ export default function Settings({ onNavigate, onBack }: Props) {
         topLeft={
           <label
             className="
-              relative
               h-full
               w-full
               flex
-              items-end
+              flex-col
+              justify-end
               p-4
+              relative
               hover:bg-zinc-300
               transition
               cursor-pointer
@@ -238,9 +264,10 @@ export default function Settings({ onNavigate, onBack }: Props) {
                 "
               />
             )}
+
             <span
               className={`
-                ${typography.buttonBody}
+                ${typography.profile}
                 relative
                 z-10
                 drop-shadow
@@ -248,6 +275,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
             >
               Portrait
             </span>
+
             <input
               type="file"
               accept="image/*"
@@ -256,6 +284,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
             />
           </label>
         }
+
         topRight={
           <div
             className={`
@@ -265,16 +294,15 @@ export default function Settings({ onNavigate, onBack }: Props) {
               flex
               flex-col
               justify-between
-              p-2
-              sm:p-3
-              md:p-4
-              lg:p-5
+              p-4
               cursor-pointer
             `}
             onClick={() => !passwordOpen && setPasswordOpen(true)}
           >
             {!passwordOpen ? (
-              <div />
+              <div className="h-full flex flex-col justify-end">
+                <span className={typography.profile}>Password</span>
+              </div>
             ) : (
               <div
                 className="
@@ -314,8 +342,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                       border-b
                       border-black/30
                       outline-none
-                      text-[8px]
-                      sm:text-[14px]
+                      sm:text-[8px]
                       md:text-[16px]
                       lg:text-[18px]
                       lg:pt-8
@@ -335,8 +362,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                       border-b
                       border-black/30
                       outline-none
-                      text-[8px]
-                      sm:text-[14px]
+                      sm:text-[8px]
                       md:text-[16px]
                       lg:text-[18px]
                       tracking-wide
@@ -356,7 +382,6 @@ export default function Settings({ onNavigate, onBack }: Props) {
                       border-black/30
                       outline-none
                       text-[8px]
-                      sm:text-[14px]
                       md:text-[16px]
                       lg:text-[18px]
                       tracking-wide
@@ -366,7 +391,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
 
                   <button
                     className={`
-                      ${typography.buttonBody}
+                      ${typography.profile}
                       mt-1
                       sm:mt-2
                       lg:mt-3
@@ -394,18 +419,17 @@ export default function Settings({ onNavigate, onBack }: Props) {
                 </div>
               </div>
             )}
-
-            {!passwordOpen && (
-              <span className={typography.buttonBody}>Password</span>
-            )}
           </div>
         }
+
         bottomLeft={
           <div
             className={`
-              h-full w-full
+              h-full
+              w-full
               ${colors.bg.earth}
-              flex flex-col
+              flex
+              flex-col
               p-4
               cursor-pointer
               ${usernameOpen ? "items-center justify-center" : "justify-end"}
@@ -413,7 +437,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
             onClick={() => !usernameOpen && setUsernameOpen(true)}
           >
             {!usernameOpen ? (
-              <span className={typography.buttonBody}>Name</span>
+              <span className={typography.profile}>Name</span>
             ) : (
               <div
                 className="
@@ -422,7 +446,8 @@ export default function Settings({ onNavigate, onBack }: Props) {
                   sm:max-w-[180px]
                   md:max-w-[200px]
                   lg:max-w-[300px]
-                  flex flex-col
+                  flex
+                  flex-col
                   items-center
                   gap-5
                 "
@@ -439,8 +464,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                     border-b
                     border-black/30
                     outline-none
-                    text-[10px]
-                    sm:text-[16px]
+                    sm:text-[11px]
                     lg:text-[18px]
                     tracking-wide
                     text-center
@@ -448,7 +472,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                 />
 
                 <button
-                  className={typography.buttonBody}
+                  className={typography.settings}
                   onClick={handleUsernameChange}
                 >
                   save
@@ -463,44 +487,50 @@ export default function Settings({ onNavigate, onBack }: Props) {
             )}
           </div>
         }
+
         bottomRight={
           <div
             className={`
-            h-full w-full
-            ${colors.bg.empty}
-            flex flex-col
-            p-4
-            cursor-pointer
-            ${deleteConfirm ? "items-center justify-center" : "justify-end"}
-          `}
+              h-full
+              w-full
+              ${colors.bg.empty}
+              flex
+              flex-col
+              p-4
+              cursor-pointer
+              ${deleteConfirm ? "items-center justify-center" : "justify-end"}
+            `}
             onClick={() => !deleteConfirm && setDeleteConfirm(true)}
           >
             {!deleteConfirm ? (
-              <span className={typography.buttonBody}>Account</span>
+              <span className={typography.profile}>Account</span>
             ) : (
               <div
                 className="
-                flex flex-col
-                items-center
-                justify-center
-                gap-6
-                text-center
-              "
+                  flex
+                  flex-col
+                  items-center
+                  justify-center
+                  gap-6
+                  text-center
+                "
                 onClick={(e) => e.stopPropagation()}
               >
-                <span className={typography.buttonBody}>Remove account?</span>
+                <span className={typography.settings}>
+                  Remove account?
+                </span>
 
                 <div className="flex gap-[40px] sm:gap-[50px] md:gap-[60px] lg:gap-[80px]">
                   <button
                     onClick={handleDeleteAccount}
-                    className={typography.buttonBody}
+                    className={typography.settings}
                   >
                     ✓
                   </button>
 
                   <button
                     onClick={() => setDeleteConfirm(false)}
-                    className={typography.buttonBody}
+                    className={typography.settings}
                   >
                     x
                   </button>

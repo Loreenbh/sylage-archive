@@ -115,23 +115,40 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="LOOKS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center justify-between w-full gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
-      <span
-        className={`${typography.buttonBody} max-w-[90px] sm:max-w-[180px] truncate`}
-      >
-        {carouselLabel}
-      </span>
-          <span className={typography.buttonBody}>
+        <div className="flex items-center justify-between sm:w-[115%] gap-2 md:gap-4 sm:ml-7 mt-1 lg:mt-3 whitespace-nowrap">
+          <span
+            className={`
+              ${typography.buttonBodyFocus}
+              max-w-[105px]
+              sm:max-w-[180px]
+              truncate
+              whitespace-nowrap
+              shrink
+            `}
+          >
+            {carouselLabel}
+          </span>
+
+          <span
+            className={`
+              ${typography.buttonBodyFocus}
+              shrink-0
+              whitespace-nowrap
+              min-w-max
+            `}
+          >
             {String(currentItem).padStart(2, "0")} /{" "}
             {String(filteredSilhouettes.length).padStart(2, "0")}
           </span>
 
-          <CarouselControls
-            onPrev={handlePrev}
-            onNext={handleNext}
-            canPrev={canPrev}
-            canNext={canNext}
-          />
+          <div className="shrink-0 whitespace-nowrap">
+            <CarouselControls
+              onPrev={handlePrev}
+              onNext={handleNext}
+              canPrev={canPrev}
+              canNext={canNext}
+            />
+          </div>
         </div>
       }
       footerLeft={<BackButton onBack={onBack} />}

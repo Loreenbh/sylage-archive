@@ -228,12 +228,12 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="COMPOSE" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
+        <div className="flex items-center gap-2 md:gap-4 ml-7 mt-1 lg:mt-3">
           {step === "compose" ? (
             <button
               onClick={handleConfirm}
               disabled={!slots.every((slot) => slot !== null) || isPublishing}
-              className={`${typography.buttonBody} disabled:opacity-40`}
+              className={`${typography.buttonBodyFocus} disabled:opacity-40`}
             >
               confirm
             </button>
@@ -241,7 +241,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
             <button
               onClick={handlePublish}
               disabled={!canPublish || isPublishing}
-              className={`${typography.buttonBody} disabled:opacity-40`}
+              className={`${typography.buttonBodyFocus} disabled:opacity-40`}
             >
               publish
             </button>
@@ -280,8 +280,8 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
               flex
               flex-col
               items-center
-              px-4
-              pt-4
+              sm:px-4
+              sm:pt-2
               min-h-0
               overflow-y-auto
               pb-4
@@ -296,7 +296,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
               onChangeColor={setColorTags}
             />
 
-            <p className="mt-2 tracking-[0.12em] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[14px] uppercase text-black/50 shrink-0">
+            <p className="mt-1 tracking-[0.12em] sm:text-[7px] md:text-[12px] lg:text-[14px] uppercase text-black/50 shrink-0">
               {allSelectedTags.length} tags selected
             </p>
           </div>

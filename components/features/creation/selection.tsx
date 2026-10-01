@@ -55,10 +55,10 @@ export default function Create({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="EDITION" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
-          <p className={typography.buttonBody}>layout</p>
+        <div className="flex items-center gap-2 md:gap-4 ml-7 mt-1 lg:mt-3">
+          <p className={typography.buttonBodyFocus}>layout</p>
           <span className={typography.bullet}>•</span>
-          <p className={typography.buttonBody}>foundation</p>
+          <p className={typography.buttonBodyFocus}>foundation</p>
         </div>
       }
       footerLeft={<BackButton onBack={onBack} />}

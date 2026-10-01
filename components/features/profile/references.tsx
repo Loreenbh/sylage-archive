@@ -58,10 +58,10 @@ export default function References({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="REFERENCES" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
-          <p className={typography.buttonBody}>Your references</p>
+        <div className="flex items-center gap-1 md:gap-4 ml-7 mt-1 lg:mt-3 w-[105%]">
+          <p className={typography.buttonBodyFocus}>Your references</p>
           <span className={typography.bullet}>•</span>
-          <p className={typography.buttonBody}>Favourites</p>
+          <p className={typography.buttonBodyFocus}>Favourites</p>
         </div>
       }
       footerLeft={<BackButton onBack={onBack} />}
@@ -121,7 +121,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="text-[10px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] tracking-[0.2em] text-black/30">
                     NO LOOKS YET
                   </p>
                 </div>
@@ -132,11 +132,11 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 absolute
                 bottom-0
                 left-0
-                p-4
+                p-2
                 text-black
               "
               >
-                <p className={typography.buttonBody}>LOOKS</p>
+                <p className={typography.profile}>LOOKS</p>
               </div>
             </button>
           }
@@ -187,7 +187,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="text-[10px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] tracking-[0.2em] text-black/30">
                     NO MOODS YET
                   </p>
                 </div>
@@ -198,11 +198,11 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 absolute
                 bottom-0
                 left-0
-                p-4
+                p-2
                 text-black
               "
               >
-                <p className={typography.buttonBody}>MOODS</p>
+                <p className={typography.profile}>MOODS</p>
               </div>
             </button>
           }
@@ -246,13 +246,11 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 >
                   <p
                     className="
-                      text-[7px]
-                      mb-2
                       tracking-[0.4em]
                       uppercase
                       text-black/30
-                      sm:text-[12px]
-                      sm:mb-4
+                      sm:text-[7px]
+                      sm:mb-2
                       lg:text-[15px]
                     "
                   >
@@ -262,10 +260,8 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   <Avatar
                     user={featuredCreator}
                     className="
-                        w-16
-                        h-16
-                        sm:w-[140px]
-                        sm:h-[140px]
+                        sm:w-[40px]
+                        sm:h-[40px]
                         lg:w-[220px]
                         lg:h-[220px]
                         text-[12px]
@@ -284,7 +280,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="text-[10px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] tracking-[0.2em] text-black/30">
                     NO CREATOR YET
                   </p>
                 </div>
@@ -295,10 +291,10 @@ export default function References({ onNavigate, onBack, params }: Props) {
                 absolute
                 bottom-0
                 left-0
-                p-4
+                p-2
               "
               >
-                <p className={`${typography.buttonBody}`}>CREATOR</p>
+                <p className={`${typography.profile}`}>CREATOR</p>
               </div>
             </button>
           }

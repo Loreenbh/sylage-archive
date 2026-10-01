@@ -36,7 +36,7 @@ export default function ScrollFollow({
 
   const renderList = (items: Follow[], showUnfollow: boolean) => (
     <div className="h-full flex flex-col min-h-0">
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 lg:space-y-2 mt-4 lg:mt-3">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 lg:space-y-2 mt-1 lg:mt-3">
         {items.map((item) => (
           <div
             key={item.id}
@@ -44,20 +44,21 @@ export default function ScrollFollow({
               flex
               items-center
               justify-center
+              ml-1
               gap-2
               w-full
               h-5
-              sm:h-14
+              sm:h-9
               lg:h-20
             "
           >
+            {/* AVATAR */}
             <button
               onClick={() => onOpenProfile?.(item)}
               className="
-                hidden
-                sm:flex
-                sm:w-12
-                sm:h-12
+                flex
+                sm:w-5
+                sm:h-5
                 md:w-13
                 md:h-13
                 lg:w-18
@@ -73,39 +74,41 @@ export default function ScrollFollow({
               {item.avatar_url ? (
                 <img
                   src={item.avatar_url}
+                  alt=""
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="w-full h-full flex items-center justify-center bg-black text-white">
+                <span className="w-full h-full flex items-center justify-center bg-black text-white sm:text-[8px] md:text-[10px] lg:text-[14px]">
+                  {" "}
                   {item.username[0].toUpperCase()}
                 </span>
               )}
             </button>
 
+            {/* USERNAME + X */}
             <div
               className="
                 flex
                 items-center
-                justify-start
-                w-30
                 min-w-0
+                max-w-[120px]
+                sm:max-w-[180px]
+                lg:max-w-[260px]
               "
             >
-              <div className="w-24 min-w-0">
-                <button
-                  onClick={() => onOpenProfile?.(item)}
-                  className={`
-                    ${typography.follow}
-                    block
-                    w-full
-                    truncate
-                    text-left
-                  `}
-                  title={item.username}
-                >
-                  {item.username}
-                </button>
-              </div>
+              <button
+                onClick={() => onOpenProfile?.(item)}
+                className={`
+                  ${typography.follow}
+                  block
+                  min-w-0
+                  truncate
+                  text-left
+                `}
+                title={item.username}
+              >
+                {item.username}
+              </button>
 
               {showUnfollow && (
                 <button
@@ -130,20 +133,23 @@ export default function ScrollFollow({
       </div>
     </div>
   );
+
   return (
-    <div className={`h-full min-h-0 w-full flex flex-col overflow-hidden`}>
-      <div className="flex border-b border-black/10 shrink-0 sm:pt-2 lg:pt-4">
+    <div className="h-full min-h-0 w-full flex flex-col overflow-hidden">
+      <div className="flex border-b border-black/10 shrink-0">
         <button
           onClick={() => setActiveTab("following")}
           className={`
-              flex-1 transition-opacity
-              ${activeTab === "following"
-              ? "opacity-100 border-b border-black"
-              : "opacity-40"
+            flex-1
+            transition-opacity
+            ${
+              activeTab === "following"
+                ? "opacity-100 border-b border-black"
+                : "opacity-40"
             }
-            `}
+          `}
         >
-          <span className="text-[7px] sm:text-[12px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
+          <span className="sm:text-[7px] lg:text-[16px] tracking-[0.1em] uppercase text-black/50">
             {followingTitle}
           </span>
         </button>
@@ -151,18 +157,21 @@ export default function ScrollFollow({
         <button
           onClick={() => setActiveTab("followers")}
           className={`
-              flex-1 transition-opacity
-              ${activeTab === "followers"
-              ? "opacity-100 border-b border-black"
-              : "opacity-40"
+            flex-1
+            transition-opacity
+            ${
+              activeTab === "followers"
+                ? "opacity-100 border-b border-black"
+                : "opacity-40"
             }
-            `}
+          `}
         >
-          <span className="text-[7px] sm:text-[12px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
+          <span className="sm:text-[7px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
             {followersTitle}
           </span>
         </button>
       </div>
+
       <div className="flex-1 min-h-0">
         {activeTab === "following"
           ? renderList(sortedFollowing, canManageFollow)

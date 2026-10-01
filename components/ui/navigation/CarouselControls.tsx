@@ -14,12 +14,12 @@ export default function CarouselControls({
   canNext,
 }: Props) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2">
       <button
         onClick={onPrev}
         disabled={!canPrev}
         className={`
-          ${typography.buttonBody}
+          ${typography.buttonBodyFocus}
           transition-opacity
           ${canPrev ? "hover:opacity-50 cursor-pointer" : "opacity-30 cursor-default"}
         `}
@@ -33,7 +33,7 @@ export default function CarouselControls({
         onClick={onNext}
         disabled={!canNext}
         className={`
-          ${typography.buttonBody}
+          ${typography.buttonBodyFocus}
           transition-opacity
           ${canNext ? "hover:opacity-50 cursor-pointer" : "opacity-30 cursor-default"}
         `}
