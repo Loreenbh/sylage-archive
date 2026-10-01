@@ -168,7 +168,7 @@ export default function UpdatePassword({ onNavigate, onBack }: Props) {
           <button
             onClick={onBack}
             className={`
-              ${typography.buttonBody}
+              ${typography.buttonBodyFocus}
               ${spacing.actionBar}
               ${colors.text.charcoal}
             `}

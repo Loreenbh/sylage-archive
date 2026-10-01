@@ -105,7 +105,7 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
           <button
             onClick={onBack}
             className={`
-        ${typography.buttonBody}
+        ${typography.buttonBodyFocus}
         px-4
         ${colors.text.charcoal}
         cursor-pointer
@@ -119,7 +119,7 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
           {status === "sent" ? (
             <p
               className={`
-          ${typography.buttonBody}
+          ${typography.buttonBodyFocus}
           ${colors.text.charcoal}
         `}
             >
@@ -130,7 +130,7 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
               onClick={handleSubmit}
               disabled={!email || status === "sending"}
               className={`
-          ${typography.buttonBody}
+          ${typography.buttonBodyFocus}
           ${colors.text.charcoal}
           transition-opacity
           hover:opacity-60
@@ -147,7 +147,7 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
               <span className={typography.bullet}>•</span>
               <p
                 className={`
-            ${typography.buttonBody}
+            ${typography.buttonBodyFocus}
             ${colors.feedback.error}
           `}
               >
