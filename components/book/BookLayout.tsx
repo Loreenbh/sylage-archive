@@ -9,6 +9,7 @@ type Props = {
   sidebarClassName?: string;
   footerLeft?: React.ReactNode;
   footerRight?: React.ReactNode;
+  isCover?: boolean;
 };
 
 export default function BookLayout({
@@ -20,6 +21,7 @@ export default function BookLayout({
   footerRight,
   imageClassName,
   sidebarClassName,
+  isCover = false,
 }: Props) {
   return (
     <BookFrame>
@@ -39,6 +41,7 @@ export default function BookLayout({
             md:mt-28
             lg:mt-45
           `}
+          data-cover={isCover ? "true" : undefined}
         >
           {/* IMAGE + ACTIONS */}
           <div className="flex flex-col min-w-0 flex-1">
@@ -56,7 +59,11 @@ export default function BookLayout({
               {children}
             </div>
 
-            {actionsBar && <div className="w-[75%] shrink-0">{actionsBar}</div>}
+            {actionsBar && (
+              <div className="w-[75%] shrink-0">
+                {actionsBar}
+              </div>
+            )}
           </div>
 
           {/* SIDEBAR */}
@@ -96,9 +103,13 @@ export default function BookLayout({
             min-h-[20px]
           "
         >
-          <div className="flex items-center min-w-0">{footerLeft}</div>
+          <div className="flex items-center min-w-0">
+            {footerLeft}
+          </div>
 
-          <div className="flex items-center min-w-0">{footerRight}</div>
+          <div className="flex items-center min-w-0">
+            {footerRight}
+          </div>
         </div>
       )}
     </BookFrame>

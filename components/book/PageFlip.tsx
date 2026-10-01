@@ -22,7 +22,7 @@ export default function PageFlip({
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!animating || isCover) return;
+    if (!animating) return;
     if (!ref.current) return;
 
     const el = ref.current;
@@ -38,6 +38,7 @@ export default function PageFlip({
 
       el.style.transition =
         "transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+
       el.style.transform = "rotateY(-180deg)";
     }
 
@@ -49,6 +50,7 @@ export default function PageFlip({
 
       el.style.transition =
         "transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+
       el.style.transform = "rotateY(180deg)";
     }
 
@@ -57,18 +59,36 @@ export default function PageFlip({
     }, 1200);
 
     return () => clearTimeout(timer);
-  }, [animating, direction, isCover, onDone]);
+  }, [animating, direction, onDone]);
 
-  /* COVER */
-  if (isCover) {
+  /*
+   * COVER
+   *
+   * La Cover reste une seule page lorsqu'elle est immobile.
+   * Lorsqu'elle se tourne, elle reprend exactement
+   * l'animation de la page droite.
+   */
+  if (isCover && !animating) {
     return (
-      <div className="relative w-full h-full flex items-center justify-center">
-        {current}
+      <div
+        className="relative w-full h-full flex items-center justify-center"
+        style={{
+          perspective: "1800px",
+        }}
+      >
+        <div className="relative w-1/2 h-full">
+          {current}
+        </div>
       </div>
     );
   }
 
-  /* DOUBLE PAGE */
+  /*
+   * DOUBLE PAGE
+   *
+   * Pendant l'animation de la Cover, on affiche la prochaine
+   * double page en dessous, puis la Cover tourne comme une page droite.
+   */
   return (
     <div
       className="relative w-full h-full flex"
@@ -123,14 +143,14 @@ export default function PageFlip({
       {animating && (
         <div
           ref={ref}
-          className={`
+          className="
             absolute
             top-0
+            right-0
             w-1/2
             h-full
             pointer-events-none
-            ${direction === "next" ? "right-0" : "left-0"}
-          `}
+          "
           style={{
             transformStyle: "preserve-3d",
             backfaceVisibility: "hidden",

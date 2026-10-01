@@ -18,6 +18,7 @@ type Props = {
 export default function Cover({ onNavigate }: Props) {
   return (
     <BookLayout
+      isCover
       imageClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10"
       sidebarClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10 lg:!ml-10"
       header={
@@ -53,7 +54,7 @@ export default function Cover({ onNavigate }: Props) {
               paddingTop: "clamp(35px, 6vw, 65px)",
             }}
           >
-            <div className="relative w-full h-[clamp(50px,10vw,100px)]">
+            <div className="relative w-full h-[clamp(30px,7vw,70px)]">
               <Image
                 src="/title.png"
                 alt="SYLAGE"
