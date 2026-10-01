@@ -25,10 +25,7 @@ export const spacing = {
   `,
 
   feedback: `
-  px-3
-  pt-2
-  sm:px-6
-  sm:pt-2
+  sm:px-4
   md:px-6
   md:pt-4
   lg:px-8

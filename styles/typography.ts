@@ -46,8 +46,7 @@ nav: `
   `,
 
   buttonAuth: `
-    text-[10px]
-    sm:text-[20px]
+    sm:text-[10px]
     lg:text-[30px]
     tracking-[0.4em]
     uppercase
@@ -118,8 +117,7 @@ nav: `
     `,
 
   feedback: `
-    text-[8px]
-    sm:text-[12px]
+    sm:text-[7px]
     md:text-[13px]
     lg:text-[16px]
     tracking-[0.2em]
