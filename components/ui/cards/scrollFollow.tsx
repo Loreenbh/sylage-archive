@@ -36,19 +36,18 @@ export default function ScrollFollow({
 
   const renderList = (items: Follow[], showUnfollow: boolean) => (
     <div className="h-full flex flex-col min-h-0">
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 lg:space-y-2 mt-1 lg:mt-3">
+      <div className="flex-1 min-h-0 w-[calc(100%-4px)] overflow-y-auto overflow-x-hidden sm:space-y-0 lg:space-y-1 mt-1 lg:mt-3 pr-3">
         {items.map((item) => (
           <div
             key={item.id}
             className="
               flex
               items-center
-              justify-center
+              justify-start
               ml-1
               gap-2
               w-full
-              h-5
-              sm:h-9
+              sm:h-6
               lg:h-20
             "
           >
@@ -118,7 +117,7 @@ export default function ScrollFollow({
                     shrink-0
                     ml-1
                     text-left
-                    text-[11px]
+                    sm:text-[11px]
                     md:text-[13px]
                     lg:text-[16px]
                     opacity-40

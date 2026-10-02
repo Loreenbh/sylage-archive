@@ -78,9 +78,9 @@ export default function Book() {
     }
 
     if (user) {
-      setCurrent("discover");
+      setCurrent("update"); //discover
     } else {
-      setCurrent("cover");
+      setCurrent("update"); //cover
     }
   }, [user, isLoading]);
 

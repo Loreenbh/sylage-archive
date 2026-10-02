@@ -28,7 +28,6 @@ type Props = {
   onBack?: () => void;
 };
 
-
 export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   const { isOwner, userId, from } = params ?? {};
 
@@ -128,14 +127,14 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               clickable: !!currentUser,
               onClick: currentUser
                 ? () =>
-                  onNavigate?.({
-                    to: "create",
-                    direction: "next",
-                    params: {
-                      from: "discover",
-                      isOwner: isOwner,
-                    },
-                  })
+                    onNavigate?.({
+                      to: "create",
+                      direction: "next",
+                      params: {
+                        from: "discover",
+                        isOwner: isOwner,
+                      },
+                    })
                 : undefined,
             },
           ]}
@@ -309,7 +308,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                 <p
                   className={`
               ${typography.profile}
-              ${lastSilhouette ? "text-white drop-shadow" : ""}
+              ${lastSilhouette ? "drop-shadow" : ""}
             `}
                 >
                   looks
@@ -317,7 +316,6 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               </div>
             </GridButton>
           }
-
           topRight={
             <GridButton
               disabled={!lastMoodboard}
@@ -391,7 +389,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                 <p
                   className={`
               ${typography.profile}
-              ${lastMoodboard ? "text-white drop-shadow" : ""}
+              ${lastMoodboard ? "drop-shadow" : ""}
             `}
                 >
                   moods
@@ -402,26 +400,27 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
           bottomRight={
             <div
               className="
-          relative
-          h-full
-          min-h-0
-          w-full
-          overflow-hidden
-          border
-          border-black/10
-        "
+      relative
+      h-full
+      min-h-0
+      w-full
+      overflow-hidden
+      border
+      border-black/10
+    "
             >
-              {following.length > 0 || followers.length > 0 ? (
-                <div
-                  className="
-              absolute
-              inset-x-0
-              top-0
-              
-              min-h-0
-              overflow-hidden
-            "
-                >
+              {/* ZONE SCROLLABLE */}
+              <div
+                className="
+        absolute
+        inset-x-0
+        top-0
+        bottom-[25px]
+        min-h-0
+        overflow-hidden
+      "
+              >
+                {following.length > 0 || followers.length > 0 ? (
                   <ScrollFollow
                     followingTitle="Inspired by"
                     followersTitle="Inspiring"
@@ -441,40 +440,46 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                     }}
                     onUnfollow={(item) => handleUnfollow(item.id)}
                   />
-                </div>
-              ) : (
-                <div
-                  className={`
-              absolute
-              inset-0
-              flex
-              items-center
-              justify-center
-              ${colors.bg.empty}
-            `}
-                >
-                  <p
-                    className="
-                text-[8px]
-                sm:text-[12px]
-                lg:text-[14px]
-                tracking-[0.2em]
-                text-black/30
-              "
+                ) : (
+                  <div
+                    className={`
+            absolute
+            inset-0
+            flex
+            items-center
+            justify-center
+            ${colors.bg.empty}
+          `}
                   >
-                    NO CONNECTIONS.
-                  </p>
-                </div>
-              )}
+                    <p
+                      className="
+              text-[8px]
+              sm:text-[12px]
+              lg:text-[14px]
+              tracking-[0.2em]
+              text-black/30
+            "
+                    >
+                      NO CONNECTIONS.
+                    </p>
+                  </div>
+                )}
+              </div>
 
               <div
                 className="
-            absolute
-            bottom-0
-            left-0
-            p-3
-            z-10
-          "
+          absolute
+          bottom-0
+          left-0
+          right-0
+          z-10
+          h-[25px]
+          bg-red-200
+          flex
+          items-end
+          px-3
+          pb-3
+        "
               >
                 <p className={typography.profile}>CONNECTIONS</p>
               </div>

@@ -27,6 +27,36 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           relative
         `}
       >
+        {/* MESSAGE PORTRAIT */}
+        <div
+          className="
+            hidden
+            portrait:flex
+            fixed
+            inset-0
+            z-[9999]
+            items-center
+            justify-center
+            bg-[#211C19]
+            text-[#EAE3D8]
+          "
+        >
+          <p
+            className="
+              text-[10px]
+              sm:text-[12px]
+              tracking-[0.28em]
+              font-light
+              text-center
+              uppercase
+              px-8
+            "
+          >
+            Rotate your device for full experience
+          </p>
+        </div>
+
+        {/* APPLICATION */}
         <div
           className="
             w-[96vw]

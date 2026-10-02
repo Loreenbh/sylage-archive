@@ -1,21 +1,16 @@
 export const spacing = {
-  coverHeader: `
-    pt-2
-  `,
-
   subtitle: `
-    mr-6
     sm:mt-2
-    sm:mr-10
+    sm:mr-4
     md:mr-10
     lg:mr-16
     self-end 
   `,
 
   actionBar: `
-    pt-2
-    px-6
+    sm:pt-2
     sm:px-6
+    sm:px-7
     lg:px-6
     lg:pt-4
   `,
@@ -33,10 +28,8 @@ export const spacing = {
   `,
 
   coverLabel: `
-  pt-1
-  px-6
-  sm:px-6
-  sm: pt-4
+  sm:px-13
+  sm: pt-2
   md:px-6
   lg:px-6
   lg:pt-4
@@ -48,7 +41,7 @@ export const spacing = {
   sm:gap-2
   `,
   backButton: `
-  sm:ml-2
+  sm:ml-3
   md:ml-2
   lg:ml-3
   `,

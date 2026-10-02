@@ -30,7 +30,7 @@ function MagazineInput({
   onChange: (value: string) => void;
 }) {
   return (
-    <div className="w-full flex space-y-3 sm:space-y-8 px-3 sm:px-6 lg:px-8">
+    <div className="w-full flex sm:space-y-6 sm:px-6 lg:px-8">
       <input
         type={type}
         placeholder={placeholder}
@@ -42,7 +42,7 @@ function MagazineInput({
           border-b
           ${colors.input.border}
           bg-transparent
-          text-[9px] sm:text-[16px] md:text-base lg:text-[18px]
+          sm:text-[10px] md:text-base lg:text-[18px]
           font-light
           outline-none
           ${colors.input.placeholder}
@@ -53,7 +53,7 @@ function MagazineInput({
 
       <span
         className={`
-          text-[35px] pl-2 sm:text-[55px] md:text-[63px] lg:text-[100px]
+          pl-2 sm:text-[45px] md:text-[63px] lg:text-[100px]
           font-light
           ${colors.input.number}
           shrink-0
@@ -201,7 +201,7 @@ export default function UpdatePassword({ onNavigate, onBack }: Props) {
             </div>
           ) : (
             <>
-              <div className="pt-7 sm:pt-35 lg:pt-43">
+              <div className="sm:pt-10 lg:pt-43">
                 <MagazineInput
                   placeholder="New password"
                   type="password"

@@ -19,8 +19,8 @@ export default function Cover({ onNavigate }: Props) {
   return (
     <BookLayout
       isCover
-      imageClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10"
-      sidebarClassName="!mt-4 sm:!mt-2 md:!mt-4 lg:!mt-10 lg:!ml-10"
+      imageClassName="sm:!mt-2 md:!mt-4 lg:!mt-10"
+      sidebarClassName="sm:!mt-2 md:!mt-4 lg:!mt-10 lg:!ml-10"
       header={
         <div className="relative w-full">
           {/* PORTFOLIO */}
@@ -33,7 +33,7 @@ export default function Cover({ onNavigate }: Props) {
               top-0
               left-0
               text-[10px]
-              sm:text-[13px]
+              sm:text-[10px]
               md:text-[13px]
               lg:text-[18px]
               tracking-[0.18em]
@@ -49,12 +49,12 @@ export default function Cover({ onNavigate }: Props) {
 
           {/* TITRE */}
           <div
-            className={`${layout.coverHeader} ${spacing.coverHeader}`}
+            className={`${layout.coverHeader}`}
             style={{
-              paddingTop: "clamp(35px, 6vw, 65px)",
+              paddingTop: "clamp(45px, 6vw, 65px)",
             }}
           >
-            <div className="relative w-full h-[clamp(30px,7vw,70px)]">
+            <div className="relative w-full h-[clamp(14px,6vw,70px)]">
               <Image
                 src="/title.png"
                 alt="SYLAGE"
@@ -73,7 +73,12 @@ export default function Cover({ onNavigate }: Props) {
         </div>
       }
       sidebar={
-        <Sidebar text="↓   26|27" clickable={true} onNavigate={onNavigate} />
+        <Sidebar
+          text="↓   26|27"
+          clickable={true}
+          onNavigate={onNavigate}
+          fullHeightLine
+        />
       }
       actionsBar={
         <p
@@ -88,14 +93,16 @@ export default function Cover({ onNavigate }: Props) {
       <div className="flex flex-col">
         <SimpleGrid
           square={
-            <div className={`${layout.coverImage}`}>
-              <Image
-                src="/cover.png"
-                alt=""
-                fill
-                priority
-                className="object-contain"
-              />
+            <div className="flex h-full w-full justify-center">
+              <div className={`${layout.coverImage}`}>
+                <Image
+                  src="/cover.png"
+                  alt=""
+                  fill
+                  priority
+                  className="object-contain"
+                />
+              </div>
             </div>
           }
         />

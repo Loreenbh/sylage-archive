@@ -22,13 +22,11 @@ export const layout = {
     justify-center
   `,
 
-  coverImage: `
-    relative
-    w-[70vw]
-    max-w-[750px]
-    aspect-square
-    mx-auto
-  `,
+coverImage: `
+  relative
+  w-full
+  aspect-square
+`,
 
   sideBarLine: `
   w-[1px]

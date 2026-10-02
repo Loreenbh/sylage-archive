@@ -29,10 +29,11 @@ export default function PageFlip({
 
     el.style.transition = "none";
     el.style.opacity = "1";
+    el.style.transform = "rotateY(0deg)";
 
     if (direction === "next") {
+      // PAGE DROITE → tourne vers la gauche
       el.style.transformOrigin = "left center";
-      el.style.transform = "rotateY(0deg)";
 
       void el.offsetWidth;
 
@@ -43,8 +44,8 @@ export default function PageFlip({
     }
 
     if (direction === "prev") {
+      // PAGE GAUCHE → tourne vers la droite
       el.style.transformOrigin = "right center";
-      el.style.transform = "rotateY(0deg)";
 
       void el.offsetWidth;
 
@@ -65,8 +66,6 @@ export default function PageFlip({
    * COVER
    *
    * La Cover reste une seule page lorsqu'elle est immobile.
-   * Lorsqu'elle se tourne, elle reprend exactement
-   * l'animation de la page droite.
    */
   if (isCover && !animating) {
     return (
@@ -83,12 +82,6 @@ export default function PageFlip({
     );
   }
 
-  /*
-   * DOUBLE PAGE
-   *
-   * Pendant l'animation de la Cover, on affiche la prochaine
-   * double page en dessous, puis la Cover tourne comme une page droite.
-   */
   return (
     <div
       className="relative w-full h-full flex"
@@ -96,7 +89,7 @@ export default function PageFlip({
         perspective: "1800px",
       }}
     >
-      {/* PAGE GAUCHE VIDE */}
+      {/* PAGE GAUCHE */}
       <div
         className="
           relative
@@ -105,6 +98,7 @@ export default function PageFlip({
           shrink-0
           bg-[#D2BFB2]
           rounded-l-sm
+          overflow-hidden
         "
         style={{
           boxShadow: `
@@ -114,6 +108,25 @@ export default function PageFlip({
           `,
         }}
       >
+        {/* CONTENU PAGE GAUCHE */}
+        {direction === "prev" && animating && (
+          <div
+            ref={ref}
+            className="
+              absolute
+              inset-0
+              pointer-events-none
+            "
+            style={{
+              transformStyle: "preserve-3d",
+              backfaceVisibility: "hidden",
+              zIndex: 20,
+            }}
+          >
+            {current}
+          </div>
+        )}
+
         {/* RELIURE CENTRALE */}
         <div
           className="absolute right-0 top-0 bottom-0 w-2 pointer-events-none"
@@ -139,8 +152,8 @@ export default function PageFlip({
         {animating ? next : current}
       </div>
 
-      {/* PAGE QUI TOURNE */}
-      {animating && (
+      {/* PAGE DROITE QUI TOURNE → NEXT */}
+      {animating && direction === "next" && (
         <div
           ref={ref}
           className="

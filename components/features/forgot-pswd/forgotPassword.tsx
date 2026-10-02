@@ -24,39 +24,44 @@ function MagazineInput({
   onChange: (value: string) => void;
 }) {
   return (
-    <div className="w-full flex space-y-4 px-8 pt-18 sm:px-6 lg:px-12">
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`
-          w-full
-          border-0
-          border-b
-          ${colors.input.border}
-          bg-transparent
-          text-[10px] sm:text-[20px] md:text-base lg:text-[20px]
-          font-light
-          outline-none
-          ${colors.input.placeholder}
-          focus:border-black/30
-          transition-colors duration-200
-        `}
-      />
+<div className="w-full h-full flex items-center sm:px-6 lg:px-12">
+  <input
+    type={type}
+    placeholder={placeholder}
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    className={`
+      w-full
+      border-0
+      border-b
+      ${colors.input.border}
+      bg-transparent
+      sm:text-[10px]
+      md:text-base
+      lg:text-[20px]
+      font-light
+      outline-none
+      ${colors.input.placeholder}
+      focus:border-black/30
+      transition-colors duration-200
+    `}
+  />
 
-      <span
-        className={`
-          text-[35px] sm:text-[55px] md:text-[60px] lg:text-[85px]
-          font-light
-          ${colors.input.number}
-          shrink-0
-          leading-none
-        `}
-      >
-        {String(index).padStart(2, "0")}
-      </span>
-    </div>
+  <span
+    className={`
+      text-[35px]
+      sm:text-[55px]
+      md:text-[60px]
+      lg:text-[85px]
+      font-light
+      ${colors.input.number}
+      shrink-0
+      leading-none
+    `}
+  >
+    {String(index).padStart(2, "0")}
+  </span>
+</div>
   );
 }
 
@@ -101,12 +106,11 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
       }
       sidebar={<Sidebar text="ACCESS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-6 mt-1 lg:mt-3">
+        <div className="flex items-center sm:gap-4 md:gap-4 ml-7 mt-1 lg:mt-3">
           <button
             onClick={onBack}
             className={`
         ${typography.buttonBodyFocus}
-        px-4
         ${colors.text.charcoal}
         cursor-pointer
         transition-opacity
@@ -115,6 +119,7 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
           >
             back
           </button>
+          <span className={typography.bullet}>•</span>
 
           {status === "sent" ? (
             <p
@@ -168,17 +173,18 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
             h-full
           `}
         >
-          <div
-            className="pt-7 
-                          sm:pt-35
-                          sm:pl-20 
-                          sm:w-[450px]
-                          md:pt-40 
-                          md:pl-20 
-                          md:w-[500px]
-                          lg:pt-50 
-                          lg:pl-30 
-                          lg:w-[700px]"
+        <div
+          className="
+            w-full
+            sm:pt-20
+            sm:w-[220px]
+            md:pt-40
+            md:pl-20
+            md:w-[500px]
+            lg:pt-50
+            lg:pl-30
+            lg:w-[700px]
+          "
           >
             <MagazineInput
               placeholder="Email"
@@ -188,24 +194,6 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
               onChange={setEmail}
             />
           </div>
-
-          <p
-            className={`
-              px-3
-              sm:px-6
-              sm:text-[12px]
-              md:text-[14px]
-              lg:text-[16px]
-              lg:px-12
-              pb-6
-              text-[8px]
-              sm:text-[10px]
-              ${colors.text.charcoal}
-              opacity-50
-            `}
-          >
-            PASSWORD RECOVERY · EMAIL REQUIRED
-          </p>
         </div>
       </div>
     </BookLayout>

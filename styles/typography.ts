@@ -18,8 +18,7 @@ nav: `
 `,
 
   subtitle: `
-    text-[11px]
-    sm:text-[18px]
+    sm:text-[10px]
     lg:text-[24px]
     tracking-[0.4em]
     uppercase
@@ -74,7 +73,7 @@ nav: `
   `,
 
   backButton: `
-    sm:text-[10px]
+    sm:text-[8px]
     md:text-[14px]
     lg:text-[17px]
     tracking-[0.2em]
@@ -124,8 +123,7 @@ nav: `
     `,
 
   coverLabel: `
-    text-[8px]
-    sm:text-[12px]
+    sm:text-[7px]
     md:text-[12px]
     lg:text-[16px]
     uppercase

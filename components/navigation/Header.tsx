@@ -72,7 +72,7 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
           absolute
           z-[70]
           sm:text-[10px]
-          md:text-[13px]
+          md:text-[10px]
           lg:text-[18px]
           tracking-[0.18em]
           text-black/20
