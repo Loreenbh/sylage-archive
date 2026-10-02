@@ -58,7 +58,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="REFERENCES" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-1 md:gap-4 ml-7 mt-1 lg:mt-3 w-[105%]">
+        <div className="flex items-center gap-1 md:gap-1 ml-7 mt-1 lg:mt-3 w-[105%]">
           <p className={typography.buttonBodyFocus}>Your references</p>
           <span className={typography.bullet}>•</span>
           <p className={typography.buttonBodyFocus}>Favourites</p>
@@ -121,7 +121,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="sm:text-[7px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] md:text-[8px] tracking-[0.2em] text-black/30">
                     NO LOOKS YET
                   </p>
                 </div>
@@ -187,7 +187,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="sm:text-[7px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] md:text-[8px] tracking-[0.2em] text-black/30">
                     NO MOODS YET
                   </p>
                 </div>
@@ -250,8 +250,10 @@ export default function References({ onNavigate, onBack, params }: Props) {
                       uppercase
                       text-black/30
                       sm:text-[7px]
+                      md:text-[8px]
                       sm:mb-2
-                      lg:text-[15px]
+                      lg:text-[10px]
+                      xl:text-[15px]
                     "
                   >
                     {featuredCreator.username}
@@ -262,11 +264,16 @@ export default function References({ onNavigate, onBack, params }: Props) {
                     className="
                         sm:w-[40px]
                         sm:h-[40px]
-                        lg:w-[220px]
-                        lg:h-[220px]
+                        md:w-[44px]
+                        md:h-[44px]
+                        lg:w-[50px]
+                        lg:h-[50px]
+                        xl:w-[220px]
+                        xl:h-[220px]
                         text-[12px]
-                        md:text-[25px]
-                        lg:text-[40px]
+                        md:text-[13px]
+                        lg:text-[14px]
+                        xl:text-[40px]
                       "
                   />
                 </div>
@@ -280,7 +287,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="sm:text-[7px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] md:text-[8px] tracking-[0.2em] text-black/30">
                     NO CREATOR YET
                   </p>
                 </div>

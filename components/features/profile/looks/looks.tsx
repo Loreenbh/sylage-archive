@@ -115,12 +115,13 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="LOOKS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center justify-between sm:w-[115%] gap-2 md:gap-4 sm:ml-7 mt-1 lg:mt-3 whitespace-nowrap">
+        <div className="flex items-center justify-between sm:w-[82%] gap-2 sm:ml-7 mt-1 lg:mt-3 whitespace-nowrap">
           <span
             className={`
               ${typography.buttonBodyFocus}
               max-w-[105px]
               sm:max-w-[180px]
+              md:max-w-[195px]
               truncate
               whitespace-nowrap
               shrink
@@ -185,10 +186,9 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
             <p
               className="
             text-black/30 
-            text-[11px]
-            sm:text-[14px]
-            md:text-[16px]
-            lg:text-[18px]
+            sm:text-[10px]
+            lg:text-[12px]
+            xl:text-[18px]
             tracking-[0.2em]"
             >
               NO LOOKS.

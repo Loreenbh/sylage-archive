@@ -1,11 +1,14 @@
 import Image from "next/image";
-/*TYPES*/
+
+/* TYPES */
 import type { OnNavigate } from "@/types/navigation";
-/*COMPONENT*/
+
+/* COMPONENT */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
 import SimpleGrid from "@/components/ui/grids/SimpleGrid";
-/*STYLE*/
+
+/* STYLE */
 import { spacing } from "@/styles/spacing";
 import { layout } from "@/styles/layout";
 import { typography } from "@/styles/typography";
@@ -18,11 +21,8 @@ type Props = {
 export default function Cover({ onNavigate }: Props) {
   return (
     <BookLayout
-      isCover
-      imageClassName="sm:!mt-2 md:!mt-4 lg:!mt-10"
-      sidebarClassName="sm:!mt-2 md:!mt-4 lg:!mt-10 lg:!ml-10"
       header={
-        <div className="relative w-full">
+        <div className="relative w-full h-[40px] sm:h-[40px] md:h-[42px] lg:h-[105px] xl:h-[170px]">
           {/* PORTFOLIO */}
           <button
             onClick={() => {
@@ -34,8 +34,9 @@ export default function Cover({ onNavigate }: Props) {
               left-0
               text-[10px]
               sm:text-[10px]
-              md:text-[13px]
-              lg:text-[18px]
+              md:text-[10px]
+              lg:text-[13px]
+              xl:text-[18px]
               tracking-[0.18em]
               text-black/20
               hover:text-black/50
@@ -49,12 +50,9 @@ export default function Cover({ onNavigate }: Props) {
 
           {/* TITRE */}
           <div
-            className={`${layout.coverHeader}`}
-            style={{
-              paddingTop: "clamp(45px, 6vw, 65px)",
-            }}
+            className={`${layout.coverHeader} absolute inset-x-0 top-5 h-auto sm:top-5 md:top-5 lg:static lg:h-full lg:pt-8 lg:translate-y-3 xl:pt-[40px] xl:translate-y-4`}
           >
-            <div className="relative w-full h-[clamp(14px,6vw,70px)]">
+            <div className="relative w-full h-[30px] sm:h-[30px] md:h-[36px] lg:h-[80px] xl:h-[125px] shrink-0">
               <Image
                 src="/title.png"
                 alt="SYLAGE"
@@ -65,7 +63,16 @@ export default function Cover({ onNavigate }: Props) {
             </div>
 
             <p
-              className={`${typography.subtitle} ${spacing.subtitle} ${colors.text.charcoal}`}
+              className={`
+                ${typography.subtitle}
+                md:!text-[10px]
+                lg:!text-[13px]
+                xl:!text-[18px]
+                ${spacing.subtitle}
+                mt-1 sm:!mt-1 md:!mt-1 lg:!mt-0
+                ${colors.text.charcoal}
+                shrink-0
+              `}
             >
               ARCHIVE
             </p>
@@ -75,16 +82,17 @@ export default function Cover({ onNavigate }: Props) {
       sidebar={
         <Sidebar
           text="↓   26|27"
-          clickable={true}
+          clickable
           onNavigate={onNavigate}
-          fullHeightLine
         />
       }
       actionsBar={
         <p
-          className={`${typography.coverLabel}
-          ${spacing.coverLabel}
-          ${colors.text.charcoal}`}
+          className={`
+            ${typography.actionBar}
+            ${spacing.actionBar}
+            ${colors.text.charcoal}
+          `}
         >
           A visual archive of moods
         </p>
@@ -94,7 +102,7 @@ export default function Cover({ onNavigate }: Props) {
         <SimpleGrid
           square={
             <div className="flex h-full w-full justify-center">
-              <div className={`${layout.coverImage}`}>
+              <div className={layout.coverImage}>
                 <Image
                   src="/cover.png"
                   alt=""

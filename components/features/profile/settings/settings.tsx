@@ -202,7 +202,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
       }
       sidebar={<Sidebar text="SETTINGS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-7 mt-1 lg:mt-3 w-[105%]">
+        <div className="flex items-center gap-2 md:gap-2 ml-7 mt-1 lg:mt-3 w-[105%]">
           <button
             onClick={() =>
               onNavigate?.({
@@ -328,7 +328,8 @@ export default function Settings({ onNavigate, onBack }: Props) {
                     gap-1
                     sm:gap-2
                     md:gap-2
-                    lg:gap-6
+                    lg:gap-2
+                    xl:gap-6
                   "
                 >
                   <input
@@ -343,8 +344,9 @@ export default function Settings({ onNavigate, onBack }: Props) {
                       border-black/30
                       outline-none
                       sm:text-[8px]
-                      md:text-[16px]
-                      lg:text-[18px]
+                      md:text-[9px]
+                      lg:text-[10px]
+                      xl:text-[18px]
                       lg:pt-8
                       tracking-wide
                       text-center
@@ -363,8 +365,9 @@ export default function Settings({ onNavigate, onBack }: Props) {
                       border-black/30
                       outline-none
                       sm:text-[8px]
-                      md:text-[16px]
-                      lg:text-[18px]
+                      md:text-[9px]
+                      lg:text-[10px]
+                      xl:text-[18px]
                       tracking-wide
                       text-center
                     "
@@ -382,8 +385,9 @@ export default function Settings({ onNavigate, onBack }: Props) {
                       border-black/30
                       outline-none
                       text-[8px]
-                      md:text-[16px]
-                      lg:text-[18px]
+                      md:text-[9px]
+                      lg:text-[10px]
+                      xl:text-[18px]
                       tracking-wide
                       text-center
                     "
@@ -465,7 +469,9 @@ export default function Settings({ onNavigate, onBack }: Props) {
                     border-black/30
                     outline-none
                     sm:text-[11px]
-                    lg:text-[18px]
+                    md:text-[12px]
+                    lg:text-[12px]
+                    xl:text-[18px]
                     tracking-wide
                     text-center
                   "
@@ -479,7 +485,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                 </button>
 
                 {usernameMessage && (
-                  <span className="text-[9px] opacity-60 tracking-wide text-center">
+                  <span className="text-[9px] md:text-[10px] opacity-60 tracking-wide text-center">
                     {usernameMessage}
                   </span>
                 )}
@@ -537,7 +543,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                 </div>
 
                 {deleteMessage && (
-                  <span className="text-xs opacity-60 tracking-wide">
+                  <span className="text-xs md:text-[13px] opacity-60 tracking-wide">
                     {deleteMessage}
                   </span>
                 )}

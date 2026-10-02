@@ -97,6 +97,7 @@ export default function Discover({ onNavigate, params }: Props) {
           className={`
             flex
             items-center
+            ${typography.buttonBodyDiscover}
             ${spacing.buttonBodyDiscover}
             ${colors.text.charcoal}
           `}

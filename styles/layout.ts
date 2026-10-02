@@ -29,20 +29,22 @@ coverImage: `
 `,
 
   sideBarLine: `
-  w-[1px]
+  w-px
   flex-1
-  min-h-0
-  bg-black/40
+  min-h-3
+  bg-black
+  shadow-[0_0_1px_rgba(0,0,0,0.65)]
 `,
 
   sidebarButton: `
-  flex
-  flex-col
-  items-center
-  justify-between
-  w-full
-  h-full
-  min-h-0
+    flex
+    flex-col
+    items-center
+    justify-end
+    w-full
+    h-full
+    min-h-0
+    pb-2
 `,
 
   verticalText: `

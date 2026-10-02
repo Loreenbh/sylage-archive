@@ -48,7 +48,9 @@ export default function ScrollFollow({
               gap-2
               w-full
               sm:h-6
-              lg:h-20
+              md:h-7
+              lg:h-8
+              xl:h-20
             "
           >
             {/* AVATAR */}
@@ -58,10 +60,12 @@ export default function ScrollFollow({
                 flex
                 sm:w-5
                 sm:h-5
-                md:w-13
-                md:h-13
-                lg:w-18
-                lg:h-18
+                md:w-6
+                md:h-6
+                lg:w-7
+                lg:h-7
+                xl:w-18
+                xl:h-18
                 shrink-0
                 rounded-full
                 bg-zinc-300
@@ -77,7 +81,7 @@ export default function ScrollFollow({
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="w-full h-full flex items-center justify-center bg-black text-white sm:text-[8px] md:text-[10px] lg:text-[14px]">
+                <span className="w-full h-full flex items-center justify-center bg-black text-white sm:text-[8px] lg:text-[14px]">
                   {" "}
                   {item.username[0].toUpperCase()}
                 </span>
@@ -118,7 +122,7 @@ export default function ScrollFollow({
                     ml-1
                     text-left
                     sm:text-[11px]
-                    md:text-[13px]
+                    md:w-[18px]
                     lg:text-[16px]
                     opacity-40
                   "
@@ -148,7 +152,7 @@ export default function ScrollFollow({
             }
           `}
         >
-          <span className="sm:text-[7px] lg:text-[16px] tracking-[0.1em] uppercase text-black/50">
+          <span className="sm:text-[7px] lg:text-[9px] xl:text-[16px] tracking-[0.1em] uppercase text-black/50">
             {followingTitle}
           </span>
         </button>
@@ -165,7 +169,7 @@ export default function ScrollFollow({
             }
           `}
         >
-          <span className="sm:text-[7px] lg:text-[16px] tracking-[0.2em] uppercase text-black/50">
+          <span className="sm:text-[7px] lg:text-[9px] xl:text-[16px] tracking-[0.2em] uppercase text-black/50">
             {followersTitle}
           </span>
         </button>

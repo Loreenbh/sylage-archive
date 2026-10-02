@@ -69,8 +69,9 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               justify-center
               p-2
               sm:p-4
-              md:p-6
-              lg:p-8
+              md:p-4
+              lg:p-4
+              xl:p-8
             `}
           >
             <div className="w-full max-w-[600px] text-center">
@@ -79,8 +80,9 @@ export default function Privacy({ onNavigate, onBack }: Props) {
                   ${typography.privacy}
                   mt-2
                   sm:mt-4
-                  md:mt-6
-                  lg:mt-8
+                  md:mt-4
+                  lg:mt-4
+                  xl:mt-8
                   leading-[1.35]
                   text-black/70
                 `}
@@ -93,8 +95,9 @@ export default function Privacy({ onNavigate, onBack }: Props) {
                   ${typography.privacy}
                   mt-2
                   sm:mt-4
-                  md:mt-6
-                  lg:mt-8
+                  md:mt-4
+                  lg:mt-4
+                  xl:mt-8
                   mt-2
                   leading-[1.35]
                   text-black/70
@@ -110,8 +113,9 @@ export default function Privacy({ onNavigate, onBack }: Props) {
                   ${typography.privacy}
                   mt-2
                   sm:mt-4
-                  md:mt-6
-                  lg:mt-8
+                  md:mt-4
+                  lg:mt-4
+                  xl:mt-8
                   mt-2
                   leading-[1.35]
                   text-black/70
@@ -125,8 +129,9 @@ export default function Privacy({ onNavigate, onBack }: Props) {
                   ${typography.privacy}
                   mt-2
                   sm:mt-4
-                  md:mt-6
-                  lg:mt-8
+                  md:mt-4
+                  lg:mt-4
+                  xl:mt-8
                   mt-2
                   leading-[1.35]
                   text-black/70
@@ -144,8 +149,9 @@ export default function Privacy({ onNavigate, onBack }: Props) {
                   ${typography.privacy}
                   mt-2
                   sm:mt-4
-                  md:mt-6
-                  lg:mt-8
+                  md:mt-4
+                  lg:mt-4
+                  xl:mt-8
                   mt-2
                   leading-[1.35]
                   text-black/70
@@ -161,8 +167,9 @@ export default function Privacy({ onNavigate, onBack }: Props) {
                   ${typography.privacy}
                   mt-2
                   sm:mt-4
-                  md:mt-6
-                  lg:mt-8
+                  md:mt-4
+                  lg:mt-4
+                  xl:mt-8
                   mt-2
                   leading-[1.35]
                   text-black/70
@@ -178,8 +185,9 @@ export default function Privacy({ onNavigate, onBack }: Props) {
                   ${typography.privacy}
                   mt-2
                   sm:mt-4
-                  md:mt-6
-                  lg:mt-8
+                  md:mt-4
+                  lg:mt-4
+                  xl:mt-8
                   mt-2
                   leading-[1.35]
                   text-black/70

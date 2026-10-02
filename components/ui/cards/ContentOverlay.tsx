@@ -51,8 +51,8 @@ export default function ContentOverlay({
         backdrop-blur-sm
         ${
           variant === "vertical"
-            ? "inset-y-0 right-0 w-4 sm:w-3 lg:w-6 flex-col items-center px-0.5 py-2"
-            : "inset-x-0 bottom-0 sm:h-4 md:h-8 lg:h-8 sm:px-2 md:px-4 lg:px-5 items-center justify-between gap-2"
+            ? "inset-y-0 right-0 w-4 sm:w-3 md:w-[13px] lg:w-4 xl:w-6 flex-col items-center px-0.5 py-2"
+            : "inset-x-0 bottom-0 sm:h-4 md:h-[17px] lg:h-[17px] xl:h-8 sm:px-2 md:px-2 lg:px-2 xl:px-5 items-center justify-between gap-2"
         }
       `}
     >
@@ -96,7 +96,7 @@ export default function ContentOverlay({
                 }}
                 className="
                   text-white
-                  text-[9px]
+                  sm:text-[10px]
                   leading-none
                   hover:text-white/50
                   transition-colors
@@ -119,6 +119,7 @@ export default function ContentOverlay({
                 className="
                   text-white
                   text-[7px]
+                  md:text-[8px]
                   leading-none
                 "
               />
@@ -136,7 +137,8 @@ export default function ContentOverlay({
                 }}
                 className="
                   text-white
-                  text-[7px]
+                  sm:text-[8px]
+                  tracking-[0.2em]
                   leading-none
                   [writing-mode:vertical-rl]
                   rotate-180
@@ -153,7 +155,7 @@ export default function ContentOverlay({
                 <span
                   className="
                   text-white/70
-                  text-[6px]
+                  sm:text-[8px]
                   leading-none
                   [writing-mode:vertical-rl]
                   rotate-180
@@ -171,7 +173,7 @@ export default function ContentOverlay({
           {showUsername && username ? (
             <div className="min-w-0 flex-1 overflow-hidden leading-none">
               {prefix && (
-                <span className="sm:text-[7px] lg:text-[11px] text-white/70 leading-none">
+                <span className="sm:text-[8px] md:text-[8px] lg:text-[8px] xl:text-[11px] text-white/70 leading-none">
                   {prefix}&nbsp;
                 </span>
               )}
@@ -190,8 +192,9 @@ export default function ContentOverlay({
                   whitespace-nowrap
                   cursor-pointer
                   text-white
-                  sm:text-[8px]
-                  lg:text-[14px]
+                  sm:text-[9px]
+                  lg:text-[9px]
+                  xl:text-[14px]
                   leading-none
                   tracking-[0.15em]
                   sm:tracking-[0.2em]
@@ -264,6 +267,9 @@ export default function ContentOverlay({
                 }}
                 className="
                   sm:text-[10px]
+                  lg:text-[11px]
+                  xl:text-[16px]
+                  text-white
                   leading-none
                   tracking-[0.2em]
                   drop-shadow
@@ -287,6 +293,7 @@ export default function ContentOverlay({
                   text-white
                   sm:text-[9px]
                   lg:text-[13px]
+                  xl:text-[16px]
                   leading-none
                   flex
                   items-center

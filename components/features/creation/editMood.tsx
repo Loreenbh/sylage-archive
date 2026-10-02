@@ -228,7 +228,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="COMPOSE" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-7 mt-1 lg:mt-3">
+        <div className="flex items-center gap-2 ml-7 mt-1 lg:mt-3">
           {step === "compose" ? (
             <button
               onClick={handleConfirm}
@@ -256,7 +256,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
         </div>
       }
     >
-      <div className="flex flex-col h-full w-full min-h-0">
+      <div className="flex flex-col h-full w-full min-h-0 overflow-hidden">
         <div
           ref={layoutRef}
           className="
@@ -282,9 +282,12 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
               items-center
               sm:px-4
               sm:pt-2
+              max-h-[40%]
+              shrink-0
               min-h-0
               overflow-y-auto
-              pb-4
+              pb-1
+              bg-red-200
             "
           >
             <TagPicker
@@ -296,7 +299,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
               onChangeColor={setColorTags}
             />
 
-            <p className="mt-1 tracking-[0.12em] sm:text-[7px] md:text-[12px] lg:text-[14px] uppercase text-black/50 shrink-0">
+            <p className="mt-1 tracking-[0.12em] sm:text-[7px] md:text-[8px] lg:text-[14px] uppercase text-black/50 shrink-0">
               {allSelectedTags.length} tags selected
             </p>
           </div>

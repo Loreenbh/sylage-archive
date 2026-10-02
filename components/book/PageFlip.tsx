@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 type Props = {
   current: ReactNode;
@@ -20,12 +20,32 @@ export default function PageFlip({
   isCover,
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const currentRef = useRef(current);
+  const nextRef = useRef(next);
+  const [turnedPage, setTurnedPage] = useState<ReactNode | null>(null);
+  const [previousPage, setPreviousPage] = useState<ReactNode | null>(null);
+  const [turnedDirection, setTurnedDirection] = useState<
+    "next" | "prev" | null
+  >(null);
+
+  useEffect(() => {
+    currentRef.current = current;
+  }, [current]);
+
+  useEffect(() => {
+    nextRef.current = next;
+  }, [next]);
 
   useEffect(() => {
     if (!animating) return;
     if (!ref.current) return;
 
     const el = ref.current;
+    const pageBeingTurned = currentRef.current;
+    const pageRevealedByFlip = nextRef.current;
+    setTurnedPage(null);
+    setPreviousPage(null);
+    setTurnedDirection(null);
 
     el.style.transition = "none";
     el.style.opacity = "1";
@@ -38,9 +58,10 @@ export default function PageFlip({
       void el.offsetWidth;
 
       el.style.transition =
-        "transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+        "transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 250ms ease 550ms";
 
       el.style.transform = "rotateY(-180deg)";
+      el.style.opacity = "0.4";
     }
 
     if (direction === "prev") {
@@ -50,12 +71,19 @@ export default function PageFlip({
       void el.offsetWidth;
 
       el.style.transition =
-        "transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+        "transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 250ms ease 550ms";
 
       el.style.transform = "rotateY(180deg)";
+      el.style.opacity = "0.4";
     }
 
     const timer = setTimeout(() => {
+      if (direction === "next") {
+        setTurnedPage(pageBeingTurned);
+        setTurnedDirection("next");
+      } else {
+        setPreviousPage(pageRevealedByFlip);
+      }
       onDone();
     }, 1200);
 
@@ -108,24 +136,12 @@ export default function PageFlip({
           `,
         }}
       >
-        {/* CONTENU PAGE GAUCHE */}
-        {direction === "prev" && animating && (
-          <div
-            ref={ref}
-            className="
-              absolute
-              inset-0
-              pointer-events-none
-            "
-            style={{
-              transformStyle: "preserve-3d",
-              backfaceVisibility: "hidden",
-              zIndex: 20,
-            }}
-          >
-            {current}
-          </div>
-        )}
+        {direction === "prev" &&
+          (animating || previousPage !== null) && (
+            <div className="absolute inset-0 pointer-events-none">
+              {animating ? next : previousPage}
+            </div>
+          )}
 
         {/* RELIURE CENTRALE */}
         <div
@@ -152,27 +168,63 @@ export default function PageFlip({
         {animating ? next : current}
       </div>
 
-      {/* PAGE DROITE QUI TOURNE → NEXT */}
-      {animating && direction === "next" && (
+      {/* PAGE GAUCHE QUI TOURNE → PREV */}
+      {direction === "prev" && animating && (
         <div
           ref={ref}
           className="
             absolute
             top-0
-            right-0
+            left-0
             w-1/2
             h-full
             pointer-events-none
           "
           style={{
             transformStyle: "preserve-3d",
-            backfaceVisibility: "hidden",
             zIndex: 20,
           }}
         >
-          {current}
+          <div
+            className="absolute inset-0"
+            style={{ backfaceVisibility: "hidden" }}
+          >
+            {current}
+          </div>
+          <div
+            className="absolute inset-0"
+            style={{
+              transform: "rotateY(180deg)",
+              backfaceVisibility: "hidden",
+            }}
+          >
+            {next}
+          </div>
         </div>
       )}
+
+      {/* PAGE DROITE QUI TOURNE → NEXT */}
+      {direction === "next" &&
+        (animating || turnedDirection === "next") && (
+          <div
+            ref={ref}
+            className="
+              absolute
+              top-0
+              right-0
+              w-1/2
+              h-full
+              pointer-events-none
+            "
+            style={{
+              transformStyle: "preserve-3d",
+              backfaceVisibility: "visible",
+              zIndex: 20,
+            }}
+          >
+            {animating ? current : turnedPage}
+          </div>
+        )}
     </div>
   );
 }

@@ -142,7 +142,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 sm:ml-7 md:gap-4 ml-6 mt-1 lg:mt-3">
+        <div className="flex items-center gap-2 sm:ml-7 md:gap-2 ml-6 mt-1 lg:mt-3">
           {isOwner ? (
             <>
               <button
@@ -284,8 +284,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                 >
                   <p
                     className="
-              text-[8px]
-              sm:text-[12px]
+              sm:text-[10px]
               lg:text-[14px]
               tracking-[0.2em]
               text-black/30
@@ -366,7 +365,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                   <p
                     className="
               text-[8px]
-              sm:text-[12px]
+              sm:text-[10px]
               lg:text-[14px]
               tracking-[0.2em]
               text-black/30
@@ -415,7 +414,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
         absolute
         inset-x-0
         top-0
-        bottom-[25px]
+        bottom-[25px] md:bottom-[27px]
         min-h-0
         overflow-hidden
       "
@@ -454,7 +453,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                     <p
                       className="
               text-[8px]
-              sm:text-[12px]
+              sm:text-[10px]
               lg:text-[14px]
               tracking-[0.2em]
               text-black/30
@@ -473,7 +472,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
           left-0
           right-0
           z-10
-          h-[25px]
+          h-[25px] md:h-[27px]
           bg-red-200
           flex
           items-end

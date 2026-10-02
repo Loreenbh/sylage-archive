@@ -315,10 +315,13 @@ export default function ImageSlot({
               z-20
               sm:w-4
               sm:h-4
+              md:w-[17px]
+              md:h-[17px]
               rounded-full
               bg-black/60
               text-white
               sm:text-[12px]
+              md:text-[13px]
               flex
               items-center
               justify-center
@@ -349,11 +352,14 @@ export default function ImageSlot({
               z-20
               sm:w-4
               sm:h-4
+              md:w-[17px]
+              md:h-[17px]
 
               rounded-full
               bg-black/60
               text-white
               sm:text-[12px]
+              md:text-[13px]
 
               flex
               items-center
@@ -388,8 +394,9 @@ export default function ImageSlot({
             text-black/30
             text-xs
             sm:text-[14px]
-            md:text-[14px]
-            lg:text-[20px]
+            md:text-[15px]
+            lg:text-[16px]
+            xl:text-[20px]
           "
         >
           +

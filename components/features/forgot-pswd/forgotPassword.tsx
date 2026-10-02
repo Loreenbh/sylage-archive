@@ -24,7 +24,7 @@ function MagazineInput({
   onChange: (value: string) => void;
 }) {
   return (
-<div className="w-full h-full flex items-center sm:px-6 lg:px-12">
+<div className="w-full h-full flex items-center sm:px-6 lg:px-4 xl:px-12">
   <input
     type={type}
     placeholder={placeholder}
@@ -37,8 +37,9 @@ function MagazineInput({
       ${colors.input.border}
       bg-transparent
       sm:text-[10px]
-      md:text-base
-      lg:text-[20px]
+      md:text-[11px]
+      lg:text-[14px]
+      xl:text-[20px]
       font-light
       outline-none
       ${colors.input.placeholder}
@@ -51,8 +52,9 @@ function MagazineInput({
     className={`
       text-[35px]
       sm:text-[55px]
-      md:text-[60px]
-      lg:text-[85px]
+      md:text-[59px]
+      lg:text-[30px]
+      xl:text-[85px]
       font-light
       ${colors.input.number}
       shrink-0
@@ -178,12 +180,17 @@ export default function ForgotPassword({ onNavigate, onBack }: Props) {
             w-full
             sm:pt-20
             sm:w-[220px]
-            md:pt-40
-            md:pl-20
-            md:w-[500px]
-            lg:pt-50
-            lg:pl-30
-            lg:w-[700px]
+            md:pt-22
+            md:pl-0
+            md:w-full
+            md:max-w-[500px]
+            lg:pt-16
+            lg:pl-0
+            lg:w-full
+            lg:max-w-[500px]
+            xl:pt-50
+            xl:pl-30
+            xl:w-[700px]
           "
           >
             <MagazineInput

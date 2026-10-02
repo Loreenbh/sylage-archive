@@ -32,7 +32,7 @@ function MagazineInput({
   onChange,
 }: Props1) {
   return (
-    <div className="w-full flex sm:space-y-4 sm:px-3 lg:px-8">
+    <div className="w-full flex sm:space-y-4 sm:px-3 lg:px-7">
       <input
         type={type}
         placeholder={placeholder}
@@ -44,7 +44,7 @@ function MagazineInput({
             border-b
             ${colors.input.border}
             bg-transparent
-            sm:text-[10px] md:text-base lg:text-[18px] 
+            sm:text-[10px] md:text-[12px] lg:text-[15px] xl:text-[18px]
             font-light 
             outline-none
             ${colors.input.placeholder}
@@ -54,7 +54,7 @@ function MagazineInput({
       />
       <span
         className={`
-            pl-2 sm:text-[18px] md:text-[63px] lg:text-[90px] 
+            pl-1 sm:text-[25px] md:text-[28px] lg:text-[45px] xl:text-[75px]
             font-light 
             ${colors.input.number}
             shrink-0 
@@ -97,10 +97,9 @@ export default function Authentification({ onNavigate }: Props) {
           className={`
             flex
             items-center
-            mt-1
-            ml-7
-            sm:gap-1
-            w-[130%]
+            ${spacing.actionBar}
+            ${colors.text.charcoal}
+            w-[150%]
             ${colors.text.charcoal}
           `}
         >
@@ -111,7 +110,7 @@ export default function Authentification({ onNavigate }: Props) {
                 direction: "next",
               })
             }
-            className={`${typography.buttonBodyFocus} ${colors.text.charcoal}`}
+            className={`${typography.actionBar} ${colors.text.charcoal}`}
           >
             Forgot pass
           </button>
@@ -124,7 +123,7 @@ export default function Authentification({ onNavigate }: Props) {
                 direction: "next",
               })
             }
-            className={`${typography.buttonBodyFocus} ${colors.text.charcoal}`}
+            className={`${typography.actionBar} ${colors.text.charcoal}`}
           >
             Guest Access
           </button>
@@ -137,7 +136,7 @@ export default function Authentification({ onNavigate }: Props) {
             <div
               className={`${colors.bg.stone} flex flex-col justify-between h-full`}
             >
-              <div className="sm:pt-5 lg:pt-43">
+              <div className="sm:pt-5 md:pt-7 lg:pt-30 xl:pt-40">
                 <MagazineInput
                   placeholder="Username"
                   index={1}
@@ -200,7 +199,7 @@ export default function Authentification({ onNavigate }: Props) {
             <div
               className={`${colors.bg.earth} flex flex-col justify-between h-full`}
             >
-              <div className="sm:pt-15 md:pt-51 lg:pt-65">
+              <div className="sm:pt-15 md:pt-16 lg:pt-45 xl:pt-65">
                 <MagazineInput
                   placeholder="Email/username"
                   type="text"

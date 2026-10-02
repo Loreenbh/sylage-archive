@@ -65,7 +65,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="FOCUS" clickable={false} />}
       actionsBar={
-        <div className="sm: flex items-center justify-between ml-7 mt-1 gap-2 overflow-hidden">
+        <div className="flex items-center w-[80%] justify-between ml-7 mt-1 overflow-hidden">
           {!isOwner && (
             <button
               onClick={() =>
@@ -94,8 +94,8 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
               by {moodboard?.username}
             </button>
           )}
-
-          <div className="flex items-center shrink-0 whitespace-nowrap gap-1 sm:gap-2">
+          <div className="flex items-center shrink-0 whitespace-nowrap sm:gap-2">
+          <span className={typography.bullet}>•</span>
             {!isOwner && (
               <>
                 <button

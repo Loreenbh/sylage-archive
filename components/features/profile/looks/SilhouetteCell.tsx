@@ -74,6 +74,7 @@ export default function SilhouetteCell({
             z-20
             text-black
             text-xl
+            md:text-2xl
             leading-none
             drop-shadow
             hover:text-white/50

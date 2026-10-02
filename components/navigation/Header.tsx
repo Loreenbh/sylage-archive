@@ -58,8 +58,8 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
         duration-300
         ${
           isFilterOpen
-            ? "sm:h-[59px] md:h-[70px] lg:h-[75px]"
-            : "sm:h-[40px] md:h-[60px] lg:h-[60px]"
+            ? "sm:h-[59px] md:h-[63px] lg:h-[140px] xl:h-[170px]"
+            : "sm:h-[40px] md:h-[42px] lg:h-[105px] xl:h-[170px]"
         }
       `}
     >
@@ -72,8 +72,8 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
           absolute
           z-[70]
           sm:text-[10px]
-          md:text-[10px]
-          lg:text-[18px]
+          lg:text-[13px]
+          xl:text-[18px]
           tracking-[0.18em]
           text-black/20
           hover:text-black/50
@@ -94,8 +94,8 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
             gap-3
             sm:px-4
             sm:pt-8
-            md:pt-16
-            lg:pt-26
+            lg:pt-20
+            xl:pt-26
           "
         >
         {items.map((item) => (
@@ -143,7 +143,6 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
             border-b
             border-black/10
             sm:px-2
-            md:px-6
             lg:px-10
           "
         >

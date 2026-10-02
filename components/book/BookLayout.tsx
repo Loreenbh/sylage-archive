@@ -9,7 +9,6 @@ type Props = {
   sidebarClassName?: string;
   footerLeft?: React.ReactNode;
   footerRight?: React.ReactNode;
-  isCover?: boolean;
 };
 
 export default function BookLayout({
@@ -21,122 +20,76 @@ export default function BookLayout({
   footerRight,
   imageClassName,
   sidebarClassName,
-  isCover = false,
 }: Props) {
   return (
     <BookFrame>
       {/* HEADER */}
       {header && <div className="w-full shrink-0">{header}</div>}
 
-{/* BODY */}
-<div className="flex flex-1 min-h-0 w-full overflow-hidden">
-  {isCover ? (
-    /* COVER */
-    <div className="relative w-full min-h-0">
-      {/* IMAGE + ACTIONS */}
-      <div className="flex flex-col items-center w-full min-w-0">
+      {/* BODY */}
+      <div className="relative flex flex-1 min-h-0 w-full overflow-hidden">
         <div
-          className={`
-            aspect-square
-            w-[70%]
-            md:w-[65%]
-            lg:w-[65%]
-            ${imageClassName ?? ""}
-          `}
+          className="
+            flex
+            items-start
+            min-w-0
+            w-full
+            sm:mt-10
+            lg:mt-11
+            xl:mt-16
+          "
         >
-          {children}
+          {/* IMAGE + ACTIONS */}
+          <div className="flex flex-col min-w-0 flex-1">
+            <div
+              className={`
+                aspect-square
+                min-h-0
+                sm:ml-[4vw]
+                md:ml-[3vw]
+                lg:ml-[2.5vw]
+                sm:w-[80%]
+                md:w-[80%]
+                lg:w-[85%]
+                xl:w-[85%]
+                ${imageClassName ?? ""}
+              `}
+            >
+              {children}
+            </div>
+
+            {actionsBar && <div>{actionsBar}</div>}
+          </div>
         </div>
 
-        {actionsBar && (
-          <div className="w-[110%]">
-            {actionsBar}
+        {/* SIDEBAR — UNIQUE */}
+        {sidebar && (
+          <div
+            className={`
+                absolute
+                top-0
+                sm:top-10
+                lg:top-11
+                xl:top-16
+                right-0
+                h-[30vw]
+                md:h-[25vw]
+                lg:h-[35vw]
+                xl:h-[40vw]
+                w-[30px]
+                md:w-[32px]
+                lg:w-[32px]
+                xl:w-[60px]
+                pointer-events-none
+                ${sidebarClassName ?? ""}
+              `}
+            >
+              <div className="h-full w-full pointer-events-auto">
+                {sidebar}
+              </div>
           </div>
         )}
       </div>
-
-      {/* SIDEBAR */}
-      {sidebar && (
-        <div
-          className={`
-            absolute
-            top-0
-            right-0
-            shrink-0
-            flex
-            flex-col
-            self-start
-            h-[30vw]
-            md:h-[45vw]
-            lg:h-[48vw]
-            w-[30px]
-            md:w-[35px]
-            lg:w-[45px]
-            ${sidebarClassName ?? ""}
-          `}
-        >
-          {sidebar}
-        </div>
-      )}
-    </div>
-  ) : (
-    /* PAGES NORMALES */
-    <div
-      className={`
-        flex
-        items-start
-        min-w-0
-        w-full
-        sm:mt-10
-        md:mt-28
-        lg:mt-45
-      `}
-    >
-      {/* IMAGE + ACTIONS */}
-      <div className="flex flex-col min-w-0 flex-1">
-        <div
-          className={`
-            aspect-square
-            sm:ml-[4vw]
-            md:ml-0
-            sm:w-[90%]
-            md:w-[72%]
-            lg:w-[75%]
-            ${imageClassName ?? ""}
-          `}
-        >
-          {children}
-        </div>
-
-        {actionsBar && (
-          <div className="w-[110%]">
-            {actionsBar}
-          </div>
-        )}
-      </div>
-
-      {/* SIDEBAR */}
-      {sidebar && (
-        <div
-          className={`
-            shrink-0
-            flex
-            flex-col
-            self-start
-            sm:h-[30vw]
-            md:h-[52vw]
-            lg:h-[55vw]
-            sm:w-[30px]
-            md:w-[40px]
-            lg:w-[50px]
-            ${sidebarClassName ?? ""}
-          `}
-        >
-          {sidebar}
-        </div>
-      )}
-    </div>
-  )}
-</div>
 
       {/* FOOTER */}
       {(footerLeft || footerRight) && (

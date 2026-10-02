@@ -91,7 +91,7 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="MOODS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-4 ml-7 mt-1 lg:mt-3">
+        <div className="flex items-center gap-2 md:gap-2 ml-7 mt-1 lg:mt-3">
           <span className={typography.buttonBodyFocus}>
             {from === "references"
               ? "LIKED MOODS"

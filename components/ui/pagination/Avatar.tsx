@@ -17,7 +17,8 @@ export default function Avatar({ user, className = "" }: Props) {
         text-white
         sm:text-[20px]
         md:text-[20px]
-        lg:text-[30px]
+        lg:text-[12px]
+        xl:text-[30px]
         font-serif
         tracking-[0.2em]
         ${className}

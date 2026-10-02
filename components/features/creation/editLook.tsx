@@ -214,7 +214,7 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
             </button>
 
             {publishError && (
-              <p className="text-[10px] text-red-600 tracking-[0.1em]">
+              <p className="text-[10px] md:text-[11px] text-red-600 tracking-[0.1em]">
                 {publishError}
               </p>
             )}

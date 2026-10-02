@@ -36,10 +36,15 @@ export default function ProfileButton({
       className={`
         sm:w-6 
         sm:h-6 
-        lg:w-20 
-        lg:h-20
+        md:w-7
+        md:h-7
+        lg:w-8
+        lg:h-8
+        xl:w-20
+        xl:h-20
         sm:text-[16px]
-        lg:text-[25px]
+        lg:text-[16px]
+        xl:text-[25px]
         ${!isClickable ? "cursor-default opacity-50" : "cursor-pointer"}
       `}
     >

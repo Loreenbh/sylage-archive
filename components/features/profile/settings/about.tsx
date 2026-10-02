@@ -69,8 +69,9 @@ export default function About({ onNavigate, onBack }: Props) {
         justify-center
         p-4
         sm:p-8
-        md:p-10
-        lg:p-12
+        md:p-8
+        lg:p-6
+        xl:p-12
       `}
           >
             <div className="max-w-[600px] text-center">
@@ -80,8 +81,9 @@ export default function About({ onNavigate, onBack }: Props) {
             leading-[1.5]
             mt-2
             sm:mt-4
-            md:mt-6
-            lg:mt-8
+            md:mt-4
+            lg:mt-4
+            xl:mt-8
             ${colors.text.charcoal}
           `}
               >
@@ -93,8 +95,9 @@ export default function About({ onNavigate, onBack }: Props) {
             ${typography.about}
             mt-2
             sm:mt-4
-            md:mt-6
-            lg:mt-8
+            md:mt-4
+            lg:mt-4
+            xl:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -112,8 +115,9 @@ export default function About({ onNavigate, onBack }: Props) {
             ${typography.about}
             mt-2
             sm:mt-4
-            md:mt-6
-            lg:mt-8
+            md:mt-4
+            lg:mt-4
+            xl:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -126,8 +130,9 @@ export default function About({ onNavigate, onBack }: Props) {
             ${typography.about}
             mt-2
             sm:mt-4
-            md:mt-6
-            lg:mt-8
+            md:mt-4
+            lg:mt-4
+            xl:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -140,8 +145,9 @@ export default function About({ onNavigate, onBack }: Props) {
             ${typography.about}
             mt-2
             sm:mt-4
-            md:mt-6
-            lg:mt-8
+            md:mt-4
+            lg:mt-4
+            xl:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -156,8 +162,9 @@ export default function About({ onNavigate, onBack }: Props) {
             ${typography.about}
             mt-2
             sm:mt-4
-            md:mt-6
-            lg:mt-8
+            md:mt-4
+            lg:mt-4
+            xl:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -170,8 +177,9 @@ export default function About({ onNavigate, onBack }: Props) {
             ${typography.about}
             mt-2
             sm:mt-4
-            md:mt-6
-            lg:mt-8
+            md:mt-4
+            lg:mt-4
+            xl:mt-8
             leading-[1.5]
             ${colors.text.charcoal}
           `}
