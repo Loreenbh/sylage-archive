@@ -44,10 +44,7 @@ export default function BookFrame({ children }: Props) {
   ];
 
   return (
-    <div
-      className={geometry.page.container}
-      style={{ perspective: "1200px" }}
-    >
+    <div className={geometry.page.container} style={{ perspective: "1200px" }}>
       <div className="relative flex-1 min-h-0">
         <div className="absolute inset-0">
           {/* PAPER LAYERS */}
@@ -107,9 +104,14 @@ export default function BookFrame({ children }: Props) {
                 background: `
                   radial-gradient(
                     ellipse 60% 45% at 50% 35%,
-                    rgba(255,255,255,0.4) 0%,
-                    rgba(255,255,255,0.15) 30%,
+                    rgba(245,238,225,0.14) 0%,
+                    rgba(245,238,225,0.04) 30%,
                     transparent 70%
+                  ),
+                  linear-gradient(
+                    to bottom,
+                    rgba(25,21,19,0.12),
+                    rgba(25,21,19,0.24)
                   )
                 `,
               }}

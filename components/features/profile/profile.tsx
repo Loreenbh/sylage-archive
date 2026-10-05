@@ -288,7 +288,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                   </div>
                 )}
               </div>
-              <div className="absolute bottom-0 left-0 right-0 z-10 h-[25px] md:h-[27px] bg-red-200 flex items-end px-3 pb-3">
+              <div className="absolute bottom-0 left-0 right-0 z-10 h-[25px] md:h-[27px] flex items-end px-3 pb-3">
                 <p className={typography.profile}>CONNECTIONS</p>
               </div>
             </div>

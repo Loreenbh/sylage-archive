@@ -202,7 +202,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
       }
       sidebar={<Sidebar text="SETTINGS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-2 ml-7 mt-1 lg:mt-3 w-[105%]">
+        <div className="flex items-center gap-2">
           <button
             onClick={() =>
               onNavigate?.({

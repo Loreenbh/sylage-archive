@@ -6,8 +6,6 @@ export const spacing = {
   `,
 
   actionBar: `
-    pt-[1cqw]
-    px-[2.5cqw]
     gap-[1.5cqw]
   `,
 
@@ -21,8 +19,6 @@ export const spacing = {
   `,
 
   buttonBodyDiscover: `
-    px-[4cqw]
-    pt-[1cqw]
     gap-[1.5cqw]
   `,
   backButton: `

@@ -29,7 +29,7 @@ function MagazineInput({
   onChange,
 }: PropsInput) {
   return (
-    <div className="w-full flex items-center px-2 md:px-4 lg:px-6">
+    <div className="w-full flex items-center px-[clamp(8px,2cqw,24px)]">
       <input
         type={type}
         placeholder={placeholder}
@@ -41,7 +41,7 @@ function MagazineInput({
           border-b
           ${colors.input.border}
           bg-transparent
-          text-[10px] md:text-[12px] lg:text-[15px] xl:text-[18px]
+          text-[clamp(9px,3.8cqw,18px)]
           font-light 
           outline-none
           ${colors.input.placeholder}
@@ -51,7 +51,7 @@ function MagazineInput({
       />
       <span
         className={`
-          pl-1 text-[20px] md:text-[28px] lg:text-[45px] xl:text-[65px]
+          pl-1 text-[clamp(18px,8cqw,65px)]
           font-light 
           ${colors.input.number}
           shrink-0 
@@ -130,9 +130,9 @@ export default function Authentification({ onNavigate }: Props) {
         <TwoColGrid
           left={
             <div
-              className={`${colors.bg.stone} flex flex-col justify-between h-full p-2 md:p-4`}
+              className={`${colors.bg.stone} flex flex-col justify-between h-full p-[clamp(8px,2cqw,16px)]`}
             >
-              <div className="flex flex-col justify-center flex-1 space-y-2 md:space-y-4">
+              <div className="flex flex-col justify-center flex-1 space-y-[clamp(8px,2cqw,16px)]">
                 <MagazineInput
                   placeholder="Username"
                   index={1}
@@ -185,9 +185,9 @@ export default function Authentification({ onNavigate }: Props) {
           }
           right={
             <div
-              className={`${colors.bg.earth} flex flex-col justify-between h-full p-2 md:p-4`}
+              className={`${colors.bg.earth} flex flex-col justify-between h-full p-[clamp(8px,2cqw,16px)]`}
             >
-              <div className="flex flex-col justify-center flex-1 space-y-2 md:space-y-4">
+              <div className="flex flex-col justify-center flex-1 space-y-[clamp(8px,2cqw,16px)]">
                 <MagazineInput
                   placeholder="Email/username"
                   type="text"

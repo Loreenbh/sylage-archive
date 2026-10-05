@@ -65,7 +65,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="FOCUS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center w-[80%] justify-between ml-7 mt-1 overflow-hidden">
+        <div className="flex w-full items-center justify-between overflow-hidden">
           {!isOwner && (
             <button
               onClick={() =>

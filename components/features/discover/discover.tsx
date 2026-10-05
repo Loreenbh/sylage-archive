@@ -89,7 +89,7 @@ export default function Discover({ onNavigate, params }: Props) {
               tab === "latest" ? "border-black" : "border-transparent hover:border-black"
             }`}
           >
-            latest
+            LATEST
           </button>
           <span className={typography.bullet}>•</span>
           <button
@@ -98,7 +98,7 @@ export default function Discover({ onNavigate, params }: Props) {
               tab === "curated" ? "border-black" : "border-transparent hover:border-black"
             }`}
           >
-            curated
+            CURATED
           </button>
           <span className={typography.bullet}>•</span>
           <button
@@ -115,7 +115,7 @@ export default function Discover({ onNavigate, params }: Props) {
                 : "border-transparent hover:border-black"
             }`}
           >
-            following
+            FOLLOWING
           </button>
         </div>
       }

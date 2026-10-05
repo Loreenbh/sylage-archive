@@ -191,7 +191,7 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text={"LOOK IN"} clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-3 ml-6 md:mt-2 mt-1">
+        <div className="flex items-center gap-3">
           <span className={typography.buttonBodyFocus}>
             {moodboard?.silhouettes_count ?? 0} LOOKS
           </span>

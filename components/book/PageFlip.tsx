@@ -131,7 +131,7 @@ export default function PageFlip({
           w-1/2
           h-full
           shrink-0
-          bg-[#D2BFB2]
+          bg-[#BBA99E]
           rounded-l-sm
           overflow-visible
         "

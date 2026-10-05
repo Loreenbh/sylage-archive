@@ -34,12 +34,12 @@ export default function ProfileButton({
         });
       }}
       className={`
-        sm:w-6 
-        sm:h-6 
-        md:w-7
-        md:h-7
-        lg:w-8
-        lg:h-8
+        sm:w-7
+        sm:h-7 
+        md:w-12
+        md:h-12
+        lg:w-16
+        lg:h-16
         xl:w-20
         xl:h-20
         sm:text-[16px]

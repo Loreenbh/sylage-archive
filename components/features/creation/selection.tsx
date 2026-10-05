@@ -55,7 +55,7 @@ export default function Create({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="EDITION" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 md:gap-2 ml-7 mt-1 lg:mt-3">
+        <div className="flex items-center gap-2">
           <p className={typography.buttonBodyFocus}>layout</p>
           <span className={typography.bullet}>•</span>
           <p className={typography.buttonBodyFocus}>foundation</p>

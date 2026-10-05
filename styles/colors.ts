@@ -1,17 +1,17 @@
 export const colors = {
-  ivory: "#EAE3D8",
+  ivory: "#BBA99E",
   stone: "#7B786C",
   earth: "#806054",
   charcoal: "#211C19",
 
   bg: {
-    ivory: "bg-[#D2BFB2]",
+    ivory: "bg-[#BBA99E]",
     stone: "bg-[#7B786C]",
     earth: "bg-[#806054]",
     charcoal: "bg-[#211C19]",
     charcoal70: "bg-[#211C19]/70",
-    empty: "bg-[#B3A193]/30",
-    empty70: "bg-[#B3A193]/70",
+    empty: "bg-[#CABAB0]/30",
+    empty70: "bg-[#CABAB0]/70",
   },
 
   text: {

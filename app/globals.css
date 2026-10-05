@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-sm: 20rem;
+  --breakpoint-md: 64rem;
+  --breakpoint-lg: 80rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 80rem;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -29,25 +37,19 @@ body {
   background-repeat: repeat;
 }
 
-@media (min-width: 480px) {
+@media (max-width: 1023px) {
   body {
     background-size: 1300px 564px;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) and (max-width: 1279px) {
   body {
     background-size: 1800px 781px;
   }
 }
 
-@media (min-width: 1024px) {
-  body {
-    background-size: 2400px 1042px;
-  }
-}
-
-@media (min-width: 1440px) {
+@media (min-width: 1280px) {
   body {
     background-size: 3000px 1302px;
   }
@@ -88,13 +90,12 @@ body {
 }
 
 .book-feed-grid {
-  grid-template-columns:
-    repeat(auto-fit, minmax(min(100%, max(135px, 18cqw)), 1fr));
+  grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .book-feed-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

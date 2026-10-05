@@ -228,7 +228,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="COMPOSE" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2 ml-7 mt-1 lg:mt-3">
+        <div className="flex items-center gap-2">
           {step === "compose" ? (
             <button
               onClick={handleConfirm}
@@ -287,7 +287,6 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
               min-h-0
               overflow-y-auto
               pb-1
-              bg-red-200
             "
           >
             <TagPicker

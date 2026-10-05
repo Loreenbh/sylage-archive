@@ -58,7 +58,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="REFERENCES" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-1 md:gap-1 ml-7 mt-1 lg:mt-3 w-[105%]">
+        <div className="flex items-center gap-1">
           <p className={typography.buttonBodyFocus}>Your references</p>
           <span className={typography.bullet}>•</span>
           <p className={typography.buttonBodyFocus}>Favourites</p>

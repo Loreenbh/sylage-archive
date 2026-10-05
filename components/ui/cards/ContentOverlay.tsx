@@ -51,7 +51,7 @@ export default function ContentOverlay({
         backdrop-blur-sm
         ${
           variant === "vertical"
-            ? "inset-y-0 right-0 w-4 sm:w-3 md:w-[13px] lg:w-4 xl:w-6 flex-col items-center px-0.5 py-2"
+            ? "inset-y-0 right-0 w-4 md:w-6 lg:w-8 flex-col items-center px-0.5 py-2"
             : "inset-x-0 bottom-0 sm:h-4 md:h-[17px] lg:h-[17px] xl:h-8 sm:px-2 md:px-2 lg:px-2 xl:px-5 items-center justify-between gap-2"
         }
       `}
@@ -69,7 +69,8 @@ export default function ContentOverlay({
               className="
                 text-white
                 text-[8px]
-                xl:text-[12px]
+                md:text-[12px]
+                lg:text-[16px]
                 leading-none
                 hover:text-white/50
                 transition-colors
@@ -97,8 +98,9 @@ export default function ContentOverlay({
                 }}
                 className="
                   text-white
-                  sm:text-[10px]
-                  xl:text-[14px]
+                  text-[10px]
+                  md:text-[14px]
+                  lg:text-[18px]
                   leading-none
                   hover:text-white/50
                   transition-colors
@@ -121,8 +123,8 @@ export default function ContentOverlay({
                 className="
                   text-white
                   text-[7px]
-                  md:text-[8px]
-                  xl:text-[11px]
+                  md:text-[12px]
+                  lg:text-[14px]
                   leading-none
                 "
               />
@@ -140,8 +142,9 @@ export default function ContentOverlay({
                 }}
                 className="
                   text-white
-                  sm:text-[8px]
-                  xl:text-[12px]
+                  text-[8px]
+                  md:text-[12px]
+                  lg:text-[16px]
                   tracking-[0.2em]
                   leading-none
                   [writing-mode:vertical-rl]
@@ -159,8 +162,9 @@ export default function ContentOverlay({
                 <span
                   className="
                   text-white/70
-                  sm:text-[8px]
-                  xl:text-[11px]
+                  text-[8px]
+                  md:text-[11px]
+                  lg:text-[14px]
                   leading-none
                   [writing-mode:vertical-rl]
                   rotate-180

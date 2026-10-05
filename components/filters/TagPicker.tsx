@@ -12,7 +12,7 @@ import {
 } from "@/constants/tags";
 import { colors } from "@/styles/colors";
 
-type Category = "style" | "ambiance" | "couleurs";
+type Category = "style" | "ambiance" | "colors";
 
 type Props = {
   styleTags: string[];
@@ -63,8 +63,8 @@ export default function TagPicker({
         onChangeAmbiance(toggleIn(ambianceTags, MAX_AMBIANCE_TAGS, tag)),
     },
     {
-      key: "couleurs" as const,
-      label: "COULEURS",
+      key: "colors" as const,
+      label: "COLORS",
       tags: COLOR_TAGS,
       selected: colorTags,
       max: MAX_COLOR_TAGS,
@@ -140,7 +140,7 @@ export default function TagPicker({
               const isDisabled =
                 !isSelected && category.selected.length >= category.max;
               const swatch =
-                category.key === "couleurs" ? COLOR_SWATCHES[tag] : undefined;
+                category.key === "colors" ? COLOR_SWATCHES[tag] : undefined;
 
               return (
                 <button

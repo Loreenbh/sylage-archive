@@ -83,7 +83,16 @@ export default function BookLayout({
 
         {/* ACTION BAR */}
         {actionsBar && (
-          <div className={geometry.actionBar.container}>{actionsBar}</div>
+          <div
+            className={geometry.actionBar.container}
+            style={{
+              translate: filterPanelHeight
+                ? geometry.actionBar.filterOffset(filterPanelHeight)
+                : undefined,
+            }}
+          >
+            {actionsBar}
+          </div>
         )}
       </div>
     </BookFrame>

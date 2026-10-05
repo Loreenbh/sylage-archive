@@ -115,16 +115,15 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="LOOKS" clickable={false} />}
       actionsBar={
-        <div className="flex items-center justify-between sm:w-[82%] gap-2 sm:ml-7 mt-1 lg:mt-3 whitespace-nowrap">
+        <div className="flex w-full min-w-0 items-center justify-between gap-1 whitespace-nowrap">
           <span
             className={`
               ${typography.buttonBodyFocus}
-              max-w-[105px]
-              sm:max-w-[180px]
-              md:max-w-[195px]
+              min-w-0
+              max-w-[45%]
               truncate
               whitespace-nowrap
-              shrink
+              flex-1
             `}
           >
             {carouselLabel}

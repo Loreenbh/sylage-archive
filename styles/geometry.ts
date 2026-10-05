@@ -5,7 +5,7 @@ export const geometry = {
   viewport: {
     className: "relative",
     style: {
-      width: `min(90vw, calc((100dvh - 16px) * ${spreadAspectRatio}))`,
+      width: `min(90vw, calc((100lvh - 16px) * ${spreadAspectRatio}))`,
       aspectRatio: String(spreadAspectRatio),
     },
   },
@@ -47,7 +47,10 @@ export const geometry = {
   },
 
   actionBar: {
-    container: "absolute left-0 top-[119cqw] z-20 flex h-[9cqw] w-full items-center",
+    container:
+      "absolute left-0 top-[119cqw] md:top-[116cqw] z-20 flex h-[9cqw] w-[88%] min-w-0 items-center overflow-hidden transition-[translate] duration-300 ease-out",
+    filterOffset: (panelHeight: number) =>
+      `0 max(1cqw, calc(25.5cqw + ${panelHeight}px - 32cqw))`,
   },
 
   footer: {
