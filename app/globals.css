@@ -28,8 +28,12 @@
   }
 }
 
+html,
 body {
-  background-color: var(--background);
+  background-color: #ff9d00;
+}
+
+body {
   background-image: url("/texture.png");
   background-size: 1000px auto;
   background-position: center top;
