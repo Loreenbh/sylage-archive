@@ -28,7 +28,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           relative
         `}
       >
-        {/* MESSAGE PORTRAIT */}
         <div
           className="
             hidden
@@ -57,7 +56,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </p>
         </div>
 
-        {/* APPLICATION */}
         <div
           className={`${geometry.viewport.className} portrait:hidden`}
           style={geometry.viewport.style}

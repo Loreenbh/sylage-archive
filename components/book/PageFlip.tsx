@@ -72,7 +72,6 @@ export default function PageFlip({
     }
 
     if (direction === "prev") {
-      // PAGE GAUCHE → tourne vers la droite
       el.style.transformOrigin = "right center";
 
       void el.offsetWidth;
@@ -97,11 +96,6 @@ export default function PageFlip({
     return () => clearTimeout(timer);
   }, [animating, direction, onDone]);
 
-  /*
-   * COVER
-   *
-   * La Cover reste une seule page lorsqu'elle est immobile.
-   */
   if (isCover && !animating) {
     return (
       <div
@@ -124,7 +118,6 @@ export default function PageFlip({
         perspective: "1800px",
       }}
     >
-      {/* PAGE GAUCHE */}
       <div
         className="
           relative
@@ -181,7 +174,7 @@ export default function PageFlip({
         {animating ? next : current}
       </div>
 
-      {/* PAGE GAUCHE QUI TOURNE → PREV */}
+      {/* PAGE GAUCHE QUI TOURNE*/}
       {direction === "prev" && animating && (
         <div
           ref={ref}
@@ -216,7 +209,7 @@ export default function PageFlip({
         </div>
       )}
 
-      {/* PAGE DROITE QUI TOURNE → NEXT */}
+      {/* PAGE DROITE QUI TOURNE */}
       {direction === "next" &&
         (animating || turnedDirection === "next") && (
           <div

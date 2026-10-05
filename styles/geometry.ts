@@ -22,13 +22,13 @@ export const geometry = {
     expandedHeight: (panelHeight: number) =>
       `max(33cqw, calc(25.5cqw + ${panelHeight}px))`,
     content: "relative flex h-full w-full items-center justify-center",
-    portfolio: "absolute left-[2.7cqw] top-[6cqw] z-[70]",
+    portfolio: "absolute left-[2.7cqw] top-[2cqw] z-[70]",
     navigation:
       "absolute inset-x-[7cqw] top-[17.5cqw] z-[60] flex justify-between gap-[3cqw]",
     filterPanel:
       "absolute inset-x-[2.5cqw] top-[24.5cqw] z-50 overflow-hidden transition-all duration-300",
     coverTitle: "flex flex-col items-center justify-center",
-    coverImage: "relative h-[10.5cqw] w-[42cqw]",
+    coverImage: "relative h-[13.5cqw] w-[54cqw]",
     coverSubtitle: "mt-[1cqw] self-end",
   },
 

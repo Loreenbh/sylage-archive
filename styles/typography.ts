@@ -18,7 +18,7 @@ export const typography = {
   `,
 
   subtitle: `
-    text-[clamp(10px,3.7cqw,24px)]
+    text-[clamp(8px,2.8cqw,18px)]
     tracking-[0.4em]
     uppercase
     font-extralight
