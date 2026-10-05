@@ -30,7 +30,7 @@
 
 html,
 body {
-  background-color: #ff9d00;
+  background-color: #9A8A83;
 }
 
 body {
@@ -40,7 +40,7 @@ body {
   background-repeat: repeat;
 }
 
-/* @media (max-width: 1023px) {
+@media (max-width: 1023px) {
   body {
     background-size: 1300px 564px;
   }
@@ -56,7 +56,7 @@ body {
   body {
     background-size: 3000px 1302px;
   }
-} */
+}
 .backface-hidden {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
