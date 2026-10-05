@@ -1,93 +1,68 @@
 export const typography = {
   title: `
-    text-[50px]
-    sm:text-[80px]
-    md:text-[90px]
-    lg:text-[90px]
-    xl:text-[100px]
+    text-[clamp(50px,15.5cqw,100px)]
     font-light
     tracking-[0.3em]
   `,
 
-nav: `
-  sm:text-[10px]
-  md:text-[10px]
-  lg:text-[14px]
-  xl:text-[24px]
-  font-light
-  tracking-[0.35em]
-  uppercase
-`,
+  portfolio: `
+    text-[clamp(9px,2.8cqw,18px)]
+    tracking-[0.18em]
+  `,
+
+  nav: `
+    text-[clamp(10px,3.7cqw,24px)]
+    font-light
+    tracking-[0.35em]
+    uppercase
+  `,
 
   subtitle: `
-    sm:text-[10px]
-    md:text-[10px]
-    lg:text-[14px]
-    xl:text-[24px]
+    text-[clamp(10px,3.7cqw,24px)]
     tracking-[0.4em]
     uppercase
     font-extralight
   `,
 
   actionBar: `
-    sm:text-[8px]
-    md:text-[9px]
-    lg:text-[12px]
-    xl:text-[15px]
-    sm:tracking-[0.3em]
+    text-[clamp(8px,2.4cqw,15px)]
+    tracking-[0.3em]
     uppercase
   `,
 
   sidebarTitle: `
-    sm:text-[12px]
-    md:text-[13px]
-    lg:text-[30px]
-    xl:text-[50px]
+    text-[clamp(12px,6cqw,50px)]
     font-light
     whitespace-nowrap
     tracking-[0.3em]
   `,
 
   buttonAuth: `
-    sm:text-[10px]
-    lg:text-[14px]
-    xl:text-[30px]
+    text-[clamp(10px,4.2cqw,30px)]
     tracking-[0.4em]
     uppercase
   `,
 
   buttonBodyDiscover: `
-    sm:text-[7px]
-    md:text-[8px]
-    lg:text-[11px]
-    xl:text-[14px]
+    text-[clamp(7px,2.2cqw,14px)]
     tracking-[0.3em]
     uppercase
   `,
 
-    profile: `
-    sm:text-[8px]
-    md:text-[9px]
-    lg:text-[10px]
-    xl:text-[16px]
+  profile: `
+    text-[clamp(8px,2.4cqw,16px)]
     tracking-[0.3em]
     uppercase
   `,
 
-    buttonBodyFocus: `
-    sm:text-[7.5px]
-    md:text-[8px]
-    lg:text-[10px]
-    xl:text-[16px]
+  buttonBodyFocus: `
+    text-[clamp(7.5px,2.4cqw,16px)]
     tracking-[0.3em]
     uppercase
   `,
 
-  
   backButton: `
-    sm:text-[8px]
-    lg:text-[12px]
-    xl:text-[17px]
+    text-[clamp(8px,2.6cqw,17px)]
     tracking-[0.2em]
     transition-opacity
     hover:opacity-50
@@ -95,17 +70,11 @@ nav: `
   `,
 
   bullet: `
-      text-[7px]
-      md:text-[8px]
-      lg:text-[10px]
-      xl:text-[14px]
-    `,
+    text-[clamp(7px,2.1cqw,14px)]
+  `,
 
   username: `
-    sm:text-[8px]
-    md:text-[9px]
-    lg:text-[10px]
-    xl:text-[15px]
+    text-[clamp(8px,2.4cqw,15px)]
     opacity-30
     tracking-[0.35em]
     uppercase
@@ -113,10 +82,7 @@ nav: `
   `,
 
   buttonOverlay: `
-    sm:text-[8px]
-    md:text-[9px]
-    lg:text-[9px]
-    xl:text-[14px]
+    text-[clamp(8px,2.3cqw,14px)]
     tracking-[0.25em]
     text-[#343137]
     font-extralight
@@ -124,49 +90,33 @@ nav: `
   `,
 
   follow: `
-    sm:text-[7px]
-    md:text-[7.5px]
-    lg:text-[10px]
-    xl:text-[17px]
+    text-[clamp(7px,2.6cqw,17px)]
     uppercase
     tracking-[0.25em]
     font-extralight
-    `,
+  `,
 
   feedback: `
-    sm:text-[7px]
-    md:text-[8px]
-    lg:text-[10px]
-    xl:text-[16px]
+    text-[clamp(7px,2.3cqw,16px)]
     tracking-[0.2em]
-    `,
+  `,
 
   about: `
-    sm:text-[12px]
-    md:text-[13px]
-    lg:text-[14px]
-    xl:text-[16px]
+    text-[clamp(12px,2.7cqw,16px)]
     uppercase
     tracking-[0.25em]
     font-extralight
-    `,
+  `,
 
   privacy: `
-    text-[7px]
-    sm:text-[12px]
-    md:text-[13px]
-    lg:text-[14px]
-    xl:text-[16px]
+    text-[clamp(7px,2.7cqw,16px)]
     uppercase
     tracking-[0.25em]
     font-extralight
-    `,
+  `,
 
-    settings: `
-    sm:text-[8px]
-    md:text-[9px]
-    lg:text-[10px]
-    xl:text-[14px]
+  settings: `
+    text-[clamp(8px,2.3cqw,14px)]
     tracking-[0.25em]
     text-[#343137]
     font-extralight

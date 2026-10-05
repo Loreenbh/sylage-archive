@@ -1,22 +1,19 @@
 "use client";
 import type { OnNavigate } from "@/types/navigation";
-/* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
 import TwoColGrid from "@/components/ui/grids/TwoColGrid";
 import Header from "@/components/navigation/Header";
-/* STYLE */
 import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
 import { spacing } from "@/styles/spacing";
-/*HOOKS*/
 import { useAuthForm } from "@/hooks/useAuthForm";
-/*TYPES*/
+
 type Props = {
   onNavigate: OnNavigate;
 };
 
-type Props1 = {
+type PropsInput = {
   placeholder: string;
   type?: string;
   index: number;
@@ -30,36 +27,36 @@ function MagazineInput({
   index,
   value,
   onChange,
-}: Props1) {
+}: PropsInput) {
   return (
-    <div className="w-full flex sm:space-y-4 sm:px-3 lg:px-7">
+    <div className="w-full flex items-center px-2 md:px-4 lg:px-6">
       <input
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`
-            w-full
-            border-0
-            border-b
-            ${colors.input.border}
-            bg-transparent
-            sm:text-[10px] md:text-[12px] lg:text-[15px] xl:text-[18px]
-            font-light 
-            outline-none
-            ${colors.input.placeholder}
-            focus:border-black/30
-            transition-colors duration-200
-          `}
+          w-full
+          border-0
+          border-b
+          ${colors.input.border}
+          bg-transparent
+          text-[10px] md:text-[12px] lg:text-[15px] xl:text-[18px]
+          font-light 
+          outline-none
+          ${colors.input.placeholder}
+          focus:border-black/30
+          transition-colors duration-200
+        `}
       />
       <span
         className={`
-            pl-1 sm:text-[25px] md:text-[28px] lg:text-[45px] xl:text-[75px]
-            font-light 
-            ${colors.input.number}
-            shrink-0 
-            leading-none
-            `}
+          pl-1 text-[20px] md:text-[28px] lg:text-[45px] xl:text-[65px]
+          font-light 
+          ${colors.input.number}
+          shrink-0 
+          leading-none
+        `}
       >
         {String(index).padStart(2, "0")}
       </span>
@@ -80,6 +77,7 @@ export default function Authentification({ onNavigate }: Props) {
     handleRegister,
     handleLogin,
   } = useAuthForm(onNavigate);
+
   return (
     <BookLayout
       header={
@@ -99,8 +97,7 @@ export default function Authentification({ onNavigate }: Props) {
             items-center
             ${spacing.actionBar}
             ${colors.text.charcoal}
-            w-[150%]
-            ${colors.text.charcoal}
+            w-full
           `}
         >
           <button
@@ -115,7 +112,6 @@ export default function Authentification({ onNavigate }: Props) {
             Forgot pass
           </button>
           <span className={typography.bullet}>•</span>
-
           <button
             onClick={() =>
               onNavigate({
@@ -130,13 +126,13 @@ export default function Authentification({ onNavigate }: Props) {
         </div>
       }
     >
-      <div className="flex flex-col h-full ">
+      <div className="flex flex-col h-full w-full">
         <TwoColGrid
           left={
             <div
-              className={`${colors.bg.stone} flex flex-col justify-between h-full`}
+              className={`${colors.bg.stone} flex flex-col justify-between h-full p-2 md:p-4`}
             >
-              <div className="sm:pt-5 md:pt-7 lg:pt-30 xl:pt-40">
+              <div className="flex flex-col justify-center flex-1 space-y-2 md:space-y-4">
                 <MagazineInput
                   placeholder="Username"
                   index={1}
@@ -165,22 +161,14 @@ export default function Authentification({ onNavigate }: Props) {
                 />
                 {registerError && (
                   <p
-                    className={`
-                  ${typography.feedback} 
-                  ${colors.feedback.error}
-                  ${spacing.feedback}
-                  `}
+                    className={`${typography.feedback} ${colors.feedback.error} ${spacing.feedback}`}
                   >
                     {registerError}
                   </p>
                 )}
                 {registerSuccess && (
                   <p
-                    className={`
-                  ${typography.feedback} 
-                  ${colors.feedback.success} 
-                  ${spacing.feedback}
-                  `}
+                    className={`${typography.feedback} ${colors.feedback.success} ${spacing.feedback}`}
                   >
                     {registerSuccess}
                   </p>
@@ -189,7 +177,7 @@ export default function Authentification({ onNavigate }: Props) {
 
               <button
                 onClick={handleRegister}
-                className={`${typography.buttonAuth} ${colors.text.charcoal} pb-5`}
+                className={`${typography.buttonAuth} ${colors.text.charcoal} pb-2`}
               >
                 Join →
               </button>
@@ -197,9 +185,9 @@ export default function Authentification({ onNavigate }: Props) {
           }
           right={
             <div
-              className={`${colors.bg.earth} flex flex-col justify-between h-full`}
+              className={`${colors.bg.earth} flex flex-col justify-between h-full p-2 md:p-4`}
             >
-              <div className="sm:pt-15 md:pt-16 lg:pt-45 xl:pt-65">
+              <div className="flex flex-col justify-center flex-1 space-y-2 md:space-y-4">
                 <MagazineInput
                   placeholder="Email/username"
                   type="text"
@@ -214,14 +202,9 @@ export default function Authentification({ onNavigate }: Props) {
                   value={loginForm.password}
                   onChange={updateLoginField("password")}
                 />
-
                 {loginError && (
                   <p
-                    className={`
-                  ${typography.feedback} 
-                  ${colors.feedback.error}
-                  ${spacing.feedback}  
-                  `}
+                    className={`${typography.feedback} ${colors.feedback.error} ${spacing.feedback}`}
                   >
                     {loginError}
                   </p>
@@ -231,9 +214,7 @@ export default function Authentification({ onNavigate }: Props) {
               <button
                 onClick={handleLogin}
                 disabled={isSubmitting}
-                className={`
-                ${typography.buttonAuth} 
-                ${colors.text.charcoal} pb-5 `}
+                className={`${typography.buttonAuth} ${colors.text.charcoal} pb-2`}
               >
                 Enter →
               </button>

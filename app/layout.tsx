@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import { Roboto } from "next/font/google";
+import { geometry } from "@/styles/geometry";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`
           ${roboto.className}
           w-screen
-          min-h-screen
+          h-dvh
           flex
           items-center
           justify-center
@@ -58,15 +59,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         {/* APPLICATION */}
         <div
-          className="
-            w-[96vw]
-            sm:w-[94vw]
-            md:w-[94vw]
-            lg:w-[90vw]
-            max-w-[calc((100dvh-16px)*1.571)]
-            aspect-[440/280]
-            my-0
-          "
+          className={`${geometry.viewport.className} portrait:hidden`}
+          style={geometry.viewport.style}
         >
           {children}
         </div>

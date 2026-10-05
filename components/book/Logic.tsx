@@ -60,6 +60,7 @@ export default function Book() {
   const [params, setParams] = useState<NavigationParams["params"] | null>(null);
 
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [previousLeft, setPreviousLeft] = useState<HistoryItem | null>(null);
 
   const [animating, setAnimating] = useState<boolean>(false);
   const [direction, setDirection] = useState<"next" | "prev">("next");
@@ -110,6 +111,7 @@ export default function Book() {
 
     setNext(previous.page);
     setParams(previous.params);
+    setPreviousLeft(history[history.length - 2] ?? null);
     setDirection("prev");
     setHistory((prev) => prev.slice(0, -1));
     setAnimating(true);
@@ -128,6 +130,7 @@ export default function Book() {
 
   const CurrentPage = PAGES[current];
   const NextPage = next ? PAGES[next] : null;
+  const PreviousLeftPage = previousLeft ? PAGES[previousLeft.page] : null;
 
   return (
     <div className="w-full h-full flex">
@@ -142,6 +145,15 @@ export default function Book() {
         next={
           NextPage ? (
             <NextPage onNavigate={navigate} onBack={goBack} params={params} />
+          ) : null
+        }
+        previousLeft={
+          PreviousLeftPage ? (
+            <PreviousLeftPage
+              onNavigate={navigate}
+              onBack={goBack}
+              params={previousLeft?.params}
+            />
           ) : null
         }
         animating={animating}

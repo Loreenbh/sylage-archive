@@ -22,6 +22,7 @@ type Props = {
   onChangeAmbiance: (tags: string[]) => void;
   onChangeColor: (tags: string[]) => void;
   layout?: "wrap" | "scroll";
+  compact?: boolean;
 };
 
 function toggleIn(current: string[], max: number, tag: string): string[] {
@@ -38,6 +39,7 @@ export default function TagPicker({
   onChangeAmbiance,
   onChangeColor,
   layout = "wrap",
+  compact = false,
 }: Props) {
   const [openCategory, setOpenCategory] = useState<Category | null>(null);
 
@@ -74,8 +76,12 @@ export default function TagPicker({
   const allSelected = [...styleTags, ...ambianceTags, ...colorTags];
 
   return (
-    <div className="flex flex-col items-center sm:gap-3 lg:gap-4">
-      <div className="flex sm:gap-3 lg:gap-3 xl:gap-10">
+    <div
+      className={`flex flex-col items-center ${
+        compact ? "gap-[0.8cqw]" : "sm:gap-3 lg:gap-4"
+      }`}
+    >
+      <div className={`flex ${compact ? "gap-[1.5cqw]" : "sm:gap-3 lg:gap-3 xl:gap-10"}`}>
         {categories.map((category) => (
           <button
             key={category.key}
@@ -114,7 +120,7 @@ export default function TagPicker({
                 ? `
                   flex
                   flex-nowrap
-                  gap-1
+                  ${compact ? "gap-[0.8cqw]" : "gap-1"}
                   overflow-x-auto
                   w-full
                   pb-1
@@ -124,8 +130,7 @@ export default function TagPicker({
                   flex
                   flex-wrap
                   justify-center
-                  gap-y-1
-                  gap-x-1
+                  ${compact ? "gap-[0.8cqw]" : "gap-y-1 gap-x-1"}
                   max-w-md
                 `
             }
@@ -146,11 +151,10 @@ export default function TagPicker({
                   className={`
                     flex 
                     items-center 
-                    gap-2 
+                    ${compact ? "gap-[0.8cqw] px-[1cqw]" : "gap-2 px-4"}
                     whitespace-nowrap
                     tracking-[0.15em] 
                     uppercase 
-                    px-4 
                     lg:py-1 
                     sm:text-[7px]
                     md:text-[8px]

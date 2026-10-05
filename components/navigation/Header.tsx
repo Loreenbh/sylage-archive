@@ -1,8 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 /*STYLE*/
 import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
+import { geometry } from "@/styles/geometry";
+import { FilterPanelContext } from "@/components/book/BookLayout";
 /*COMPONENTS*/
 import TagPicker from "@/components/filters/TagPicker";
 
@@ -20,6 +22,8 @@ type HeaderProps = {
 
 export default function Header({ items, onFiltersChange }: HeaderProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const reportPanelHeight = useContext(FilterPanelContext);
 
   const [styleTags, setStyleTags] = useState<string[]>([]);
   const [ambianceTags, setAmbianceTags] = useState<string[]>([]);
@@ -50,54 +54,35 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
     onFiltersChange?.([...styleTags, ...ambianceTags, ...tags]);
   };
 
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const updateHeight = () => {
+      const height = isFilterOpen ? panel.getBoundingClientRect().height : 0;
+      reportPanelHeight(height);
+    };
+
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(panel);
+
+    return () => observer.disconnect();
+  }, [isFilterOpen, reportPanelHeight]);
+
   return (
-    <div
-      className={`
-        w-full
-        transition-all
-        duration-300
-        ${
-          isFilterOpen
-            ? "sm:h-[59px] md:h-[63px] lg:h-[140px] xl:h-[170px]"
-            : "sm:h-[40px] md:h-[42px] lg:h-[105px] xl:h-[170px]"
-        }
-      `}
-    >
+    <div className={geometry.header.content}>
       {/* PORTFOLIO */}
       <button
         onClick={() => {
           window.location.href = "https://sylage-world.vercel.app/";
         }}
-        className="
-          absolute
-          z-[70]
-          sm:text-[10px]
-          lg:text-[13px]
-          xl:text-[18px]
-          tracking-[0.18em]
-          text-black/20
-          hover:text-black/50
-          transition-colors
-          duration-300
-          cursor-pointer
-        "
+        className={`${geometry.header.portfolio} ${typography.portfolio} text-black/20 hover:text-black/50 transition-colors duration-300 cursor-pointer`}
       >
         ← PORTFOLIO
       </button>
 
-        <div
-          className="
-            relative
-            z-[60]
-            flex
-            justify-between
-            gap-3
-            sm:px-4
-            sm:pt-8
-            lg:pt-20
-            xl:pt-26
-          "
-        >
+      <div className={geometry.header.navigation}>
         {items.map((item) => (
           <button
             key={item.section}
@@ -105,7 +90,7 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
             disabled={Boolean(item.clickable !== true)}
             className={`
               ${typography.nav}
-              pb-1
+              pb-[0.6cqw]
               border-b
               transition-colors
               duration-300
@@ -125,25 +110,18 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
       </div>
 
       <div
-        className={`
-          overflow-visible
-          transition-all
-          duration-300
-          relative
-          z-50
-          ${
-            isFilterOpen
-              ? "max-h-[200px] opacity-100 mt-2"
-              : "max-h-0 opacity-0"
-          }
-        `}
+        ref={panelRef}
+        className={`${geometry.header.filterPanel} ${
+          isFilterOpen
+            ? "max-h-[36cqw] opacity-100 pointer-events-auto"
+            : "max-h-0 opacity-0 pointer-events-none"
+        }`}
       >
         <div
           className="
             border-b
             border-black/10
-            sm:px-2
-            lg:px-10
+            px-[1cqw]
           "
         >
           <TagPicker
@@ -154,6 +132,7 @@ export default function Header({ items, onFiltersChange }: HeaderProps) {
             onChangeAmbiance={updateAmbiance}
             onChangeColor={updateColor}
             layout="scroll"
+            compact
           />
         </div>
       </div>

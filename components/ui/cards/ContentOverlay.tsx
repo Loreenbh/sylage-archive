@@ -69,6 +69,7 @@ export default function ContentOverlay({
               className="
                 text-white
                 text-[8px]
+                xl:text-[12px]
                 leading-none
                 hover:text-white/50
                 transition-colors
@@ -97,6 +98,7 @@ export default function ContentOverlay({
                 className="
                   text-white
                   sm:text-[10px]
+                  xl:text-[14px]
                   leading-none
                   hover:text-white/50
                   transition-colors
@@ -120,6 +122,7 @@ export default function ContentOverlay({
                   text-white
                   text-[7px]
                   md:text-[8px]
+                  xl:text-[11px]
                   leading-none
                 "
               />
@@ -138,6 +141,7 @@ export default function ContentOverlay({
                 className="
                   text-white
                   sm:text-[8px]
+                  xl:text-[12px]
                   tracking-[0.2em]
                   leading-none
                   [writing-mode:vertical-rl]
@@ -156,6 +160,7 @@ export default function ContentOverlay({
                   className="
                   text-white/70
                   sm:text-[8px]
+                  xl:text-[11px]
                   leading-none
                   [writing-mode:vertical-rl]
                   rotate-180

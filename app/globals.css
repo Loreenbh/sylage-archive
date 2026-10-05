@@ -87,6 +87,17 @@ body {
   display: none;
 }
 
+.book-feed-grid {
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(100%, max(135px, 18cqw)), 1fr));
+}
+
+@media (min-width: 768px) {
+  .book-feed-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @font-face {
   font-family: "Bodoni Moda SC";
   src: url("/fonts/BodoniModaSC-Regular.ttf") format("truetype");

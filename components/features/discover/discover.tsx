@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
-/* TYPES */
 import type { OnNavigate, NavigationParams } from "@/types/navigation";
-/* COMPONENTS */
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
 import Header from "@/components/navigation/Header";
@@ -10,16 +8,13 @@ import ScrollableGrid from "@/components/ui/grids/ScrollableGrid";
 import ProfileButton from "@/components/ui/buttons/ProfileButton";
 import ContentOverlay from "@/components/ui/cards/ContentOverlay";
 import StatusMessage from "@/components/ui/messages/StatusMessage";
-/*HOOKS*/
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useDiscoverMoodboards } from "@/hooks/useDiscoverMoods";
-/*SERVICES*/
 import { followUser, unfollowUser } from "@/lib/services/follows";
-
-/*STYLE*/
 import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
 import { spacing } from "@/styles/spacing";
+
 type Props = {
   onNavigate: OnNavigate;
   params?: NavigationParams["params"] | null;
@@ -29,7 +24,6 @@ export default function Discover({ onNavigate, params }: Props) {
   const [tab, setTab] = useState(params?.fromTab ?? "latest");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const { moodboards, isLoading, setMoodboards } = useDiscoverMoodboards(tab);
-
   const { user, isLoading: isUserLoading } = useCurrentUser();
 
   const handleFollowToggle = async (userId: number, isFollowed: boolean) => {
@@ -41,20 +35,14 @@ export default function Discover({ onNavigate, params }: Props) {
     setMoodboards((prev) =>
       prev.map((board) =>
         board.user_id === userId
-          ? {
-            ...board,
-            is_followed: !isFollowed,
-          }
-          : board,
-      ),
+          ? { ...board, is_followed: !isFollowed }
+          : board
+      )
     );
   };
 
   const handleDelete = async (id: number) => {
-    const res = await fetch(`/api/moodboards?id=${id}`, {
-      method: "DELETE",
-    });
-
+    const res = await fetch(`/api/moodboards?id=${id}`, { method: "DELETE" });
     if (res.ok) {
       setMoodboards((prev) => prev.filter((board) => board.id !== id));
     }
@@ -64,10 +52,8 @@ export default function Discover({ onNavigate, params }: Props) {
     selectedFilters.length === 0
       ? moodboards
       : moodboards.filter((board) =>
-        board.tags.some((tag) => selectedFilters.includes(tag)),
-      );
-
-  const sidebarTitle = tab.toUpperCase();
+          board.tags.some((tag) => selectedFilters.includes(tag))
+        );
 
   return (
     <BookLayout
@@ -81,22 +67,17 @@ export default function Discover({ onNavigate, params }: Props) {
               section: "CREATE",
               clickable: Boolean(!isUserLoading && user),
               onClick: user
-                ? () =>
-                  onNavigate?.({
-                    to: "create",
-                    direction: "next",
-                  })
+                ? () => onNavigate?.({ to: "create", direction: "next" })
                 : undefined,
             },
           ]}
         />
       }
-      sidebar={<Sidebar text={sidebarTitle} clickable={false} />}
+      sidebar={<Sidebar text={tab.toUpperCase()} clickable={false} />}
       actionsBar={
         <div
           className={`
-            flex
-            items-center
+            flex items-center
             ${typography.buttonBodyDiscover}
             ${spacing.buttonBodyDiscover}
             ${colors.text.charcoal}
@@ -104,61 +85,35 @@ export default function Discover({ onNavigate, params }: Props) {
         >
           <button
             onClick={() => setTab("latest")}
-            className={`
-              ${typography.buttonBodyDiscover}
-              pb-1
-              border-b
-              transition-colors
-              duration-300
-              ${tab === "latest"
-                ? "border-black"
-                : "border-transparent hover:border-black"
-              }
-            `}
+            className={`pb-1 border-b transition-colors duration-300 ${
+              tab === "latest" ? "border-black" : "border-transparent hover:border-black"
+            }`}
           >
             latest
           </button>
-
           <span className={typography.bullet}>•</span>
-
           <button
             onClick={() => setTab("curated")}
-            className={`
-              ${typography.buttonBodyDiscover}
-              pb-1
-              border-b
-              transition-colors
-              duration-300
-              ${tab === "curated"
-                ? "border-black"
-                : "border-transparent hover:border-black"
-              }
-            `}
+            className={`pb-1 border-b transition-colors duration-300 ${
+              tab === "curated" ? "border-black" : "border-transparent hover:border-black"
+            }`}
           >
             curated
           </button>
-
           <span className={typography.bullet}>•</span>
-
           <button
             onClick={() => {
               if (isUserLoading || !user) return;
               setTab("following");
             }}
             disabled={Boolean(isUserLoading || !user)}
-            className={`
-              ${typography.buttonBodyDiscover}
-              pb-1
-              border-b
-              transition-colors
-              duration-300
-              ${!user
+            className={`pb-1 border-b transition-colors duration-300 ${
+              !user
                 ? "border-transparent cursor-default opacity-50"
                 : tab === "following"
-                  ? "border-black"
-                  : "border-transparent hover:border-black"
-              }
-            `}
+                ? "border-black"
+                : "border-transparent hover:border-black"
+            }`}
           >
             following
           </button>
@@ -171,29 +126,20 @@ export default function Discover({ onNavigate, params }: Props) {
         </div>
       }
     >
-      <div className="flex flex-col h-full ">
+      <div className="flex flex-col h-full w-full">
         {isLoading ? (
           <StatusMessage message="LOADING ARCHIVE..." />
         ) : filteredMoodboards.length === 0 ? (
           <div
-            className={`
-            aspect-square
-            w-full
-            flex
-            items-center
-            justify-center
-            ${colors.bg.empty}
-            border
-            border-black/10
-          `}
+            className={`aspect-square w-full flex items-center justify-center ${colors.bg.empty} border border-black/10`}
           >
             <StatusMessage
               message={
                 tab === "following"
                   ? "BUILD YOUR ARCHIVE."
                   : tab === "curated"
-                    ? "NO CURATED PIECES YET."
-                    : "THE ARCHIVE IS EMPTY."
+                  ? "NO CURATED PIECES YET."
+                  : "THE ARCHIVE IS EMPTY."
               }
             />
           </div>
@@ -211,59 +157,36 @@ export default function Discover({ onNavigate, params }: Props) {
               });
             }}
             renderItem={(board) => (
-              <div
-                className="
-                relative
-                aspect-square
-                w-full
-                cursor-pointer
-                overflow-hidden
-              "
-              >
+              <div className="relative aspect-square w-full cursor-pointer overflow-hidden">
                 <img
                   src={board.image_url}
                   alt=""
-                  className="
-                  absolute
-                  inset-0
-                  w-full
-                  h-full
-                  object-contain
-                "
+                  className="absolute inset-0 w-full h-full object-contain"
                 />
-
                 {user?.role === "admin" && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDelete(board.id);
                     }}
-                    className="
-                    absolute
-                    top-2
-                    right-2
-                    z-20
-                    text-xl
-                    leading-none
-                  "
+                    className="absolute top-2 right-2 z-20 text-xl leading-none"
                   >
                     ×
                   </button>
                 )}
-
                 <ContentOverlay
                   username={board.username}
                   isOwner={user?.id === board.user_id}
-                  isFollowed={board.is_followed}
+                  isFollowed={board.is_followed ?? false}
                   isGuest={!user}
                   onRequireAuth={() =>
-                    onNavigate?.({
-                      to: "auth",
-                      direction: "next",
-                    })
+                    onNavigate?.({ to: "auth", direction: "next" })
                   }
                   onFollowToggle={() =>
-                    handleFollowToggle(board.user_id, board.is_followed)
+                    handleFollowToggle(
+                      board.user_id,
+                      board.is_followed ?? false
+                    )
                   }
                   like={{
                     type: "moodboard",

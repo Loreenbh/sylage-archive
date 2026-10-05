@@ -1,4 +1,12 @@
+"use client";
+
+import { createContext, useState } from "react";
 import BookFrame from "./BookFrame";
+import { geometry } from "@/styles/geometry";
+
+export const FilterPanelContext = createContext<(height: number) => void>(
+  () => {}
+);
 
 type Props = {
   header?: React.ReactNode;
@@ -21,99 +29,63 @@ export default function BookLayout({
   imageClassName,
   sidebarClassName,
 }: Props) {
+  const [filterPanelHeight, setFilterPanelHeight] = useState(0);
+
   return (
     <BookFrame>
-      {/* HEADER */}
-      {header && <div className="w-full shrink-0">{header}</div>}
-
-      {/* BODY */}
-      <div className="relative flex flex-1 min-h-0 w-full overflow-hidden">
-        <div
-          className="
-            flex
-            items-start
-            min-w-0
-            w-full
-            sm:mt-10
-            lg:mt-11
-            xl:mt-16
-          "
-        >
-          {/* IMAGE + ACTIONS */}
-          <div className="flex flex-col min-w-0 flex-1">
+      <div className="relative flex h-full w-full flex-col">
+        {/* HEADER */}
+        {header && (
+          <FilterPanelContext.Provider value={setFilterPanelHeight}>
             <div
-              className={`
-                aspect-square
-                min-h-0
-                sm:ml-[4vw]
-                md:ml-[3vw]
-                lg:ml-[2.5vw]
-                sm:w-[80%]
-                md:w-[80%]
-                lg:w-[85%]
-                xl:w-[85%]
-                ${imageClassName ?? ""}
-              `}
+              className={`${geometry.header.container} transition-[height] duration-300 ease-out`}
+              style={{
+                height: filterPanelHeight
+                  ? geometry.header.expandedHeight(filterPanelHeight)
+                  : "32cqw",
+              }}
             >
-              {children}
+              {header}
+            </div>
+          </FilterPanelContext.Provider>
+        )}
+
+        {/* BODY */}
+        <div className={geometry.body.container}>
+          {/* CONTENU PRINCIPAL ET SIDEBAR */}
+          <div className={geometry.body.mainRegion}>
+            <div className={geometry.body.mainArea}>
+              <div
+                className={`${geometry.body.contentSquare} ${imageClassName ?? ""}`}
+              >
+                {children}
+              </div>
             </div>
 
-            {actionsBar && <div>{actionsBar}</div>}
+            {/* SIDEBAR */}
+            {sidebar && (
+              <div
+                className={`${geometry.sidebar.container} ${sidebarClassName ?? ""}`}
+              >
+                <div className={geometry.sidebar.content}>{sidebar}</div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* SIDEBAR — UNIQUE */}
-        {sidebar && (
-          <div
-            className={`
-                absolute
-                top-0
-                sm:top-10
-                lg:top-11
-                xl:top-16
-                right-0
-                h-[30vw]
-                md:h-[25vw]
-                lg:h-[35vw]
-                xl:h-[40vw]
-                w-[30px]
-                md:w-[32px]
-                lg:w-[32px]
-                xl:w-[60px]
-                pointer-events-none
-                ${sidebarClassName ?? ""}
-              `}
-            >
-              <div className="h-full w-full pointer-events-auto">
-                {sidebar}
-              </div>
+        {/* FOOTER */}
+        {(footerLeft || footerRight) && (
+          <div className={geometry.footer.container}>
+            <div className="flex items-center min-w-0">{footerLeft}</div>
+            <div className="flex items-center min-w-0">{footerRight}</div>
           </div>
         )}
+
+        {/* ACTION BAR */}
+        {actionsBar && (
+          <div className={geometry.actionBar.container}>{actionsBar}</div>
+        )}
       </div>
-
-      {/* FOOTER */}
-      {(footerLeft || footerRight) && (
-        <div
-          className="
-            shrink-0
-            w-full
-            flex
-            justify-between
-            items-center
-            px-3
-            sm:px-4
-            min-h-[20px]
-          "
-        >
-          <div className="flex items-center min-w-0">
-            {footerLeft}
-          </div>
-
-          <div className="flex items-center min-w-0">
-            {footerRight}
-          </div>
-        </div>
-      )}
     </BookFrame>
   );
 }

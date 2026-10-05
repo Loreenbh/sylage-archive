@@ -412,6 +412,7 @@ export default function Settings({ onNavigate, onBack }: Props) {
                         sm:text-[8px]
                         md:text-[9px]
                         lg:text-[10px]
+                        xl:text-[14px]
                         opacity-60
                         tracking-wide
                         text-center

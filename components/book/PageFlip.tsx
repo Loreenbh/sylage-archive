@@ -5,6 +5,7 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 type Props = {
   current: ReactNode;
   next: ReactNode | null;
+  previousLeft: ReactNode | null;
   animating: boolean;
   direction: "next" | "prev";
   onDone: () => void;
@@ -14,6 +15,7 @@ type Props = {
 export default function PageFlip({
   current,
   next,
+  previousLeft,
   animating,
   direction,
   onDone,
@@ -22,6 +24,7 @@ export default function PageFlip({
   const ref = useRef<HTMLDivElement | null>(null);
   const currentRef = useRef(current);
   const nextRef = useRef(next);
+  const previousLeftRef = useRef(previousLeft);
   const [turnedPage, setTurnedPage] = useState<ReactNode | null>(null);
   const [previousPage, setPreviousPage] = useState<ReactNode | null>(null);
   const [turnedDirection, setTurnedDirection] = useState<
@@ -37,12 +40,16 @@ export default function PageFlip({
   }, [next]);
 
   useEffect(() => {
+    previousLeftRef.current = previousLeft;
+  }, [previousLeft]);
+
+  useEffect(() => {
     if (!animating) return;
     if (!ref.current) return;
 
     const el = ref.current;
     const pageBeingTurned = currentRef.current;
-    const pageRevealedByFlip = nextRef.current;
+    const pageRevealedByFlip = previousLeftRef.current;
     setTurnedPage(null);
     setPreviousPage(null);
     setTurnedDirection(null);
@@ -61,7 +68,7 @@ export default function PageFlip({
         "transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 250ms ease 550ms";
 
       el.style.transform = "rotateY(-180deg)";
-      el.style.opacity = "0.4";
+      el.style.opacity = "0.15";
     }
 
     if (direction === "prev") {
@@ -74,7 +81,7 @@ export default function PageFlip({
         "transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 250ms ease 550ms";
 
       el.style.transform = "rotateY(180deg)";
-      el.style.opacity = "0.4";
+      el.style.opacity = "0.15";
     }
 
     const timer = setTimeout(() => {
@@ -126,7 +133,7 @@ export default function PageFlip({
           shrink-0
           bg-[#D2BFB2]
           rounded-l-sm
-          overflow-hidden
+          overflow-visible
         "
         style={{
           boxShadow: `
@@ -138,8 +145,14 @@ export default function PageFlip({
       >
         {direction === "prev" &&
           (animating || previousPage !== null) && (
-            <div className="absolute inset-0 pointer-events-none">
-              {animating ? next : previousPage}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                transform: "scaleX(-1)",
+                opacity: 0.15,
+              }}
+            >
+              {animating ? previousLeft : previousPage}
             </div>
           )}
 
@@ -162,7 +175,7 @@ export default function PageFlip({
           w-1/2
           h-full
           shrink-0
-          overflow-hidden
+          overflow-visible
         "
       >
         {animating ? next : current}

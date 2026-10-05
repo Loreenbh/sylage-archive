@@ -1,27 +1,14 @@
 export const spacing = {
   subtitle: `
-    sm:mt-2
-    sm:mr-4
-    md:mr-1
-    md:mt-2
-    lg:mr-4
-    xl:mr-16
+    mt-[1cqw]
+    mr-[2cqw]
     self-end 
   `,
 
   actionBar: `
-    sm:pt-2
-    sm:px-6
-    sm:px-7
-    sm:gap-2
-    md:px-7
-    md:pt-2
-    lg:px-7
-    lg:pt-3
-    lg:gap-3
-    xl:px-14
-    xl:pt-4
-    xl:gap-6
+    pt-[1cqw]
+    px-[2.5cqw]
+    gap-[1.5cqw]
   `,
 
   sideBarTitle: `
@@ -29,30 +16,16 @@ export const spacing = {
   `,
 
   feedback: `
-  sm:px-4
-  md:px-4
-  md:pt-2
-  lg:px-4
-  lg:pt-2
-  xl:px-8
-  xl:pt-6
+    px-[2.5cqw]
+    pt-[1.5cqw]
   `,
 
   buttonBodyDiscover: `
-  sm:px-7
-  sm:pt-1
-  sm:gap-2
-  md:pt-2
-  md:gap-2
-  lg:pt-2
-  lg:gap-2
-  xl:pt-3
-  xl:px-14
-  xl:gap-3
+    px-[4cqw]
+    pt-[1cqw]
+    gap-[1.5cqw]
   `,
   backButton: `
-  sm:ml-3
-  md:ml-3
-  lg:ml-3
+    ml-[2cqw]
   `,
 };

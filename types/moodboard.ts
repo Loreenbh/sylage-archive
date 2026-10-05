@@ -9,4 +9,5 @@ export type Moodboard = {
   likes_count: number;
   silhouettes_count: number;
   liked_by_current_user: boolean;
+  is_followed?: boolean;
 };

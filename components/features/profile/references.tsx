@@ -121,7 +121,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="sm:text-[7px] md:text-[8px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] md:text-[8px] xl:text-[14px] tracking-[0.2em] text-black/30">
                     NO LOOKS YET
                   </p>
                 </div>
@@ -187,7 +187,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="sm:text-[7px] md:text-[8px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] md:text-[8px] xl:text-[14px] tracking-[0.2em] text-black/30">
                     NO MOODS YET
                   </p>
                 </div>
@@ -287,7 +287,7 @@ export default function References({ onNavigate, onBack, params }: Props) {
                   justify-center
                 "
                 >
-                  <p className="sm:text-[7px] md:text-[8px] tracking-[0.2em] text-black/30">
+                  <p className="sm:text-[7px] md:text-[8px] xl:text-[14px] tracking-[0.2em] text-black/30">
                     NO CREATOR YET
                   </p>
                 </div>
