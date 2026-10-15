@@ -125,6 +125,28 @@ export default function Authentification({ onNavigate }: Props) {
           </button>
         </div>
       }
+      footerLeft={
+        <div className="w-[85cqw] border-t border-black/20 pt-[0.5cqw] leading-none">
+            <p className="text-[clamp(7px,1cqw,10px)] tracking-[0.2em] text-black/55">
+              BEHIND THE PROJECT
+            </p>
+            <p className="mt-[0.4cqw] text-[clamp(11px,2.2cqw,18px)] leading-none text-[#211C19]">
+              The Making of SYLAGE Archive
+            </p>
+            <p className="mt-[0.4cqw] whitespace-nowrap text-[clamp(7px,1.1cqw,11px)] tracking-[0.04em] text-black/50">
+              Concept · UX/UI · Art Direction · Development
+            </p>
+            <a
+              href="https://sylage-archive.vercel.app/studycase.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Explore the case study: The Making of SYLAGE Archive (opens in a new tab)"
+              className="mt-[0.4cqw] inline-block text-[clamp(8px,1.2cqw,12px)] text-[#211C19] transition-opacity hover:opacity-60 focus-visible:outline focus-visible:outline-1"
+            >
+              Explore the case study ↗
+            </a>
+        </div>
+      }
     >
       <div className="flex flex-col h-full w-full">
         <TwoColGrid

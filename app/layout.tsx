@@ -56,8 +56,32 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </p>
         </div>
 
+        {/* AMBIANCE */}
         <div
-          className={`${geometry.viewport.className} portrait:hidden`}
+          aria-hidden="true"
+          className="fixed inset-0 pointer-events-none z-0"
+          style={{
+            background: `
+              linear-gradient(
+                to bottom,
+                rgba(18, 15, 14, 0.78) 0%,
+                rgba(25, 21, 19, 0.58) 20%,
+                rgba(33, 28, 25, 0.30) 42%,
+                rgba(33, 28, 25, 0.10) 62%,
+                transparent 78%
+              ),
+              radial-gradient(
+                ellipse 55% 48% at 50% 82%,
+                rgba(234, 227, 216, 0.16) 0%,
+                rgba(234, 227, 216, 0.06) 48%,
+                transparent 100%
+              )
+            `,
+          }}
+        />
+
+        <div
+          className={`${geometry.viewport.className} portrait:hidden z-10`}
           style={geometry.viewport.style}
         >
           {children}

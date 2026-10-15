@@ -1,4 +1,4 @@
-@import "tailwindcss";
+ @import "tailwindcss";
 
 @theme {
   --breakpoint-sm: 20rem;
@@ -18,7 +18,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
-  --color-text: var(-ink);
+  --color-text: var(--ink);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -28,35 +28,55 @@
   }
 }
 
+/* Fond*/
 html,
 body {
-  background-color: #9A8A83;
+  background-color: #211C19;
 }
 
 body {
-  background-image: url("/texture.png");
-  background-size: 1000px auto;
-  background-position: center top;
-  background-repeat: repeat;
+  background-image:
+    radial-gradient(
+      ellipse at center,
+      transparent 20%,
+      rgba(33, 28, 25, 0.12) 45%,
+      rgba(33, 28, 25, 0.42) 100%
+    ),
+    url("/texture.png");
+
+  background-size: 100% 100%, 1000px auto;
+  background-position: center center, center top;
+  background-repeat: no-repeat, repeat;
 }
 
+/* Mobile */
 @media (max-width: 1023px) {
   body {
-    background-size: 1300px 564px;
+    background-size: 100% 100%, 1400px auto;
+    background-position: center center, -500px -100px;
+    background-repeat: no-repeat, no-repeat;
   }
 }
 
+/* Tablette*/
 @media (min-width: 1024px) and (max-width: 1279px) {
   body {
-    background-size: 1800px 781px;
+    background-size: 100% 100%, 2000px auto;
+    background-position: center center, -650px 40px;
+    background-repeat: no-repeat, no-repeat;
   }
 }
 
+/* Desktop */
 @media (min-width: 1280px) {
   body {
-    background-size: 3000px 1302px;
+    background-size: 100% 100%, 3300px auto;
+    background-position: center center, -950px -100px;
+    background-repeat: no-repeat, no-repeat;
   }
 }
+
+/* Effets de page */
 .backface-hidden {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;

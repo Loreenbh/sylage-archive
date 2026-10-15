@@ -25,6 +25,7 @@ export default function PageFlip({
   const currentRef = useRef(current);
   const nextRef = useRef(next);
   const previousLeftRef = useRef(previousLeft);
+
   const [turnedPage, setTurnedPage] = useState<ReactNode | null>(null);
   const [previousPage, setPreviousPage] = useState<ReactNode | null>(null);
   const [turnedDirection, setTurnedDirection] = useState<
@@ -50,6 +51,7 @@ export default function PageFlip({
     const el = ref.current;
     const pageBeingTurned = currentRef.current;
     const pageRevealedByFlip = previousLeftRef.current;
+
     setTurnedPage(null);
     setPreviousPage(null);
     setTurnedDirection(null);
@@ -59,7 +61,7 @@ export default function PageFlip({
     el.style.transform = "rotateY(0deg)";
 
     if (direction === "next") {
-      // PAGE DROITE → tourne vers la gauche
+      // PAGE DROITE
       el.style.transformOrigin = "left center";
 
       void el.offsetWidth;
@@ -104,9 +106,7 @@ export default function PageFlip({
           perspective: "1800px",
         }}
       >
-        <div className="relative w-1/2 h-full">
-          {current}
-        </div>
+        <div className="relative w-1/2 h-full">{current}</div>
       </div>
     );
   }
@@ -118,36 +118,52 @@ export default function PageFlip({
         perspective: "1800px",
       }}
     >
+      {/* PAGE GAUCHE*/}
       <div
         className="
           relative
           w-1/2
           h-full
           shrink-0
-          bg-[#BBA99E]
           rounded-l-sm
           overflow-visible
         "
         style={{
+          background: `
+          radial-gradient(
+            ellipse 100% 68% at 50% 110%,
+            rgba(250, 245, 235, 0.68) 0%,
+            rgba(245, 238, 225, 0.40) 28%,
+            rgba(245, 238, 225, 0.18) 52%,
+            transparent 82%
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(25, 21, 19, 0.34) 0%,
+            rgba(25, 21, 19, 0.16) 35%,
+            rgba(25, 21, 19, 0.02) 68%,
+            transparent 100%
+          ),
+          #A99A90
+        `,
           boxShadow: `
-            inset 0 0 20px rgba(33, 28, 25, 0.08),
-            inset 2px 0 6px rgba(234, 227, 216, 0.5),
+            inset 0 0 20px rgba(33, 28, 25, 0.12),
+            inset 2px 0 6px rgba(234, 227, 216, 0.22),
             inset -4px 0 8px rgba(33, 28, 25, 0.18)
           `,
         }}
       >
-        {direction === "prev" &&
-          (animating || previousPage !== null) && (
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                transform: "scaleX(-1)",
-                opacity: 0.15,
-              }}
-            >
-              {animating ? previousLeft : previousPage}
-            </div>
-          )}
+        {direction === "prev" && (animating || previousPage !== null) && (
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              transform: "scaleX(-1)",
+              opacity: 0.15,
+            }}
+          >
+            {animating ? previousLeft : previousPage}
+          </div>
+        )}
 
         {/* RELIURE CENTRALE */}
         <div
@@ -174,7 +190,7 @@ export default function PageFlip({
         {animating ? next : current}
       </div>
 
-      {/* PAGE GAUCHE QUI TOURNE*/}
+      {/* PAGE GAUCHE QUI TOURNE */}
       {direction === "prev" && animating && (
         <div
           ref={ref}
@@ -210,11 +226,10 @@ export default function PageFlip({
       )}
 
       {/* PAGE DROITE QUI TOURNE */}
-      {direction === "next" &&
-        (animating || turnedDirection === "next") && (
-          <div
-            ref={ref}
-            className="
+      {direction === "next" && (animating || turnedDirection === "next") && (
+        <div
+          ref={ref}
+          className="
               absolute
               top-0
               right-0
@@ -222,15 +237,15 @@ export default function PageFlip({
               h-full
               pointer-events-none
             "
-            style={{
-              transformStyle: "preserve-3d",
-              backfaceVisibility: "visible",
-              zIndex: 20,
-            }}
-          >
-            {animating ? current : turnedPage}
-          </div>
-        )}
+          style={{
+            transformStyle: "preserve-3d",
+            backfaceVisibility: "visible",
+            zIndex: 20,
+          }}
+        >
+          {animating ? current : turnedPage}
+        </div>
+      )}
     </div>
   );
 }

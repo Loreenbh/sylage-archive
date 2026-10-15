@@ -17,6 +17,8 @@ type Props = {
   sidebarClassName?: string;
   footerLeft?: React.ReactNode;
   footerRight?: React.ReactNode;
+  onPageClick?: () => void;
+  pageClickLabel?: string;
 };
 
 export default function BookLayout({
@@ -26,6 +28,8 @@ export default function BookLayout({
   actionsBar,
   footerLeft,
   footerRight,
+  onPageClick,
+  pageClickLabel,
   imageClassName,
   sidebarClassName,
 }: Props) {
@@ -33,7 +37,33 @@ export default function BookLayout({
 
   return (
     <BookFrame>
-      <div className="relative flex h-full w-full flex-col">
+      <div
+        className="relative flex h-full w-full flex-col"
+        onClick={(event) => {
+          if (!onPageClick) return;
+          const target = event.target;
+          if (
+            target instanceof Element &&
+            target.closest("button, a, input, select, textarea, [role='button']")
+          ) {
+            return;
+          }
+          onPageClick();
+        }}
+        onKeyDown={(event) => {
+          if (
+            onPageClick &&
+            event.target === event.currentTarget &&
+            (event.key === "Enter" || event.key === " ")
+          ) {
+            event.preventDefault();
+            onPageClick();
+          }
+        }}
+        role={onPageClick ? "region" : undefined}
+        aria-label={onPageClick ? pageClickLabel : undefined}
+        tabIndex={onPageClick ? 0 : undefined}
+      >
         {/* HEADER */}
         {header && (
           <FilterPanelContext.Provider value={setFilterPanelHeight}>

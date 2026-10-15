@@ -47,6 +47,13 @@ export default function Cover({ onNavigate }: Props) {
         </div>
       }
       sidebar={<Sidebar text="↓   26|27" clickable onNavigate={onNavigate} />}
+      onPageClick={() =>
+        onNavigate({
+          to: "auth",
+          direction: "next",
+        })
+      }
+      pageClickLabel="Open the SYLAGE Archive"
       actionsBar={
         <p className={`${typography.actionBar} ${colors.text.charcoal}`}>
           A visual archive of moods
