@@ -189,7 +189,7 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
           ]}
         />
       }
-      sidebar={<Sidebar text={"LOOK IN"} clickable={false} />}
+      sidebar={<Sidebar text={"ADD LOOK"} clickable={false} />}
       actionsBar={
         <div className="flex items-center gap-3">
           <span className={typography.buttonBodyFocus}>

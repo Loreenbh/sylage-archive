@@ -124,7 +124,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
               whitespace-nowrap
             `}
                 >
-                  Look in
+                  Add look
                 </button>
 
                 <span className={typography.bullet}>•</span>
