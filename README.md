@@ -50,3 +50,9 @@ SYLAGE Archive is a prototype.
 Please use royalty-free images or images you have the right to upload.
 
 As this is a prototype, please do not upload inappropriate or sensitive content.
+
+## 0 6 — C A S E  S T U D Y
+
+Explore the design process, product decisions, and technical implementation behind SYLAGE Archive.
+
+<a href="https://sylage-archive.vercel.app/studycase.pdf">→ Read the case study</a>
