@@ -51,22 +51,21 @@ body {
 
 /*
  * Book viewport
- * Keep the original 3:2 page proportions while sizing the spread from
- * the small viewport height, so browser chrome on mobile is accounted for.
+ * Keep the original spread proportions and leave room for browser chrome.
  */
 .book-viewport {
-  width: min(90vw, calc((100svh - 72px) * 1.333333));
+  width: min(88vw, calc((100svh - 72px) * 1.333333));
 }
 
 @media (min-width: 640px) {
   .book-viewport {
-    width: min(90vw, calc((100svh - 48px) * 1.333333));
+    width: min(88vw, calc((100svh - 48px) * 1.333333));
   }
 }
 
 @media (min-width: 1024px) {
   .book-viewport {
-    width: min(90vw, calc((100svh - 36px) * 1.333333));
+    width: min(86vw, calc((100svh - 36px) * 1.333333));
   }
 }
 
