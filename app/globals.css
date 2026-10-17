@@ -1,4 +1,4 @@
- @import "tailwindcss";
+@import "tailwindcss";
 
 @theme {
   --breakpoint-sm: 20rem;
@@ -28,7 +28,7 @@
   }
 }
 
-/* Fond*/
+/* Fond */
 html,
 body {
   background-color: #211C19;
@@ -49,6 +49,27 @@ body {
   background-repeat: no-repeat, repeat;
 }
 
+/*
+ * Book viewport
+ * Keep the original 3:2 page proportions while sizing the spread from
+ * the small viewport height, so browser chrome on mobile is accounted for.
+ */
+.book-viewport {
+  width: min(90vw, calc((100svh - 72px) * 1.333333));
+}
+
+@media (min-width: 640px) {
+  .book-viewport {
+    width: min(90vw, calc((100svh - 48px) * 1.333333));
+  }
+}
+
+@media (min-width: 1024px) {
+  .book-viewport {
+    width: min(90vw, calc((100svh - 36px) * 1.333333));
+  }
+}
+
 /* Mobile */
 @media (max-width: 1023px) {
   body {
@@ -58,7 +79,7 @@ body {
   }
 }
 
-/* Tablette*/
+/* Tablette */
 @media (min-width: 1024px) and (max-width: 1279px) {
   body {
     background-size: 100% 100%, 2000px auto;
