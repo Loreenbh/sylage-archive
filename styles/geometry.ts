@@ -1,12 +1,14 @@
 const pageAspectRatio = 2 / 3;
 const spreadAspectRatio = pageAspectRatio * 2;
+// Slightly more compact vertically while keeping the computed width unchanged.
+const compactSpreadAspectRatio = spreadAspectRatio * 1.04;
 
 export const geometry = {
   viewport: {
     className: "relative",
     style: {
       width: `min(90vw, calc((100lvh - 16px) * ${spreadAspectRatio}))`,
-      aspectRatio: String(spreadAspectRatio),
+      aspectRatio: String(compactSpreadAspectRatio),
     },
   },
 
@@ -34,7 +36,7 @@ export const geometry = {
 
   body: {
     container: "relative flex min-h-0 w-full flex-1 flex-col overflow-hidden",
-    mainRegion: "relative flex min-h-0 w-full flex-none overflow-hidden",
+    mainRegion: "relative flex min-h-0 w-full flex-1 overflow-hidden",
     mainArea: "flex h-full w-[88%] min-w-0 flex-col justify-start gap-[0.3cqw]",
     contentSquare: "relative aspect-square min-h-0 w-full",
   },
