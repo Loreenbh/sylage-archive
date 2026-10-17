@@ -1,14 +1,12 @@
 const pageAspectRatio = 2 / 3;
 const spreadAspectRatio = pageAspectRatio * 2;
-// Slightly more compact vertically while keeping the computed width unchanged.
-const compactSpreadAspectRatio = spreadAspectRatio * 1.04;
 
 export const geometry = {
   viewport: {
     className: "relative",
     style: {
       width: `min(90vw, calc((100lvh - 16px) * ${spreadAspectRatio}))`,
-      aspectRatio: String(compactSpreadAspectRatio),
+      aspectRatio: String(spreadAspectRatio),
     },
   },
 
