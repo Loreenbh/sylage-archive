@@ -5,7 +5,7 @@ export const geometry = {
   viewport: {
     className: "relative",
     style: {
-      width: `min(90vw, calc((100lvh - 16px) * ${spreadAspectRatio}))`,
+      width: `min(90vw, calc((100dvh - 16px) * ${spreadAspectRatio}))`,
       aspectRatio: String(spreadAspectRatio),
     },
   },
