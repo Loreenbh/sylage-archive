@@ -65,6 +65,12 @@ body {
 
 @media (min-width: 1024px) {
   .book-viewport {
+    width: min(88vw, calc((100svh - 36px) * 1.333333));
+  }
+}
+
+@media (min-width: 1280px) {
+  .book-viewport {
     width: min(86vw, calc((100svh - 36px) * 1.333333));
   }
 }
