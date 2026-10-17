@@ -3,9 +3,8 @@ const spreadAspectRatio = pageAspectRatio * 2;
 
 export const geometry = {
   viewport: {
-    className: "relative",
+    className: "relative book-viewport",
     style: {
-      width: `min(90vw, calc((100lvh - 16px) * ${spreadAspectRatio}))`,
       aspectRatio: String(spreadAspectRatio),
     },
   },
