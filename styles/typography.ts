@@ -44,7 +44,7 @@ export const typography = {
   `,
 
   buttonBodyDiscover: `
-    text-[clamp(6px,1.2cqw,9px)]
+    text-[clamp(6px,1.2cqw,10px)]
     tracking-[0.18em]
     uppercase
   `,
