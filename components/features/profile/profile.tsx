@@ -200,7 +200,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                 <div
                   className={`absolute inset-0 flex items-center justify-center ${colors.bg.empty}`}
                 >
-                  <p className="text-[10px] lg:text-[14px] tracking-[0.2em] text-black/30">
+                  <p className="text-[clamp(5px,1.1cqw,8px)] lg:text-[14px] tracking-[0.2em] text-black/30">
                     NO LOOKS.
                   </p>
                 </div>
@@ -239,7 +239,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                 <div
                   className={`absolute inset-0 flex items-center justify-center ${colors.bg.empty}`}
                 >
-                  <p className="text-[8px] sm:text-[10px] lg:text-[14px] tracking-[0.2em] text-black/30">
+                  <p className="text-[clamp(5px,1.1cqw,8px)] sm:text-[10px] lg:text-[14px] tracking-[0.2em] text-black/30">
                     NO MOODS.
                   </p>
                 </div>
@@ -282,7 +282,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                   <div
                     className={`absolute inset-0 flex items-center justify-center ${colors.bg.empty}`}
                   >
-                    <p className="text-[8px] sm:text-[10px] lg:text-[14px] tracking-[0.2em] text-black/30">
+                    <p className="text-[clamp(5px,1.1cqw,8px)] sm:text-[10px] lg:text-[14px] tracking-[0.2em] text-black/30">
                       NO CONNECTIONS.
                     </p>
                   </div>
