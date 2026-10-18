@@ -152,7 +152,7 @@ export default function ScrollFollow({
             }
           `}
         >
-          <span className="sm:text-[7px] lg:text-[9px] xl:text-[16px] tracking-[0.1em] uppercase text-black/50">
+          <span className="text-[clamp(5px,1.1cqw,8px)] sm:text-[7px] lg:text-[9px] xl:text-[16px] tracking-[0.1em] uppercase text-black/50">
             {followingTitle}
           </span>
         </button>
@@ -169,7 +169,7 @@ export default function ScrollFollow({
             }
           `}
         >
-          <span className="sm:text-[7px] lg:text-[9px] xl:text-[16px] tracking-[0.2em] uppercase text-black/50">
+          <span className="text-[clamp(5px,1.1cqw,8px)] sm:text-[7px] lg:text-[9px] xl:text-[16px] tracking-[0.2em] uppercase text-black/50">
             {followersTitle}
           </span>
         </button>
