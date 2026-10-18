@@ -36,10 +36,7 @@ function MagazineInput({
       border-b
       ${colors.input.border}
       bg-transparent
-      sm:text-[10px]
-      md:text-[11px]
-      lg:text-[14px]
-      xl:text-[20px]
+      text-[clamp(9px,3.8cqw,18px)]
       font-light
       outline-none
       ${colors.input.placeholder}
@@ -50,11 +47,7 @@ function MagazineInput({
 
   <span
     className={`
-      text-[35px]
-      sm:text-[55px]
-      md:text-[59px]
-      lg:text-[30px]
-      xl:text-[85px]
+      text-[clamp(18px,8cqw,65px)]
       font-light
       ${colors.input.number}
       shrink-0
