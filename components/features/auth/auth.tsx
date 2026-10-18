@@ -127,11 +127,11 @@ export default function Authentification({ onNavigate }: Props) {
       }
       footerLeft={
         <div className="w-[85cqw] border-t border-black/20 pt-[1cqw] leading-tight">
-          <p className="text-[clamp(6px,0.9cqw,10px)] tracking-[0.13em] text-black/55">
+          <p className="text-[clamp(5px,0.7cqw,8px)] tracking-[0.1em] text-black/55">
             BEHIND THE PROJECT
           </p>
 
-          <p className="mt-[0.5cqw] text-[clamp(6px,1cqw,10px)] tracking-[0.01em] text-black/55">
+          <p className="mt-[0.5cqw] text-[clamp(5px,0.75cqw,8px)] tracking-[0.01em] text-black/55">
             Concept · UX/UI · Art Direction · Development
           </p>
 
@@ -140,7 +140,7 @@ export default function Authentification({ onNavigate }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Explore the case study (opens in a new tab)"
-            className="mt-[0.6cqw] inline-block text-[clamp(6px,1.05cqw,11px)] text-[#211C19] transition-opacity hover:opacity-60 focus-visible:outline focus-visible:outline-1"
+            className="mt-[0.6cqw] inline-block text-[clamp(5px,0.8cqw,8px)] text-[#211C19] transition-opacity hover:opacity-60 focus-visible:outline focus-visible:outline-1"
           >
             Explore the case study ↗
           </a>
