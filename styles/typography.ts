@@ -56,8 +56,8 @@ export const typography = {
   `,
 
   buttonBodyFocus: `
-    text-[clamp(7.5px,2.25cqw,16px)]
-    tracking-[0.3em]
+    text-[clamp(6px,1.2cqw,10px)]
+    tracking-[0.18em]
     uppercase
   `,
 
@@ -74,7 +74,7 @@ export const typography = {
   `,
 
   username: `
-    text-[clamp(8px,2.25cqw,15px)]
+    text-[clamp(5px,1cqw,8px)]
     opacity-30
     tracking-[0.35em]
     uppercase
