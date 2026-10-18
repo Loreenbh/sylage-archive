@@ -185,6 +185,7 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
             <p
               className="
             text-black/30 
+            text-[clamp(5px,1.1cqw,8px)]
             sm:text-[10px]
             lg:text-[12px]
             xl:text-[18px]
