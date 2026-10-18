@@ -25,8 +25,8 @@ export const typography = {
   `,
 
   actionBar: `
-    text-[clamp(7px,1.4cqw,11px)]
-    tracking-[0.22em]
+    text-[clamp(6px,1.2cqw,10px)]
+    tracking-[0.18em]
     uppercase
   `,
 
@@ -44,8 +44,8 @@ export const typography = {
   `,
 
   buttonBodyDiscover: `
-    text-[clamp(7px,1.4cqw,10px)]
-    tracking-[0.22em]
+    text-[clamp(6px,1.2cqw,9px)]
+    tracking-[0.18em]
     uppercase
   `,
 
