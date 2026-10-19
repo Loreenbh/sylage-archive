@@ -119,7 +119,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
     setPublishError(null);
 
     if (!layoutRef.current) {
-      setPublishError("Moodboard unavailable");
+      setPublishError("Your moodboard could not be found. Please try again.");
       return;
     }
     try {
@@ -145,7 +145,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       setStep("filters");
     } catch (error) {
       console.error(error);
-      setPublishError("Export error");
+      setPublishError("Could not prepare your moodboard. Please try again.");
     } finally {
       layoutRef.current?.classList.remove("export-mode");
       setIsPublishing(false);
@@ -155,12 +155,12 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
   const handlePublish = async () => {
     setPublishError(null);
     if (!canPublish) {
-      setPublishError(`Choisis au moins ${MIN_TAGS_TOTAL} tags`);
+      setPublishError(`Choose at least ${MIN_TAGS_TOTAL} tags to publish.`);
       return;
     }
 
     if (!exportedImage) {
-      setPublishError("Confirme d'abord le moodboard");
+      setPublishError("Confirm your composition before publishing.");
       return;
     }
 
@@ -174,7 +174,7 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       });
     } catch (error) {
       console.error(error);
-      setPublishError("Erreur réseau");
+      setPublishError("Publishing failed. Check your connection and try again.");
     } finally {
       setIsPublishing(false);
     }
@@ -228,22 +228,27 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="COMPOSE" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {step === "compose" ? (
-            <button
-              onClick={handleConfirm}
-              disabled={!slots.every((slot) => slot !== null) || isPublishing}
-              className={`${typography.buttonBodyFocus} disabled:opacity-40`}
-            >
-              confirm
-            </button>
+            <>
+              <span className={`${typography.buttonBodyFocus} text-black/45`}>
+                {slots.filter((slot) => slot !== null).length} / {slotCount} images
+              </span>
+              <button
+                onClick={handleConfirm}
+                disabled={!slots.every((slot) => slot !== null) || isPublishing}
+                className={`${typography.buttonBodyFocus} disabled:opacity-40`}
+              >
+                {isPublishing ? "preparing..." : "confirm"}
+              </button>
+            </>
           ) : (
             <button
               onClick={handlePublish}
               disabled={!canPublish || isPublishing}
               className={`${typography.buttonBodyFocus} disabled:opacity-40`}
             >
-              publish
+              {isPublishing ? "publishing..." : "publish"}
             </button>
           )}
         </div>
@@ -289,6 +294,9 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
               pb-1
             "
           >
+            <p className="mb-2 text-center text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.12em] uppercase text-black/50">
+              Choose 3–7 tags · Up to 2 style, 2 ambiance and 3 colors
+            </p>
             <TagPicker
               styleTags={styleTags}
               ambianceTags={ambianceTags}
@@ -298,8 +306,11 @@ export default function Editor({ onNavigate, params, onBack }: Props) {
               onChangeColor={setColorTags}
             />
 
-            <p className="mt-1 tracking-[0.12em] sm:text-[7px] md:text-[8px] lg:text-[14px] uppercase text-black/50 shrink-0">
-              {allSelectedTags.length} tags selected
+            <p aria-live="polite" className="mt-1 tracking-[0.12em] text-[7px] sm:text-[7px] md:text-[8px] lg:text-[14px] uppercase text-black/50 shrink-0">
+              {allSelectedTags.length} / 7 tags selected
+              {allSelectedTags.length < MIN_TAGS_TOTAL
+                ? ` · ${MIN_TAGS_TOTAL - allSelectedTags.length} more needed`
+                : ""}
             </p>
           </div>
         )}

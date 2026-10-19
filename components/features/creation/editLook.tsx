@@ -364,7 +364,7 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
           </div>
         </div>
         {silhouette && (
-          <p className="export-hidden shrink-0 pt-2 text-center text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.12em] text-black/45">
+          <p className="export-hidden shrink-0 pt-2 text-center text-[6px] sm:text-[8px] md:text-[9px] tracking-[0.12em] text-black/45">
             DRAG TO REPOSITION · DRAG THE MAGNIFIER TO ZOOM · DOUBLE-CLICK TO RESET
           </p>
         )}

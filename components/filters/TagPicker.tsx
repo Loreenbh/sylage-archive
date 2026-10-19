@@ -92,6 +92,7 @@ export default function TagPicker({
               )
             }
             className={`
+              text-[6px]
               sm:text-[7px]
               md:text-[8px]
               lg:text-[9px]
@@ -118,7 +119,7 @@ export default function TagPicker({
               onChangeColor([]);
               setOpenCategory(null);
             }}
-            className="sm:text-[7px] md:text-[8px] lg:text-[9px] xl:text-[12px] tracking-[0.16em] uppercase border-b border-black/30 text-black/50 hover:text-black hover:border-black transition-colors"
+            className="text-[6px] sm:text-[7px] md:text-[8px] lg:text-[9px] xl:text-[12px] tracking-[0.16em] uppercase border-b border-black/30 text-black/50 hover:text-black hover:border-black transition-colors"
             aria-label="Clear all selected filters"
           >
             CLEAR ALL
@@ -171,6 +172,7 @@ export default function TagPicker({
                     tracking-[0.15em] 
                     uppercase 
                     lg:py-1 
+                    text-[6px]
                     sm:text-[7px]
                     md:text-[8px]
                     lg:text-[9px]
