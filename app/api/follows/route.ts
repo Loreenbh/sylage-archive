@@ -137,7 +137,7 @@ export async function POST(request: Request) {
       [currentUser.id, targetId],
     );
 
-    return NextResponse.json({ success: true, followed: result.rowCount > 0 });
+    return NextResponse.json({ success: true, followed: (result.rowCount ?? 0) > 0 });
   } catch (error) {
     console.error("CREATE FOLLOW ERROR:", error);
     return NextResponse.json({ error: "Impossible de suivre ce profil pour le moment" }, { status: 500 });
