@@ -110,28 +110,27 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
     }
 
     if (!moodboardId) {
-      setPublishError("Erreur interne : moodboard introuvable");
+      setPublishError("Ce moodboard est introuvable. Réessaie.");
       return;
     }
 
-    if (!slotRef.current) {
-      setPublishError("Erreur interne : silhouette introuvable");
+    const slotElement = slotRef.current;
+
+    if (!slotElement) {
+      setPublishError("Impossible de préparer ce look. Réessaie.");
       return;
     }
 
     setIsPublishing(true);
 
     try {
-      slotRef.current.classList.add("export-mode");
+      slotElement.classList.add("export-mode");
 
       await new Promise<void>((resolve) =>
         requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
       );
 
-      const imageData = await toPng(slotRef.current, { cacheBust: true });
-
-      slotRef.current.classList.remove("export-mode");
-
+      const imageData = await toPng(slotElement, { cacheBust: true });
       const imageUrl = await uploadImage(imageData);
 
       await createSilhouette(imageUrl, moodboardId);
@@ -146,10 +145,11 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
         },
       });
     } catch (error) {
-      console.error(error);
-      setPublishError(
-        error instanceof Error ? error.message : "Erreur inconnue",
-      );
+      console.error("Unable to publish look:", error);
+      setPublishError("Impossible de publier ce look. Réessaie.");
+    } finally {
+      slotElement.classList.remove("export-mode");
+      setIsPublishing(false);
     }
   };
 
@@ -210,11 +210,14 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
                 cursor-pointer
               `}
             >
-              Publish
+              {isPublishing ? "Publishing…" : "Publish"}
             </button>
 
             {publishError && (
-              <p className="text-[10px] md:text-[11px] text-red-600 tracking-[0.1em]">
+              <p
+                role="alert"
+                className={`text-[10px] md:text-[11px] ${colors.feedback.error} tracking-[0.04em]`}
+              >
                 {publishError}
               </p>
             )}
