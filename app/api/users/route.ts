@@ -220,7 +220,7 @@ export async function PATCH(request: Request) {
       );
     }
   }
-  if (avatar_url || username) {
+  if (avatar_url || normalizedUsername) {
     updatedUser = await pool.query(
       `
             UPDATE users
