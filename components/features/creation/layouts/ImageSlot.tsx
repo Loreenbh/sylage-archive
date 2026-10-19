@@ -385,21 +385,26 @@ export default function ImageSlot({
         <button
           type="button"
           onClick={onSelect}
+          aria-label="Ajouter une image"
+          title="Ajouter une image"
           className="
             absolute
             inset-0
             flex
+            flex-col
             items-center
             justify-center
-            text-black/30
-            text-xs
-            sm:text-[14px]
-            md:text-[15px]
-            lg:text-[16px]
-            xl:text-[20px]
+            gap-2
+            text-black/35
+            transition-colors
+            hover:text-black/65
+            focus-visible:outline
+            focus-visible:outline-1
+            focus-visible:outline-black/40
           "
         >
-          +
+          <span className="text-xl sm:text-2xl md:text-3xl" aria-hidden="true">+</span>
+          <span className="text-[8px] sm:text-[9px] md:text-[10px] tracking-[0.18em]">ADD IMAGE</span>
         </button>
       )}
     </div>

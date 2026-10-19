@@ -313,53 +313,61 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
         </div>
       }
     >
-      <div
-        className={`
-        flex
-        items-stretch
-        w-full
-        h-full
-        gap-1
-        ${colors.bg.empty}
-        border
-        border-black/10
-      `}
-      >
+      <div className="flex h-full min-h-0 w-full flex-col">
         <div
-          className="
-          relative
-          overflow-hidden
-          w-1/4
-        "
+          className={`
+            flex
+            min-h-0
+            flex-1
+            items-stretch
+            w-full
+            gap-1
+            ${colors.bg.empty}
+            border
+            border-black/10
+          `}
         >
-          <SilhouetteGhost slot={silhouette} />
-        </div>
+          <div
+            className="
+              relative
+              overflow-hidden
+              w-1/4
+            "
+          >
+            <SilhouetteGhost slot={silhouette} />
+          </div>
 
-        <div
-          ref={slotRef}
-          className="
-            relative
-            overflow-hidden
-            w-1/2
-          "
-        >
-          <ImageSlot
-            slot={silhouette}
-            onSelect={handleSelectSlot}
-            onChangeTransform={handleChangeTransform}
-            className={`${colors.bg.ivory}`}
-          />
-        </div>
+          <div
+            ref={slotRef}
+            className="
+              relative
+              overflow-hidden
+              w-1/2
+            "
+          >
+            <ImageSlot
+              slot={silhouette}
+              onSelect={handleSelectSlot}
+              onChangeTransform={handleChangeTransform}
+              className={`${colors.bg.ivory}`}
+            />
+          </div>
 
-        <div
-          className="
-          relative
-          overflow-hidden
-          w-1/4
-        "
-        >
-          <SilhouetteGhost slot={silhouette} />
+          <div
+            className="
+              relative
+              overflow-hidden
+              w-1/4
+            "
+          >
+            <SilhouetteGhost slot={silhouette} />
+          </div>
         </div>
+        {silhouette && (
+          <p className="export-hidden shrink-0 pt-2 text-center text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.12em] text-black/45">
+            DRAG TO REPOSITION · DRAG THE MAGNIFIER TO ZOOM · DOUBLE-CLICK TO RESET
+          </p>
+        )}
       </div>
       <input
         ref={fileInputRef}
