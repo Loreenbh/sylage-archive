@@ -137,7 +137,7 @@ export async function DELETE(request: Request) {
       [user.id, moodboardId ?? null, silhouetteId ?? null],
     );
 
-    return NextResponse.json({ success: true, removed: result.rowCount > 0 });
+    return NextResponse.json({ success: true, removed: (result.rowCount ?? 0) > 0 });
   } catch (err: any) {
     if (err.code === "23505") {
       return NextResponse.json({ error: "DEJA LIKE" }, { status: 409 });
