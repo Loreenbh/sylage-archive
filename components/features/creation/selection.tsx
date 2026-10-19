@@ -71,8 +71,10 @@ export default function Create({ onNavigate, params, onBack }: Props) {
     >
       <FourSquaresGrid
         topLeft={
-          <div
-            className="h-full w-full cursor-pointer"
+          <button
+            type="button"
+            aria-label="Choose layout A"
+            className="h-full w-full cursor-pointer appearance-none border-0 p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
             onClick={() =>
               onNavigate({
                 to: "editor",
@@ -85,12 +87,14 @@ export default function Create({ onNavigate, params, onBack }: Props) {
           >
             <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
               <LayoutAPreview />
-            </div>
+            </button>
           </div>
         }
         topRight={
-          <div
-            className="h-full w-full cursor-pointer"
+          <button
+            type="button"
+            aria-label="Choose layout B"
+            className="h-full w-full cursor-pointer appearance-none border-0 p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
             onClick={() =>
               onNavigate({
                 to: "editor",
@@ -103,12 +107,14 @@ export default function Create({ onNavigate, params, onBack }: Props) {
           >
             <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
               <LayoutBPreview />
-            </div>
+            </button>
           </div>
         }
         bottomLeft={
-          <div
-            className="h-full w-full bg-zinc-400 hover:bg-zinc-500 transition"
+          <button
+            type="button"
+            aria-label="Choose layout C"
+            className="h-full w-full bg-zinc-400 hover:bg-zinc-500 transition appearance-none border-0 p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
             onClick={() =>
               onNavigate({
                 to: "editor",
@@ -121,11 +127,13 @@ export default function Create({ onNavigate, params, onBack }: Props) {
           >
             <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
               <LayoutCPreview />
-            </div>
+            </button>
           </div>
         }
         bottomRight={
-          <div
+          <button
+            type="button"
+            aria-label="Choose layout D"
             onClick={() =>
               onNavigate({
                 to: "editor",
@@ -135,11 +143,11 @@ export default function Create({ onNavigate, params, onBack }: Props) {
                 },
               })
             }
-            className="h-full w-full cursor-pointer"
+            className="h-full w-full cursor-pointer appearance-none border-0 p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
           >
             <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
               <LayoutDPreview />
-            </div>
+            </button>
           </div>
         }
       />
