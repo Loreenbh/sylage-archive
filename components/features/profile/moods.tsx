@@ -73,18 +73,14 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
             },
             { section: "FILTER", clickable: true },
             {
-              section: "CREATE",
-              clickable: !!user,
-              onClick: user
-                ? () =>
-                  onNavigate?.({
-                    to: "create",
-                    direction: "next",
-                    params: {
-                      isOwner,
-                    },
-                  })
-                : undefined,
+              section: !user ? "CREATE ↗" : "CREATE",
+              clickable: true,
+              onClick: () =>
+                onNavigate?.({
+                  to: user ? "create" : "auth",
+                  direction: "next",
+                  ...(user ? { params: { isOwner } } : {}),
+                }),
             },
           ]}
         />
