@@ -3,12 +3,22 @@ import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  let body: { imageUrl?: unknown; tags?: unknown };
+
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
 
   const { imageUrl, tags } = body;
 
-  if (!imageUrl) {
-    return NextResponse.json({ error: "Image manquante" }, { status: 400 });
+  if (typeof imageUrl !== "string" || !imageUrl.trim()) {
+    return NextResponse.json({ error: "Image manquante ou invalide" }, { status: 400 });
+  }
+
+  if (tags !== undefined && tags !== null && !Array.isArray(tags)) {
+    return NextResponse.json({ error: "Format des tags invalide" }, { status: 400 });
   }
 
   const user = await getCurrentSessionUser();
@@ -27,7 +37,7 @@ export async function POST(request: Request) {
       VALUES ($1, $2, $3)
       RETURNING *
       `,
-    [user.id, imageUrl, tags],
+    [user.id, imageUrl.trim(), tags ?? null],
   );
 
   return NextResponse.json(result.rows[0], {
@@ -174,10 +184,11 @@ export async function GET(request: Request) {
 export async function DELETE(request: Request) {
   const { searchParams } = new URL(request.url);
 
-  const id = searchParams.get("id");
+  const idParam = searchParams.get("id");
+  const id = idParam && /^[1-9]\\d*$/.test(idParam) ? Number(idParam) : NaN;
 
-  if (!id) {
-    return NextResponse.json({ error: "ID manquant" }, { status: 400 });
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
   }
 
   const currentSession = await getCurrentSessionUser();
@@ -203,7 +214,7 @@ export async function DELETE(request: Request) {
       );
     }
 
-    const isOwner = moodboard.rows[0].user_id === currentSession.id;
+    const isOwner = Number(moodboard.rows[0].user_id) === Number(currentSession.id);
 
     const isAdmin = currentSession.role === "admin";
 
