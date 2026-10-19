@@ -187,7 +187,8 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
             text-black/30 
             text-[clamp(5px,1.1cqw,8px)]
             sm:text-[10px]
-            lg:text-[12px]
+            md:text-[11px]
+            lg:text-[14px]
             xl:text-[18px]
             tracking-[0.2em]"
             >
