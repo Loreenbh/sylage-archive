@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   const targetId = hasMoodboard ? moodboardId : silhouetteId;
   if (
     !(typeof targetId === "number" && Number.isSafeInteger(targetId) && targetId > 0) &&
-    !(typeof targetId === "string" && /^[1-9]\\d*$/.test(targetId) && Number.isSafeInteger(Number(targetId)))
+    !(typeof targetId === "string" && /^[1-9]\d*$/.test(targetId) && Number.isSafeInteger(Number(targetId)))
   ) {
     return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
   }
@@ -40,7 +40,11 @@ export async function POST(request: Request) {
       [moodboardId],
     );
 
-    if (moodboard.rows[0]?.user_id === user.id) {
+    if (!moodboard.rows[0]) {
+      return NextResponse.json({ error: "Moodboard introuvable" }, { status: 404 });
+    }
+
+    if (Number(moodboard.rows[0].user_id) === Number(user.id)) {
       return NextResponse.json(
         { error: "Impossible de liker son propre moodboard" },
         { status: 403 },
@@ -58,7 +62,11 @@ export async function POST(request: Request) {
       [silhouetteId],
     );
 
-    if (silhouette.rows[0]?.user_id === user.id) {
+    if (!silhouette.rows[0]) {
+      return NextResponse.json({ error: "Look introuvable" }, { status: 404 });
+    }
+
+    if (Number(silhouette.rows[0].user_id) === Number(user.id)) {
       return NextResponse.json(
         { error: "Impossible de liker sa propre silhouette" },
         { status: 403 },
@@ -106,7 +114,7 @@ export async function DELETE(request: Request) {
   const targetId = hasMoodboard ? moodboardId : silhouetteId;
   if (
     !(typeof targetId === "number" && Number.isSafeInteger(targetId) && targetId > 0) &&
-    !(typeof targetId === "string" && /^[1-9]\\d*$/.test(targetId) && Number.isSafeInteger(Number(targetId)))
+    !(typeof targetId === "string" && /^[1-9]\d*$/.test(targetId) && Number.isSafeInteger(Number(targetId)))
   ) {
     return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
   }
@@ -120,19 +128,16 @@ export async function DELETE(request: Request) {
   try {
     const result = await pool.query(
       `
-            DELETE FROM likes
-            WHERE user_id = $1
-            AND (
-                moodboard_id = $2
-                OR
-                silhouette_id = $3
-            )
-            RETURNING *
-            `,
+        DELETE FROM likes
+        WHERE user_id = $1
+          AND moodboard_id IS NOT DISTINCT FROM $2
+          AND silhouette_id IS NOT DISTINCT FROM $3
+        RETURNING *
+      `,
       [user.id, moodboardId ?? null, silhouetteId ?? null],
     );
 
-    return NextResponse.json(result.rows[0], { status: 201 });
+    return NextResponse.json({ success: true, removed: result.rowCount > 0 });
   } catch (err: any) {
     if (err.code === "23505") {
       return NextResponse.json({ error: "DEJA LIKE" }, { status: 409 });
