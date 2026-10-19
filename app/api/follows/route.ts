@@ -93,55 +93,86 @@ export async function GET(request: Request) {
 
 // FOLLOW
 export async function POST(request: Request) {
-  const body = await request.json();
-  const { userId } = body;
+  let body: { userId?: unknown };
+
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
+
+  const targetId =
+    typeof body.userId === "number"
+      ? body.userId
+      : typeof body.userId === "string" && /^\d+$/.test(body.userId)
+        ? Number(body.userId)
+        : NaN;
+
+  if (!Number.isSafeInteger(targetId) || targetId <= 0) {
+    return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
+  }
 
   const currentUser = await getCurrentSessionUser();
   if (!currentUser) {
     return NextResponse.json({ error: "Non connecté" }, { status: 401 });
   }
-  if (!userId) {
-    return NextResponse.json(
-      { error: "Utilisateur manquant" },
-      { status: 400 },
-    );
+
+  if (Number(currentUser.id) === targetId) {
+    return NextResponse.json({ error: "Tu ne peux pas te suivre toi-même" }, { status: 400 });
   }
-  await pool.query(
-    `
-    INSERT INTO follows
-    (
-      follower_id,
-      following_id
-    )
-    VALUES($1,$2)
-    ON CONFLICT DO NOTHING
-    `,
-    [currentUser.id, userId],
-  );
-  return NextResponse.json({
-    success: true,
-  });
+
+  try {
+    const target = await pool.query("SELECT id FROM users WHERE id = $1", [targetId]);
+    if (!target.rows[0]) {
+      return NextResponse.json({ error: "Utilisateur introuvable" }, { status: 404 });
+    }
+
+    const result = await pool.query(
+      `
+        INSERT INTO follows (follower_id, following_id)
+        VALUES ($1, $2)
+        ON CONFLICT DO NOTHING
+        RETURNING follower_id
+      `,
+      [currentUser.id, targetId],
+    );
+
+    return NextResponse.json({ success: true, followed: result.rowCount > 0 });
+  } catch (error) {
+    console.error("CREATE FOLLOW ERROR:", error);
+    return NextResponse.json({ error: "Impossible de suivre ce profil pour le moment" }, { status: 500 });
+  }
 }
 
 // UNFOLLOW
 export async function DELETE(request: Request) {
   const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("userId");
+  const userIdParam = searchParams.get("userId");
+  const targetId = userIdParam && /^\d+$/.test(userIdParam) ? Number(userIdParam) : NaN;
+
+  if (!Number.isSafeInteger(targetId) || targetId <= 0) {
+    return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
+  }
 
   const currentUser = await getCurrentSessionUser();
   if (!currentUser) {
     return NextResponse.json({ error: "Non connecté" }, { status: 401 });
   }
 
-  await pool.query(
-    `
-    DELETE FROM follows
-    WHERE follower_id=$1
-    AND following_id=$2
-    `,
-    [currentUser.id, userId],
-  );
-  return NextResponse.json({
-    success: true,
-  });
+  try {
+    const result = await pool.query(
+      `
+        DELETE FROM follows
+        WHERE follower_id = $1
+          AND following_id = $2
+        RETURNING follower_id
+      `,
+      [currentUser.id, targetId],
+    );
+
+    return NextResponse.json({ success: true, unfollowed: result.rowCount > 0 });
+  } catch (error) {
+    console.error("DELETE FOLLOW ERROR:", error);
+    return NextResponse.json({ error: "Impossible de modifier cet abonnement pour le moment" }, { status: 500 });
+  }
 }
