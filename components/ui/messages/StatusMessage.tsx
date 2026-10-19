@@ -20,9 +20,9 @@ export default function StatusMessage({ message }: Props) {
         text-center
         ${colors.text.charcoal70}
         text-[clamp(5px,1.1cqw,8px)]
-        sm:text-[8px]
-        md:text-[9px]
-        lg:text-[10px]
+        sm:text-[9px]
+        md:text-[11px]
+        lg:text-[14px]
         xl:text-[18px]
         tracking-[0.2em]
       `}
