@@ -26,6 +26,7 @@ export default function ScrollableGrid<T extends GridItem>({
                 role={onItemClick ? "button" : undefined}
                 tabIndex={onItemClick ? 0 : undefined}
                 aria-label={onItemClick ? "Open archive item" : undefined}
+                className={onItemClick ? "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black" : undefined}
                 onClick={() => onItemClick?.(item)}
                 onKeyDown={(event) => {
                   if (
