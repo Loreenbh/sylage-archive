@@ -101,6 +101,7 @@ export default function Discover({ onNavigate, params }: Props) {
         >
           <button
             onClick={() => setTab("latest")}
+            aria-pressed={tab === "latest"}
             className={`pb-1 border-b transition-colors duration-300 ${
               tab === "latest" ? "border-black" : "border-transparent hover:border-black"
             }`}
@@ -110,6 +111,7 @@ export default function Discover({ onNavigate, params }: Props) {
           <span className={typography.bullet}>•</span>
           <button
             onClick={() => setTab("curated")}
+            aria-pressed={tab === "curated"}
             className={`pb-1 border-b transition-colors duration-300 ${
               tab === "curated" ? "border-black" : "border-transparent hover:border-black"
             }`}
@@ -123,6 +125,7 @@ export default function Discover({ onNavigate, params }: Props) {
               setTab("following");
             }}
             disabled={Boolean(isUserLoading || !user)}
+            aria-pressed={tab === "following"}
             className={`pb-1 border-b transition-colors duration-300 ${
               !user
                 ? "border-transparent cursor-default opacity-50"
