@@ -76,19 +76,19 @@ export default function LikeButton({
       onClick={handleClick}
       className={`${className} ${colors.text.charcoal} hover:text-white/40 transition-colors duration-300`}
       disabled={disabled || isPending}
-      aria-label={hasError ? "Like action failed. Try again." : liked ? "Unlike" : "Like"}
+      aria-label={hasError ? "Like action failed. Try again." : onRequireAuth ? "Sign in to like" : liked ? "Unlike" : "Like"}
       aria-busy={isPending}
-      title={hasError ? "Could not update like. Please try again." : undefined}
+      title={hasError ? "Could not update like. Please try again." : onRequireAuth ? "Sign in to like" : undefined}
     >
       {hasError && <span role="alert" className="mr-1 text-red-300">!</span>}
       {vertical ? (
         <span className="flex flex-col items-center gap-0.5 leading-none">
-          <span>{liked ? "♥" : "♡"}</span>
+          <span>{liked ? "♥" : "♡"}{onRequireAuth ? " ↗" : ""}</span>
           <span>{count}</span>
         </span>
       ) : (
         <>
-          {liked ? "♥" : "♡"} {count}
+          {liked ? "♥" : "♡"}{onRequireAuth ? " ↗" : ""} {count}
         </>
       )}
     </button>
