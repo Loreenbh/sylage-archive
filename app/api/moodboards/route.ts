@@ -143,7 +143,7 @@ export async function GET(request: Request) {
 
       users.username,
 
-      COUNT(likes.id)::int AS likes_count,
+      COUNT(DISTINCT likes.id)::int AS likes_count,
       COUNT(DISTINCT silhouettes.id)::int AS silhouettes_count,
 
       EXISTS (
