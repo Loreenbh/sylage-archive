@@ -110,14 +110,14 @@ export const typography = {
   `,
 
   about: `
-    text-[clamp(12px,2.5cqw,16px)]
+    text-[clamp(7px,1.5cqw,16px)]
     uppercase
     tracking-[0.25em]
     font-extralight
   `,
 
   privacy: `
-    text-[clamp(7px,2.5cqw,16px)]
+    text-[clamp(7px,1.25cqw,14px)]
     uppercase
     tracking-[0.25em]
     font-extralight
