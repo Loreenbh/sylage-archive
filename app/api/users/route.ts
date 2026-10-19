@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 import { createClient } from "@/lib/server";
+import { supabase } from "@/lib/supabase";
 
 const MIN_USERNAME_LENGTH = 3;
 const MAX_USERNAME_LENGTH = 15;
@@ -258,17 +259,48 @@ export async function PATCH(request: Request) {
 
 export async function DELETE() {
   const currentSession = await getCurrentSessionUser();
+
   if (!currentSession) {
     return NextResponse.json({ error: "Non connecté" }, { status: 401 });
   }
-  await pool.query(
-    `
-    DELETE FROM users
-    WHERE id=$1
-    `,
-    [currentSession.id],
-  );
-  return NextResponse.json({
-    success: true,
-  });
+
+  try {
+    const userResult = await pool.query(
+      `
+      SELECT auth_id
+      FROM users
+      WHERE id=$1
+      `,
+      [currentSession.id],
+    );
+
+    const authId = userResult.rows[0]?.auth_id;
+
+    if (!authId) {
+      return NextResponse.json(
+        { error: "Utilisateur introuvable" },
+        { status: 404 },
+      );
+    }
+
+    // Delete the Supabase Auth identity first. The foreign key from
+    // public.users to auth.users cascades the deletion to related app data.
+    const { error } = await supabase.auth.admin.deleteUser(authId);
+
+    if (error) {
+      console.error("DELETE AUTH USER ERROR:", error);
+      return NextResponse.json(
+        { error: "Impossible de supprimer le compte pour le moment" },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("DELETE USER ERROR:", error);
+    return NextResponse.json(
+      { error: "Impossible de supprimer le compte pour le moment" },
+      { status: 500 },
+    );
+  }
 }
