@@ -81,8 +81,8 @@ export const typography = {
 
   username: `
     text-[clamp(5px,1cqw,8px)]
-    md:text-[clamp(7px,1.3cqw,11px)]
-    xl:text-[clamp(9px,1.5cqw,13px)]
+    md:text-[clamp(9px,1.6cqw,13px)]
+    xl:text-[clamp(11px,1.8cqw,16px)]
     opacity-30
     tracking-[0.35em]
     uppercase
