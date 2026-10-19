@@ -185,7 +185,7 @@ export async function DELETE(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const idParam = searchParams.get("id");
-  const id = idParam && /^[1-9]\\d*$/.test(idParam) ? Number(idParam) : NaN;
+  const id = idParam && /^[1-9]\d*$/.test(idParam) ? Number(idParam) : NaN;
 
   if (!Number.isSafeInteger(id) || id <= 0) {
     return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
