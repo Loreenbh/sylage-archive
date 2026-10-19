@@ -1,6 +1,5 @@
 "use client";
 import { useRef, useState } from "react";
-import { toPng } from "html-to-image";
 /*COMPONENTS*/
 import BookLayout from "@/components/book/BookLayout";
 import Sidebar from "@/components/navigation/SideBar";
@@ -26,6 +25,91 @@ type Props = {
   params?: NavigationParams["params"] | null;
   onBack?: () => void;
 };
+
+async function renderLookToPng(
+  element: HTMLDivElement,
+  slot: Exclude<MoodboardSlot, null>,
+): Promise<string> {
+  const image = new Image();
+  image.src = slot.url;
+
+  if (!image.complete) {
+    await new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error("Impossible de charger l’image du look"));
+    });
+  }
+
+  if (image.decode) {
+    await image.decode();
+  }
+
+  const rect = element.getBoundingClientRect();
+  const width = Math.round(rect.width);
+  const height = Math.round(rect.height);
+
+  if (!width || !height || !image.naturalWidth || !image.naturalHeight) {
+    throw new Error("Dimensions invalides pour l’export du look");
+  }
+
+  const canvas = document.createElement("canvas");
+  const pixelRatio = 2;
+  canvas.width = width * pixelRatio;
+  canvas.height = height * pixelRatio;
+
+  const context = canvas.getContext("2d");
+  if (!context) {
+    throw new Error("Impossible de préparer l’export du look");
+  }
+
+  context.scale(pixelRatio, pixelRatio);
+  context.fillStyle = "#BBA99E";
+  context.fillRect(0, 0, width, height);
+
+  const coverScale = Math.max(
+    width / image.naturalWidth,
+    height / image.naturalHeight,
+  );
+  const drawWidth = image.naturalWidth * coverScale;
+  const drawHeight = image.naturalHeight * coverScale;
+  const overflowX = Math.max(0, (drawWidth - width) / 2);
+  const overflowY = Math.max(0, (drawHeight - height) / 2);
+  const imageOffsetX = Math.max(
+    -overflowX * slot.scale,
+    Math.min(overflowX * slot.scale, slot.offsetX),
+  );
+  const imageOffsetY = Math.max(
+    -overflowY * slot.scale,
+    Math.min(overflowY * slot.scale, slot.offsetY),
+  );
+  const translateX = slot.offsetX - imageOffsetX;
+  const translateY = slot.offsetY - imageOffsetY;
+  const objectPositionX = overflowX
+    ? 50 - (imageOffsetX / slot.scale / overflowX) * 50
+    : 50;
+  const objectPositionY = overflowY
+    ? 50 - (imageOffsetY / slot.scale / overflowY) * 50
+    : 50;
+  const imageX = (width - drawWidth) * (objectPositionX / 100);
+  const imageY = (height - drawHeight) * (objectPositionY / 100);
+
+  context.save();
+  context.beginPath();
+  context.rect(0, 0, width, height);
+  context.clip();
+  context.translate(width / 2 + translateX, height / 2 + translateY);
+  context.scale(slot.scale, slot.scale);
+  context.drawImage(
+    image,
+    imageX - width / 2,
+    imageY - height / 2,
+    drawWidth,
+    drawHeight,
+  );
+  context.restore();
+
+  return canvas.toDataURL("image/png");
+}
 
 function SilhouetteGhost({ slot }: { slot: MoodboardSlot }) {
   if (!slot) return null;
@@ -126,36 +210,8 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
     try {
       slotElement.classList.add("export-mode");
 
-      // Wait for fonts and images before capturing the look, especially on mobile browsers.
-      if (document.fonts?.ready) {
-        await document.fonts.ready;
-      }
-
-      const images = Array.from(slotElement.querySelectorAll("img"));
-      await Promise.all(
-        images.map(async (image) => {
-          if (!image.complete) {
-            await new Promise<void>((resolve) => {
-              image.addEventListener("load", () => resolve(), { once: true });
-              image.addEventListener("error", () => resolve(), { once: true });
-            });
-          }
-
-          if (image.complete && image.naturalWidth > 0 && image.decode) {
-            try {
-              await image.decode();
-            } catch {
-              // Let html-to-image handle any decoding issue and report capture failures.
-            }
-          }
-        }),
-      );
-
-      await new Promise<void>((resolve) =>
-        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
-      );
-
-      const imageData = await toPng(slotElement, { cacheBust: true });
+      // Render the image directly to canvas to avoid blank html-to-image exports on mobile.
+      const imageData = await renderLookToPng(slotElement, silhouette);
       const imageUrl = await uploadImage(imageData);
 
       await createSilhouette(imageUrl, moodboardId);
