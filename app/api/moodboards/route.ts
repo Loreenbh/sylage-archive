@@ -17,8 +17,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Image manquante ou invalide" }, { status: 400 });
   }
 
-  if (tags !== undefined && tags !== null && !Array.isArray(tags)) {
-    return NextResponse.json({ error: "Format des tags invalide" }, { status: 400 });
+  if (
+    !Array.isArray(tags) ||
+    tags.length < 3 ||
+    tags.length > 7 ||
+    !tags.every((tag) => typeof tag === "string" && tag.trim().length > 0)
+  ) {
+    return NextResponse.json(
+      { error: "Les tags doivent être 3 à 7 textes non vides" },
+      { status: 400 },
+    );
   }
 
   const user = await getCurrentSessionUser();
@@ -37,7 +45,7 @@ export async function POST(request: Request) {
       VALUES ($1, $2, $3)
       RETURNING *
       `,
-    [user.id, imageUrl.trim(), tags ?? null],
+    [user.id, imageUrl.trim(), tags.map((tag) => tag.trim())],
   );
 
   return NextResponse.json(result.rows[0], {
