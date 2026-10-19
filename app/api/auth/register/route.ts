@@ -21,11 +21,22 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    }
+
     const { username, email, password } = body;
 
-    if (!username || !email || !password) {
+    if (
+      typeof username !== "string" ||
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      !username.trim() ||
+      !email.trim() ||
+      !password
+    ) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Username, email and password are required" },
         { status: 400 },
       );
     }

@@ -3,12 +3,28 @@ import { createClient } from "@/lib/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  let body: { identifier?: unknown; password?: unknown };
+
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
   const { identifier, password } = body;
 
-  if (!identifier || !password) {
+  if (
+    typeof identifier !== "string" ||
+    typeof password !== "string" ||
+    !identifier.trim() ||
+    !password
+  ) {
     return NextResponse.json(
-      { error: "Missing required fields" },
+      { error: "Email/username and password are required" },
       { status: 400 },
     );
   }
