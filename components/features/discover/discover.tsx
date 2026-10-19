@@ -80,10 +80,10 @@ export default function Discover({ onNavigate, params }: Props) {
             { section: "HOME", clickable: false, active: true },
             { section: "FILTER", clickable: true },
             {
-              section: "CREATE",
-              clickable: Boolean(!isUserLoading && user),
-              onClick: user
-                ? () => onNavigate?.({ to: "create", direction: "next" })
+              section: !user && !isUserLoading ? "CREATE ↗" : "CREATE",
+              clickable: !isUserLoading,
+              onClick: !isUserLoading
+                ? () => onNavigate?.({ to: user ? "create" : "auth", direction: "next" })
                 : undefined,
             },
           ]}
