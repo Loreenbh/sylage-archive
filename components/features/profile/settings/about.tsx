@@ -67,23 +67,23 @@ export default function About({ onNavigate, onBack }: Props) {
         flex
         items-center
         justify-center
-        p-4
-        sm:p-8
-        md:p-8
+        p-1
+        sm:p-2
+        md:p-4
         lg:p-6
-        xl:p-12
+        xl:p-10
       `}
           >
-            <div className="max-w-[600px] text-center">
+            <div className="w-full max-w-[600px] max-h-full overflow-y-auto text-center">
               <p
                 className={`
             ${typography.about}
             leading-[1.5]
-            mt-2
-            sm:mt-4
-            md:mt-4
+            mt-1
+            sm:mt-2
+            md:mt-3
             lg:mt-4
-            xl:mt-8
+            xl:mt-6
             ${colors.text.charcoal}
           `}
               >
@@ -93,11 +93,11 @@ export default function About({ onNavigate, onBack }: Props) {
               <p
                 className={`
             ${typography.about}
-            mt-2
-            sm:mt-4
-            md:mt-4
+            mt-1
+            sm:mt-2
+            md:mt-3
             lg:mt-4
-            xl:mt-8
+            xl:mt-6
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -113,11 +113,11 @@ export default function About({ onNavigate, onBack }: Props) {
               <p
                 className={`
             ${typography.about}
-            mt-2
-            sm:mt-4
-            md:mt-4
+            mt-1
+            sm:mt-2
+            md:mt-3
             lg:mt-4
-            xl:mt-8
+            xl:mt-6
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -128,11 +128,11 @@ export default function About({ onNavigate, onBack }: Props) {
               <p
                 className={`
             ${typography.about}
-            mt-2
-            sm:mt-4
-            md:mt-4
+            mt-1
+            sm:mt-2
+            md:mt-3
             lg:mt-4
-            xl:mt-8
+            xl:mt-6
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -143,11 +143,11 @@ export default function About({ onNavigate, onBack }: Props) {
               <p
                 className={`
             ${typography.about}
-            mt-2
-            sm:mt-4
-            md:mt-4
+            mt-1
+            sm:mt-2
+            md:mt-3
             lg:mt-4
-            xl:mt-8
+            xl:mt-6
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -160,11 +160,11 @@ export default function About({ onNavigate, onBack }: Props) {
               <p
                 className={`
             ${typography.about}
-            mt-2
-            sm:mt-4
-            md:mt-4
+            mt-1
+            sm:mt-2
+            md:mt-3
             lg:mt-4
-            xl:mt-8
+            xl:mt-6
             leading-[1.5]
             ${colors.text.charcoal}
           `}
@@ -175,11 +175,11 @@ export default function About({ onNavigate, onBack }: Props) {
               <p
                 className={`
             ${typography.about}
-            mt-2
-            sm:mt-4
-            md:mt-4
+            mt-1
+            sm:mt-2
+            md:mt-3
             lg:mt-4
-            xl:mt-8
+            xl:mt-6
             leading-[1.5]
             ${colors.text.charcoal}
           `}
