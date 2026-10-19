@@ -153,7 +153,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Format des données invalide" }, { status: 400 });
   }
 
-  const normalizedUsername = typeof username === "string" ? username.trim() : username;
+  const normalizedUsername = typeof username === "string" ? username.trim().toLowerCase() : username;
 
   if (typeof normalizedUsername === "string" && normalizedUsername.length === 0) {
     return NextResponse.json({ error: "Le nom d'utilisateur ne peut pas être vide" }, { status: 400 });
@@ -186,7 +186,7 @@ export async function PATCH(request: Request) {
     if (normalizedUsername.length > MAX_USERNAME_LENGTH) {
       return NextResponse.json(
         {
-          error: `Username must be less than ${MAX_USERNAME_LENGTH} characters`,
+          error: `Username must be at most ${MAX_USERNAME_LENGTH} characters`,
         },
         { status: 400 },
       );
@@ -196,7 +196,7 @@ export async function PATCH(request: Request) {
       `
             SELECT id
             FROM users
-            WHERE username=$1
+            WHERE LOWER(username)=LOWER($1)
             AND id != $2
             `,
       [normalizedUsername, currentSession.id],
