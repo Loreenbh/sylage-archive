@@ -27,6 +27,8 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   const { isOwner, userId } = params ?? {};
   const { user: currentUser } = useCurrentUser();
   const [isFollowed, setIsFollowed] = useState(false);
+  const [isFollowPending, setIsFollowPending] = useState(false);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
   const { following, followers, handleUnfollow, refreshFollows } =
     useFollows(userId);
   const {
@@ -48,30 +50,41 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
       setIsFollowed(followed);
     }
 
-    checkFollow();
+    checkFollow().catch(() => {
+      setActionMessage("COULD NOT LOAD FOLLOW STATUS.");
+    });
   }, [profileUser, currentUser]);
 
   const handleFollowToggle = async () => {
-    if (!profileUser) return;
+    if (!profileUser || isFollowPending) return;
     if (!currentUser) {
       onNavigate?.({ to: "auth", direction: "next" });
       return;
     }
-    if (isFollowed) {
-      await unfollowUser(profileUser.id);
-    } else {
-      await followUser(profileUser.id);
+
+    setIsFollowPending(true);
+    setActionMessage(null);
+    try {
+      if (isFollowed) {
+        await unfollowUser(profileUser.id);
+      } else {
+        await followUser(profileUser.id);
+      }
+      setIsFollowed((prev) => !prev);
+      await refreshFollows();
+    } catch {
+      setActionMessage("COULD NOT UPDATE FOLLOW. PLEASE TRY AGAIN.");
+    } finally {
+      setIsFollowPending(false);
     }
-    setIsFollowed((prev) => !prev);
-    await refreshFollows();
   };
 
   const handleLogout = async () => {
     try {
       await logout();
       onNavigate?.({ to: "cover", direction: "prev" });
-    } catch (error) {
-      console.error(error);
+    } catch {
+      setActionMessage("COULD NOT LOG OUT. PLEASE TRY AGAIN.");
     }
   };
 
@@ -111,7 +124,13 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
       }
       sidebar={<Sidebar text="PROFILE" clickable={false} />}
       actionsBar={
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-1">
+          {actionMessage && (
+            <p role="alert" className="text-[9px] tracking-[0.1em] text-red-700">
+              {actionMessage}
+            </p>
+          )}
+          <div className="flex items-center gap-2">
           {isOwner ? (
             <>
               <button
@@ -155,12 +174,15 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               <span className={typography.bullet}>•</span>
               <button
                 onClick={handleFollowToggle}
-                className={`${typography.buttonBodyFocus} transition-opacity hover:opacity-60 cursor-pointer`}
+                disabled={isFollowPending}
+                aria-busy={isFollowPending}
+                className={`${typography.buttonBodyFocus} transition-opacity hover:opacity-60 cursor-pointer disabled:opacity-50`}
               >
-                {isFollowed ? "unfollow" : "follow"}
+                {isFollowPending ? "..." : isFollowed ? "unfollow" : "follow"}
               </button>
             </>
           )}
+          </div>
         </div>
       }
       footerLeft={<BackButton onBack={onBack} />}
