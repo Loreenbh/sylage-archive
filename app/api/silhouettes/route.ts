@@ -3,39 +3,53 @@ import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  const { imageUrl, moodboardId } = body;
-
   const user = await getCurrentSessionUser();
+
   if (!user) {
     return NextResponse.json({ error: "Session invalide" }, { status: 401 });
   }
 
-  if (!imageUrl || !moodboardId) {
-    return NextResponse.json({ error: "Champs manquants" }, { status: 400 });
+  let body: { imageUrl?: unknown; moodboardId?: unknown };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
   }
+
+  const { imageUrl, moodboardId } = body;
+  const parsedMoodboardId =
+    typeof moodboardId === "number"
+      ? moodboardId
+      : typeof moodboardId === "string" && /^\d+$/.test(moodboardId)
+        ? Number(moodboardId)
+        : NaN;
+
+  if (
+    typeof imageUrl !== "string" ||
+    !imageUrl.trim() ||
+    !Number.isSafeInteger(parsedMoodboardId) ||
+    parsedMoodboardId <= 0
+  ) {
+    return NextResponse.json({ error: "Champs invalides" }, { status: 400 });
+  }
+
   try {
     const result = await pool.query(
       `
-            INSERT INTO silhouettes
-            (user_id, moodboard_id, image_url)
-            VALUES ($1, $2, $3)
-            RETURNING *
-            `,
-      [user.id, moodboardId, imageUrl],
+        INSERT INTO silhouettes
+        (user_id, moodboard_id, image_url)
+        VALUES ($1, $2, $3)
+        RETURNING *
+      `,
+      [user.id, parsedMoodboardId, imageUrl.trim()],
     );
 
     return NextResponse.json(result.rows[0], { status: 201 });
-  } catch (err: any) {
-    console.error("ERROR CREATE SILHOUETTE:", err);
+  } catch (error) {
+    console.error("ERROR CREATE SILHOUETTE:", error);
 
     return NextResponse.json(
-      {
-        error: err.message,
-        code: err.code,
-        detail: err.detail,
-        constraint: err.constraint,
-      },
+      { error: "Impossible de publier ce look pour le moment" },
       { status: 500 },
     );
   }
