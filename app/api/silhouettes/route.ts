@@ -34,6 +34,17 @@ export async function POST(request: Request) {
   }
 
   try {
+    // Moodboards are collaborative: any authenticated user may contribute a look.
+    // Confirm the target exists without restricting contributions to its owner.
+    const moodboard = await pool.query(
+      "SELECT id FROM moodboards WHERE id = $1",
+      [parsedMoodboardId],
+    );
+
+    if (!moodboard.rows[0]) {
+      return NextResponse.json({ error: "Moodboard introuvable" }, { status: 404 });
+    }
+
     const result = await pool.query(
       `
         INSERT INTO silhouettes
