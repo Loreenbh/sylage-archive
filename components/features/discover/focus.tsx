@@ -47,19 +47,14 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
             },
             { section: "FILTER", clickable: false },
             {
-              section: "CREATE",
-              clickable: !!user,
-              onClick: user
-                ? () =>
-                    onNavigate?.({
-                      to: "create",
-                      direction: "next",
-                      params: {
-                        from: "discover",
-                        isOwner,
-                      },
-                    })
-                : undefined,
+              section: !user ? "CREATE ↗" : "CREATE",
+              clickable: true,
+              onClick: () =>
+                onNavigate?.({
+                  to: user ? "create" : "auth",
+                  direction: "next",
+                  ...(user ? { params: { from: "discover", isOwner } } : {}),
+                }),
             },
           ]}
         />
@@ -125,7 +120,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
               whitespace-nowrap
             `}
                 >
-                  Add look
+                  Add look{!user ? " ↗" : ""}
                 </button>
 
                 <span className={typography.bullet}>•</span>
