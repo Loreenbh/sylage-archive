@@ -3,11 +3,25 @@ import { pool } from "@/lib/db";
 import { getCurrentSessionUser } from "@/lib/services/session";
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  let body: { moodboardId?: unknown; silhouetteId?: unknown };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
   const { moodboardId, silhouetteId } = body;
 
-  if (!moodboardId && !silhouetteId) {
-    return NextResponse.json({ error: "Missing target" }, { status: 400 });
+  const hasMoodboard = moodboardId !== undefined && moodboardId !== null;
+  const hasSilhouette = silhouetteId !== undefined && silhouetteId !== null;
+  if (hasMoodboard === hasSilhouette) {
+    return NextResponse.json({ error: "Choisis un seul contenu à liker" }, { status: 400 });
+  }
+  const targetId = hasMoodboard ? moodboardId : silhouetteId;
+  if (
+    !(typeof targetId === "number" && Number.isSafeInteger(targetId) && targetId > 0) &&
+    !(typeof targetId === "string" && /^[1-9]\\d*$/.test(targetId) && Number.isSafeInteger(Number(targetId)))
+  ) {
+    return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
   }
 
   const user = await getCurrentSessionUser();
@@ -76,11 +90,25 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const body = await request.json();
+  let body: { moodboardId?: unknown; silhouetteId?: unknown };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
   const { moodboardId, silhouetteId } = body;
 
-  if (!moodboardId && !silhouetteId) {
-    return NextResponse.json({ error: "Missing target" }, { status: 400 });
+  const hasMoodboard = moodboardId !== undefined && moodboardId !== null;
+  const hasSilhouette = silhouetteId !== undefined && silhouetteId !== null;
+  if (hasMoodboard === hasSilhouette) {
+    return NextResponse.json({ error: "Choisis un seul contenu à liker" }, { status: 400 });
+  }
+  const targetId = hasMoodboard ? moodboardId : silhouetteId;
+  if (
+    !(typeof targetId === "number" && Number.isSafeInteger(targetId) && targetId > 0) &&
+    !(typeof targetId === "string" && /^[1-9]\\d*$/.test(targetId) && Number.isSafeInteger(Number(targetId)))
+  ) {
+    return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
   }
 
   const user = await getCurrentSessionUser();
