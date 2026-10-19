@@ -144,7 +144,15 @@ export async function GET(request: Request) {
     }
   }
 
-  if (moodboardId) {
+  if (moodboardId !== null) {
+    const parsedMoodboardId = Number(moodboardId);
+    if (
+      !/^[1-9]\d*$/.test(moodboardId) ||
+      !Number.isSafeInteger(parsedMoodboardId)
+    ) {
+      return NextResponse.json({ error: "Identifiant moodboard invalide" }, { status: 400 });
+    }
+
     const moodboard = await pool.query(
       `
       SELECT 
@@ -157,7 +165,7 @@ export async function GET(request: Request) {
 
       WHERE moodboards.id=$1
       `,
-      [moodboardId],
+      [parsedMoodboardId],
     );
 
     if (!moodboard.rows[0]) {
@@ -196,7 +204,7 @@ export async function GET(request: Request) {
 
       ORDER BY silhouettes.created_at DESC
       `,
-      [moodboardId, currentSession?.id ?? null],
+      [parsedMoodboardId, currentSession?.id ?? null],
     );
 
     return NextResponse.json({
@@ -205,11 +213,21 @@ export async function GET(request: Request) {
     });
   }
 
+  if (userIdParam !== null) {
+    const parsedUserId = Number(userIdParam);
+    if (
+      !/^[1-9]\d*$/.test(userIdParam) ||
+      !Number.isSafeInteger(parsedUserId)
+    ) {
+      return NextResponse.json({ error: "Identifiant utilisateur invalide" }, { status: 400 });
+    }
+  }
+
   if (!userIdParam && !currentSession) {
     return NextResponse.json({ error: "Non connecté" }, { status: 401 });
   }
 
-  const userId = userIdParam ? Number(userIdParam) : currentSession!.id;
+  const userId = userIdParam !== null ? Number(userIdParam) : currentSession!.id;
 
   const user = await pool.query(
     `

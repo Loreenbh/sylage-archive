@@ -122,11 +122,21 @@ export async function GET(request: Request) {
     }
   }
 
+  if (userIdParam !== null) {
+    const parsedUserId = Number(userIdParam);
+    if (
+      !/^[1-9]\d*$/.test(userIdParam) ||
+      !Number.isSafeInteger(parsedUserId)
+    ) {
+      return NextResponse.json({ error: "Identifiant utilisateur invalide" }, { status: 400 });
+    }
+  }
+
   if (!userIdParam && !currentSession) {
     return NextResponse.json({ error: "Non connecté" }, { status: 401 });
   }
 
-  const userId = userIdParam ? Number(userIdParam) : currentSession!.id;
+  const userId = userIdParam !== null ? Number(userIdParam) : currentSession!.id;
 
   const user = await pool.query(
     `
