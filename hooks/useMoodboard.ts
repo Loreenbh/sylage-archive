@@ -3,30 +3,42 @@ import type { Moodboard } from "@/types/moodboard";
 
 export function useMoodboard(id?: number) {
   const [moodboard, setMoodboard] = useState<Moodboard | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(Boolean(id));
 
   useEffect(() => {
-    if (!id) return;
+    let cancelled = false;
+
+    if (!id) {
+      setMoodboard(null);
+      setIsLoading(false);
+      return () => {
+        cancelled = true;
+      };
+    }
 
     async function loadMoodboard() {
       setIsLoading(true);
+      setMoodboard(null);
 
       try {
         const res = await fetch(`/api/moodboards/${id}`);
-        const data = await res.json();
+        if (!res.ok) throw new Error("Unable to load moodboard");
 
-        setMoodboard(data);
+        const data = (await res.json()) as Moodboard;
+        if (!cancelled) setMoodboard(data);
       } catch {
-        setMoodboard(null);
+        if (!cancelled) setMoodboard(null);
       } finally {
-        setIsLoading(false);
+        if (!cancelled) setIsLoading(false);
       }
     }
 
     loadMoodboard();
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
-  return {
-    moodboard,
-    isLoading,
-  };
+
+  return { moodboard, isLoading };
 }

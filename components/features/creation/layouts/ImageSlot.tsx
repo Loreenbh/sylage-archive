@@ -404,7 +404,7 @@ export default function ImageSlot({
           "
         >
           <span className="text-xl sm:text-2xl md:text-3xl" aria-hidden="true">+</span>
-          <span className="text-[8px] sm:text-[9px] md:text-[10px] tracking-[0.18em]">ADD IMAGE</span>
+          <span className="text-[7px] sm:text-[9px] md:text-[10px] tracking-[0.12em] sm:tracking-[0.18em]">ADD IMAGE</span>
         </button>
       )}
     </div>

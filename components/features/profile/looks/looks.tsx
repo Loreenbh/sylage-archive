@@ -174,26 +174,34 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
         ) : filteredSilhouettes.length === 0 ? (
           <div
             className={`
-            h-full 
-            flex 
-            items-center 
-            justify-center
-            ${colors.bg.empty}
-            border -b 
-            border-black/30`}
+              h-full
+              flex
+              flex-col
+              items-center
+              justify-center
+              gap-3
+              ${colors.bg.empty}
+              border-b
+              border-black/30
+            `}
           >
             <p
-              className="
-            text-black/30 
-            text-[clamp(5px,1.1cqw,8px)]
-            sm:text-[10px]
-            md:text-[11px]
-            lg:text-[14px]
-            xl:text-[18px]
-            tracking-[0.2em]"
+              role="status"
+              className="px-3 text-center text-[clamp(6px,1.1cqw,8px)] sm:text-[10px] md:text-[11px] lg:text-[14px] tracking-[0.2em] text-black/40"
             >
-              NO LOOKS.
+              {selectedFilters.length > 0
+                ? "NO LOOKS MATCH THESE FILTERS."
+                : "NO LOOKS YET."}
             </p>
+            {selectedFilters.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedFilters([])}
+                className="text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.16em] border-b border-black/30 text-black/55 hover:text-black hover:border-black transition-colors"
+              >
+                CLEAR FILTERS
+              </button>
+            )}
           </div>
         ) : (
           <ThreeColGrid

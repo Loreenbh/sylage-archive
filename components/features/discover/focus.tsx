@@ -9,6 +9,7 @@ import ProfileButton from "@/components/ui/buttons/ProfileButton";
 import SimpleGrid from "@/components/ui/grids/SimpleGrid";
 import LikeButton from "@/components/ui/buttons/LikeButton";
 import BackButton from "@/components/ui/buttons/BackButton";
+import StatusMessage from "@/components/ui/messages/StatusMessage";
 /*HOOKS*/
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useMoodboard } from "@/hooks/useMoodboard";
@@ -25,7 +26,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
   const { user } = useCurrentUser();
   const { isOwner, from, moodboardId } = params ?? {};
 
-  const { moodboard } = useMoodboard(moodboardId);
+  const { moodboard, isLoading } = useMoodboard(moodboardId);
 
   return (
     <BookLayout
@@ -65,7 +66,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
       }
       sidebar={<Sidebar text="FOCUS" clickable={false} />}
       actionsBar={
-        <div className="flex w-full items-center justify-between overflow-hidden">
+        <div className="flex w-full min-w-0 items-center justify-between gap-1 overflow-hidden">
           {!isOwner && (
             <button
               onClick={() =>
@@ -94,7 +95,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
               by {moodboard?.username}
             </button>
           )}
-          <div className="flex items-center shrink-0 whitespace-nowrap sm:gap-2">
+          <div className="flex min-w-0 items-center shrink-0 whitespace-nowrap gap-1 sm:gap-2">
           <span className={typography.bullet}>•</span>
             {!isOwner && (
               <>
@@ -194,24 +195,34 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
       }
     >
       <div className="flex flex-col h-full min-h-0 gap-1">
-        <SimpleGrid
-          square={
-            <div className="relative w-full h-full">
-              {moodboard && (
+        {isLoading ? (
+          <div className="flex h-full items-center justify-center">
+            <StatusMessage message="LOADING MOODBOARD..." />
+          </div>
+        ) : !moodboard ? (
+          <div className="flex h-full flex-col items-center justify-center gap-3">
+            <StatusMessage message="THIS MOODBOARD IS UNAVAILABLE." />
+            <button
+              type="button"
+              onClick={() => onNavigate?.({ to: "discover", direction: "prev", params: { isOwner: false } })}
+              className="text-[8px] sm:text-[9px] tracking-[0.16em] border-b border-black/30 text-black/55 hover:text-black hover:border-black transition-colors"
+            >
+              BACK TO ARCHIVE
+            </button>
+          </div>
+        ) : (
+          <SimpleGrid
+            square={
+              <div className="relative w-full h-full">
                 <img
                   src={moodboard.image_url}
                   alt=""
-                  className="
-                    absolute 
-                    inset-0 
-                    w-full 
-                    h-full 
-                    object-contain"
+                  className="absolute inset-0 h-full w-full object-contain"
                 />
-              )}
-            </div>
-          }
-        />
+              </div>
+            }
+          />
+        )}
       </div>
     </BookLayout>
   );

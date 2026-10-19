@@ -27,6 +27,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   const { isOwner, userId } = params ?? {};
   const { user: currentUser } = useCurrentUser();
   const [isFollowed, setIsFollowed] = useState(false);
+  const [isFollowLoading, setIsFollowLoading] = useState(true);
   const [isFollowPending, setIsFollowPending] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
   const { following, followers, handleUnfollow, refreshFollows } =
@@ -38,21 +39,41 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
   } = useProfile(userId, isOwner);
 
   useEffect(() => {
-    if (!profileUser || !currentUser) return;
-    const currentUserId = currentUser.id;
-    const profileUserId = profileUser.id;
+    let cancelled = false;
 
-    async function checkFollow() {
-      const res = await getFollows(currentUserId);
-      const followed = res.following.some(
-        (user: { id: number }) => user.id === profileUserId
-      );
-      setIsFollowed(followed);
+    if (!profileUser || !currentUser) {
+      setIsFollowed(false);
+      setIsFollowLoading(false);
+      return () => {
+        cancelled = true;
+      };
     }
 
-    checkFollow().catch(() => {
-      setActionMessage("COULD NOT LOAD FOLLOW STATUS.");
-    });
+    const currentUserId = currentUser.id;
+    const profileUserId = profileUser.id;
+    setIsFollowLoading(true);
+
+    async function checkFollow() {
+      try {
+        const res = await getFollows(currentUserId);
+        if (cancelled) return;
+
+        const followed = res.following.some(
+          (user: { id: number }) => user.id === profileUserId
+        );
+        setIsFollowed(followed);
+      } catch {
+        if (!cancelled) setActionMessage("COULD NOT LOAD FOLLOW STATUS.");
+      } finally {
+        if (!cancelled) setIsFollowLoading(false);
+      }
+    }
+
+    checkFollow();
+
+    return () => {
+      cancelled = true;
+    };
   }, [profileUser, currentUser]);
 
   const handleFollowToggle = async () => {
@@ -174,11 +195,12 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
               <span className={typography.bullet}>•</span>
               <button
                 onClick={handleFollowToggle}
-                disabled={isFollowPending}
-                aria-busy={isFollowPending}
+                disabled={isFollowPending || isFollowLoading}
+                aria-busy={isFollowPending || isFollowLoading}
+                aria-label={isFollowed ? "Unfollow creator" : "Follow creator"}
                 className={`${typography.buttonBodyFocus} transition-opacity hover:opacity-60 cursor-pointer disabled:opacity-50`}
               >
-                {isFollowPending ? "..." : isFollowed ? "unfollow" : "follow"}
+                {isFollowPending || isFollowLoading ? "..." : isFollowed ? "unfollow" : "follow"}
               </button>
             </>
           )}

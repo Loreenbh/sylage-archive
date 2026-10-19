@@ -13,18 +13,32 @@ export function useSilhouettes(
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function loadSilhouettes() {
+      setIsLoading(true);
+
       try {
         const data = await getSilhouetteData(userId, moodboardId, from);
+        if (cancelled) return;
 
         setSilhouettes(data.silhouettes);
         setUser(data.user);
+      } catch {
+        if (cancelled) return;
+
+        setSilhouettes([]);
+        setUser(null);
       } finally {
-        setIsLoading(false);
+        if (!cancelled) setIsLoading(false);
       }
     }
 
     loadSilhouettes();
+
+    return () => {
+      cancelled = true;
+    };
   }, [userId, moodboardId, from]);
 
   return {

@@ -126,9 +126,26 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
         {isLoading ? (
           <StatusMessage message="LOADING ARCHIVE..." />
         ) : filteredMoodboards.length === 0 ? (
-          <StatusMessage
-            message={from === "references" ? "NO LIKED MOODS." : "NO MOODS."}
-          />
+          <div className="flex h-full flex-col items-center justify-center gap-3 px-3">
+            <StatusMessage
+              message={
+                selectedFilters.length > 0
+                  ? "NO MOODS MATCH THESE FILTERS."
+                  : from === "references"
+                    ? "NO LIKED MOODS."
+                    : "NO MOODS."
+              }
+            />
+            {selectedFilters.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedFilters([])}
+                className="text-[8px] tracking-[0.16em] border-b border-black/30 text-black/55 hover:text-black hover:border-black transition-colors"
+              >
+                CLEAR FILTERS
+              </button>
+            )}
+          </div>
         ) : (
           <ScrollableGrid
             data={filteredMoodboards}
