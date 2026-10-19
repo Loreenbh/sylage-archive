@@ -67,22 +67,22 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               flex
               items-center
               justify-center
-              p-2
-              sm:p-4
-              md:p-4
+              p-1
+              sm:p-2
+              md:p-3
               lg:p-4
-              xl:p-8
+              xl:p-6
             `}
           >
-            <div className="w-full max-w-[600px] text-center">
+            <div className="w-full max-w-[600px] max-h-full overflow-y-auto text-center">
               <p
                 className={`
                   ${typography.privacy}
-                  mt-2
-                  sm:mt-4
-                  md:mt-4
+                  mt-1
+                  sm:mt-2
+                  md:mt-3
                   lg:mt-4
-                  xl:mt-8
+                  xl:mt-6
                   leading-[1.35]
                   text-black/70
                 `}
@@ -93,12 +93,11 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               <p
                 className={`
                   ${typography.privacy}
-                  mt-2
-                  sm:mt-4
-                  md:mt-4
+                  mt-1
+                  sm:mt-2
+                  md:mt-3
                   lg:mt-4
-                  xl:mt-8
-                  mt-2
+                  xl:mt-6
                   leading-[1.35]
                   text-black/70
                 `}
@@ -111,12 +110,11 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               <p
                 className={`
                   ${typography.privacy}
-                  mt-2
-                  sm:mt-4
-                  md:mt-4
+                  mt-1
+                  sm:mt-2
+                  md:mt-3
                   lg:mt-4
-                  xl:mt-8
-                  mt-2
+                  xl:mt-6
                   leading-[1.35]
                   text-black/70
                 `}
@@ -127,12 +125,11 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               <p
                 className={`
                   ${typography.privacy}
-                  mt-2
-                  sm:mt-4
-                  md:mt-4
+                  mt-1
+                  sm:mt-2
+                  md:mt-3
                   lg:mt-4
-                  xl:mt-8
-                  mt-2
+                  xl:mt-6
                   leading-[1.35]
                   text-black/70
                 `}
@@ -147,12 +144,11 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               <p
                 className={`
                   ${typography.privacy}
-                  mt-2
-                  sm:mt-4
-                  md:mt-4
+                  mt-1
+                  sm:mt-2
+                  md:mt-3
                   lg:mt-4
-                  xl:mt-8
-                  mt-2
+                  xl:mt-6
                   leading-[1.35]
                   text-black/70
                 `}
@@ -165,12 +161,11 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               <p
                 className={`
                   ${typography.privacy}
-                  mt-2
-                  sm:mt-4
-                  md:mt-4
+                  mt-1
+                  sm:mt-2
+                  md:mt-3
                   lg:mt-4
-                  xl:mt-8
-                  mt-2
+                  xl:mt-6
                   leading-[1.35]
                   text-black/70
                 `}
@@ -183,12 +178,11 @@ export default function Privacy({ onNavigate, onBack }: Props) {
               <p
                 className={`
                   ${typography.privacy}
-                  mt-2
-                  sm:mt-4
-                  md:mt-4
+                  mt-1
+                  sm:mt-2
+                  md:mt-3
                   lg:mt-4
-                  xl:mt-8
-                  mt-2
+                  xl:mt-6
                   leading-[1.35]
                   text-black/70
                 `}
