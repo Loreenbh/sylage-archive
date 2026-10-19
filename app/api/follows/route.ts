@@ -170,7 +170,7 @@ export async function DELETE(request: Request) {
       [currentUser.id, targetId],
     );
 
-    return NextResponse.json({ success: true, unfollowed: result.rowCount > 0 });
+    return NextResponse.json({ success: true, unfollowed: (result.rowCount ?? 0) > 0 });
   } catch (error) {
     console.error("DELETE FOLLOW ERROR:", error);
     return NextResponse.json({ error: "Impossible de modifier cet abonnement pour le moment" }, { status: 500 });
