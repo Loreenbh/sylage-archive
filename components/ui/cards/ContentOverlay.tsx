@@ -100,7 +100,8 @@ export default function ContentOverlay({
                 }}
                 disabled={isFollowPending}
                 aria-busy={isFollowPending}
-                aria-label={isFollowPending ? "Updating follow" : isFollowed ? "Unfollow user" : "Follow user"}
+                aria-label={isGuest ? "Sign in to follow creator" : isFollowPending ? "Updating follow" : isFollowed ? "Unfollow user" : "Follow user"}
+                title={isGuest ? "Sign in to follow creator" : undefined}
                 className="
                   text-white
                   text-[10px]
@@ -112,7 +113,7 @@ export default function ContentOverlay({
                   duration-300
                 "
               >
-                {isFollowed ? "✓" : "+"}
+                {isFollowed ? "✓" : "+"}{isGuest ? "↗" : ""}
               </button>
             )}
 
