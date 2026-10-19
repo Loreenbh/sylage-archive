@@ -81,7 +81,7 @@ export default function TagPicker({
         compact ? "gap-[0.8cqw]" : "sm:gap-3 lg:gap-4"
       }`}
     >
-      <div className={`flex ${compact ? "gap-[1.5cqw]" : "sm:gap-3 lg:gap-3 xl:gap-10"}`}>
+      <div className={`flex flex-wrap items-center justify-center ${compact ? "gap-[1.5cqw]" : "sm:gap-3 lg:gap-3 xl:gap-10"}`}>
         {categories.map((category) => (
           <button
             key={category.key}
@@ -109,6 +109,21 @@ export default function TagPicker({
             {category.label} ({category.selected.length}/{category.max})
           </button>
         ))}
+        {allSelected.length > 0 && (
+          <button
+            type="button"
+            onClick={() => {
+              onChangeStyle([]);
+              onChangeAmbiance([]);
+              onChangeColor([]);
+              setOpenCategory(null);
+            }}
+            className="sm:text-[7px] md:text-[8px] lg:text-[9px] xl:text-[12px] tracking-[0.16em] uppercase border-b border-black/30 text-black/50 hover:text-black hover:border-black transition-colors"
+            aria-label="Clear all selected filters"
+          >
+            CLEAR ALL
+          </button>
+        )}
       </div>
 
       {categories.map((category) =>

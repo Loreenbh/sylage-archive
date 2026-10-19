@@ -121,20 +121,26 @@ export default function Discover({ onNavigate, params }: Props) {
           <span className={typography.bullet}>•</span>
           <button
             onClick={() => {
-              if (isUserLoading || !user) return;
+              if (isUserLoading) return;
+              if (!user) {
+                onNavigate?.({ to: "auth", direction: "next" });
+                return;
+              }
               setTab("following");
             }}
-            disabled={Boolean(isUserLoading || !user)}
+            disabled={isUserLoading}
             aria-pressed={tab === "following"}
+            aria-label={!user ? "Sign in to view followed creators" : "View followed creators"}
+            title={!user ? "Sign in to see creators you follow" : undefined}
             className={`pb-1 border-b transition-colors duration-300 ${
-              !user
+              isUserLoading
                 ? "border-transparent cursor-default opacity-50"
-                : tab === "following"
+                : tab === "following" && user
                 ? "border-black"
                 : "border-transparent hover:border-black"
             }`}
           >
-            FOLLOWING
+            FOLLOWING{!user && !isUserLoading ? " ↗" : ""}
           </button>
         </div>
       }
@@ -155,17 +161,37 @@ export default function Discover({ onNavigate, params }: Props) {
           <StatusMessage message="LOADING ARCHIVE..." />
         ) : filteredMoodboards.length === 0 ? (
           <div
-            className={`aspect-square w-full flex items-center justify-center ${colors.bg.empty} border border-black/10`}
+            className={`aspect-square w-full flex flex-col items-center justify-center gap-3 ${colors.bg.empty} border border-black/10`}
           >
             <StatusMessage
               message={
-                tab === "following"
-                  ? "BUILD YOUR ARCHIVE."
+                selectedFilters.length > 0
+                  ? "NO MOODBOARDS MATCH THESE FILTERS."
+                  : tab === "following"
+                  ? "NO FOLLOWED CREATORS YET."
                   : tab === "curated"
                   ? "NO CURATED PIECES YET."
                   : "THE ARCHIVE IS EMPTY."
               }
             />
+            {selectedFilters.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedFilters([])}
+                className="text-[9px] tracking-[0.16em] border-b border-black/30 hover:border-black transition-colors"
+              >
+                CLEAR FILTERS
+              </button>
+            )}
+            {tab === "following" && !user && (
+              <button
+                type="button"
+                onClick={() => onNavigate?.({ to: "auth", direction: "next" })}
+                className="text-[9px] tracking-[0.16em] border-b border-black/30 hover:border-black transition-colors"
+              >
+                SIGN IN TO FOLLOW CREATORS
+              </button>
+            )}
           </div>
         ) : (
           <ScrollableGrid
