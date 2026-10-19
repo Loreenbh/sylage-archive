@@ -281,10 +281,11 @@ export async function GET(request: Request) {
 
 export async function DELETE(request: Request) {
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
+  const idParam = searchParams.get("id");
+  const id = idParam && /^[1-9]\d*$/.test(idParam) ? Number(idParam) : NaN;
 
-  if (!id) {
-    return NextResponse.json({ error: "ID manquant" }, { status: 400 });
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    return NextResponse.json({ error: "Identifiant invalide" }, { status: 400 });
   }
 
   const currentSession = await getCurrentSessionUser();
@@ -307,7 +308,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "Look introuvable" }, { status: 404 });
     }
 
-    const isOwner = silhouette.rows[0].user_id === currentSession.id;
+    const isOwner = Number(silhouette.rows[0].user_id) === Number(currentSession.id);
 
     const isAdmin = currentSession.role === "admin";
 
