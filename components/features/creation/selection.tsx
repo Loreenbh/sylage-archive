@@ -27,6 +27,18 @@ type Props = {
 export default function Create({ onNavigate, params, onBack }: Props) {
   const { user: currentUser } = useCurrentUser();
 
+  const chooseLayout = (layout: "A" | "B" | "C" | "D") =>
+    onNavigate({
+      to: "editor",
+      direction: "next",
+      params: { layout },
+    });
+
+  const previewClass =
+    "h-full w-full overflow-hidden " + colors.bg.ivory;
+  const buttonClass =
+    "block h-full w-full cursor-pointer appearance-none border-0 bg-transparent p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black";
+
   return (
     <BookLayout
       header={
@@ -41,15 +53,8 @@ export default function Create({ onNavigate, params, onBack }: Props) {
                   direction: "prev",
                 }),
             },
-            {
-              section: "FILTER",
-              clickable: false,
-            },
-            {
-              section: "CREATE",
-              clickable: false,
-              active: true,
-            },
+            { section: "FILTER", clickable: false },
+            { section: "CREATE", clickable: false, active: true },
           ]}
         />
       }
@@ -71,84 +76,24 @@ export default function Create({ onNavigate, params, onBack }: Props) {
     >
       <FourSquaresGrid
         topLeft={
-          <button
-            type="button"
-            aria-label="Choose layout A"
-            className="h-full w-full cursor-pointer appearance-none border-0 p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
-            onClick={() =>
-              onNavigate({
-                to: "editor",
-                direction: "next",
-                params: {
-                  layout: "A",
-                },
-              })
-            }
-          >
-            <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
-              <LayoutAPreview />
-            </button>
-          </div>
+          <button type="button" aria-label="Choose layout A" className={buttonClass} onClick={() => chooseLayout("A")}>
+            <div className={previewClass}><LayoutAPreview /></div>
+          </button>
         }
         topRight={
-          <button
-            type="button"
-            aria-label="Choose layout B"
-            className="h-full w-full cursor-pointer appearance-none border-0 p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
-            onClick={() =>
-              onNavigate({
-                to: "editor",
-                direction: "next",
-                params: {
-                  layout: "B",
-                },
-              })
-            }
-          >
-            <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
-              <LayoutBPreview />
-            </button>
-          </div>
+          <button type="button" aria-label="Choose layout B" className={buttonClass} onClick={() => chooseLayout("B")}>
+            <div className={previewClass}><LayoutBPreview /></div>
+          </button>
         }
         bottomLeft={
-          <button
-            type="button"
-            aria-label="Choose layout C"
-            className="h-full w-full bg-zinc-400 hover:bg-zinc-500 transition appearance-none border-0 p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
-            onClick={() =>
-              onNavigate({
-                to: "editor",
-                direction: "next",
-                params: {
-                  layout: "C",
-                },
-              })
-            }
-          >
-            <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
-              <LayoutCPreview />
-            </button>
-          </div>
+          <button type="button" aria-label="Choose layout C" className={`${buttonClass} bg-zinc-400 hover:bg-zinc-500 transition`} onClick={() => chooseLayout("C")}>
+            <div className={previewClass}><LayoutCPreview /></div>
+          </button>
         }
         bottomRight={
-          <button
-            type="button"
-            aria-label="Choose layout D"
-            onClick={() =>
-              onNavigate({
-                to: "editor",
-                direction: "next",
-                params: {
-                  layout: "D",
-                },
-              })
-            }
-            className="h-full w-full cursor-pointer appearance-none border-0 p-0 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
-          >
-            <div className={`w-full h-full overflow-hidden ${colors.bg.ivory}`}>
-              <LayoutDPreview />
-            </button>
-          </div>
+          <button type="button" aria-label="Choose layout D" className={buttonClass} onClick={() => chooseLayout("D")}>
+            <div className={previewClass}><LayoutDPreview /></div>
+          </button>
         }
       />
     </BookLayout>
