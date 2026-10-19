@@ -82,7 +82,7 @@ export async function GET(request: Request) {
             silhouettes.*,
             users.username,
 
-            COUNT(likes.id)::int AS likes_count,
+            COUNT(DISTINCT likes.id)::int AS likes_count,
 
             EXISTS (
                 SELECT 1
