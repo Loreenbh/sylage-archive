@@ -126,6 +126,31 @@ export default function EditLook({ onNavigate, params, onBack }: Props) {
     try {
       slotElement.classList.add("export-mode");
 
+      // Wait for fonts and images before capturing the look, especially on mobile browsers.
+      if (document.fonts?.ready) {
+        await document.fonts.ready;
+      }
+
+      const images = Array.from(slotElement.querySelectorAll("img"));
+      await Promise.all(
+        images.map(async (image) => {
+          if (!image.complete) {
+            await new Promise<void>((resolve) => {
+              image.addEventListener("load", () => resolve(), { once: true });
+              image.addEventListener("error", () => resolve(), { once: true });
+            });
+          }
+
+          if (image.complete && image.naturalWidth > 0 && image.decode) {
+            try {
+              await image.decode();
+            } catch {
+              // Let html-to-image handle any decoding issue and report capture failures.
+            }
+          }
+        }),
+      );
+
       await new Promise<void>((resolve) =>
         requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
       );
