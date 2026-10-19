@@ -118,7 +118,29 @@ export async function GET(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const { avatar_url, username, password } = await request.json();
+  let body: { avatar_url?: unknown; username?: unknown; password?: unknown };
+
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
+
+  const { avatar_url, username, password } = body;
+
+  if (
+    (avatar_url !== undefined && avatar_url !== null && typeof avatar_url !== "string") ||
+    (username !== undefined && username !== null && typeof username !== "string") ||
+    (password !== undefined && password !== null && typeof password !== "string")
+  ) {
+    return NextResponse.json({ error: "Format des données invalide" }, { status: 400 });
+  }
+
+  const normalizedUsername = typeof username === "string" ? username.trim() : username;
+
+  if (typeof normalizedUsername === "string" && normalizedUsername.length === 0) {
+    return NextResponse.json({ error: "Le nom d'utilisateur ne peut pas être vide" }, { status: 400 });
+  }
 
   const currentSession = await getCurrentSessionUser();
   if (!currentSession) {
@@ -127,8 +149,8 @@ export async function PATCH(request: Request) {
 
   let updatedUser = null;
 
-  if (username) {
-    if (username.length < 3) {
+  if (normalizedUsername) {
+    if (normalizedUsername.length < 3) {
       return NextResponse.json(
         {
           error: `Username must be at least ${MIN_USERNAME_LENGTH} characters`,
@@ -137,7 +159,7 @@ export async function PATCH(request: Request) {
       );
     }
 
-    if (username.length > MAX_USERNAME_LENGTH) {
+    if (normalizedUsername.length > MAX_USERNAME_LENGTH) {
       return NextResponse.json(
         {
           error: `Username must be less than ${MAX_USERNAME_LENGTH} characters`,
@@ -153,7 +175,7 @@ export async function PATCH(request: Request) {
             WHERE username=$1
             AND id != $2
             `,
-      [username, currentSession.id],
+      [normalizedUsername, currentSession.id],
     );
 
     if (existing.rows[0]) {
@@ -211,7 +233,7 @@ export async function PATCH(request: Request) {
 
             RETURNING id, username, avatar_url
             `,
-      [avatar_url ?? null, username ?? null, currentSession.id],
+      [avatar_url ?? null, normalizedUsername ?? null, currentSession.id],
     );
   }
 
