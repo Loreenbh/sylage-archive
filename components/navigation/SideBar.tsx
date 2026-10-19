@@ -3,7 +3,6 @@
 import { useState } from "react";
 import type { OnNavigate } from "@/types/navigation";
 import { typography } from "@/styles/typography";
-import { layout } from "@/styles/layout";
 import { colors } from "@/styles/colors";
 
 type Props = {
@@ -38,7 +37,6 @@ export default function Sidebar({
         ${clickable ? "cursor-pointer sm:translate-x-[0.5px]" : "cursor-default"}
       `}
     >
-      <div className={layout.sideBarLine} />
 
       <p
         className={`
