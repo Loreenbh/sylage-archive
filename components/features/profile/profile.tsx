@@ -129,16 +129,14 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
             },
             { section: "FILTER", clickable: false },
             {
-              section: "CREATE",
-              clickable: !!currentUser,
-              onClick: currentUser
-                ? () =>
-                    onNavigate?.({
-                      to: "create",
-                      direction: "next",
-                      params: { from: "discover", isOwner },
-                    })
-                : undefined,
+              section: !currentUser ? "CREATE ↗" : "CREATE",
+              clickable: true,
+              onClick: () =>
+                onNavigate?.({
+                  to: currentUser ? "create" : "auth",
+                  direction: "next",
+                  ...(currentUser ? { params: { from: "discover", isOwner } } : {}),
+                }),
             },
           ]}
         />
