@@ -23,28 +23,44 @@ type Props = {
 export default function Discover({ onNavigate, params }: Props) {
   const [tab, setTab] = useState(params?.fromTab ?? "latest");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [pendingFollowId, setPendingFollowId] = useState<number | null>(null);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
   const { moodboards, isLoading, setMoodboards } = useDiscoverMoodboards(tab);
   const { user, isLoading: isUserLoading } = useCurrentUser();
 
   const handleFollowToggle = async (userId: number, isFollowed: boolean) => {
-    if (isFollowed) {
-      await unfollowUser(userId);
-    } else {
-      await followUser(userId);
+    if (pendingFollowId !== null) return;
+    setPendingFollowId(userId);
+    setActionMessage(null);
+
+    try {
+      if (isFollowed) {
+        await unfollowUser(userId);
+      } else {
+        await followUser(userId);
+      }
+      setMoodboards((prev) =>
+        prev.map((board) =>
+          board.user_id === userId
+            ? { ...board, is_followed: !isFollowed }
+            : board
+        )
+      );
+    } catch {
+      setActionMessage("COULD NOT UPDATE FOLLOW. PLEASE TRY AGAIN.");
+    } finally {
+      setPendingFollowId(null);
     }
-    setMoodboards((prev) =>
-      prev.map((board) =>
-        board.user_id === userId
-          ? { ...board, is_followed: !isFollowed }
-          : board
-      )
-    );
   };
 
   const handleDelete = async (id: number) => {
-    const res = await fetch(`/api/moodboards?id=${id}`, { method: "DELETE" });
-    if (res.ok) {
+    setActionMessage(null);
+    try {
+      const res = await fetch(`/api/moodboards?id=${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Delete failed");
       setMoodboards((prev) => prev.filter((board) => board.id !== id));
+    } catch {
+      setActionMessage("COULD NOT DELETE THIS MOODBOARD. PLEASE TRY AGAIN.");
     }
   };
 
@@ -127,6 +143,11 @@ export default function Discover({ onNavigate, params }: Props) {
       }
     >
       <div className="flex flex-col h-full w-full">
+        {actionMessage && (
+          <p role="alert" className="px-2 py-1 text-center text-[10px] tracking-[0.12em] text-red-700">
+            {actionMessage}
+          </p>
+        )}
         {isLoading ? (
           <StatusMessage message="LOADING ARCHIVE..." />
         ) : filteredMoodboards.length === 0 ? (
@@ -178,6 +199,7 @@ export default function Discover({ onNavigate, params }: Props) {
                   username={board.username}
                   isOwner={user?.id === board.user_id}
                   isFollowed={board.is_followed ?? false}
+                  isFollowPending={pendingFollowId === board.user_id}
                   isGuest={!user}
                   onRequireAuth={() =>
                     onNavigate?.({ to: "auth", direction: "next" })
