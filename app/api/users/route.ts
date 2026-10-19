@@ -5,10 +5,12 @@ import { createClient } from "@/lib/server";
 import { supabase } from "@/lib/supabase";
 
 const MIN_USERNAME_LENGTH = 3;
-const MAX_USERNAME_LENGTH = 15;
+const MAX_USERNAME_LENGTH = 12;
 
-const MIN_PASSWORD_LENGTH = 4;
-const MAX_PASSWORD_LENGTH = 20;
+const MIN_PASSWORD_LENGTH = 8;
+const MAX_PASSWORD_LENGTH = 35;
+const USERNAME_REGEX = /^[a-zA-Z0-9._-]+$/;
+const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).+$/;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -137,6 +139,10 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
   }
 
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
+
   const { avatar_url, username, password } = body;
 
   if (
@@ -166,6 +172,13 @@ export async function PATCH(request: Request) {
         {
           error: `Username must be at least ${MIN_USERNAME_LENGTH} characters`,
         },
+        { status: 400 },
+      );
+    }
+
+    if (!USERNAME_REGEX.test(normalizedUsername)) {
+      return NextResponse.json(
+        { error: "Le nom d'utilisateur ne peut contenir que des lettres, chiffres, points, tirets et underscores" },
         { status: 400 },
       );
     }
@@ -216,9 +229,16 @@ export async function PATCH(request: Request) {
       );
     }
 
-    const supabase = await createClient();
+    if (!PASSWORD_REGEX.test(password)) {
+      return NextResponse.json(
+        { error: "Le mot de passe doit contenir une lettre, un chiffre et un caractère spécial" },
+        { status: 400 },
+      );
+    }
 
-    const { error } = await supabase.auth.updateUser({
+    const authClient = await createClient();
+
+    const { error } = await authClient.auth.updateUser({
       password,
     });
 

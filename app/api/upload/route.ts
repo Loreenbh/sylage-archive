@@ -10,14 +10,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Connexion requise" }, { status: 401 });
   }
 
+  const MAX_REQUEST_SIZE = 3 * 1024 * 1024;
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > MAX_REQUEST_SIZE) {
+    return NextResponse.json({ error: "Image trop volumineuse (max 2 Mo)" }, { status: 413 });
+  }
+
   let body: { imageData?: unknown };
   try {
-    body = await request.json();
+    const rawBody = await request.text();
+    if (rawBody.length > MAX_REQUEST_SIZE) {
+      return NextResponse.json({ error: "Image trop volumineuse (max 2 Mo)" }, { status: 413 });
+    }
+    body = JSON.parse(rawBody);
   } catch {
     return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
   }
 
-  const imageData = body?.imageData;
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
+
+  const imageData = body.imageData;
 
   if (typeof imageData !== "string" || !imageData) {
     return NextResponse.json({ error: "Image manquante" }, { status: 400 });
@@ -56,18 +70,11 @@ export async function POST(request: Request) {
 
   const buffer = Buffer.from(base64Data, "base64");
 
-  if (buffer.length > MAX_FILE_SIZE) {
-    return NextResponse.json(
-      {
-        error: "Image trop volumineuse (max 2 Mo)",
-      },
-      {
-        status: 400,
-      },
-    );
+  if (buffer.length === 0) {
+    return NextResponse.json({ error: "Image vide ou invalide" }, { status: 400 });
   }
 
-  if (buffer.length === 0 || buffer.length > MAX_FILE_SIZE) {
+  if (buffer.length > MAX_FILE_SIZE) {
     return NextResponse.json({ error: "Image trop volumineuse ou vide (max 2 Mo)" }, { status: 413 });
   }
 

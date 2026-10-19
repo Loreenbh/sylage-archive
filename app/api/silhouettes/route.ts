@@ -16,6 +16,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
   }
 
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
+
   const { imageUrl, moodboardId } = body;
   const parsedMoodboardId =
     typeof moodboardId === "number"

@@ -9,6 +9,10 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
   }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
+
   const { moodboardId, silhouetteId } = body;
 
   const hasMoodboard = moodboardId !== undefined && moodboardId !== null;
@@ -104,6 +108,10 @@ export async function DELETE(request: Request) {
   } catch {
     return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
   }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
+  }
+
   const { moodboardId, silhouetteId } = body;
 
   const hasMoodboard = moodboardId !== undefined && moodboardId !== null;
