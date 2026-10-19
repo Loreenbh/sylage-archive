@@ -8,6 +8,7 @@ type Props = {
   showUsername?: boolean;
   prefix?: "BY" | "FOR";
   isFollowed?: boolean;
+  isFollowPending?: boolean;
   isGuest?: boolean;
   onRequireAuth?: () => void;
   onFollowToggle?: () => void;
@@ -30,6 +31,7 @@ export default function ContentOverlay({
   prefix,
   showUsername = true,
   isFollowed,
+  isFollowPending = false,
   onFollowToggle,
   like,
   onRequireAuth,
@@ -93,9 +95,12 @@ export default function ContentOverlay({
                     onRequireAuth?.();
                     return;
                   }
-
+                  if (isFollowPending) return;
                   onFollowToggle?.();
                 }}
+                disabled={isFollowPending}
+                aria-busy={isFollowPending}
+                aria-label={isFollowPending ? "Updating follow" : isFollowed ? "Unfollow user" : "Follow user"}
                 className="
                   text-white
                   text-[10px]
@@ -274,6 +279,9 @@ export default function ContentOverlay({
 
                   onFollowToggle?.();
                 }}
+                disabled={isFollowPending}
+                aria-busy={isFollowPending}
+                aria-label={isFollowPending ? "Updating follow" : isFollowed ? "Unfollow user" : "Follow user"}
                 className="
                   sm:text-[10px]
                   lg:text-[11px]
