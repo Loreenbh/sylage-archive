@@ -21,7 +21,23 @@ export default function ScrollableGrid<T extends GridItem>({
       <div className="flex-1 min-h-0 overflow-y-auto ">
         <div className={geometry.feed.grid} style={geometry.feed.style}>
           {data.map((item) => (
-            <div key={item.id} onClick={() => onItemClick?.(item)}>
+            <div
+                key={item.id}
+                role={onItemClick ? "button" : undefined}
+                tabIndex={onItemClick ? 0 : undefined}
+                aria-label={onItemClick ? "Open archive item" : undefined}
+                onClick={() => onItemClick?.(item)}
+                onKeyDown={(event) => {
+                  if (
+                    onItemClick &&
+                    event.target === event.currentTarget &&
+                    (event.key === "Enter" || event.key === " ")
+                  ) {
+                    event.preventDefault();
+                    onItemClick(item);
+                  }
+                }}
+              >
               {renderItem(item)}
             </div>
           ))}
