@@ -97,7 +97,7 @@ export default function Looks({ onNavigate, onBack, params }: Props) {
               clickable: !moodboardId,
             },
             {
-              section: !currentUser ? "CREATE ↗" : "CREATE",
+              section: !currentUser ? "CREATE →" : "CREATE",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
