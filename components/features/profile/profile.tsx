@@ -129,7 +129,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
             },
             { section: "FILTER", clickable: false },
             {
-              section: !currentUser ? "CREATE →" : "CREATE",
+              section: !currentUser ? "CREATE →︎" : "CREATE",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
@@ -198,7 +198,7 @@ export default function ProfilePage({ onNavigate, onBack, params }: Props) {
                 aria-label={isFollowed ? "Unfollow creator" : "Follow creator"}
                 className={`${typography.buttonBodyFocus} transition-opacity hover:opacity-60 cursor-pointer disabled:opacity-50`}
               >
-                {isFollowPending || isFollowLoading ? "..." : isFollowed ? "unfollow" : "follow"}{!currentUser ? " →" : ""}
+                {isFollowPending || isFollowLoading ? "..." : isFollowed ? "unfollow" : "follow"}{!currentUser ? " →︎" : ""}
               </button>
             </>
           )}
