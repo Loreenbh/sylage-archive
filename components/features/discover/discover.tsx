@@ -80,7 +80,7 @@ export default function Discover({ onNavigate, params }: Props) {
             { section: "HOME", clickable: false, active: true },
             { section: "FILTER", clickable: true },
             {
-              section: !user && !isUserLoading ? "CREATE ↗" : "CREATE",
+              section: !user && !isUserLoading ? "CREATE →" : "CREATE",
               clickable: !isUserLoading,
               onClick: !isUserLoading
                 ? () => onNavigate?.({ to: user ? "create" : "auth", direction: "next" })
@@ -140,7 +140,7 @@ export default function Discover({ onNavigate, params }: Props) {
                 : "border-transparent hover:border-black"
             }`}
           >
-            FOLLOWING{!user && !isUserLoading ? " ↗" : ""}
+            FOLLOWING{!user && !isUserLoading ? " →" : ""}
           </button>
         </div>
       }
