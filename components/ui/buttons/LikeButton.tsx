@@ -83,12 +83,12 @@ export default function LikeButton({
       {hasError && <span role="alert" className="mr-1 text-red-300">!</span>}
       {vertical ? (
         <span className="flex flex-col items-center gap-0.5 leading-none">
-          <span>{liked ? "♥" : "♡"}{onRequireAuth ? " ↗" : ""}</span>
+          <span>{liked ? "♥" : "♡"}{onRequireAuth ? " →" : ""}</span>
           <span>{count}</span>
         </span>
       ) : (
         <>
-          {liked ? "♥" : "♡"}{onRequireAuth ? " ↗" : ""} {count}
+          {liked ? "♥" : "♡"}{onRequireAuth ? " →" : ""} {count}
         </>
       )}
     </button>
