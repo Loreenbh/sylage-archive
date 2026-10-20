@@ -34,6 +34,7 @@ export default function Sidebar({
       onMouseLeave={() => setIsHovering(false)}
       className={`
         ${layout.sidebarButton}
+        border-0 outline-none shadow-none before:hidden after:hidden
         ${clickable ? "cursor-pointer sm:translate-x-[0.5px]" : "cursor-default"}
       `}
     >
