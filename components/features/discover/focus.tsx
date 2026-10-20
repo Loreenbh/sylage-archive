@@ -47,7 +47,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
             },
             { section: "FILTER", clickable: false },
             {
-              section: !user ? "CREATE →" : "CREATE",
+              section: !user ? "CREATE →︎" : "CREATE",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
@@ -120,7 +120,7 @@ export default function MoodDetails({ onNavigate, params, onBack }: Props) {
               whitespace-nowrap
             `}
                 >
-                  Add look{!user ? " →" : ""}
+                  Add look{!user ? " →︎" : ""}
                 </button>
 
                 <span className={typography.bullet}>•</span>
