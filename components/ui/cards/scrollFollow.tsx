@@ -36,7 +36,7 @@ export default function ScrollFollow({
 
   const renderList = (items: Follow[], showUnfollow: boolean) => (
     <div className="h-full flex flex-col min-h-0">
-      <div className="flex-1 min-h-0 w-[calc(100%-4px)] overflow-y-auto overflow-x-hidden sm:space-y-0 lg:space-y-1 mt-1 lg:mt-3 pr-3">
+      <div className="flex-1 min-h-0 w-full overflow-y-auto overflow-x-hidden sm:space-y-0 lg:space-y-1 mt-1 lg:mt-3 pr-1 sm:pr-3">
         {items.map((item) => (
           <div
             key={item.id}
@@ -152,7 +152,7 @@ export default function ScrollFollow({
             }
           `}
         >
-          <span className="text-[clamp(5px,1.1cqw,8px)] sm:text-[clamp(6px,1.1cqw,10px)] md:text-[clamp(8px,1.1cqw,12px)] xl:text-[clamp(10px,1.1cqw,16px)] tracking-[0.1em] uppercase text-black/50">
+          <span className="text-[clamp(4px,0.85cqw,7px)] min-[376px]:text-[clamp(5px,1cqw,8px)] md:text-[clamp(8px,1.1cqw,12px)] xl:text-[clamp(10px,1.1cqw,16px)] tracking-[0.04em] sm:tracking-[0.1em] uppercase text-black/50">
             {followingTitle}
           </span>
         </button>
@@ -169,7 +169,7 @@ export default function ScrollFollow({
             }
           `}
         >
-          <span className="text-[clamp(5px,1.1cqw,8px)] sm:text-[clamp(6px,1.1cqw,10px)] md:text-[clamp(8px,1.1cqw,12px)] xl:text-[clamp(10px,1.1cqw,16px)] tracking-[0.2em] uppercase text-black/50">
+          <span className="text-[clamp(4px,0.85cqw,7px)] min-[376px]:text-[clamp(5px,1cqw,8px)] md:text-[clamp(8px,1.1cqw,12px)] xl:text-[clamp(10px,1.1cqw,16px)] tracking-[0.04em] sm:tracking-[0.1em] uppercase text-black/50">
             {followersTitle}
           </span>
         </button>
