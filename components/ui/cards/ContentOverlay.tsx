@@ -113,7 +113,7 @@ export default function ContentOverlay({
                   duration-300
                 "
               >
-                {isFollowed ? "✓" : "+"}{isGuest ? "↗" : ""}
+                {isFollowed ? "✓" : "+"}{isGuest ? "→" : ""}
               </button>
             )}
 
