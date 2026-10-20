@@ -73,7 +73,7 @@ export default function Moods({ onNavigate, params, onBack }: Props) {
             },
             { section: "FILTER", clickable: true },
             {
-              section: !user ? "CREATE →" : "CREATE",
+              section: !user ? "CREATE →︎" : "CREATE",
               clickable: true,
               onClick: () =>
                 onNavigate?.({
