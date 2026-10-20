@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { OnNavigate } from "@/types/navigation";
 import { typography } from "@/styles/typography";
 import { colors } from "@/styles/colors";
+import { layout } from "@/styles/layout";
 
 type Props = {
   text: string;
